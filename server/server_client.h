@@ -1,0 +1,29 @@
+#ifndef SERVER_CLIENT_H
+#define SERVER_CLIENT_H
+
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <utility>
+
+#include "common_queue.h"
+#include "common_socket.h"
+#include "common_thread.h"
+#include "server_enviar.h"
+#include "server_protocolo.h"
+
+class ServerClient: public Thread {
+private:
+    Socket conexion_socket;
+    bool esta_cerrado;
+    Queue<std::string>& recibidos;
+    Queue<std::string>& enviados;
+
+    void cerrar(ServerEnviar& enviar);
+
+public:
+    ServerClient(Socket skt, Queue<std::string>& recibidos, Queue<std::string>& enviados);
+    void run() override;
+};
+
+#endif
