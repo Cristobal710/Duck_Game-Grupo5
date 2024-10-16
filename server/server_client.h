@@ -6,9 +6,9 @@
 #include <string>
 #include <utility>
 
-#include "common_queue.h"
-#include "common_socket.h"
-#include "common_thread.h"
+#include "../common/common_queue.h"
+#include "../common/common_socket.h"
+#include "../common/common_thread.h"
 #include "server_enviar.h"
 #include "server_protocolo.h"
 

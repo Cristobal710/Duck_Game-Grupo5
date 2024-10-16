@@ -2,6 +2,10 @@
 #define LIB_ERROR_H
 
 #include <exception>
+#include <cstdarg>
+#include <cstdio>
+#include <cstring>
+#include <errno.h>
 
 /*
  * Clase para encapsular el `errno` de C, "el ultimó error".
@@ -28,7 +32,7 @@ public:
      *  */
     LibError(int error_code, const char* fmt, ...) noexcept;
 
-    virtual const char* what() const noexcept;
+    virtual const char* what() const noexcept override;
 
     virtual ~LibError();
 };

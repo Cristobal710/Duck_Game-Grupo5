@@ -15,7 +15,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 project(taller_tp
     VERSION 1.0
-    HOMEPAGE_URL "https://github.com/URL-HERE"
+    HOMEPAGE_URL "https://github.com/Cristobal-RA/Duck_Game-Grupo5"
     LANGUAGES CXX
     )
 
@@ -89,11 +89,11 @@ if(TALLER_SERVER)
     # Add source files and enable warnings
     # HEY!! TODO XXX: add more subfolders here
     add_subdirectory(server)
-
     set_project_warnings(taller_server ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
     # Link the taller_common lib target
     target_link_libraries(taller_server taller_common)
+    
 endif()
 
 if(TALLER_EDITOR)

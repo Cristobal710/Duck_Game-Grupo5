@@ -5,8 +5,8 @@
 #include <string>
 #include <vector>
 
-#include "common_queue.h"
-#include "common_socket.h"
+#include "../common/common_queue.h"
+#include "../common/common_socket.h"
 
 class ServerProtocolo {
 private:

@@ -6,8 +6,8 @@
 #include <string>
 #include <vector>
 
-#include "common_queue.h"
-#include "common_thread.h"
+#include "../common/common_queue.h"
+#include "../common/common_thread.h"
 #include "server_client.h"
 #include "server_proteger_clientes.h"
 
