@@ -45,6 +45,11 @@ set_project_warnings(taller_common ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
 # location (so our dependants will not have to explicitly request this)
 target_include_directories(taller_common PUBLIC .)
 
+
+# Find SDL2 and SDL2_image
+find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
+
 # Install libSDL2pp (for client or editor)
 # HEY!! TODO XXX: add more dependendies (either for client, server or editor)
 if(TALLER_CLIENT OR TALLER_EDITOR)
@@ -55,6 +60,13 @@ if(TALLER_CLIENT OR TALLER_EDITOR)
     )
 
     FetchContent_MakeAvailable(libSDL2pp)
+
+    # Fetch SDL2_image
+    FetchContent_Declare(
+        libSDL2_image
+        URL https://github.com/libsdl-org/SDL_image/archive/refs/tags/release-2.8.2.zip
+    )
+    FetchContent_MakeAvailable(libSDL2_image)
 endif()
 
 # Program section
@@ -74,9 +86,14 @@ if(TALLER_CLIENT)
 
     # add libSDL2pp's headers
     target_include_directories(taller_client PRIVATE ${libSDL2pp_SOURCE_DIR})
+    target_include_directories(taller_client PRIVATE ${libSDL2_image_SOURCE_DIR})
 
-    # Link the taller_common lib target
-    target_link_libraries(taller_client taller_common SDL2pp::SDL2pp)
+    # Link the taller_common lib target, SDL2pp, and SDL2_image
+    target_link_libraries(taller_client 
+        taller_common 
+        SDL2pp::SDL2pp 
+        SDL2::SDL2 
+        SDL2_image::SDL2_image)  
 endif()
 
 if(TALLER_SERVER)
