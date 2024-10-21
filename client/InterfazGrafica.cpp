@@ -21,7 +21,7 @@ int main() try {
     // Create renderer
     SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-    SDL2pp::Surface loadedSurface(IMG_Load("../src/Grey-Duck.png"));
+    SDL2pp::Surface loadedSurface(IMG_Load("../resources/Grey-Duck.png"));
     
     // Create texture from surface using SDL2pp::Texture
     SDL2pp::Texture texture(renderer, loadedSurface);
