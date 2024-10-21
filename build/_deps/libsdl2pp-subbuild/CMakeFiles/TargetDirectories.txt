@@ -1,0 +1,3 @@
+/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/libsdl2pp-subbuild/CMakeFiles/libsdl2pp-populate.dir
+/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/libsdl2pp-subbuild/CMakeFiles/edit_cache.dir
+/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/libsdl2pp-subbuild/CMakeFiles/rebuild_cache.dir

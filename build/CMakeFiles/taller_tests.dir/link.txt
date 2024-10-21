@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/taller_tests.dir/tests/foo.cpp.o -o taller_tests  -Wl,-rpath,/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/lib libtaller_common.a lib/libgtest_main.so.1.12.1 lib/libgtest.so.1.12.1 

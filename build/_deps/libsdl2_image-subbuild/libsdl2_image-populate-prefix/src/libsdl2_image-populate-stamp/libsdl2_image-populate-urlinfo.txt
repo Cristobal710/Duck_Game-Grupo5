@@ -1,0 +1,12 @@
+# This is a generated file and its contents are an internal implementation detail.
+# The download step will be re-executed if anything in this file changes.
+# No other meaning or use of this file is supported.
+
+method=url
+command=/usr/bin/cmake;-P;/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/libsdl2_image-subbuild/libsdl2_image-populate-prefix/src/libsdl2_image-populate-stamp/download-libsdl2_image-populate.cmake;COMMAND;/usr/bin/cmake;-P;/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/libsdl2_image-subbuild/libsdl2_image-populate-prefix/src/libsdl2_image-populate-stamp/verify-libsdl2_image-populate.cmake;COMMAND;/usr/bin/cmake;-P;/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/libsdl2_image-subbuild/libsdl2_image-populate-prefix/src/libsdl2_image-populate-stamp/extract-libsdl2_image-populate.cmake
+source_dir=/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/libsdl2_image-src
+work_dir=/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps
+url(s)=https://github.com/libsdl-org/SDL_image/archive/refs/tags/release-2.8.2.zip
+hash=
+no_extract=
+
