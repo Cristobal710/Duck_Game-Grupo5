@@ -6,78 +6,176 @@
 #include <SDL2/SDL_image.h>
 
 #define NUM_FRAMES_MOVIMIENTO_PATO 6
+#define NUM_FRAMES_SALTA_PATO 3
+#define NUM_FRAMES_BAJA_PATO 6
+#define NUM_FRAMES_PATO_ACOSTADO 5
 #define PIXEL_PATO 32
 
 using namespace SDL2pp;
 
 
-// Function to load multiple sprites into a vector
-void frames_movimientos(SDL2pp::Renderer& renderer, SDL2pp::Surface& spriteSheet,
-int frameWidth, int frameHeight, std::vector<SDL2pp::Texture>& textures) {
+
+void frames_movimientos(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet,
+int frame_width, int frame_height, std::vector<SDL2pp::Texture>& texturas) {
     
     for (int i = 0; i < NUM_FRAMES_MOVIMIENTO_PATO; ++i) {
 
-        SDL_Rect srcRect = {i * frameWidth, 6, frameWidth, frameHeight}; 
+        SDL_Rect rect_inicial = {i * frame_width, 6, frame_width, frame_height}; 
         
-        SDL2pp::Surface spriteSurface(SDL_CreateRGBSurface(0, frameWidth, frameHeight, 32, 0, 0, 0, 0));
+        SDL2pp::Surface sprite_superficie(SDL_CreateRGBSurface(0, frame_width, frame_height, 32, 0, 0, 0, 0));
         
-        SDL_BlitSurface(spriteSheet.Get(), &srcRect, spriteSurface.Get(), nullptr);
+        SDL_BlitSurface(sprite_sheet.Get(), &rect_inicial, sprite_superficie.Get(), nullptr);
         
-        SDL2pp::Texture spriteTexture(renderer, spriteSurface);
+        SDL2pp::Texture sprite_textura(renderer, sprite_superficie);
         
-        textures.emplace_back(std::move(spriteTexture)); 
+        texturas.emplace_back(std::move(sprite_textura)); 
     }
 }
 
+void frames_salto(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet,
+int frame_width, int frame_height, std::vector<SDL2pp::Texture>& texturas) {
+    
+    for (int i = 0; i < NUM_FRAMES_MOVIMIENTO_PATO; ++i) {
+
+        SDL_Rect rect_inicial = {i * frame_width, 38, frame_width, frame_height}; 
+        
+        SDL2pp::Surface sprite_superficie(SDL_CreateRGBSurface(0, frame_width, frame_height, 32, 0, 0, 0, 0));
+        
+        SDL_BlitSurface(sprite_sheet.Get(), &rect_inicial, sprite_superficie.Get(), nullptr);
+        
+        SDL2pp::Texture sprite_textura(renderer, sprite_superficie);
+        
+        texturas.emplace_back(std::move(sprite_textura)); 
+    }
+}
+
+void frames_acostarse(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet,
+int frame_width, int frame_height, std::vector<SDL2pp::Texture>& texturas) {
+    
+    for (int i = 0; i < NUM_FRAMES_PATO_ACOSTADO; ++i) {
+
+        SDL_Rect rect_inicial = {i * frame_width, 70, frame_width, frame_height}; 
+        
+        SDL2pp::Surface sprite_superficie(SDL_CreateRGBSurface(0, frame_width, frame_height, 32, 0, 0, 0, 0));
+        
+        SDL_BlitSurface(sprite_sheet.Get(), &rect_inicial, sprite_superficie.Get(), nullptr);
+        
+        SDL2pp::Texture sprite_textura(renderer, sprite_superficie);
+        
+        texturas.emplace_back(std::move(sprite_textura)); 
+    }
+}
 
 void pato_camina_derecha(std::vector<SDL2pp::Texture>& movimiento_pato, SDL2pp::Renderer& renderer,
-                        SDL_Rect& src_rect,SDL2pp::Rect& dst_rect) {
+                        SDL_Rect& rect_inicio,SDL2pp::Rect& rect_destino) {
     
     for (int i = 0; i < NUM_FRAMES_MOVIMIENTO_PATO; ++i){
         
-        dst_rect.x += 2 ;
-        renderer.Copy(movimiento_pato[i], SDL2pp::Optional<SDL2pp::Rect>(src_rect), SDL2pp::Optional<SDL2pp::Rect>(dst_rect));
+        rect_destino.x += 2 ;
+        renderer.Copy(movimiento_pato[i], SDL2pp::Optional<SDL2pp::Rect>(rect_inicio), SDL2pp::Optional<SDL2pp::Rect>(rect_destino));
         renderer.Present();
 
 
-        SDL_Delay(100); 
+        SDL_Delay(70); 
     }
 
-    renderer.Copy(movimiento_pato[0], SDL2pp::Optional<SDL2pp::Rect>(src_rect), SDL2pp::Optional<SDL2pp::Rect>(dst_rect));
+    renderer.Copy(movimiento_pato[0], SDL2pp::Optional<SDL2pp::Rect>(rect_inicio), SDL2pp::Optional<SDL2pp::Rect>(rect_destino));
+    
+    renderer.Present();
+    
+}
+
+void pato_salta(std::vector<SDL2pp::Texture>& frames_salto, SDL2pp::Renderer& renderer,
+                        SDL_Rect& rect_inicio,SDL2pp::Rect& rect_destino) {
+    
+    for (int i = 0; i < NUM_FRAMES_SALTA_PATO; ++i){
+        rect_destino.y -= 3 ;
+        rect_destino.x += 0.5 ;
+        renderer.Copy(frames_salto[i], SDL2pp::Optional<SDL2pp::Rect>(rect_inicio), SDL2pp::Optional<SDL2pp::Rect>(rect_destino));
+        renderer.Present();
+
+
+        SDL_Delay(70); 
+    }
+    renderer.Clear();
+
+    for (int i = 3; i < NUM_FRAMES_BAJA_PATO; ++i){
+        rect_destino.y += 1 ;
+        rect_destino.x += 0.5 ;
+        renderer.Copy(frames_salto[i], SDL2pp::Optional<SDL2pp::Rect>(rect_inicio), SDL2pp::Optional<SDL2pp::Rect>(rect_destino));
+        renderer.Present();
+
+
+        SDL_Delay(70); 
+    }
+
+    renderer.Copy(frames_salto[0], SDL2pp::Optional<SDL2pp::Rect>(rect_inicio), SDL2pp::Optional<SDL2pp::Rect>(rect_destino));
     
     renderer.Present();
     
 }
 
 void pato_camina_izquierda(std::vector<SDL2pp::Texture>& movimiento_pato, SDL2pp::Renderer& renderer,
-SDL_Rect& src_rect,SDL2pp::Rect& dst_rect ) {
+SDL_Rect& rect_inicio,SDL2pp::Rect& rect_destino ) {
     
     for (int i = 0; i < NUM_FRAMES_MOVIMIENTO_PATO; ++i){
-        renderer.Copy(movimiento_pato[0], SDL2pp::Optional<SDL2pp::Rect>(src_rect), SDL2pp::Optional<SDL2pp::Rect>(dst_rect));
-        dst_rect.x -= 2 ; //aca no sabemos cuanto nos tenemos que mover realmente, es arbitrario el valor ahora mismo
+        renderer.Copy(movimiento_pato[0], SDL2pp::Optional<SDL2pp::Rect>(rect_inicio), SDL2pp::Optional<SDL2pp::Rect>(rect_destino));
+        rect_destino.x -= 2 ; //aca no sabemos cuanto nos tenemos que mover realmente, es arbitrario el valor ahora mismo
 
-        SDL_RenderCopyEx(renderer.Get(), movimiento_pato[i].Get(), &src_rect, &dst_rect, 0, nullptr, SDL_FLIP_HORIZONTAL);
+        SDL_RenderCopyEx(renderer.Get(), movimiento_pato[i].Get(), &rect_inicio, &rect_destino, 0, nullptr, SDL_FLIP_HORIZONTAL);
 
         renderer.Present();
 
 
-        SDL_Delay(85); 
+        SDL_Delay(70); 
     }
 
-    SDL_RenderCopyEx(renderer.Get(), movimiento_pato[0].Get(), &src_rect, &dst_rect, 0, nullptr, SDL_FLIP_HORIZONTAL);
+    SDL_RenderCopyEx(renderer.Get(), movimiento_pato[0].Get(), &rect_inicio, &rect_destino, 0, nullptr, SDL_FLIP_HORIZONTAL);
 
+    renderer.Present();
+    
+}
+
+void pato_agachado(std::vector<SDL2pp::Texture>& frames_acostarse, SDL2pp::Renderer& renderer,
+                        SDL_Rect& rect_inicio,SDL2pp::Rect& rect_destino) {
+    
+    for (int i = 0; i < NUM_FRAMES_PATO_ACOSTADO; ++i){
+        // rect_destino.y -= 3 ;
+        // rect_destino.x += 0.5 ;
+        renderer.Copy(frames_acostarse[i], SDL2pp::Optional<SDL2pp::Rect>(rect_inicio), SDL2pp::Optional<SDL2pp::Rect>(rect_destino));
+        renderer.Present();
+
+
+        SDL_Delay(150); 
+    }
+    renderer.Clear();
+
+    // for (int i = 3; i < NUM_FRAMES_BAJA_PATO; ++i){
+    //     // rect_destino.y += 1 ;
+    //     // rect_destino.x += 0.5 ;
+    //     renderer.Copy(frames_acostarse[i], SDL2pp::Optional<SDL2pp::Rect>(rect_inicio), SDL2pp::Optional<SDL2pp::Rect>(rect_destino));
+    //     renderer.Present();
+
+
+    //     SDL_Delay(150); 
+    // }
+
+    renderer.Copy(frames_acostarse[0], SDL2pp::Optional<SDL2pp::Rect>(rect_inicio), SDL2pp::Optional<SDL2pp::Rect>(rect_destino));
+    
     renderer.Present();
     
 }
 
 
 int main() {    
-    // inicializar el SDL video, lo requiere el SDL_PollEvent en la documentacion.
+    // inicializar el SDL video, lo requiere el SDL_PollEvent en la documentacion:
     // As this function may implicitly call SDL_PumpEvents(), you can only call
     // this function in the thread that initialized the video subsystem.
 
 
     std::vector<SDL2pp::Texture> movimiento_pato;
+    std::vector<SDL2pp::Texture> salto_pato;
+    std::vector<SDL2pp::Texture> acostarse_pato;
 
 	SDL sdl(SDL_INIT_VIDEO);
 
@@ -93,19 +191,23 @@ int main() {
         SDL2pp::Surface sprite_pato_gris(IMG_Load("../resources/Grey-Duck.png"));
         
         //lugar de inicio del pato
-        SDL2pp::Rect src_rect = {1, 8, 32, 32};
+        SDL2pp::Rect rect_inicio = {1, 8, 32, 32};
 
         //conseguir sprites de movimiento
         frames_movimientos(renderer, sprite_pato_gris, PIXEL_PATO, PIXEL_PATO, movimiento_pato);
 
+        frames_salto(renderer, sprite_pato_gris, PIXEL_PATO, PIXEL_PATO, salto_pato);
+
+        frames_acostarse(renderer, sprite_pato_gris, PIXEL_PATO, PIXEL_PATO, acostarse_pato);
+
         // Clear screen
         renderer.Clear();
 
-        // Define the destination rectangle where the sprite will be drawn
-        SDL2pp::Rect dst_rect = {100, 100, 32, 32}; // Position at (100, 100)
+        
+        SDL2pp::Rect rect_dibujado = {100, 100, 32, 32}; // inicialmente situado en (100, 100)
 
-        // Copy the sprite texture to the renderer, specifying the destination rectangle
-        renderer.Copy(movimiento_pato[0], src_rect, dst_rect);
+        // Mostramos el pato sin movimiento, en estado de "espera".
+        renderer.Copy(movimiento_pato[0], rect_inicio, rect_dibujado);
 
         // Show rendered frame
         renderer.Present();
@@ -133,13 +235,26 @@ int main() {
                 if (evento.key.keysym.sym == SDLK_d) {
                     //aca vendria la logica de moverte para la derecha.
                     renderer.Clear();
-                    pato_camina_derecha(movimiento_pato, renderer, src_rect, dst_rect);   
+                    pato_camina_derecha(movimiento_pato, renderer, rect_inicio, rect_dibujado);   
                     continue;
                 }
                 if (evento.key.keysym.sym == SDLK_a) {
-                    //aca vendria la logica de moverte para la izqueirda.
+                    //aca vendria la logica de moverte para la izquierda.
                     renderer.Clear();
-                    pato_camina_izquierda(movimiento_pato, renderer, src_rect, dst_rect);   
+                    pato_camina_izquierda(movimiento_pato, renderer, rect_inicio, rect_dibujado);   
+                    continue;
+                }
+                if (evento.key.keysym.sym == SDLK_w) {
+                    //aca vendria la logica de saltar.
+                    renderer.Clear();
+                    pato_salta(salto_pato, renderer, rect_inicio, rect_dibujado);   
+                    continue;
+                }
+                if (evento.key.keysym.sym == SDLK_s) {
+                    
+                    //aca vendria la logica de tirarse al piso.
+                    renderer.Clear();
+                    pato_agachado(acostarse_pato, renderer, rect_inicio, rect_dibujado);   
                     continue;
                 }
             }

@@ -11,7 +11,7 @@ endif()
 # strongly encouraged to enable this globally to avoid conflicts between
 # -Wpedantic being enabled and -std=c++20 and -std=gnu++20 for example
 # when compiling with PCH enabled
-set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_EXTENSIONS ON)
 
 project(taller_tp
     VERSION 1.0
@@ -53,6 +53,8 @@ find_package(SDL2_image REQUIRED)
 # Install libSDL2pp (for client or editor)
 # HEY!! TODO XXX: add more dependendies (either for client, server or editor)
 if(TALLER_CLIENT OR TALLER_EDITOR)
+    set(SDL2PP_WITH_IMAGE YES)
+    
     include(FetchContent)
     FetchContent_Declare(
         libSDL2pp
