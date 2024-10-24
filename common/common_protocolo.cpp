@@ -2,26 +2,17 @@
 
 #include "common_liberror.h"
 
-#define BYTE_NULO 0x00
-
-#define BYTE_MOVER 0x10
-#define MOVER_IZQUIERDA 0x01
-#define MOVER_DERECHA 0x02
-#define MOVER_ABAJO 0x03
-#define SALTAR_ALETEAR 0x04
-
-
-#define BYTE_INTERACTUAR 0x20
-#define DISPARAR 0x21
-#define APUNTAR_ARRIBA 0x22
-#define TIRAR_PISO 0x23
-#define MORIR 0x24
-#define RECIBIR_IMPACTO 0x25
-
-#define TOMAR_ARMA 0X26
-
-
-Protocolo::Protocolo(Socket& socket): socket(socket) {}
+Protocolo::Protocolo(Socket& socket): socket(socket), acciones() {
+    acciones["d"] = MOVER_DERECHA;
+    acciones["a"] = MOVER_IZQUIERDA;
+    acciones["s"] = MOVER_ABAJO;
+    acciones["w"] = APUNTAR_ARRIBA;
+    acciones[" "] = SALTAR_ALETEAR;
+    acciones["click_izq"] = DISPARAR;
+    acciones["r"] = RECARGAR;
+    acciones["e"] = TOMAR_ARMA;
+    acciones["q"] = TIRAR_PISO;
+}
 
 void esta_cerrado(const bool& cerrado, const std::string& mensaje) {
     if (cerrado) {
