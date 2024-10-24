@@ -22,11 +22,11 @@ void ServerClient::run() {
     ServerEnviar enviar(conexion_socket, enviados);
     enviar.start();
 
-    ServerProtocolo protocolo(conexion_socket, &esta_cerrado);
+    ServerProtocolo protocolo(conexion_socket);
 
     while (enviar.is_alive() && (!esta_cerrado)) {
         try {
-            protocolo.recibir_pickup(&recibidos);
+            protocolo.recibir_comando();
         } catch (...) {
             break;
         }

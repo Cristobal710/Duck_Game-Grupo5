@@ -6,7 +6,7 @@
 ServerProtocolo::ServerProtocolo(Socket& skt): Protocolo(skt) {}
 
 Comando ServerProtocolo::recibir_comando() {
-    bool cerrado;
+    bool cerrado = false;
     Comando comando;
     comando.comando = recibir_byte(cerrado);
     comando.accion = recibir_byte(cerrado);

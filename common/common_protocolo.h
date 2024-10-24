@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-
+#include <cstdint>
 #include "common_socket.h"
 
 #define BYTE_NULO 0x00

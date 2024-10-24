@@ -12,6 +12,7 @@ target_sources(taller_server
     ../common/common_resolver.cpp
     ../common/common_resolvererror.cpp
     ../common/common_socket.cpp
+    ../common/common_protocolo.cpp
 
     main.cpp
 
@@ -30,6 +31,7 @@ target_sources(taller_server
     ../common/common_resolvererror.h
     ../common/common_socket.h
     ../common/common_thread.h
+    ../common/common_protocolo.h
     )
 
     target_include_directories(taller_server

@@ -17,13 +17,13 @@ ServerEnviar::ServerEnviar(Socket& skt, Queue<std::string>& enviados):
         socket(skt), enviados(enviados), esta_cerrado(false) {}
 
 void ServerEnviar::run() {
-    ServerProtocolo server_protocolo(socket, &esta_cerrado);
+    ServerProtocolo server_protocolo(socket);
 
     while (!esta_cerrado) {
         try {
             std::string mensaje = enviados.pop();
             if (mensaje == CAJA_NUEVA) {
-                server_protocolo.enviar_nueva_caja();
+                //server_protocolo.enviar_nueva_caja();
             } else {
                 std::string nombre = mensaje.substr(0, mensaje.find(PICKED_UP_A));
                 uint8_t reward_id = 0;
@@ -36,7 +36,8 @@ void ServerEnviar::run() {
                 } else if (mensaje.find(SHOTGUN) != std::string::npos) {
                     reward_id = REWARD_ID_SHOTGUN;
                 }
-                server_protocolo.enviar_reward(nombre, (&reward_id));
+                reward_id++;
+                //server_protocolo.enviar_reward(nombre, (&reward_id));
             }
         } catch (ClosedQueue& e) {
             break;

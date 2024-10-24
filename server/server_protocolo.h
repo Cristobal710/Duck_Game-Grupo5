@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cstdint>
 #include "../common/common_protocolo.h"
 #include "../common/common_queue.h"
 #include "../common/common_socket.h"
@@ -14,7 +15,7 @@ struct Comando {
     uint8_t jugador_id;
 };
 
-class ServerProtocolo : public Protocolo{
+class ServerProtocolo : public Protocolo {
 private:
     Comando recibir_nombre();
     uint8_t recibir_caja();

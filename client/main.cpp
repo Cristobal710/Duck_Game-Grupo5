@@ -24,10 +24,17 @@ int frame_width, int frame_height, std::vector<SDL2pp::Texture>& texturas) {
         
         SDL2pp::Surface sprite_superficie(SDL_CreateRGBSurface(0, frame_width, frame_height, 32, 0, 0, 0, 0));
         
+
+
         SDL_BlitSurface(sprite_sheet.Get(), &rect_inicial, sprite_superficie.Get(), nullptr);
+        
+        Uint32 color_key = SDL_MapRGB(sprite_superficie.Get()->format, 0, 0, 0); // Black color
+        SDL_SetColorKey(sprite_superficie.Get(), SDL_TRUE, color_key);
         
         SDL2pp::Texture sprite_textura(renderer, sprite_superficie);
         
+       
+
         texturas.emplace_back(std::move(sprite_textura)); 
     }
 }
@@ -67,10 +74,12 @@ int frame_width, int frame_height, std::vector<SDL2pp::Texture>& texturas) {
 }
 
 void pato_camina_derecha(std::vector<SDL2pp::Texture>& movimiento_pato, SDL2pp::Renderer& renderer,
-                        SDL_Rect& rect_inicio,SDL2pp::Rect& rect_destino) {
+                        SDL_Rect& rect_inicio,SDL2pp::Rect& rect_destino, SDL2pp::Texture& fondo) {
     
     for (int i = 0; i < NUM_FRAMES_MOVIMIENTO_PATO; ++i){
         
+        renderer.Clear();
+        renderer.Copy(fondo, SDL2pp::Optional<SDL2pp::Rect>(), SDL2pp::Optional<SDL2pp::Rect>());
         rect_destino.x += 2 ;
         renderer.Copy(movimiento_pato[i], SDL2pp::Optional<SDL2pp::Rect>(rect_inicio), SDL2pp::Optional<SDL2pp::Rect>(rect_destino));
         renderer.Present();
@@ -188,10 +197,20 @@ int main() {
         // Create renderer
         SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-        SDL2pp::Surface sprite_pato_gris(IMG_Load("../resources/Grey-Duck.png"));
-        
         //lugar de inicio del pato
         SDL2pp::Rect rect_inicio = {1, 8, 32, 32};
+
+        SDL2pp::Surface sprite_fondo(IMG_Load("../resources/forest.webp"));
+
+        SDL2pp::Texture fondo(renderer, sprite_fondo);
+
+        
+        SDL2pp::Surface sprite_pato_gris(IMG_Load("../resources/Grey-Duck.png"));
+        
+
+        Uint32 color_key = SDL_MapRGBA(sprite_pato_gris.Get()->format, 0, 0, 0, 0); 
+
+        SDL_SetColorKey(sprite_pato_gris.Get(), SDL_TRUE, color_key);
 
         //conseguir sprites de movimiento
         frames_movimientos(renderer, sprite_pato_gris, PIXEL_PATO, PIXEL_PATO, movimiento_pato);
@@ -235,7 +254,8 @@ int main() {
                 if (evento.key.keysym.sym == SDLK_d) {
                     //aca vendria la logica de moverte para la derecha.
                     renderer.Clear();
-                    pato_camina_derecha(movimiento_pato, renderer, rect_inicio, rect_dibujado);   
+                    pato_camina_derecha(movimiento_pato, renderer, rect_inicio, rect_dibujado, fondo);   
+                    //queue.push(pato_camina_derecha());
                     continue;
                 }
                 if (evento.key.keysym.sym == SDLK_a) {
@@ -259,7 +279,10 @@ int main() {
                 }
             }
         }
-
+        renderer.Clear();
+        renderer.Copy(fondo, SDL2pp::Optional<SDL2pp::Rect>(), SDL2pp::Optional<SDL2pp::Rect>());
+        renderer.Copy(movimiento_pato[0], rect_inicio, rect_dibujado);
+        renderer.Present();
         //una vez salido de procesar todos los eventos de nuestro jugador
         //hay que implementar los siguientes metodos.
         //actualizar_estado_juego();
