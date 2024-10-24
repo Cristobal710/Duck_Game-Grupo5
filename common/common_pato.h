@@ -4,10 +4,8 @@
 #include <string>
 #include "common_arma.h"
 
-class Pato {
+class Pato : public Entidad {
 private:
-    int id;
-    int pos_x, pos_y; // Posición del pato en el escenario
     Arma* arma;
     bool tomo_armadura;
     bool tomo_casco;
@@ -15,9 +13,10 @@ private:
     bool casco_equipado;
     bool vivo;
     bool apunta_arriba;
+    int color; // hacer map con colores
 
 public:
-    Pato(const std::string& color, int x, int y);
+    Pato(uint8_t id, uint8_t pos_x, uint8_t pos_y, const std::string& color);
     ~Pato();
 
     void moverse_izquierda();

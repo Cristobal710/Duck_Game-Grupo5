@@ -1,7 +1,19 @@
 #include "common_pato.h"
 #include <iostream>
 
-Pato::Pato(const std::string& color, int x, int y) : id(id), pos_x(x), pos_y(y), arma(nullptr), vivo(true), armadura_equipada(false), casco_equipado(false) {}
+Pato::Pato(uint8_t id, uint8_t pos_x, uint8_t pos_y, const std::string& color) : Entidad(id, pos_x, pos_y), arma(nullptr), tomo_armadura(false), tomo_casco(false), armadura_equipada(false), casco_equipado(false), vivo(true), apunta_arriba(false) {
+    if (color == "rojo") {
+        this->color = 1;
+    } else if (color == "azul") {
+        this->color = 2;
+    } else if (color == "verde") {
+        this->color = 3;
+    } else if (color == "amarillo") {
+        this->color = 4;
+    } else {
+        this->color = 0;
+    }
+}
 
 Pato::~Pato() {
     delete arma;
