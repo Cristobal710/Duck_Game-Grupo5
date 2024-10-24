@@ -9,16 +9,16 @@
 
 ClienteProtocolo::ClienteProtocolo(Socket& socket): Protocolo(socket) {}
 
-void ClienteProtocolo::enviar_interaccion(const uint8_t accion, const uint8_t jugador_id){
-    enviar_byte(BYTE_INTERACTUAR);
+void ClienteProtocolo::enviar_comando(ComandoGrafica comando){
+    uint8_t accion = acciones[comando.tecla];
     enviar_byte(accion);
-    enviar_byte(jugador_id);
+    enviar_byte(comando.jugador_id);
 }
 
-
-void ClienteProtocolo::enviar_movimiento(const uint8_t movimiento, const uint8_t jugador_id){
-    enviar_byte(BYTE_MOVER);
-    enviar_byte(movimiento);
-    enviar_byte(jugador_id);
+EstadoJuego ClienteProtocolo::recibir_estado_juego(){
+    EstadoJuego estado_juego;
+    estado_juego.estado = {0x01};
+    //bool cerrado;
+    // serializar el estado del juego
+    return estado_juego;
 }
-
