@@ -19,18 +19,19 @@ void ServerClient::cerrar(ServerEnviar& enviar) {
 
 void ServerClient::run() {
 
-    ServerEnviar enviar(conexion_socket, enviados);
-    enviar.start();
+    // ServerEnviar enviar(conexion_socket, enviados);
+    // enviar.start();
 
-    ServerProtocolo protocolo(conexion_socket);
+    // ServerProtocolo protocolo(conexion_socket);
 
-    while (enviar.is_alive() && (!esta_cerrado)) {
-        try {
-            protocolo.recibir_comando();
-        } catch (...) {
-            break;
-        }
-    }
+    // while (enviar.is_alive() && (!esta_cerrado)) {
+    //     try {
+    //         protocolo.recibir_comando();
+    //     } catch (...) {
+    //         break;
+    //     }
+    // }
 
-    cerrar(enviar);
+    // cerrar(enviar);
+    // cerrar(enviar);
 }
