@@ -10,8 +10,6 @@ private:
 public:
     FondoInterfaz(SDL2pp::Renderer& renderer, const std::string& fondo_path);
     void dibujar(SDL2pp::Renderer& renderer);
-
 };
 
-#endif // FONDO_INTERFAZ_H
-
+#endif  // FONDO_INTERFAZ_H

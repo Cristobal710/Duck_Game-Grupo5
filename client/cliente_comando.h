@@ -1,7 +1,7 @@
 #ifndef CLIENTE_COMANDO_h
 #define CLIENTE_COMANDO_h
-#include <string>
 #include <cstdint>
+#include <string>
 
 struct ComandoGrafica {
     std::string tecla;

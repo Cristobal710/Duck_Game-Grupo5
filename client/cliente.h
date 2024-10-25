@@ -3,10 +3,11 @@
 
 #include <string>
 
-#include "cliente_protocolo.h"
+#include "../common/common_queue.h"
 #include "../common/common_socket.h"
 #include "../common/common_thread.h"
-#include "../common/common_queue.h"
+
+#include "cliente_protocolo.h"
 /*
  * Clase para encapsular al cliente que se conectara con el servidor
  * */

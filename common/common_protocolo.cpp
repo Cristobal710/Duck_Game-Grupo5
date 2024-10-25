@@ -14,10 +14,7 @@ Protocolo::Protocolo(Socket& socket): socket(socket), acciones() {
     acciones["q"] = TIRAR_PISO;
 }
 
-void Protocolo::enviar_byte(uint8_t byte)
-{
-    byte++;
-}
+void Protocolo::enviar_byte(uint8_t byte) { byte++; }
 
 void esta_cerrado(const bool& cerrado, const std::string& mensaje) {
     if (cerrado) {

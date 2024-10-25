@@ -34,6 +34,5 @@ void Client::run() {
         //     hay_comando = cola_eventos.try_pop();
         //     //protocolo.
         // }
-
     }
 }
