@@ -4,9 +4,9 @@
 #include <string>
 
 #include "cliente_protocolo.h"
-#include "common_socket.h"
-#include "common_thread.h"
-#include "common_queue.h"
+#include "../common/common_socket.h"
+#include "../common/common_thread.h"
+#include "../common/common_queue.h"
 /*
  * Clase para encapsular al cliente que se conectara con el servidor
  * */

@@ -18,7 +18,7 @@ class Protocolo {
     public:
         explicit Protocolo(Socket& socket);
 
-        void enviar_byte(const uint8_t byte);
+        void enviar_byte( uint8_t byte);
 
     protected:
         std::string recibir_string(bool& closed);

@@ -5,7 +5,7 @@
 
 #include <arpa/inet.h>
 
-#include "common_liberror.h"
+#include "../common/common_liberror.h"
 
 ClienteProtocolo::ClienteProtocolo(Socket& socket): Protocolo(socket) {}
 
