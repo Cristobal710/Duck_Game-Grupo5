@@ -3,10 +3,11 @@
 
 #include <string>
 
+#include "../common/common_estado_juego.h"
 #include "../common/common_queue.h"
 #include "../common/common_socket.h"
 #include "../common/common_thread.h"
-#include "../common/common_estado_juego.h"
+
 #include "server_protocolo.h"
 
 class ServerEnviar: public Thread {

@@ -1,24 +1,26 @@
 #ifndef CLIENT_PROTOCOL_H
 #define CLIENT_PROTOCOL_H
 
+#include <map>
 #include <string>
 #include <vector>
-#include "cliente_comando.h"
+
 #include "../common/common_protocolo.h"
 #include "../common/common_socket.h"
-#include <map>
+
+#include "cliente_comando.h"
 
 /*
  * Clase para encapsular el protocolo de comunicacion con el servidor
  * */
 class ClienteProtocolo: public Protocolo {
 
-    public:
-        explicit ClienteProtocolo(Socket& socket);
+public:
+    explicit ClienteProtocolo(Socket& socket);
 
-        void enviar_comando(ComandoGrafica comando);
+    void enviar_comando(ComandoGrafica comando);
 
-        EstadoJuego recibir_estado_juego();
+    EstadoJuego recibir_estado_juego();
 };
 
 #endif

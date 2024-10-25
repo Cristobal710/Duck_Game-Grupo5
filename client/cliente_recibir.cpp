@@ -1,6 +1,7 @@
 #include "cliente_recibir.h"
 
-ClienteRecibir::ClienteRecibir(Socket& socket,  Queue<EstadoJuego>& cola_estados_juego): protocolo(socket), cola_estados_juego(cola_estados_juego) {}
+ClienteRecibir::ClienteRecibir(Socket& socket, Queue<EstadoJuego>& cola_estados_juego):
+        protocolo(socket), cola_estados_juego(cola_estados_juego) {}
 
 void ClienteRecibir::run() {
     while (true) {
@@ -14,5 +15,3 @@ void ClienteRecibir::run() {
         }
     }
 }
-
-

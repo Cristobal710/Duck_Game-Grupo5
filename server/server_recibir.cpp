@@ -1,11 +1,10 @@
 #include "server_recibir.h"
 
 
+ServerRecibir::ServerRecibir(Socket& skt, Queue<EventoServer>& cola_eventos):
+        skt(skt), cola_eventos(cola_eventos) {}
 
-
-ServerRecibir::ServerRecibir(Socket& skt, Queue<EventoServer>& cola_eventos): skt(skt), cola_eventos(cola_eventos){}
-
-void ServerRecibir::run(){
+void ServerRecibir::run() {
     ServerProtocolo protocolo(skt);
     while (true) {
         try {
@@ -17,7 +16,4 @@ void ServerRecibir::run(){
             break;
         }
     }
-
-
-
 }

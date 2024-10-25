@@ -3,11 +3,10 @@
 #include <string>
 #include <cstdint>
 
-struct ComandoGrafica { 
+struct ComandoGrafica {
     std::string tecla;
     uint8_t jugador_id;
 };
-
 
 
 #endif

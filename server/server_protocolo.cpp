@@ -9,14 +9,14 @@ EventoServer ServerProtocolo::recibir_evento() {
     bool cerrado = false;
     EventoServer evento;
     evento.accion = recibir_byte(cerrado);
-    evento.jugador_id = recibir_byte(cerrado); 
+    evento.jugador_id = recibir_byte(cerrado);
     return evento;
 }
 
-void ServerProtocolo::enviar_estado_juego(EstadoJuego& estado) {    
+void ServerProtocolo::enviar_estado_juego(EstadoJuego& estado) {
     std::cout << estado.estado.size() << std::endl;
     // enviar_byte(estado.jugadores.size());
-    // // tambien enviar 
+    // // tambien enviar
     // for (auto& jugador : estado.jugadores) {
     //     enviar_byte(jugador.id);
     //     enviar_byte(jugador.pos_x);

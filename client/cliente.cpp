@@ -17,16 +17,16 @@ void Client::run() {
     ClienteProtocolo protocolo(socket);
     Queue<std::string> cola_eventos;
     std::string commando;
-    //interfaz.start();
+    // interfaz.start();
     while (true) {
         std::getline(std::cin, commando);
-        if (commando == "w"){
+        if (commando == "w") {
             cola_eventos.push(commando);
-        }else if(commando == "s"){
+        } else if (commando == "s") {
             cola_eventos.push(commando);
-        }else if(commando == "a"){
+        } else if (commando == "a") {
             cola_eventos.push(commando);
-        }else if(commando == "d"){
+        } else if (commando == "d") {
             cola_eventos.push(commando);
         }
         // bool hay_comando = true;

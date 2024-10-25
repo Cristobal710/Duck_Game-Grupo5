@@ -2,9 +2,10 @@
 #define COMMON_PATO_H
 
 #include <string>
+
 #include "common_arma.h"
 
-class Pato : public Entidad {
+class Pato: public Entidad {
 private:
     Arma* arma;
     bool tomo_armadura;
@@ -13,7 +14,7 @@ private:
     bool casco_equipado;
     bool vivo;
     bool apunta_arriba;
-    int color; // hacer map con colores
+    int color;  // hacer map con colores
 
 public:
     Pato(uint8_t id, uint8_t pos_x, uint8_t pos_y, const std::string& color);

@@ -1,10 +1,11 @@
 #ifndef LIB_ERROR_H
 #define LIB_ERROR_H
 
-#include <exception>
 #include <cstdarg>
 #include <cstdio>
 #include <cstring>
+#include <exception>
+
 #include <errno.h>
 
 /*

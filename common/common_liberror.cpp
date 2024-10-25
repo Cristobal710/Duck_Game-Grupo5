@@ -105,7 +105,7 @@ LibError::LibError(int error_code, const char* fmt, ...) noexcept {
      * realmente hay un `\0` al final.
      * */
     msg_error[sizeof(msg_error) - 1] = 0;
-    //error_code++; //para evitar el error de que no se utiliza la variable.
+    // error_code++; //para evitar el error de que no se utiliza la variable.
 }
 
 const char* LibError::what() const noexcept { return msg_error; }
