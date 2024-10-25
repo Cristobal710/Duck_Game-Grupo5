@@ -13,32 +13,16 @@
 #define DEATH_RAY "Death ray"
 #define SHOTGUN "Shotgun"
 
-ServerEnviar::ServerEnviar(Socket& skt, Queue<std::string>& enviados):
-        socket(skt), enviados(enviados), esta_cerrado(false) {}
+ServerEnviar::ServerEnviar(Socket& skt, Queue<EstadoJuego>& estados_juego):
+        socket(skt), estados_juego(estados_juego){}
+
 
 void ServerEnviar::run() {
     ServerProtocolo server_protocolo(socket);
-
     while (!esta_cerrado) {
-        try {
-            std::string mensaje = enviados.pop();
-            if (mensaje == CAJA_NUEVA) {
-                //server_protocolo.enviar_nueva_caja();
-            } else {
-                std::string nombre = mensaje.substr(0, mensaje.find(PICKED_UP_A));
-                uint8_t reward_id = 0;
-                if (mensaje.find(BAZOOKA) != std::string::npos) {
-                    reward_id = REWARD_ID_BAZOOKA;
-                } else if (mensaje.find(CHAINSAW) != std::string::npos) {
-                    reward_id = REWARD_ID_CHAINSAW;
-                } else if (mensaje.find(DEATH_RAY) != std::string::npos) {
-                    reward_id = REWARD_ID_DEATH_RAY;
-                } else if (mensaje.find(SHOTGUN) != std::string::npos) {
-                    reward_id = REWARD_ID_SHOTGUN;
-                }
-                reward_id++;
-                //server_protocolo.enviar_reward(nombre, (&reward_id));
-            }
+        try{
+            EstadoJuego nuevo_estado = estados_juego.pop();
+            server_protocolo.enviar_estado_juego(nuevo_estado);
         } catch (ClosedQueue& e) {
             break;
         } catch (...) {
@@ -46,6 +30,4 @@ void ServerEnviar::run() {
         }
     }
 
-    esta_cerrado = true;
-    _is_alive = false;
 }
