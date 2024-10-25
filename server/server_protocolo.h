@@ -8,6 +8,7 @@
 #include "../common/common_protocolo.h"
 #include "../common/common_queue.h"
 #include "../common/common_socket.h"
+#include "server_evento.h"
 
 struct Comando {
     uint8_t comando;
@@ -22,7 +23,8 @@ private:
     
 public:
     ServerProtocolo(Socket& socket);
-    Comando recibir_comando();
+    EventoServer recibir_evento();
+    void enviar_estado_juego(EstadoJuego& estado);
 };
 
 #endif
