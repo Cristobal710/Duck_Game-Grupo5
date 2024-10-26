@@ -18,7 +18,7 @@ void InterfazGrafica::iniciar() {
 
     SDL2pp::Surface sprite_pato_gris(IMG_Load("../resources/Grey-Duck.png"));
     PatoInterfaz pato = PatoInterfaz(renderer, sprite_pato_gris);
-    FondoInterfaz fondo = FondoInterfaz(renderer, "../resources/forest.webp");
+    FondoInterfaz fondo = FondoInterfaz(renderer, "../resources/forest.png");
 
     SDL2pp::Rect rect_inicio = {1, 8, 32, 32};
     SDL2pp::Rect rect_dibujado = {100, 100, 32, 32};  // posición inicial
