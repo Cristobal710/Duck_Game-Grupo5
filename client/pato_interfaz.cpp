@@ -8,10 +8,12 @@
 #define NUM_FRAMES_PATO_ACOSTADO 5
 #define PIXEL_PATO 32
 
-PatoInterfaz::PatoInterfaz(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet) {
-    frames_movimientos(renderer, sprite_sheet);
-    frames_salto(renderer, sprite_sheet);
-    frames_acostarse(renderer, sprite_sheet);
+PatoInterfaz::PatoInterfaz(SDL2pp::Renderer& renderer, const std::string& pato_path) {
+    SDL2pp::Surface sprite_pato(IMG_Load(pato_path.c_str()));
+    
+    frames_movimientos(renderer, sprite_pato);
+    frames_salto(renderer, sprite_pato);
+    frames_acostarse(renderer, sprite_pato);
 }
 
 void PatoInterfaz::pato_camina_derecha(SDL2pp::Renderer& renderer, SDL_Rect& rect_inicio,
@@ -47,6 +49,7 @@ void PatoInterfaz::pato_camina_izquierda(SDL2pp::Renderer& renderer, SDL_Rect& r
 void PatoInterfaz::pato_salta(SDL2pp::Renderer& renderer, SDL_Rect& rect_inicio,
                               SDL2pp::Rect& rect_destino) {
     for (int i = 0; i < NUM_FRAMES_SALTA_PATO; ++i) {
+        renderer.Clear();
         rect_destino.y -= 3;
         rect_destino.x += 0.5;
         renderer.Copy(salto_pato[i], SDL2pp::Optional<SDL2pp::Rect>(rect_inicio),
@@ -56,6 +59,7 @@ void PatoInterfaz::pato_salta(SDL2pp::Renderer& renderer, SDL_Rect& rect_inicio,
     }
 
     for (int i = 3; i < NUM_FRAMES_BAJA_PATO; ++i) {
+        renderer.Clear();
         rect_destino.y += 1;
         rect_destino.x += 0.5;
         renderer.Copy(salto_pato[i], SDL2pp::Optional<SDL2pp::Rect>(rect_inicio),
@@ -72,6 +76,7 @@ void PatoInterfaz::pato_salta(SDL2pp::Renderer& renderer, SDL_Rect& rect_inicio,
 void PatoInterfaz::pato_agachado(SDL2pp::Renderer& renderer, SDL_Rect& rect_inicio,
                                  SDL2pp::Rect& rect_destino) {
     for (int i = 0; i < NUM_FRAMES_PATO_ACOSTADO; ++i) {
+        renderer.Clear();
         renderer.Copy(acostarse_pato[i], SDL2pp::Optional<SDL2pp::Rect>(rect_inicio),
                       SDL2pp::Optional<SDL2pp::Rect>(rect_destino));
         renderer.Present();

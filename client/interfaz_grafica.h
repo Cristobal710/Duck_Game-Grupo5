@@ -17,8 +17,8 @@ private:
     bool correr_programa;
     SDL2pp::Window window;
     SDL2pp::Renderer renderer;
-    // FondoInterfaz fondo;
-    // PatoInterfaz pato;
+    FondoInterfaz fondo;
+    PatoInterfaz pato;
 
     void manejar_eventos(SDL_Rect& rect_inicio, SDL2pp::Rect& rect_dibujado, PatoInterfaz& pato);
 

@@ -19,7 +19,7 @@ private:
                        std::vector<SDL2pp::Texture>& texturas, int num_frames);
 
 public:
-    PatoInterfaz(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet);
+    PatoInterfaz(SDL2pp::Renderer& renderer, const std::string& fondo_path);
 
     void pato_camina_derecha(SDL2pp::Renderer& renderer, SDL_Rect& rect_inicio,
                              SDL2pp::Rect& rect_destino);
