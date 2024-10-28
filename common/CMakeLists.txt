@@ -1,17 +1,22 @@
+
+file(GLOB COMMON_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
+
+# Obtiene todos los archivos .h en el directorio del servidor y el directorio común
+file(GLOB COMMON_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
+
+
+
 target_sources(taller_common
     PRIVATE
-    # .cpp files
-    common_liberror.cpp 
-    common_resolver.cpp
-    common_resolvererror.cpp
-    common_socket.cpp
-
+    ${COMMON_SOURCES}
+    
     PUBLIC
-    # .h files
-    common_liberror.h
-    common_queue.h
-    common_resolver.h
-    common_resolvererror.h
-    common_socket.h
-    common_thread.h
-    )
+    ${COMMON_HEADERS}
+)
+
+
+ target_include_directories(taller_common
+    PRIVATE
+    /common
+ )
+    
