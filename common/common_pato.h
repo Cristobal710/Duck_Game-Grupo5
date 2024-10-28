@@ -4,6 +4,7 @@
 #include <string>
 
 #include "common_arma.h"
+#include "common_constantes.h"
 
 class Pato: public Entidad {
 private:
@@ -14,12 +15,13 @@ private:
     bool casco_equipado;
     bool vivo;
     bool apunta_arriba;
-    int color;  // hacer map con colores
+    uint8_t direccion;
+    //uint8_t color;  // hacer map con colores
 
 public:
-    Pato(uint8_t id, uint8_t pos_x, uint8_t pos_y, const std::string& color);
-    ~Pato();
-
+    Pato(uint8_t id, uint8_t pos_x, uint8_t pos_y, uint8_t direccion);
+    //~Pato();
+    //uint8_t get_color();
     void moverse_izquierda();
     void moverse_derecha();
     void saltar();
@@ -34,9 +36,17 @@ public:
     void tomar_casco();
     void equipar_armadura();
     void equipar_casco();
+    bool casco_en_inventario();
+    bool armadura_en_inventario();
+    bool get_casco_equipado();
+    bool get_armadura_equipada();
     void recibir_danio();
     bool esta_vivo() const;
+    uint8_t get_direccion();
+    Arma* get_arma();
+    bool esta_apuntando_arriba();
     void morir();
+
 };
 
 #endif

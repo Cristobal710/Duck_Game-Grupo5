@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-Pato::Pato(uint8_t id, uint8_t pos_x, uint8_t pos_y, const std::string& color):
+Pato::Pato(uint8_t id, uint8_t pos_x, uint8_t pos_y, uint8_t direccion):
         Entidad(id, pos_x, pos_y),
         arma(nullptr),
         tomo_armadura(false),
@@ -10,25 +10,32 @@ Pato::Pato(uint8_t id, uint8_t pos_x, uint8_t pos_y, const std::string& color):
         armadura_equipada(false),
         casco_equipado(false),
         vivo(true),
-        apunta_arriba(false) {
-    if (color == "rojo") {
-        this->color = 1;
-    } else if (color == "azul") {
-        this->color = 2;
-    } else if (color == "verde") {
-        this->color = 3;
-    } else if (color == "amarillo") {
-        this->color = 4;
-    } else {
-        this->color = 0;
-    }
+        apunta_arriba(false),
+        direccion(direccion) {
+    // if (color == "rojo") {
+    //     this->color = 1;
+    // } else if (color == "azul") {
+    //     this->color = 2;
+    // } else if (color == "verde") {
+    //     this->color = 3;
+    // } else if (color == "amarillo") {
+    //     this->color = 4;
+    // } else {
+    //     this->color = 0;
+    // }
 }
 
-Pato::~Pato() { delete arma; }
+//Pato::~Pato() { delete arma; }
 
-void Pato::moverse_izquierda() { pos_x--; }
+void Pato::moverse_izquierda() { 
+    pos_x--; 
+    direccion = DIRECCION_IZQUIERDA;
+}
 
-void Pato::moverse_derecha() { pos_x++; }
+void Pato::moverse_derecha() { 
+    pos_x++; 
+    direccion = DIRECCION_DERECHA;
+}
 
 void Pato::saltar() { pos_y++; }
 
@@ -50,6 +57,8 @@ void Pato::apuntar_arriba() { apunta_arriba = true; }
 
 void Pato::dejar_de_apuntar_arriba() { apunta_arriba = false; }
 
+bool Pato::esta_apuntando_arriba() { return apunta_arriba; }
+
 void Pato::tirarse_al_piso() {
     // esto deberia avisar al server y de alguna manera haga la animacion
 }
@@ -61,31 +70,45 @@ void Pato::tomar_casco() { tomo_casco = true; }
 void Pato::equipar_armadura() {
     if (tomo_armadura) {
         armadura_equipada = true;
+        tomo_armadura = false;
     }
 }
 
 void Pato::equipar_casco() {
     if (tomo_casco) {
         casco_equipado = true;
+        tomo_casco = false;
     }
 }
+
+bool Pato::get_casco_equipado() { return casco_equipado; }
+
+bool Pato::get_armadura_equipada() { return armadura_equipada; }
 
 void Pato::recibir_danio() {
     // En caso de que el pato solo aguante una bala, entonces hay que hacer que el pato muera
     // sino tiene armadura o casco
-    if (armadura_equipada) {
-        armadura_equipada = false;
-        tomo_armadura = false;
-        return;
-    }
     if (casco_equipado) {
         casco_equipado = false;
-        tomo_casco = false;
+        return;
+    }
+    if (armadura_equipada) {
+        armadura_equipada = false;
         return;
     }
     morir();
 }
 
+uint8_t Pato::get_direccion() { return direccion; }
+
+Arma* Pato::get_arma() { return arma; }
+
 bool Pato::esta_vivo() const { return vivo; }
 
 void Pato::morir() { vivo = false; }
+
+bool Pato::armadura_en_inventario() { return armadura_equipada; }
+
+bool Pato::casco_en_inventario() { return tomo_casco; }
+
+//int Pato::get_color() { return color; }
