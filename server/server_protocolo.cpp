@@ -1,5 +1,4 @@
 #include "server_protocolo.h"
-
 #define EXITO 0
 #define ERROR 1
 
@@ -14,58 +13,98 @@ EventoServer ServerProtocolo::recibir_evento() {
 }
 
 void ServerProtocolo::enviar_estado_juego(EstadoJuego& estado) {
-    std::cout << estado.estado.size() << std::endl;
-    // enviar_byte(estado.jugadores.size());
-    // // tambien enviar
-    // for (auto& jugador : estado.jugadores) {
-    //     enviar_byte(jugador.id);
-    //     enviar_byte(jugador.pos_x);
-    //     enviar_byte(jugador.pos_y);
-    //     enviar_byte(jugador.apunta_arriba);
-    //     enviar_byte(jugador.esta_vivo);
-    //     enviar_byte(jugador.arma->id);
-    //     enviar_byte(jugador.arma->balas);
-    //     enviar_byte(jugador.arma->id);
-    //     enviar_byte(jugador.arma->balas);
-    //     enviar_byte(jugador.arma->id);
-    //     enviar_byte(jugador.arma->balas);
-    //     enviar_byte(jugador.arma->id);
-    //     enviar_byte(jugador.arma->balas);
-    //     enviar_byte(jugador.arma->id);
-    //     enviar_byte(jugador.arma->balas);
-    //     enviar_byte(jugador.arma->id);
-    //     enviar_byte(jugador.arma->balas);
-    //     enviar_byte(jugador.arma->id);
-    //     enviar_byte(jugador.arma->balas);
-    //     enviar_byte(jugador.arma->id);
-    //     enviar_byte(jugador.arma->balas);
-    //     enviar_byte(jugador.arma->id);
-    //     enviar_byte(jugador.arma->balas);
-    //     enviar_byte(jugador.arma->id);
-    //     enviar_byte(jugador.arma->balas);
-    // }
-    // enviar_byte(estado.cajas.size());
-    // for (auto& caja : estado.cajas) {
-    //     enviar_byte(caja.id);
-    //     enviar_byte(caja.pos_x);
-    //     enviar_byte(caja.pos_y);
-    // }
-    // enviar_byte(estado.recompensas.size());
-    // for (auto& recompensa : estado.recompensas) {
-    //     enviar_byte(recompensa.id);
-    //     enviar_byte(recompensa.pos_x);
-    //     enviar_byte(recompensa.pos_y);
-    //     enviar_byte(recompensa.tipo);
-    // }
-    // enviar_byte(estado.balas.size());
-    // for (auto& bala : estado.balas) {
-    //     enviar_byte(bala.id);
-    //     enviar_byte(bala.pos_x);
-    //     enviar_byte(bala.pos_y);
-    //     enviar_byte(bala.direccion);
-    // }
-    // enviar_byte(estado.explosiones.size());
-    // for (auto& explosion : estado.explosiones) {
-    //     enviar_byte(explosion.id);
-    // }
+    enviar_byte(estado.patos.size());
+    enviar_patos(estado.patos);
+    enviar_byte(estado.cajas.size());
+    enviar_cajas(estado.cajas);
+    enviar_byte(estado.armas.size());
+    enviar_armas(estado.armas);
+    enviar_byte(estado.balas.size());
+    enviar_balas(estado.balas);
+    enviar_byte(estado.granadas.size());
+    enviar_granadas(estado.granadas);
+}
+
+void ServerProtocolo::enviar_pato(Pato& pato){
+    enviar_byte(pato.get_id());
+    enviar_byte(pato.get_pos_x());
+    enviar_byte(pato.get_pos_y());
+    enviar_byte(pato.get_direccion());
+    enviar_byte(pato.esta_apuntando_arriba());
+    enviar_byte(pato.esta_vivo());
+    enviar_byte(pato.casco_en_inventario());
+    enviar_byte(pato.armadura_en_inventario());
+    enviar_byte(pato.get_casco_equipado());
+    enviar_byte(pato.get_armadura_equipada());
+    enviar_byte((pato.get_arma())->get_id());
+    enviar_byte((pato.get_arma())->get_municion_disponible());
+}
+
+void ServerProtocolo::enviar_caja(Caja& caja){
+    enviar_byte(caja.get_id());
+    enviar_byte(caja.get_pos_x());
+    enviar_byte(caja.get_pos_y());
+    enviar_byte(caja.get_recompensa());
+}
+
+void ServerProtocolo::enviar_arma(Arma& arma){
+    enviar_byte(arma.get_id());
+    enviar_byte(arma.get_pos_x());
+    enviar_byte(arma.get_pos_y());
+    enviar_byte(arma.get_alcance());
+    enviar_byte(arma.get_municion_disponible());
+    enviar_byte(arma.get_balas_max());
+}
+
+void ServerProtocolo::enviar_bala(Bala& bala){
+    enviar_byte(bala.get_id());
+    enviar_byte(bala.get_pos_x());
+    enviar_byte(bala.get_pos_y());
+    enviar_byte(bala.get_pos_x_final());
+    enviar_byte(bala.get_pos_y_final());
+    enviar_byte(bala.get_direccion());
+}
+
+void ServerProtocolo::enviar_granada(Granada& granada){
+    enviar_byte(granada.get_id());
+    enviar_byte(granada.get_pos_x());
+    enviar_byte(granada.get_pos_y());
+    enviar_byte(granada.get_rango());
+    enviar_byte(granada.esta_activa());
+    enviar_byte(granada.get_exploto());
+}
+
+void ServerProtocolo::enviar_patos(std::list<Pato>& patos){
+    enviar_byte(patos.size());
+    for (auto& pato : patos) {
+        enviar_pato(pato);
+    }
+}
+
+void ServerProtocolo::enviar_cajas(std::list<Caja>& cajas){
+    enviar_byte(cajas.size());
+    for (auto& caja : cajas) {
+        enviar_caja(caja);
+    }
+}
+
+void ServerProtocolo::enviar_armas(std::list<Arma>& armas){
+    enviar_byte(armas.size());
+    for (auto& arma : armas) {
+        enviar_arma(arma);
+    }
+}
+
+void ServerProtocolo::enviar_balas(std::list<Bala>& balas){
+    enviar_byte(balas.size());
+    for (auto& bala : balas) {
+        enviar_bala(bala);
+    }
+}
+
+void ServerProtocolo::enviar_granadas(std::list<Granada>& granadas){
+    enviar_byte(granadas.size());
+    for (auto& granada : granadas) {
+        enviar_granada(granada);
+    }
 }
