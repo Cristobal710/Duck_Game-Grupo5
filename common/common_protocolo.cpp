@@ -5,7 +5,6 @@
 Protocolo::Protocolo(Socket& socket): socket(socket), acciones() {
     acciones["d"] = MOVER_DERECHA;
     acciones["a"] = MOVER_IZQUIERDA;
-    acciones["s"] = MOVER_ABAJO;
     acciones["w"] = APUNTAR_ARRIBA;
     acciones[" "] = SALTAR_ALETEAR;
     acciones["click_izq"] = DISPARAR;

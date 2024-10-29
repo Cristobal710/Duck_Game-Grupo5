@@ -25,7 +25,7 @@ void ServerProtocolo::enviar_estado_juego(EstadoJuego& estado) {
     enviar_granadas(estado.granadas);
 }
 
-void ServerProtocolo::enviar_pato(Pato& pato){
+void ServerProtocolo::enviar_pato(Pato& pato) {
     enviar_byte(pato.get_id());
     enviar_byte(pato.get_pos_x());
     enviar_byte(pato.get_pos_y());
@@ -40,14 +40,14 @@ void ServerProtocolo::enviar_pato(Pato& pato){
     enviar_byte((pato.get_arma())->get_municion_disponible());
 }
 
-void ServerProtocolo::enviar_caja(Caja& caja){
+void ServerProtocolo::enviar_caja(Caja& caja) {
     enviar_byte(caja.get_id());
     enviar_byte(caja.get_pos_x());
     enviar_byte(caja.get_pos_y());
     enviar_byte(caja.get_recompensa());
 }
 
-void ServerProtocolo::enviar_arma(Arma& arma){
+void ServerProtocolo::enviar_arma(Arma& arma) {
     enviar_byte(arma.get_id());
     enviar_byte(arma.get_pos_x());
     enviar_byte(arma.get_pos_y());
@@ -56,7 +56,7 @@ void ServerProtocolo::enviar_arma(Arma& arma){
     enviar_byte(arma.get_balas_max());
 }
 
-void ServerProtocolo::enviar_bala(Bala& bala){
+void ServerProtocolo::enviar_bala(Bala& bala) {
     enviar_byte(bala.get_id());
     enviar_byte(bala.get_pos_x());
     enviar_byte(bala.get_pos_y());
@@ -65,7 +65,7 @@ void ServerProtocolo::enviar_bala(Bala& bala){
     enviar_byte(bala.get_direccion());
 }
 
-void ServerProtocolo::enviar_granada(Granada& granada){
+void ServerProtocolo::enviar_granada(Granada& granada) {
     enviar_byte(granada.get_id());
     enviar_byte(granada.get_pos_x());
     enviar_byte(granada.get_pos_y());
@@ -74,37 +74,37 @@ void ServerProtocolo::enviar_granada(Granada& granada){
     enviar_byte(granada.get_exploto());
 }
 
-void ServerProtocolo::enviar_patos(std::list<Pato>& patos){
+void ServerProtocolo::enviar_patos(std::list<Pato>& patos) {
     enviar_byte(patos.size());
-    for (auto& pato : patos) {
+    for (auto& pato: patos) {
         enviar_pato(pato);
     }
 }
 
-void ServerProtocolo::enviar_cajas(std::list<Caja>& cajas){
+void ServerProtocolo::enviar_cajas(std::list<Caja>& cajas) {
     enviar_byte(cajas.size());
-    for (auto& caja : cajas) {
+    for (auto& caja: cajas) {
         enviar_caja(caja);
     }
 }
 
-void ServerProtocolo::enviar_armas(std::list<Arma>& armas){
+void ServerProtocolo::enviar_armas(std::list<Arma>& armas) {
     enviar_byte(armas.size());
-    for (auto& arma : armas) {
+    for (auto& arma: armas) {
         enviar_arma(arma);
     }
 }
 
-void ServerProtocolo::enviar_balas(std::list<Bala>& balas){
+void ServerProtocolo::enviar_balas(std::list<Bala>& balas) {
     enviar_byte(balas.size());
-    for (auto& bala : balas) {
+    for (auto& bala: balas) {
         enviar_bala(bala);
     }
 }
 
-void ServerProtocolo::enviar_granadas(std::list<Granada>& granadas){
+void ServerProtocolo::enviar_granadas(std::list<Granada>& granadas) {
     enviar_byte(granadas.size());
-    for (auto& granada : granadas) {
+    for (auto& granada: granadas) {
         enviar_granada(granada);
     }
 }

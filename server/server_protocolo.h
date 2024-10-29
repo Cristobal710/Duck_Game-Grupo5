@@ -3,20 +3,19 @@
 
 #include <cstdint>
 #include <iostream>
-#include <string>
 #include <list>
+#include <string>
 
-#include "../common/common_protocolo.h"
-#include "../common/common_queue.h"
-#include "../common/common_socket.h"
-
-#include "../common/common_pato.h"
 #include "../common/common_arma.h"
 #include "../common/common_bala.h"
 #include "../common/common_caja.h"
 #include "../common/common_entidad.h"
 #include "../common/common_estado_juego.h"
 #include "../common/common_granada.h"
+#include "../common/common_pato.h"
+#include "../common/common_protocolo.h"
+#include "../common/common_queue.h"
+#include "../common/common_socket.h"
 
 #include "server_evento.h"
 
@@ -46,7 +45,6 @@ public:
     explicit ServerProtocolo(Socket& socket);
     EventoServer recibir_evento();
     void enviar_estado_juego(EstadoJuego& estado);
-
 };
 
 #endif
