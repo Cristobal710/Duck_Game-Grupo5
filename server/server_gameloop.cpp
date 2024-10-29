@@ -1,5 +1,7 @@
 #include "server_gameloop.h"
 
+#include "../common/common_constantes.h"
+
 #define CAJA_NUEVA "A new box has appeared"
 
 #define BAZOOKA_NUEVA 15
@@ -12,95 +14,73 @@
 #define DEATH_RAY "Death ray"
 #define SHOTGUN "Shotgun"
 
-GameLoop::GameLoop(Queue<std::string>& cola_pedidos, bool* conexion):
-        mapa(), clientes(mapa), cola_pedidos(cola_pedidos), esta_cerrado(conexion) {}
+GameLoop::GameLoop(Queue<EventoServer>& cola_eventos, Queue<EstadoJuego>& cola_estados_juego,
+                   bool* conexion):
+        cola_eventos(cola_eventos),
+        cola_estados_juego(cola_estados_juego),
+        esta_cerrado(conexion) {}
 
-void GameLoop::sleep_a_little() {
-    auto milliseconds_to_sleep = std::chrono::milliseconds(200);
-    std::this_thread::sleep_for(milliseconds_to_sleep);
-}
-void GameLoop::cerrar_gameloop() {
-    cola_pedidos.close();
-    clientes.cerrar_gameloop();
-    _is_alive = false;
-}
 
-void GameLoop::eliminar_clientes_cerrados() { clientes.eliminar_clientes_cerrados(); }
+// void GameLoop::cerrar_gameloop() {
+//     cola_eventos.close();
+//     clientes.cerrar_gameloop();
+//     _is_alive = false;
+// }
 
-void GameLoop::agregar_cliente(ServerClient& cliente, Queue<std::string>& cola_cliente) {
-    clientes.agregar_cliente(cliente, cola_cliente);
-}
+// void GameLoop::eliminar_clientes_cerrados() {
+//     clientes.eliminar_clientes_cerrados();
+// }
 
-void GameLoop::sumar_iteracion(bool caja_disponible, int& contador_caja) {
-    if (!caja_disponible) {
-        contador_caja++;
-    }
-}
+// void GameLoop::agregar_cliente(ServerClient& cliente, Queue<std::string>& cola_cliente) {
+//     clientes.agregar_cliente(cliente, cola_cliente);
+// }
 
-void GameLoop::agregar_caja_nueva(int& contador, int caja_nueva, bool& caja_disponible) {
-    if (contador >= caja_nueva) {
-        clientes.enviar_mensajes_clientes(CAJA_NUEVA);
-        std::cout << CAJA_NUEVA << std::endl;
-        contador = 0;
-        caja_disponible = true;
-    }
-}
-
-void GameLoop::manejo_mensaje(std::string mensaje, bool& bazooka_disponible) {
-    bazooka_disponible = false;
-    clientes.enviar_mensajes_clientes(mensaje);
-    std::cout << mensaje << std::endl;
-}
-
-void GameLoop::elegir_caja(std::string mensaje, bool& bazooka_disponible, bool& chainsaw_disponible,
-                           bool& death_ray_disponible, bool& shotgun_disponible) {
-    if (!mensaje.empty()) {
-        if ((mensaje.find(BAZOOKA) != std::string::npos) && bazooka_disponible) {
-            manejo_mensaje(mensaje, bazooka_disponible);
-        } else if ((mensaje.find(CHAINSAW) != std::string::npos) && chainsaw_disponible) {
-            manejo_mensaje(mensaje, chainsaw_disponible);
-        } else if ((mensaje.find(DEATH_RAY) != std::string::npos) && death_ray_disponible) {
-            manejo_mensaje(mensaje, death_ray_disponible);
-        } else if ((mensaje.find(SHOTGUN) != std::string::npos) && shotgun_disponible) {
-            manejo_mensaje(mensaje, shotgun_disponible);
+void GameLoop::procesar_evento(EventoServer& evento, EstadoJuego& estado_juego) {
+    for (Pato& pato: estado_juego.patos) {
+        if (pato.get_id() == evento.jugador_id) {
+            ejecutar_accion(evento.accion, pato);
         }
+    }
+}
+
+void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
+    switch (accion) {
+        case MOVER_IZQUIERDA:
+            pato.moverse_izquierda();
+            break;
+        case MOVER_DERECHA:
+            pato.moverse_derecha();
+            break;
+        case TIRAR_PISO:
+            pato.tirarse_al_piso();
+            break;
+        case APUNTAR_ARRIBA:
+            pato.apuntar_arriba();
+            break;
+        case SALTAR_ALETEAR:
+            pato.saltar();
+            break;
+        case TOMAR_ARMA:
+            // llamar a un metodo que recorra el array de armas y devuelva la cercana al pato
+            // pato.tomar_arma();
+            break;
     }
 }
 
 void GameLoop::run() {
 
-    int contador_bazooka = 0;
-    int contador_chainsaw = 0;
-    int contador_death_ray = 0;
-    int contador_shotgun = 0;
-
-    bool bazooka_disponible = true;
-    bool chainsaw_disponible = true;
-    bool death_ray_disponible = true;
-    bool shotgun_disponible = true;
 
     while (!(*esta_cerrado)) {
-        eliminar_clientes_cerrados();
+        // eliminar_clientes_cerrados();
 
-        sumar_iteracion(bazooka_disponible, contador_bazooka);
-        sumar_iteracion(chainsaw_disponible, contador_chainsaw);
-        sumar_iteracion(death_ray_disponible, contador_death_ray);
-        sumar_iteracion(shotgun_disponible, contador_shotgun);
-
-        std::string mensaje;
-        while (cola_pedidos.try_pop(mensaje)) {
-            elegir_caja(mensaje, bazooka_disponible, chainsaw_disponible, death_ray_disponible,
-                        shotgun_disponible);
-            mensaje.clear();
+        EventoServer evento;
+        while (cola_eventos.try_pop(evento)) {
+            procesar_evento(evento, ultimo_estado);
+            cola_estados_juego.push(ultimo_estado);
         }
 
-        agregar_caja_nueva(contador_bazooka, BAZOOKA_NUEVA, bazooka_disponible);
-        agregar_caja_nueva(contador_chainsaw, CHAINSAW_NUEVA, chainsaw_disponible);
-        agregar_caja_nueva(contador_death_ray, DEATH_RAY_NUEVA, death_ray_disponible);
-        agregar_caja_nueva(contador_shotgun, SHOTGUN_NUEVA, shotgun_disponible);
-
-        sleep_a_little();
+        // sleep_a_little();
     }
 
-    cerrar_gameloop();
+    // cerrar_gameloop();
 }
