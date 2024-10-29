@@ -22,6 +22,7 @@ void ClienteProtocolo::recibir_pato(std::list<Pato>& patos) {
     uint8_t pos_y = recibir_byte(cerrado);
     uint8_t direccion = recibir_byte(cerrado);
     uint8_t apunta_arriba = recibir_byte(cerrado);
+    uint8_t tirado_al_piso = recibir_byte(cerrado);
     uint8_t esta_vivo = recibir_byte(cerrado);
     uint8_t casco_inventario = recibir_byte(cerrado);
     uint8_t armadura_inventario = recibir_byte(cerrado);
@@ -33,6 +34,9 @@ void ClienteProtocolo::recibir_pato(std::list<Pato>& patos) {
     Pato pato(id, pos_x, pos_y, direccion);
     if (static_cast<bool>(apunta_arriba)) {
         pato.apuntar_arriba();
+    }
+    if (static_cast<bool>(tirado_al_piso)) {
+        pato.tirarse_al_piso();
     }
     if (static_cast<bool>(casco_inventario)) {
         pato.tomar_casco();

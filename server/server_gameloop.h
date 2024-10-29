@@ -22,7 +22,6 @@ private:
     bool* esta_cerrado;
     EstadoJuego ultimo_estado;
 
-    // void agregar_cliente(ServerClient& cliente, Queue<std::string>& cola_cliente);
     // void eliminar_clientes_cerrados();
     // void cerrar_gameloop();
     void ejecutar_accion(uint8_t accion, Pato& pato);

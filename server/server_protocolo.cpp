@@ -31,6 +31,7 @@ void ServerProtocolo::enviar_pato(Pato& pato) {
     enviar_byte(pato.get_pos_y());
     enviar_byte(pato.get_direccion());
     enviar_byte(pato.esta_apuntando_arriba());
+    enviar_byte(pato.esta_tirado_al_piso());
     enviar_byte(pato.esta_vivo());
     enviar_byte(pato.casco_en_inventario());
     enviar_byte(pato.armadura_en_inventario());

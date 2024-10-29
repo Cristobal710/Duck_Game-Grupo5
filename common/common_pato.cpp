@@ -11,6 +11,7 @@ Pato::Pato(uint8_t id, uint8_t pos_x, uint8_t pos_y, uint8_t direccion):
         casco_equipado(false),
         vivo(true),
         apunta_arriba(false),
+        tirado_al_piso(false),
         direccion(direccion) {
     // if (color == "rojo") {
     //     this->color = 1;
@@ -60,8 +61,10 @@ void Pato::dejar_de_apuntar_arriba() { apunta_arriba = false; }
 bool Pato::esta_apuntando_arriba() { return apunta_arriba; }
 
 void Pato::tirarse_al_piso() {
-    // esto deberia avisar al server y de alguna manera haga la animacion
+    tirado_al_piso = true;
 }
+
+bool Pato::esta_tirado_al_piso() { return tirado_al_piso; }
 
 void Pato::tomar_armadura() { tomo_armadura = true; }
 

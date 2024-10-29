@@ -15,6 +15,7 @@ private:
     bool casco_equipado;
     bool vivo;
     bool apunta_arriba;
+    bool tirado_al_piso;
     uint8_t direccion;
     // uint8_t color;  // hacer map con colores
 
@@ -45,6 +46,7 @@ public:
     uint8_t get_direccion();
     Arma* get_arma();
     bool esta_apuntando_arriba();
+    bool esta_tirado_al_piso();
     void morir();
 };
 

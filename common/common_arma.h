@@ -7,7 +7,6 @@
 
 class Arma: public Entidad {
 protected:
-    // std::string nombre;
     uint8_t municion_disponible;
     uint8_t balas_max;
     uint8_t alcance;
