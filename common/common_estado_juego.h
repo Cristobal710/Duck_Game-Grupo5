@@ -3,11 +3,12 @@
 
 #include <cstdint>
 #include <list>
-#include "common_pato.h"
-#include "common_caja.h"
+
 #include "common_arma.h"
 #include "common_bala.h"
+#include "common_caja.h"
 #include "common_granada.h"
+#include "common_pato.h"
 
 
 struct EstadoJuego {

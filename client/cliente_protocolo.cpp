@@ -15,7 +15,7 @@ void ClienteProtocolo::enviar_comando(ComandoGrafica comando) {
     enviar_byte(comando.jugador_id);
 }
 
-void ClienteProtocolo::recibir_pato(std::list<Pato>& patos){
+void ClienteProtocolo::recibir_pato(std::list<Pato>& patos) {
     bool cerrado;
     uint8_t id = recibir_byte(cerrado);
     uint8_t pos_x = recibir_byte(cerrado);
@@ -29,49 +29,49 @@ void ClienteProtocolo::recibir_pato(std::list<Pato>& patos){
     uint8_t armadura_equipada = recibir_byte(cerrado);
     uint8_t arma_id = recibir_byte(cerrado);
     uint8_t municion_disponible = recibir_byte(cerrado);
-    
+
     Pato pato(id, pos_x, pos_y, direccion);
-    if(static_cast<bool> (apunta_arriba)){
+    if (static_cast<bool>(apunta_arriba)) {
         pato.apuntar_arriba();
     }
-    if(static_cast<bool> (casco_inventario)){
+    if (static_cast<bool>(casco_inventario)) {
         pato.tomar_casco();
     }
-    if(static_cast<bool>(armadura_inventario)){
+    if (static_cast<bool>(armadura_inventario)) {
         pato.tomar_armadura();
     }
-    if(static_cast<bool>(casco_equipado)){
+    if (static_cast<bool>(casco_equipado)) {
         pato.equipar_casco();
     }
-    if (static_cast<bool> (armadura_equipada)){
+    if (static_cast<bool>(armadura_equipada)) {
         pato.equipar_armadura();
     }
-    if (!(static_cast<bool> (esta_vivo))){
+    if (!(static_cast<bool>(esta_vivo))) {
         pato.morir();
     }
-    
+
     Arma arma(arma_id, pos_x, pos_y, municion_disponible, 30, 10);
-    
+
     pato.tomar_arma(&arma);
     patos.push_back(pato);
 }
 
-std::list<Pato> ClienteProtocolo::recibir_patos(){
+std::list<Pato> ClienteProtocolo::recibir_patos() {
     std::list<Pato> patos;
     std::vector<uint8_t> cantidad_patos(2);
     bool cerrado;
     socket.recvall(cantidad_patos.data(), cantidad_patos.size(), &cerrado);
     int cantidad = static_cast<int>(cantidad_patos[1]);
 
-    for(int i = 0; i<cantidad; i++){
+    for (int i = 0; i < cantidad; i++) {
         recibir_pato(patos);
     }
     return patos;
 }
 
 
-void ClienteProtocolo::recibir_caja(std::list<Caja>& cajas){
-    bool cerrado; 
+void ClienteProtocolo::recibir_caja(std::list<Caja>& cajas) {
+    bool cerrado;
     uint8_t id = recibir_byte(cerrado);
     uint8_t pos_x = recibir_byte(cerrado);
     uint8_t pos_y = recibir_byte(cerrado);
@@ -81,20 +81,20 @@ void ClienteProtocolo::recibir_caja(std::list<Caja>& cajas){
 }
 
 
-std::list<Caja> ClienteProtocolo::recibir_cajas(){
+std::list<Caja> ClienteProtocolo::recibir_cajas() {
     std::list<Caja> cajas;
     std::vector<uint8_t> cantidad_patos(2);
     bool cerrado;
     socket.recvall(cantidad_patos.data(), cantidad_patos.size(), &cerrado);
     int cantidad = static_cast<int>(cantidad_patos[1]);
 
-    for(int i = 0; i<cantidad; i++){
+    for (int i = 0; i < cantidad; i++) {
         recibir_caja(cajas);
     }
     return cajas;
 }
 
-void ClienteProtocolo::recibir_arma(std::list<Arma>& armas){
+void ClienteProtocolo::recibir_arma(std::list<Arma>& armas) {
     bool cerrado;
     uint8_t id = recibir_byte(cerrado);
     uint8_t pos_x = recibir_byte(cerrado);
@@ -106,21 +106,21 @@ void ClienteProtocolo::recibir_arma(std::list<Arma>& armas){
     armas.push_back(arma);
 }
 
-std::list<Arma> ClienteProtocolo::recibir_armas(){
+std::list<Arma> ClienteProtocolo::recibir_armas() {
     std::list<Arma> armas;
     std::vector<uint8_t> cantidad_armas(2);
     bool cerrado;
     socket.recvall(cantidad_armas.data(), cantidad_armas.size(), &cerrado);
     int cantidad = static_cast<int>(cantidad_armas[1]);
 
-    for(int i = 0; i<cantidad; i++){
+    for (int i = 0; i < cantidad; i++) {
         recibir_arma(armas);
     }
     return armas;
 }
 
 
-void ClienteProtocolo::recibir_bala(std::list<Bala>& balas){
+void ClienteProtocolo::recibir_bala(std::list<Bala>& balas) {
     bool cerrado;
     uint8_t id = recibir_byte(cerrado);
     uint8_t pos_x = recibir_byte(cerrado);
@@ -133,20 +133,20 @@ void ClienteProtocolo::recibir_bala(std::list<Bala>& balas){
     balas.push_back(bala);
 }
 
-std::list<Bala> ClienteProtocolo::recibir_balas(){
+std::list<Bala> ClienteProtocolo::recibir_balas() {
     std::list<Bala> balas;
     std::vector<uint8_t> cantidad_balas(2);
     bool cerrado;
     socket.recvall(cantidad_balas.data(), cantidad_balas.size(), &cerrado);
     int cantidad = static_cast<int>(cantidad_balas[1]);
 
-    for(int i = 0; i<cantidad; i++){
+    for (int i = 0; i < cantidad; i++) {
         recibir_bala(balas);
     }
     return balas;
 }
 
-void ClienteProtocolo::recibir_granada(std::list<Granada>& granadas){
+void ClienteProtocolo::recibir_granada(std::list<Granada>& granadas) {
     bool cerrado;
     uint8_t id = recibir_byte(cerrado);
     uint8_t pos_x = recibir_byte(cerrado);
@@ -156,23 +156,23 @@ void ClienteProtocolo::recibir_granada(std::list<Granada>& granadas){
     uint8_t exploto = recibir_byte(cerrado);
 
     Granada granada(id, pos_x, pos_y, rango);
-    if(static_cast<bool> (activa)){
+    if (static_cast<bool>(activa)) {
         granada.activar();
     }
-    if(static_cast<bool> (exploto)){
+    if (static_cast<bool>(exploto)) {
         granada.explotar();
     }
     granadas.push_back(granada);
 }
 
-std::list<Granada> ClienteProtocolo::recibir_granadas(){
+std::list<Granada> ClienteProtocolo::recibir_granadas() {
     std::list<Granada> granadas;
     std::vector<uint8_t> cantidad_granadas(2);
     bool cerrado;
     socket.recvall(cantidad_granadas.data(), cantidad_granadas.size(), &cerrado);
     int cantidad = static_cast<int>(cantidad_granadas[1]);
 
-    for(int i = 0; i<cantidad; i++){
+    for (int i = 0; i < cantidad; i++) {
         recibir_granada(granadas);
     }
     return granadas;
@@ -187,5 +187,9 @@ EstadoJuego ClienteProtocolo::recibir_estado_juego() {
     return estado_juego;
 }
 
-// en que direccion apuntan los patos cuando se mira para arriba. cuando uno se mueve se cambia la direccion
-// quien se encarga de hacer que transcurra el tiempo en el juego? la interfaz o el gameloop?
+// -se puede tener una banana y un arma a la vez? como funciona el inventario?
+// -como funciona el salto? porque un salto de 3 casillas no se puede ejecutar en una unica
+// iteracion ya que el cliente va a ver un teletransporte en lugar de un salto. Lo mismo la caida.
+// Cuantas iteraciones se necesitan para que un pato caiga 3 casillas por ejemplo? En cuanto a la
+// fisica -las fisicas del juego como funcionan? se calculan con alguna funcion de la gravedad o
+// algo asi?

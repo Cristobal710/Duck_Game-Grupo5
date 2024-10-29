@@ -1,7 +1,7 @@
 #include "common_arma.h"
 
-Arma::Arma(uint8_t id, uint8_t pos_x, uint8_t pos_y, 
-           uint8_t municion_disponible, uint8_t balas_max, uint8_t alcance):
+Arma::Arma(uint8_t id, uint8_t pos_x, uint8_t pos_y, uint8_t municion_disponible, uint8_t balas_max,
+           uint8_t alcance):
         Entidad(id, pos_x, pos_y),
         municion_disponible(municion_disponible),
         balas_max(balas_max),
@@ -11,7 +11,7 @@ void Arma::disparar() { municion_disponible--; }
 
 void Arma::recargar() { municion_disponible = balas_max; }
 
-//std::string Arma::get_nombre() { return nombre; }
+// std::string Arma::get_nombre() { return nombre; }
 
 uint8_t Arma::get_municion_disponible() { return municion_disponible; }
 

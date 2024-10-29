@@ -7,14 +7,14 @@
 
 class Arma: public Entidad {
 protected:
-    //std::string nombre;
+    // std::string nombre;
     uint8_t municion_disponible;
     uint8_t balas_max;
     uint8_t alcance;
 
 public:
-    Arma(uint8_t id, uint8_t pos_x, uint8_t pos_y, uint8_t municion_disponible,
-         uint8_t balas_max, uint8_t alcance);
+    Arma(uint8_t id, uint8_t pos_x, uint8_t pos_y, uint8_t municion_disponible, uint8_t balas_max,
+         uint8_t alcance);
     void disparar();
     void recargar();
     std::string get_nombre();

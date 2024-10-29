@@ -25,15 +25,15 @@ Pato::Pato(uint8_t id, uint8_t pos_x, uint8_t pos_y, uint8_t direccion):
     // }
 }
 
-//Pato::~Pato() { delete arma; }
+// Pato::~Pato() { delete arma; }
 
-void Pato::moverse_izquierda() { 
-    pos_x--; 
+void Pato::moverse_izquierda() {
+    pos_x--;
     direccion = DIRECCION_IZQUIERDA;
 }
 
-void Pato::moverse_derecha() { 
-    pos_x++; 
+void Pato::moverse_derecha() {
+    pos_x++;
     direccion = DIRECCION_DERECHA;
 }
 
@@ -111,4 +111,4 @@ bool Pato::armadura_en_inventario() { return armadura_equipada; }
 
 bool Pato::casco_en_inventario() { return tomo_casco; }
 
-//int Pato::get_color() { return color; }
+// int Pato::get_color() { return color; }

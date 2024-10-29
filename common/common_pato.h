@@ -16,12 +16,12 @@ private:
     bool vivo;
     bool apunta_arriba;
     uint8_t direccion;
-    //uint8_t color;  // hacer map con colores
+    // uint8_t color;  // hacer map con colores
 
 public:
     Pato(uint8_t id, uint8_t pos_x, uint8_t pos_y, uint8_t direccion);
     //~Pato();
-    //uint8_t get_color();
+    // uint8_t get_color();
     void moverse_izquierda();
     void moverse_derecha();
     void saltar();
@@ -46,7 +46,6 @@ public:
     Arma* get_arma();
     bool esta_apuntando_arriba();
     void morir();
-
 };
 
 #endif
