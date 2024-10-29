@@ -15,7 +15,7 @@ set(CMAKE_CXX_EXTENSIONS ON)
 
 project(taller_tp
     VERSION 1.0
-    HOMEPAGE_URL "https://github.com/Cristobal-RA/Duck_Game-Grupo5"
+    HOMEPAGE_URL "https://github.com/Cristobal710/Duck_Game-Grupo5"
     LANGUAGES CXX
     )
 
@@ -68,7 +68,9 @@ if(TALLER_CLIENT OR TALLER_EDITOR)
         libSDL2_image
         URL https://github.com/libsdl-org/SDL_image/archive/refs/tags/release-2.8.2.zip
     )
+
     FetchContent_MakeAvailable(libSDL2_image)
+
 endif()
 
 # Program section
