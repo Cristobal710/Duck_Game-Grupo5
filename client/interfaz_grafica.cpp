@@ -8,7 +8,7 @@ InterfazGrafica::InterfazGrafica():
         window(SDL2pp::Window("SDL2 Image Demo", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                               1280, 720, SDL_WINDOW_RESIZABLE)),
         renderer(window, -1, SDL_RENDERER_ACCELERATED), 
-        fondo(renderer, "../resources/forest.png"),
+        fondo(renderer, "../resources/backgrounds/forest.png"),
         pato(renderer, "../resources/Grey-Duck.png")
 
 {}
