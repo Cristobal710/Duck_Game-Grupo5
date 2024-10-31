@@ -72,14 +72,18 @@ void GameLoop::run() {
 
 
     while (!(*esta_cerrado)) {
-        // eliminar_clientes_cerrados();
+        //eliminar_clientes_cerrados();
 
-        EventoServer evento;
-        while (cola_estados_juego.try_pop(evento)) {
-            procesar_evento(evento, ultimo_estado);
-            cola_estados_juego.push(ultimo_estado);
+        EstadoJuego evento;
+     
+        while (true) {
+            std::vector<EventoServer> eventos = clientes.recibir_mensajes_clientes();
+            for(EventoServer evento : eventos){
+                procesar_evento(evento, ultimo_estado);
+                cola_estados_juego.push(ultimo_estado);
+            }
         }
     }
 
-    // cerrar_gameloop();
+    //cerrar_gameloop();
 }

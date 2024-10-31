@@ -1,10 +1,10 @@
 #include "server_client.h"
 
-ServerClient::ServerClient(Socket skt, Queue<std::string>& recibidos, Queue<std::string>& enviados):
+ServerClient::ServerClient(Socket skt, Queue<EstadoJuego>& recibidos, Queue<EventoServer>& enviados):
         conexion_socket(std::move(skt)),
         esta_cerrado(false),
-        recibidos(recibidos),
-        enviados(enviados) {}
+        estados_juego(recibidos),
+        eventos(enviados) {}
 
 void ServerClient::cerrar(ServerEnviar& enviar) {
     esta_cerrado = true;

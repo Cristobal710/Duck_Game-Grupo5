@@ -9,13 +9,17 @@ void ClientesProtegidos::agregar_cliente(ServerClient& cliente, Queue<EventoServ
 }
 
 
-void ClientesProtegidos::enviar_mensajes_clientes(EventoServer estado_juego) {
+std::vector<EventoServer> ClientesProtegidos::recibir_mensajes_clientes() {
+    std::vector<EventoServer> eventos;
     std::lock_guard<std::mutex> lock(mutex);
     if (!clientes.empty()) {
         for (const auto& cliente: clientes) {
-            cliente.second->try_push(estado_juego);
+            EventoServer evento;
+            cliente.second->try_pop(evento);
+            eventos.push_back(evento);
         }
     }
+    return eventos;
 }
 
 void ClientesProtegidos::eliminar_clientes_cerrados() {

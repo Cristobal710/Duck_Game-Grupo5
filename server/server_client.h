@@ -17,8 +17,8 @@ class ServerClient: public Thread {
 private:
     Socket conexion_socket;
     bool esta_cerrado;
-    Queue<std::string>& recibidos;
-    Queue<std::string>& enviados;
+    Queue<EstadoJuego>& estados_juego;
+    Queue<EventoServer>& eventos;
 
     void cerrar(ServerEnviar& enviar);
 

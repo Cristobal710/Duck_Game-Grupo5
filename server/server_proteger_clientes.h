@@ -20,7 +20,7 @@ private:
 public:
     explicit ClientesProtegidos(std::map<ServerClient*, Queue<EventoServer>*>& mapa_clientes);
     void agregar_cliente(ServerClient& cliente, Queue<EventoServer>& enviados);
-    void enviar_mensajes_clientes(EventoServer estado_juego);
+    std::vector<EventoServer> recibir_mensajes_clientes();
     void eliminar_clientes_cerrados();
     void cerrar_gameloop();
 };
