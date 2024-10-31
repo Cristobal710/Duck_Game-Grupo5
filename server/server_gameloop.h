@@ -16,8 +16,8 @@
 
 class GameLoop: public Thread {
 private:
-    // ClientesProtegidos clientes;
-    Queue<EventoServer>& cola_eventos;
+    std::map<ServerClient*, Queue<EventoServer>*> mapa_clientes;
+    ClientesProtegidos clientes;
     Queue<EstadoJuego>& cola_estados_juego;
     bool* esta_cerrado;
     EstadoJuego ultimo_estado;
@@ -27,11 +27,11 @@ private:
     void ejecutar_accion(uint8_t accion, Pato& pato);
 
 public:
-    GameLoop(Queue<EventoServer>& cola_eventos, Queue<EstadoJuego>& cola_estados_juego,
+    GameLoop(Queue<EstadoJuego>& cola_estados_juego,
              bool* conexion);
     void procesar_evento(EventoServer& evento, EstadoJuego& cola_estados_juego);
     int get_indice_por_id(uint8_t id);
-    // void agregar_cliente(ServerClient& cliente, Queue<std::string>& cola_cliente);
+    void agregar_cliente(ServerClient& cliente, Queue<EventoServer>& cola_cliente);
     void run() override;
 };
 

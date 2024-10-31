@@ -4,7 +4,7 @@ ClienteRecibir::ClienteRecibir(Socket& socket, Queue<EstadoJuego>& cola_estados_
         protocolo(socket), cola_estados_juego(cola_estados_juego) {}
 
 void ClienteRecibir::run() {
-    while (true) {
+    while (_keep_running) {
         try {
             EstadoJuego estado_del_juego = protocolo.recibir_estado_juego();
             cola_estados_juego.push(estado_del_juego);

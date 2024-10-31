@@ -16,7 +16,7 @@ class Accepter: public Thread {
 private:
     Socket& socket_aceptador;
     bool* esta_cerrado;
-    Queue<std::string> recibidos;
+    Queue<EstadoJuego> recibidos;
 
 public:
     Accepter(Socket& socket, bool* conexion);

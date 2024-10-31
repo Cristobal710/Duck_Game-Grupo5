@@ -9,15 +9,15 @@
 #include "cliente_protocolo.h"
 
 
-class ClientEnviar {
+class ClientEnviar : public Thread{
 private:
     ClienteProtocolo protocolo;
-    Queue<ComandoGrafica> eventos;
+    Queue<ComandoGrafica>& eventos;
 
 public:
-    explicit ClientEnviar(Socket& socket);
+    explicit ClientEnviar(Socket& socket, Queue<ComandoGrafica>& cola_eventos);
     void enviar_comando();
-    void run();
+    void run() override;
 };
 
 #endif

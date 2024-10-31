@@ -15,12 +15,12 @@
 class ClientesProtegidos {
 private:
     std::mutex mutex;
-    std::map<ServerClient*, Queue<std::string>*>& clientes;
+    std::map<ServerClient*, Queue<EventoServer>*>& clientes;
 
 public:
-    explicit ClientesProtegidos(std::map<ServerClient*, Queue<std::string>*>& mapa_clientes);
-    void agregar_cliente(ServerClient& cliente, Queue<std::string>& enviados);
-    void enviar_mensajes_clientes(std::string mensaje);
+    explicit ClientesProtegidos(std::map<ServerClient*, Queue<EventoServer>*>& mapa_clientes);
+    void agregar_cliente(ServerClient& cliente, Queue<EventoServer>& enviados);
+    void enviar_mensajes_clientes(EventoServer estado_juego);
     void eliminar_clientes_cerrados();
     void cerrar_gameloop();
 };

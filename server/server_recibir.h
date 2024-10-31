@@ -12,14 +12,14 @@
 #include "server_protocolo.h"
 
 
-class ServerRecibir {
+class ServerRecibir : public Thread{
 private:
     Socket& skt;
     Queue<EventoServer>& cola_eventos;
 
 public:
     ServerRecibir(Socket& skt, Queue<EventoServer>& cola_eventos);
-    void run();
+    void run() override;
 };
 
 

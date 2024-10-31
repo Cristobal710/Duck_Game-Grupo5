@@ -23,7 +23,7 @@ private:
     void cerrar(ServerEnviar& enviar);
 
 public:
-    ServerClient(Socket skt, Queue<std::string>& recibidos, Queue<std::string>& enviados);
+    ServerClient(Socket skt, Queue<EstadoJuego>& recibidos, Queue<EventoServer>& enviados);
     void run() override;
 };
 

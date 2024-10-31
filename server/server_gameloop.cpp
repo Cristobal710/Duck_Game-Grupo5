@@ -14,9 +14,10 @@
 #define DEATH_RAY "Death ray"
 #define SHOTGUN "Shotgun"
 
-GameLoop::GameLoop(Queue<EventoServer>& cola_eventos, Queue<EstadoJuego>& cola_estados_juego,
-                   bool* conexion):
-        cola_eventos(cola_eventos),
+GameLoop::GameLoop(Queue<EstadoJuego>& cola_estados_juego,
+        bool* conexion):
+        mapa_clientes(),
+        clientes(mapa_clientes),
         cola_estados_juego(cola_estados_juego),
         esta_cerrado(conexion) {}
 
@@ -31,9 +32,9 @@ GameLoop::GameLoop(Queue<EventoServer>& cola_eventos, Queue<EstadoJuego>& cola_e
 //     clientes.eliminar_clientes_cerrados();
 // }
 
-// void GameLoop::agregar_cliente(ServerClient& cliente, Queue<std::string>& cola_cliente) {
-//     clientes.agregar_cliente(cliente, cola_cliente);
-// }
+void GameLoop::agregar_cliente(ServerClient& cliente, Queue<EventoServer>& cola_cliente) {
+    clientes.agregar_cliente(cliente, cola_cliente);
+}
 
 void GameLoop::procesar_evento(EventoServer& evento, EstadoJuego& estado_juego) {
     for (Pato& pato: estado_juego.patos) {
@@ -74,12 +75,10 @@ void GameLoop::run() {
         // eliminar_clientes_cerrados();
 
         EventoServer evento;
-        while (cola_eventos.try_pop(evento)) {
+        while (cola_estados_juego.try_pop(evento)) {
             procesar_evento(evento, ultimo_estado);
             cola_estados_juego.push(ultimo_estado);
         }
-
-        // sleep_a_little();
     }
 
     // cerrar_gameloop();

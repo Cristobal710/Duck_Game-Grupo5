@@ -1,9 +1,10 @@
 #include "interfaz_grafica.h"
-
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-InterfazGrafica::InterfazGrafica():
+InterfazGrafica::InterfazGrafica(Queue<ComandoGrafica>& queue, Queue<EstadoJuego>& cola_estado_juego):
+        comandos_cliente(queue),
+        estado_juego(cola_estado_juego),
         correr_programa(true),
         window(SDL2pp::Window("SDL2 Image Demo", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                               1280, 720, SDL_WINDOW_RESIZABLE)),
@@ -14,6 +15,7 @@ InterfazGrafica::InterfazGrafica():
 {}
 
 void InterfazGrafica::iniciar() {
+
 
     SDL_Init(SDL_INIT_VIDEO);
     IMG_Init(IMG_INIT_PNG);
@@ -40,14 +42,22 @@ void InterfazGrafica::manejar_eventos(SDL_Rect& rect_inicio, SDL2pp::Rect& rect_
                                       PatoInterfaz& pato) {
     SDL_Event evento;
     while (SDL_PollEvent(&evento)) {
+
+        ComandoGrafica comando_cliente;
+
         if (evento.type == SDL_QUIT) {
             correr_programa = false;
+
         } else if (evento.type == SDL_KEYDOWN) {
             if (evento.key.keysym.sym == SDLK_ESCAPE) {
                 correr_programa = false;
             }
             if (evento.key.keysym.sym == SDLK_d) {
-                pato.pato_camina_derecha(renderer, rect_inicio, rect_dibujado);
+                comando_cliente.tecla = "d";
+                comando_cliente.jugador_id = 3;
+                comandos_cliente.push(comando_cliente);
+                
+                //pato.pato_camina_derecha(renderer, rect_inicio, rect_dibujado);
             }
             if (evento.key.keysym.sym == SDLK_a) {
                 pato.pato_camina_izquierda(renderer, rect_inicio, rect_dibujado);

@@ -11,28 +11,29 @@
 #define PICKUP "Pickup"
 #define READ "Read"
 
-Client::Client(Socket& client_socket): socket(client_socket) {}
+Client::Client(const char* hostname, const char* servname): socket(hostname, servname) {}
 
 void Client::run() {
-    ClienteProtocolo protocolo(socket);
-    Queue<std::string> cola_eventos;
-    std::string commando;
-    // interfaz.start();
-    while (true) {
-        std::getline(std::cin, commando);
-        if (commando == "w") {
-            cola_eventos.push(commando);
-        } else if (commando == "s") {
-            cola_eventos.push(commando);
-        } else if (commando == "a") {
-            cola_eventos.push(commando);
-        } else if (commando == "d") {
-            cola_eventos.push(commando);
-        }
-        // bool hay_comando = true;
-        // while(hay_comando){
-        //     hay_comando = cola_eventos.try_pop();
-        //     //protocolo.
-        // }
-    }
+
+    Queue<ComandoGrafica> cola_eventos;
+    Queue<EstadoJuego> cola_estado_juego;
+
+    ClientEnviar enviarComandos(socket, cola_eventos);
+    ClienteRecibir recibirComandos(socket, cola_estado_juego);
+
+    
+    enviarComandos.start();
+    recibirComandos.start();
+
+    InterfazGrafica interfaz = InterfazGrafica(cola_eventos, cola_estado_juego);
+    interfaz.iniciar();
+    
+    
+    std::string in;
+    while (std::cin >> in, (in != "q")) {}
+
+    enviarComandos.join();
+    enviarComandos.stop();
+    recibirComandos.join();
+    recibirComandos.stop();
 }
