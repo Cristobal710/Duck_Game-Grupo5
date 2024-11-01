@@ -13,16 +13,16 @@ EventoServer ServerProtocolo::recibir_evento() {
 }
 
 void ServerProtocolo::enviar_estado_juego(EstadoJuego& estado) {
-    enviar_byte(estado.patos.size());
+    enviar_byte(static_cast<uint8_t>(estado.patos.size()));
     enviar_patos(estado.patos);
-    enviar_byte(estado.cajas.size());
-    enviar_cajas(estado.cajas);
-    enviar_byte(estado.armas.size());
-    enviar_armas(estado.armas);
-    enviar_byte(estado.balas.size());
-    enviar_balas(estado.balas);
-    enviar_byte(estado.granadas.size());
-    enviar_granadas(estado.granadas);
+    // enviar_byte(estado.cajas.size());
+    // enviar_cajas(estado.cajas);
+    // enviar_byte(estado.armas.size());
+    // enviar_armas(estado.armas);
+    // enviar_byte(estado.balas.size());
+    // enviar_balas(estado.balas);
+    // enviar_byte(estado.granadas.size());
+    // enviar_granadas(estado.granadas);
 }
 
 void ServerProtocolo::enviar_pato(Pato& pato) {
@@ -30,6 +30,7 @@ void ServerProtocolo::enviar_pato(Pato& pato) {
     enviar_byte(pato.get_pos_x());
     enviar_byte(pato.get_pos_y());
     enviar_byte(pato.get_direccion());
+    enviar_byte(pato.se_mueve_derecha);
     enviar_byte(pato.esta_apuntando_arriba());
     enviar_byte(pato.esta_tirado_al_piso());
     enviar_byte(pato.esta_vivo());
@@ -37,8 +38,10 @@ void ServerProtocolo::enviar_pato(Pato& pato) {
     enviar_byte(pato.armadura_en_inventario());
     enviar_byte(pato.get_casco_equipado());
     enviar_byte(pato.get_armadura_equipada());
-    enviar_byte((pato.get_arma())->get_id());
-    enviar_byte((pato.get_arma())->get_municion_disponible());
+    if (pato.get_arma() != nullptr){
+        enviar_byte((pato.get_arma())->get_id());
+        enviar_byte((pato.get_arma())->get_municion_disponible());
+    }
 }
 
 void ServerProtocolo::enviar_caja(Caja& caja) {

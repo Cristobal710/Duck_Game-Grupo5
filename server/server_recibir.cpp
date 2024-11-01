@@ -9,7 +9,6 @@ void ServerRecibir::run() {
     while (_keep_running) {
         try {
             EventoServer evento = protocolo.recibir_evento();
-            std::cout << static_cast<int>(evento.accion);
             cola_eventos.push(evento);
         } catch (ClosedQueue& e) {
             break;

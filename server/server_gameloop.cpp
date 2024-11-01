@@ -19,7 +19,9 @@ GameLoop::GameLoop(Queue<EstadoJuego>& cola_estados_juego,
         mapa_clientes(),
         clientes(mapa_clientes),
         cola_estados_juego(cola_estados_juego),
-        esta_cerrado(conexion) {}
+        esta_cerrado(conexion) {
+        ultimo_estado = EstadoJuego();
+        }
 
 
 // void GameLoop::cerrar_gameloop() {
@@ -65,19 +67,26 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
             // llamar a un metodo que recorra el array de armas y devuelva la cercana al pato
             // pato.tomar_arma();
             break;
+        default:
+            // hacer metodo que ponga quieto al pato
+            pato.se_mueve_derecha = false;
+            break;
+
     }
 }
 
 void GameLoop::run() {
-
+    Pato pato(3, 0, 0, 0);
+    ultimo_estado.patos.emplace_back(pato);
 
     while (!(*esta_cerrado)) {
         //eliminar_clientes_cerrados();
-
-        EstadoJuego evento;
      
         while (true) {
             std::vector<EventoServer> eventos = clientes.recibir_mensajes_clientes();
+            if (eventos.empty()) {
+                pato.se_mueve_derecha = false;
+            }
             for(EventoServer evento : eventos){
                 procesar_evento(evento, ultimo_estado);
                 cola_estados_juego.push(ultimo_estado);

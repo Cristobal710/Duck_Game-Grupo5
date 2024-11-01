@@ -20,6 +20,7 @@ private:
     // uint8_t color;  // hacer map con colores
 
 public:
+    bool se_mueve_derecha;
     Pato(uint8_t id, uint8_t pos_x, uint8_t pos_y, uint8_t direccion);
     //~Pato();
     // uint8_t get_color();

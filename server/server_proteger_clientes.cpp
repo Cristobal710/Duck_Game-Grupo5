@@ -15,8 +15,9 @@ std::vector<EventoServer> ClientesProtegidos::recibir_mensajes_clientes() {
     if (!clientes.empty()) {
         for (const auto& cliente: clientes) {
             EventoServer evento;
-            cliente.second->try_pop(evento);
-            eventos.push_back(evento);
+            while(cliente.second->try_pop(evento)){
+                eventos.push_back(evento);
+            }
         }
     }
     return eventos;

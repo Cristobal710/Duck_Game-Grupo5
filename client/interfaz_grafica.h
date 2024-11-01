@@ -26,10 +26,12 @@ class InterfazGrafica {
 
 
     void manejar_eventos(SDL_Rect& rect_inicio, SDL2pp::Rect& rect_dibujado, PatoInterfaz& pato);
+    void obtener_estado_juego(SDL2pp::Rect& rect_destino, bool& estado_pato);
 
     public:
     InterfazGrafica(Queue<ComandoGrafica>& cola_comandos, Queue<EstadoJuego>& cola_estado_juego);
     void iniciar();
+
 };
 
 #endif  // INTERFAZ_GRAFICA_H

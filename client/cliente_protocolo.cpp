@@ -21,6 +21,7 @@ void ClienteProtocolo::recibir_pato(std::list<Pato>& patos) {
     uint8_t pos_x = recibir_byte(cerrado);
     uint8_t pos_y = recibir_byte(cerrado);
     uint8_t direccion = recibir_byte(cerrado);
+    uint8_t se_mueve_derecha = recibir_byte(cerrado);
     uint8_t apunta_arriba = recibir_byte(cerrado);
     uint8_t tirado_al_piso = recibir_byte(cerrado);
     uint8_t esta_vivo = recibir_byte(cerrado);
@@ -28,10 +29,11 @@ void ClienteProtocolo::recibir_pato(std::list<Pato>& patos) {
     uint8_t armadura_inventario = recibir_byte(cerrado);
     uint8_t casco_equipado = recibir_byte(cerrado);
     uint8_t armadura_equipada = recibir_byte(cerrado);
-    uint8_t arma_id = recibir_byte(cerrado);
-    uint8_t municion_disponible = recibir_byte(cerrado);
+    // uint8_t arma_id = recibir_byte(cerrado);
+    // uint8_t municion_disponible = recibir_byte(cerrado);
 
     Pato pato(id, pos_x, pos_y, direccion);
+    pato.se_mueve_derecha = static_cast<bool>(se_mueve_derecha);
     if (static_cast<bool>(apunta_arriba)) {
         pato.apuntar_arriba();
     }
@@ -54,9 +56,9 @@ void ClienteProtocolo::recibir_pato(std::list<Pato>& patos) {
         pato.morir();
     }
 
-    Arma arma(arma_id, pos_x, pos_y, municion_disponible, 30, 10);
+    //Arma arma(arma_id, pos_x, pos_y, municion_disponible, 30, 10);
 
-    pato.tomar_arma(&arma);
+    //pato.tomar_arma(&arma);
     patos.push_back(pato);
 }
 
@@ -186,8 +188,8 @@ std::list<Granada> ClienteProtocolo::recibir_granadas() {
 EstadoJuego ClienteProtocolo::recibir_estado_juego() {
     EstadoJuego estado_juego;
     estado_juego.patos = recibir_patos();
-    estado_juego.cajas = recibir_cajas();
-    estado_juego.armas = recibir_armas();
+    // estado_juego.cajas = recibir_cajas();
+    // estado_juego.armas = recibir_armas();
     return estado_juego;
 }
 

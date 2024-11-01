@@ -12,7 +12,8 @@ Pato::Pato(uint8_t id, uint8_t pos_x, uint8_t pos_y, uint8_t direccion):
         vivo(true),
         apunta_arriba(false),
         tirado_al_piso(false),
-        direccion(direccion) {
+        direccion(direccion),
+        se_mueve_derecha(false) {
     // if (color == "rojo") {
     //     this->color = 1;
     // } else if (color == "azul") {
@@ -34,8 +35,9 @@ void Pato::moverse_izquierda() {
 }
 
 void Pato::moverse_derecha() {
-    pos_x++;
+    pos_x += 1;
     direccion = DIRECCION_DERECHA;
+    se_mueve_derecha = true;
 }
 
 void Pato::saltar() { pos_y++; }

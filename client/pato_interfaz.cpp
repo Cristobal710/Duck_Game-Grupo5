@@ -14,13 +14,14 @@ PatoInterfaz::PatoInterfaz(SDL2pp::Renderer& renderer, const std::string& pato_p
     frames_movimientos(renderer, sprite_pato);
     frames_salto(renderer, sprite_pato);
     frames_acostarse(renderer, sprite_pato);
+    puntero_movimiento = 0;
 }
 
 void PatoInterfaz::pato_camina_derecha(SDL2pp::Renderer& renderer, SDL_Rect& rect_inicio,
                                        SDL2pp::Rect& rect_destino) {
     for (int i = 0; i < NUM_FRAMES_MOVIMIENTO_PATO; ++i) {
         renderer.Clear();
-        rect_destino.x += 2;
+        //rect_destino.x += 2;
         renderer.Copy(movimiento_pato[i], SDL2pp::Optional<SDL2pp::Rect>(rect_inicio),
                       SDL2pp::Optional<SDL2pp::Rect>(rect_destino));
         renderer.Present();
@@ -91,9 +92,27 @@ void PatoInterfaz::pato_agachado(SDL2pp::Renderer& renderer, SDL_Rect& rect_inic
 SDL2pp::Texture& PatoInterfaz::mostrar_frame() { return movimiento_pato[0]; }
 
 void PatoInterfaz::dibujar(SDL2pp::Renderer& renderer, SDL_Rect& rect_inicio,
-                           SDL2pp::Rect& rect_destino) {
-    renderer.Copy(mostrar_frame(), rect_inicio, rect_destino);
+                           SDL2pp::Rect& rect_destino, bool& estado_pato) {
+    //pato_camina_derecha(renderer, rect_inicio, rect_destino);
+    if (estado_pato){
+        renderer.Copy(mostrar_frame_derecha(), rect_inicio,
+        rect_destino);
+        puntero_movimiento++;
+        if (puntero_movimiento == 6){
+            puntero_movimiento = 0;
+        }
+    } else {
+        puntero_movimiento = 0;
+        renderer.Copy(mostrar_frame(), rect_inicio,
+        rect_destino);
+    }
+    //SDL_Delay(70);
 }
+
+SDL2pp::Texture& PatoInterfaz::mostrar_frame_derecha(){
+    return movimiento_pato[puntero_movimiento];
+}
+
 
 void PatoInterfaz::frames_movimientos(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet) {
     cargar_frames(renderer, sprite_sheet, 6, movimiento_pato, NUM_FRAMES_MOVIMIENTO_PATO);
