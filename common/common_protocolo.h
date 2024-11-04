@@ -23,6 +23,10 @@ public:
     explicit Protocolo(Socket& socket);
 
     void enviar_byte(const uint8_t byte);
+    void enviar_dos_bytes(const uint16_t valor);
+    uint16_t recibir_dos_bytes(bool& cerrado);
+    void esta_cerrado(const bool& cerrado, const std::string& mensaje);
+
 
 protected:
     std::string recibir_string(bool& closed);

@@ -21,7 +21,7 @@ private:
 
 public:
     bool se_mueve_derecha;
-    Pato(uint8_t id, uint8_t pos_x, uint8_t pos_y, uint8_t direccion);
+    Pato(uint16_t id, uint16_t pos_x, uint16_t pos_y, uint8_t direccion);
     //~Pato();
     // uint8_t get_color();
     void moverse_izquierda();

@@ -5,15 +5,15 @@
 
 class Entidad {
 protected:
-    uint8_t id;
-    uint8_t pos_x;
-    uint8_t pos_y;
+    uint16_t id;
+    uint16_t pos_x;
+    uint16_t pos_y;
 
 public:
-    Entidad(uint8_t id, uint8_t pos_x, uint8_t pos_y);
-    uint8_t get_id();
-    uint8_t get_pos_x();
-    uint8_t get_pos_y();
+    Entidad(uint16_t id, uint16_t pos_x, uint16_t pos_y);
+    uint16_t get_id();
+    uint16_t get_pos_x();
+    uint16_t get_pos_y();
 };
 
 #endif

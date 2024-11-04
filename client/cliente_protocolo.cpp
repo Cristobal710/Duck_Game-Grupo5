@@ -17,18 +17,18 @@ void ClienteProtocolo::enviar_comando(ComandoGrafica comando) {
 
 void ClienteProtocolo::recibir_pato(std::list<Pato>& patos) {
     bool cerrado;
-    uint8_t id = recibir_byte(cerrado);
-    uint8_t pos_x = recibir_byte(cerrado);
-    uint8_t pos_y = recibir_byte(cerrado);
-    uint8_t direccion = recibir_byte(cerrado);
-    uint8_t se_mueve_derecha = recibir_byte(cerrado);
-    uint8_t apunta_arriba = recibir_byte(cerrado);
-    uint8_t tirado_al_piso = recibir_byte(cerrado);
-    uint8_t esta_vivo = recibir_byte(cerrado);
-    uint8_t casco_inventario = recibir_byte(cerrado);
-    uint8_t armadura_inventario = recibir_byte(cerrado);
-    uint8_t casco_equipado = recibir_byte(cerrado);
-    uint8_t armadura_equipada = recibir_byte(cerrado);
+    uint16_t id = recibir_dos_bytes(cerrado);
+    uint16_t pos_x = recibir_dos_bytes(cerrado);
+    uint16_t pos_y = recibir_dos_bytes(cerrado);
+    uint16_t direccion = recibir_dos_bytes(cerrado);
+    uint16_t se_mueve_derecha = recibir_dos_bytes(cerrado);
+    uint16_t apunta_arriba = recibir_dos_bytes(cerrado);
+    uint16_t tirado_al_piso = recibir_dos_bytes(cerrado);
+    uint16_t esta_vivo = recibir_dos_bytes(cerrado);
+    uint16_t casco_inventario = recibir_dos_bytes(cerrado);
+    uint16_t armadura_inventario = recibir_dos_bytes(cerrado);
+    uint16_t casco_equipado = recibir_dos_bytes(cerrado);
+    uint16_t armadura_equipada = recibir_dos_bytes(cerrado);
     // uint8_t arma_id = recibir_byte(cerrado);
     // uint8_t municion_disponible = recibir_byte(cerrado);
 
@@ -78,9 +78,9 @@ std::list<Pato> ClienteProtocolo::recibir_patos() {
 
 void ClienteProtocolo::recibir_caja(std::list<Caja>& cajas) {
     bool cerrado;
-    uint8_t id = recibir_byte(cerrado);
-    uint8_t pos_x = recibir_byte(cerrado);
-    uint8_t pos_y = recibir_byte(cerrado);
+    uint16_t id = recibir_dos_bytes(cerrado);
+    uint16_t pos_x = recibir_dos_bytes(cerrado);
+    uint16_t pos_y = recibir_dos_bytes(cerrado);
     uint8_t recompensa_id = recibir_byte(cerrado);
     Caja caja(id, pos_x, pos_y, recompensa_id);
     cajas.push_back(caja);
@@ -128,11 +128,11 @@ std::list<Arma> ClienteProtocolo::recibir_armas() {
 
 void ClienteProtocolo::recibir_bala(std::list<Bala>& balas) {
     bool cerrado;
-    uint8_t id = recibir_byte(cerrado);
-    uint8_t pos_x = recibir_byte(cerrado);
-    uint8_t pos_y = recibir_byte(cerrado);
-    uint8_t pos_x_final = recibir_byte(cerrado);
-    uint8_t pos_y_final = recibir_byte(cerrado);
+    uint16_t id = recibir_dos_bytes(cerrado);
+    uint16_t pos_x = recibir_dos_bytes(cerrado);
+    uint16_t pos_y = recibir_dos_bytes(cerrado);
+    uint16_t pos_x_final = recibir_dos_bytes(cerrado);
+    uint16_t pos_y_final = recibir_dos_bytes(cerrado);
     uint8_t direccion = recibir_byte(cerrado);
 
     Bala bala(id, pos_x, pos_y, pos_x_final, pos_y_final, direccion);

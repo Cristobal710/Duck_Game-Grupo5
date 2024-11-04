@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-Pato::Pato(uint8_t id, uint8_t pos_x, uint8_t pos_y, uint8_t direccion):
+Pato::Pato(uint16_t id, uint16_t pos_x, uint16_t pos_y, uint8_t direccion):
         Entidad(id, pos_x, pos_y),
         arma(nullptr),
         tomo_armadura(false),

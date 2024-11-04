@@ -19,7 +19,30 @@ void Protocolo::enviar_byte(const uint8_t byte) {
     socket.sendall(data.data(), data.size(), &berretin);
 }
 
-void esta_cerrado(const bool& cerrado, const std::string& mensaje) {
+uint8_t Protocolo::recibir_byte(bool& cerrado) {
+    std::vector<uint8_t> datos(1);
+    socket.recvall(datos.data(), datos.size(), &cerrado);
+    esta_cerrado(cerrado, "Coneccion cerrada while receiving uint8_t");
+    return datos[0];
+}
+
+void Protocolo::enviar_dos_bytes(const uint16_t valor) {
+    std::vector<uint8_t> data(2);
+    data[0] = (valor >> 8) & 0xFF;  // Byte más significativo
+    data[1] = valor & 0xFF;         // Byte menos significativo
+    bool berretin;
+    socket.sendall(data.data(), data.size(), &berretin);
+}
+uint16_t Protocolo::recibir_dos_bytes( bool& cerrado) {
+    std::vector<uint8_t> datos(2);
+    socket.recvall(datos.data(), datos.size(), &cerrado);
+    esta_cerrado(cerrado, "Conexión cerrada while receiving uint16_t");
+    return (datos[0] << 8) | datos[1];
+}
+
+
+
+void Protocolo::esta_cerrado(const bool& cerrado, const std::string& mensaje) {
     if (cerrado) {
         throw LibError(errno, mensaje.c_str());
     }
@@ -37,9 +60,3 @@ std::string Protocolo::recibir_string(bool& cerrado) {
     return mensaje;
 }
 
-uint8_t Protocolo::recibir_byte(bool& cerrado) {
-    std::vector<uint8_t> datos(1);
-    socket.recvall(datos.data(), datos.size(), &cerrado);
-    esta_cerrado(cerrado, "Coneccion cerrada while receiving uint8_t");
-    return datos[0];
-}
