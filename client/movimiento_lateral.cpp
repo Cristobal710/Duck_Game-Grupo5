@@ -1,0 +1,88 @@
+#include "movimiento_lateral.h"
+#define NUM_FRAMES_MOVIMIENTO_PATO 6
+#define PIXEL_PATO 32
+
+
+MovimientoLateral::MovimientoLateral(SDL2pp::Renderer& renderer, const std::string& pato_path, 
+int pos_x, int pos_y):
+movimiento_pato(),
+puntero_movimiento_derecha(0),
+puntero_movimiento_izquierda(0),
+rect_inicio(1, 8, PIXEL_PATO, PIXEL_PATO),
+rect_dibujado(pos_x, pos_y, PIXEL_PATO, PIXEL_PATO),
+renderer(renderer) 
+{
+    SDL2pp::Surface sprite_pato(IMG_Load(pato_path.c_str()));
+    frames_movimientos(renderer, sprite_pato);
+}
+
+
+void MovimientoLateral::frames_movimientos(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet) {
+        cargar_frames(renderer, sprite_sheet, 6, movimiento_pato, NUM_FRAMES_MOVIMIENTO_PATO);                                           
+    }
+
+
+void MovimientoLateral::mostrar_frame_derecha() {
+    puntero_movimiento_derecha++;
+    if (puntero_movimiento_derecha == 6){
+        puntero_movimiento_derecha = 0;
+    }
+    renderer.Copy(movimiento_pato[puntero_movimiento_derecha], rect_inicio,
+        rect_dibujado);
+    
+}
+
+void MovimientoLateral::mostrar_frame_izquierda() {
+    puntero_movimiento_izquierda++;
+    if (puntero_movimiento_izquierda == 6){
+        puntero_movimiento_izquierda = 0;
+    }
+    SDL_RenderCopyEx(renderer.Get(), movimiento_pato[puntero_movimiento_izquierda].Get(), &rect_inicio, &rect_dibujado, 0,
+                         nullptr, SDL_FLIP_HORIZONTAL);
+    
+}
+
+SDL2pp::Texture& MovimientoLateral::mostrar_frame() { return movimiento_pato[0]; }
+
+void MovimientoLateral::pato_movimiento(std::string& movimiento, int pos_x, int pos_y) {
+    if (movimiento == "d"){
+        rect_dibujado.SetX(pos_x);
+        rect_dibujado.SetY(pos_y);
+        mostrar_frame_derecha();
+       
+    
+    } else if (movimiento == "i") {
+        rect_dibujado.SetX(pos_x);
+        rect_dibujado.SetY(pos_y);
+        mostrar_frame_izquierda();
+        
+    } else {
+        puntero_movimiento_derecha = 0;
+        puntero_movimiento_izquierda = 0;
+        renderer.Copy(mostrar_frame(), rect_inicio,
+        rect_dibujado);
+    }
+}
+
+
+void MovimientoLateral::cargar_frames(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet,
+                                 int offset_y, std::vector<SDL2pp::Texture>& texturas,
+                                 int num_frames) {
+    for (int i = 0; i < num_frames; ++i) {
+
+        SDL_Rect rect_inicial = {i * PIXEL_PATO, offset_y, PIXEL_PATO, PIXEL_PATO};
+
+        SDL2pp::Surface sprite_superficie(
+                SDL_CreateRGBSurface(0, PIXEL_PATO, PIXEL_PATO, 32, 0, 0, 0, 0));
+
+        SDL_BlitSurface(sprite_sheet.Get(), &rect_inicial, sprite_superficie.Get(), nullptr);
+
+        Uint32 color_key = SDL_MapRGB(sprite_superficie.Get()->format, 0, 0, 0);
+
+        SDL_SetColorKey(sprite_superficie.Get(), SDL_TRUE, color_key);
+
+        SDL2pp::Texture sprite_textura(renderer, sprite_superficie);
+
+        texturas.emplace_back(std::move(sprite_textura));
+    }
+}

@@ -2,16 +2,17 @@
 #define PATO_INTERFAZ_H
 
 #include <vector>
-
+#include "movimiento_lateral.h"
 #include <SDL2/SDL_image.h>
 #include <SDL2pp/SDL2pp.hh>
 
 class PatoInterfaz {
 private:
+    MovimientoLateral movimiento_pato_lateral;
     std::vector<SDL2pp::Texture> movimiento_pato;
     std::vector<SDL2pp::Texture> salto_pato;
     std::vector<SDL2pp::Texture> acostarse_pato;
-    int puntero_movimiento;
+    int puntero_movimiento; 
 
     void frames_movimientos(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet);
     void frames_salto(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet);
@@ -37,7 +38,7 @@ public:
 
     SDL2pp::Texture& mostrar_frame();
 
-    void dibujar(SDL2pp::Renderer& renderer, SDL_Rect& rect_inicio, SDL2pp::Rect& rect_destino, bool& estado_pato);
+    void dibujar(std::string& estado_pato, int pos_x, int pos_y);
 };
 
 #endif  // PATO_INTERFAZ_H

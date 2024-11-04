@@ -8,7 +8,9 @@
 #define NUM_FRAMES_PATO_ACOSTADO 5
 #define PIXEL_PATO 32
 
-PatoInterfaz::PatoInterfaz(SDL2pp::Renderer& renderer, const std::string& pato_path) {
+PatoInterfaz::PatoInterfaz(SDL2pp::Renderer& renderer, const std::string& pato_path):
+    movimiento_pato_lateral(renderer, pato_path, 150, 150)
+{
     SDL2pp::Surface sprite_pato(IMG_Load(pato_path.c_str()));
     
     frames_movimientos(renderer, sprite_pato);
@@ -91,22 +93,8 @@ void PatoInterfaz::pato_agachado(SDL2pp::Renderer& renderer, SDL_Rect& rect_inic
 
 SDL2pp::Texture& PatoInterfaz::mostrar_frame() { return movimiento_pato[0]; }
 
-void PatoInterfaz::dibujar(SDL2pp::Renderer& renderer, SDL_Rect& rect_inicio,
-                           SDL2pp::Rect& rect_destino, bool& estado_pato) {
-    //pato_camina_derecha(renderer, rect_inicio, rect_destino);
-    if (estado_pato){
-        renderer.Copy(mostrar_frame_derecha(), rect_inicio,
-        rect_destino);
-        puntero_movimiento++;
-        if (puntero_movimiento == 6){
-            puntero_movimiento = 0;
-        }
-    } else {
-        puntero_movimiento = 0;
-        renderer.Copy(mostrar_frame(), rect_inicio,
-        rect_destino);
-    }
-    //SDL_Delay(70);
+void PatoInterfaz::dibujar(std::string& estado_pato, int pos_x, int pos_y) {
+    movimiento_pato_lateral.pato_movimiento(estado_pato, pos_x, pos_y);
 }
 
 SDL2pp::Texture& PatoInterfaz::mostrar_frame_derecha(){

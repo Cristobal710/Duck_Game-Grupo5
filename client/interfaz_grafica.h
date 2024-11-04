@@ -34,4 +34,4 @@ class InterfazGrafica {
 
 };
 
-#endif  // INTERFAZ_GRAFICA_H
+#endif  

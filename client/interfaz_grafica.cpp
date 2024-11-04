@@ -2,6 +2,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "../common/common_pato.h"
+
+
 InterfazGrafica::InterfazGrafica(Queue<ComandoGrafica>& queue, Queue<EstadoJuego>& cola_estado_juego):
         comandos_cliente(queue),
         estado_juego(cola_estado_juego),
@@ -13,6 +15,7 @@ InterfazGrafica::InterfazGrafica(Queue<ComandoGrafica>& queue, Queue<EstadoJuego
         pato(renderer, "../resources/Grey-Duck.png")
 
 {}
+
 
 void InterfazGrafica::iniciar() {
 
@@ -26,16 +29,25 @@ void InterfazGrafica::iniciar() {
 
     SDL2pp::Rect rect_inicio = {1, 8, 32, 32};
     SDL2pp::Rect rect_dibujado = {100, 100, 32, 32};  // posición inicial
+
     bool estado_pato = false;
 
     while (correr_programa) {
         manejar_eventos(rect_inicio, rect_dibujado, pato);
         renderer.Clear();
-        fondo.dibujar(renderer);
         obtener_estado_juego(rect_dibujado, estado_pato);
-        pato.dibujar(renderer, rect_inicio, rect_dibujado, estado_pato);
+        
+        std::string movimiento_pato;
+        if (estado_pato){
+            movimiento_pato = "d";
+        } 
+        fondo.dibujar(renderer);
+        pato.dibujar(movimiento_pato, rect_dibujado.GetX(), rect_dibujado.GetY());
+
         renderer.Present();
+        SDL_Delay(30); //aproximado 30 frames por segundo. Hay que cambiarlo
     }
+
     IMG_Quit();
     SDL_Quit();
 }
@@ -73,12 +85,16 @@ void InterfazGrafica::manejar_eventos(SDL_Rect& rect_inicio, SDL2pp::Rect& rect_
 }
 
 void InterfazGrafica::obtener_estado_juego(SDL2pp::Rect& rect_destino, bool& estado_pato) {
-    //deberia ser bloqueante 
+    //deberia ser bloqueante?
     EstadoJuego ultimo_estado; 
     if (estado_juego.try_pop(ultimo_estado)) {
         Pato pato = ultimo_estado.patos.front();
         rect_destino.SetX(pato.get_pos_x());
         rect_destino.SetY(pato.get_pos_y());
         estado_pato = pato.se_mueve_derecha;
+
+    } else {
+        estado_pato = false;
     }
 }
+
