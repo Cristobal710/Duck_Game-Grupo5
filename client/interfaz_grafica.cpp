@@ -52,14 +52,10 @@ void InterfazGrafica::iniciar() {
             renderer.Present();
             
             tiempo_ultimo_frame = tiempo_actual; //resetear el tiempo del ultimo frame al actual
-        } else {
-            SDL_Delay(DURACION_FRAME - tiempo_transcurrido); //"rest" para evitar uso excesivo de CPU
         }
     }
 
     IMG_Quit();
-    //SDL_DestroyRenderer(renderer);
-    //SDL_DestroyWindow(window)
     SDL_Quit();
 }
 
