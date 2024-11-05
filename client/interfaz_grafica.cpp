@@ -31,7 +31,7 @@ void InterfazGrafica::iniciar() {
     SDL2pp::Rect rect_inicio = {1, 8, 32, 32};
     SDL2pp::Rect rect_dibujado = {100, 100, 32, 32};  // posición inicial
 
-    bool estado_pato = false;
+    uint8_t estado_pato = BYTE_NULO;
     Uint32 tiempo_ultimo_frame = SDL_GetTicks();
 
     while (correr_programa) {
@@ -43,13 +43,14 @@ void InterfazGrafica::iniciar() {
             renderer.Clear();
             obtener_estado_juego(rect_dibujado, estado_pato);
 
-            std::string movimiento_pato;
-            if (estado_pato) {
-                movimiento_pato = "d";
-            }
+            std::cout << "estado_pato" << static_cast<int> (estado_pato) << std::endl;
+            //std::string movimiento_pato;
+            //if (estado_pato) {
+            //    movimiento_pato = "d";
+            //}
 
             fondo.dibujar(renderer);
-            pato.dibujar(movimiento_pato, rect_dibujado.GetX(), rect_dibujado.GetY());
+            pato.dibujar(estado_pato, rect_dibujado.GetX(), rect_dibujado.GetY());
 
             renderer.Present();
             
@@ -93,15 +94,15 @@ void InterfazGrafica::manejar_eventos(SDL_Rect& rect_inicio, SDL2pp::Rect& rect_
     }
 }
 
-void InterfazGrafica::obtener_estado_juego(SDL2pp::Rect& rect_destino, bool& estado_pato) {
+void InterfazGrafica::obtener_estado_juego(SDL2pp::Rect& rect_destino, uint8_t& estado_pato) {
     //deberia ser bloqueante?
     EstadoJuego ultimo_estado; 
     if (estado_juego.try_pop(ultimo_estado)) {
         Pato pato = ultimo_estado.patos.front();
         rect_destino.SetX(pato.get_pos_x());
         rect_destino.SetY(pato.get_pos_y());
-        estado_pato = pato.estado.get_estado_movimiento() == MOVER_DERECHA;
-        std::cout << "Estado pato: " << estado_pato << std::endl;
+        estado_pato = pato.estado.get_estado_movimiento();
+        std::cout << "Estado pato: " << static_cast<int>(estado_pato) << std::endl;
     } else {
         estado_pato = false;
     }

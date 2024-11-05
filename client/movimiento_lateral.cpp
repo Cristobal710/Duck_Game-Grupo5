@@ -1,4 +1,6 @@
 #include "movimiento_lateral.h"
+#include "../common/common_constantes.h"
+
 #define NUM_FRAMES_MOVIMIENTO_PATO 6
 #define PIXEL_PATO 32
 
@@ -44,14 +46,14 @@ void MovimientoLateral::mostrar_frame_izquierda() {
 
 SDL2pp::Texture& MovimientoLateral::mostrar_frame() { return movimiento_pato[0]; }
 
-void MovimientoLateral::pato_movimiento(std::string& movimiento, int pos_x, int pos_y) {
-    if (movimiento == "d"){
+void MovimientoLateral::pato_movimiento(uint8_t& movimiento, int pos_x, int pos_y) {
+    if (movimiento == MOVER_DERECHA){
         rect_dibujado.SetX(pos_x);
         rect_dibujado.SetY(pos_y);
         mostrar_frame_derecha();
        
     
-    } else if (movimiento == "i") {
+    } else if (movimiento == MOVER_IZQUIERDA) {
         rect_dibujado.SetX(pos_x);
         rect_dibujado.SetY(pos_y);
         mostrar_frame_izquierda();

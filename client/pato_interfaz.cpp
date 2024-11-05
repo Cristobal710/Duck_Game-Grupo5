@@ -93,7 +93,7 @@ void PatoInterfaz::pato_agachado(SDL2pp::Renderer& renderer, SDL_Rect& rect_inic
 
 SDL2pp::Texture& PatoInterfaz::mostrar_frame() { return movimiento_pato[0]; }
 
-void PatoInterfaz::dibujar(std::string& estado_pato, int pos_x, int pos_y) {
+void PatoInterfaz::dibujar(uint8_t& estado_pato, int pos_x, int pos_y) {
     movimiento_pato_lateral.pato_movimiento(estado_pato, pos_x, pos_y);
 }
 

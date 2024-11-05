@@ -25,7 +25,7 @@ class MovimientoLateral {
 
     public:
     MovimientoLateral(SDL2pp::Renderer& renderer, const std::string& pato_path, int pos_x, int pos_y);
-    void pato_movimiento(std::string& movimiento, int pos_x, int pos_y);
+    void pato_movimiento(uint8_t& movimiento, int pos_x, int pos_y);
 };
 
 
