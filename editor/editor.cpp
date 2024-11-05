@@ -7,8 +7,10 @@ Editor::Editor(): window("Editor", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFI
                   renderer(window, -1, SDL_RENDERER_ACCELERATED),   
 boton_fondo(10, 10, 180, 50, "Elegir Fondo"),
 boton_tiles(200, 10, 180, 50, "Elegir Tiles"),
+boton_spawn(390, 10, 180, 50, "Spawns de patos"),
 mostrar_fondos_disponibles(false), mostrar_tiles_disponibles(false),
-tiles_seleccionados() 
+mostrar_spawns_disponibles(false),
+tiles_seleccionados(), spawn_seleccionados() 
 {}
 
 
@@ -40,11 +42,11 @@ void Editor::iniciar_editor() {
 
                 
                 if (!tile_actual.empty()) {
-                    // Assuming each tile is 32x32 pixels (adjust accordingly)
-                    int tile_x = x / 32; // Calculate the grid position
+                    // tamano de los tiles, 32x32 por ahora
+                    int tile_x = x / 32; 
                     int tile_y = y / 32;
 
-                    // Store the tile placement
+                    
                     if (tiles_seleccionados.count(tile_actual) > 0){ //nos permite buscar si ya pusimos tiles
                                                                      //con esta textura
 
@@ -56,11 +58,32 @@ void Editor::iniciar_editor() {
                         tiles_seleccionados[tile_actual] = tiles;
                     }
                 }
+
+                if (!spawn_actual.empty()) {
+                    // tamano de los tiles, 32x32 por ahora
+                    int tile_x = x / 32; 
+                    int tile_y = y / 32;
+
+                    
+                    if (spawn_seleccionados.count(spawn_actual) > 0){ //nos permite buscar si ya pusimos tiles
+                                                                     //con esta textura
+
+                        spawn_seleccionados[spawn_actual].push_back({tile_x, tile_y});
+                        
+                    } else {
+                        std::vector<SDL_Point> spawns;
+                        spawns.push_back({tile_x, tile_y});
+                        spawn_seleccionados[spawn_actual] = spawns;
+                    }
+                }
             }
 
             if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_RIGHT) {
                 if (!tile_actual.empty()) {
                     tile_actual.clear();
+                }
+                if (!spawn_actual.empty()) {
+                    spawn_actual.clear();
                 }
             }
 
@@ -70,6 +93,10 @@ void Editor::iniciar_editor() {
 
             boton_tiles.evento_click(event, [&]() {
                 mostrar_opciones_tiles();
+            });
+
+            boton_spawn.evento_click(event, [&]() {
+                mostrar_opciones_spawn();
             });
 
 
@@ -88,6 +115,14 @@ void Editor::iniciar_editor() {
                 });
             }
         }
+
+        if (mostrar_spawns_disponibles) {
+            for (size_t i = 0; i < spawns_disponibles_boton.size(); ++i) {
+                spawns_disponibles_boton[i].evento_click(event, [this, i]() {
+                    actualizar_spawn(i); 
+                });
+            }
+        }
         }
         limpiar_pantalla();
 
@@ -95,9 +130,11 @@ void Editor::iniciar_editor() {
         renderer.SetDrawColor(0, 0, 0, 255);
         renderizar_fondo();
         renderizar_tiles();
+        renderizar_spawn();
 
         boton_fondo.render(renderer);
         boton_tiles.render(renderer);
+        boton_spawn.render(renderer);
 
        
         if (mostrar_fondos_disponibles) {
@@ -108,6 +145,12 @@ void Editor::iniciar_editor() {
 
         if (mostrar_tiles_disponibles) {
             for (auto& boton_opcion : tiles_posibles_boton) {
+                boton_opcion.render(renderer);
+            }
+        }
+
+        if (mostrar_spawns_disponibles) {
+            for (auto& boton_opcion : spawns_disponibles_boton) {
                 boton_opcion.render(renderer);
             }
         }
@@ -122,12 +165,8 @@ void Editor::iniciar_editor() {
 
     // initMap();
     
-    //inicializar pantalla en blanco
-    //renderer.SetDrawColor(255, 255, 255, 255);
+    guardar_mapa();
 
-    // agregar_entidades();
-
-    // 
 
     SDL_Quit();
     IMG_Quit();
@@ -146,6 +185,10 @@ void Editor::inicializar_botones() {
     for (size_t i = 0; i < tiles_img.size(); ++i) {
         tiles_posibles_boton.emplace_back(200, 70 + i * 60, 180, 50, tiles_img[i]);
     }
+
+    for (size_t i = 0; i < tiles_img.size(); ++i) {
+        spawns_disponibles_boton.emplace_back(390, 70 + i * 60, 180, 50, spawn_img[i]);
+    }
 }
 
 void Editor::mostrar_opciones_fondo() {
@@ -156,6 +199,10 @@ void Editor::mostrar_opciones_tiles() {
     mostrar_tiles_disponibles = !mostrar_tiles_disponibles;
 }
 
+void Editor::mostrar_opciones_spawn() {
+    mostrar_spawns_disponibles = !mostrar_spawns_disponibles;
+}
+
 void Editor::actualizar_fondo(int indice) {
     set_fondo(fondos_img[indice]);
     renderizar_fondo();
@@ -164,6 +211,11 @@ void Editor::actualizar_fondo(int indice) {
 
 void Editor::actualizar_tiles(int indice) {
     set_tile(fondos_img[indice]);
+    renderizar_tiles();
+}
+
+void Editor::actualizar_spawn(int indice) {
+    set_spawn(spawn_img[indice]);
     renderizar_tiles();
 }
 
@@ -191,7 +243,6 @@ void Editor::renderizar_tiles() {
         return;
     }
     for (const auto& textura_punto : tiles_seleccionados) {
-        // Draw each tile at its position
         // Recordar que estamos cargando la imagen constantemente, no tiene sentido!.
         SDL2pp::Surface surface(IMG_Load(textura_punto.first.c_str()));
         SDL2pp::Texture textura(renderer, surface);
@@ -205,24 +256,43 @@ void Editor::renderizar_tiles() {
     }
 }
 
+void Editor::set_spawn(std::string path_spawn) {
+    spawn_actual = path_spawn;
+}
 
-// void drawGridLines(int spacing, SDL2pp::Renderer& renderer)
-// {
-//     int x, y;
+void Editor::renderizar_spawn() {
+    if (spawn_seleccionados.empty()){
+        return;
+    }
+    for (const auto& textura_punto : spawn_seleccionados) {
+        // Recordar que estamos cargando la imagen constantemente, no tiene sentido!.
+        SDL2pp::Surface surface(IMG_Load(textura_punto.first.c_str()));
 
-//     renderer.SetDrawColor(255, 255, 255, 255);
+        SDL_Rect rect_inicial = {1, 7, 32, 32};
 
-//     for (x = 0; x < SCREEN_WIDTH; x += spacing)
-//     {
-//         renderer.DrawLine(x, 0, x, SCREEN_HEIGHT);
-//     }
+        SDL2pp::Surface sprite_superficie(
+                SDL_CreateRGBSurface(0, 32, 32, 32, 0, 0, 0, 0));
 
-//     for (y = 0; y < SCREEN_WIDTH; y += spacing)
-//     {
-//         renderer.DrawLine(0, y, SCREEN_WIDTH, y);
-//     }
-//     renderer.Present();
-// }
+        SDL_BlitSurface(surface.Get(), &rect_inicial, sprite_superficie.Get(), nullptr);
+
+        Uint32 color_key = SDL_MapRGB(sprite_superficie.Get()->format, 0, 0, 0);
+
+        SDL_SetColorKey(sprite_superficie.Get(), SDL_TRUE, color_key);
+
+        SDL2pp::Texture textura(renderer, sprite_superficie);
+
+
+        //SDL2pp::Texture textura(renderer, surface);
+        
+        std::vector<SDL_Point> puntos = textura_punto.second;
+
+        for (const auto& punto : puntos){
+            renderer.Copy(textura, SDL2pp::Optional<SDL2pp::Rect>(),
+                      SDL2pp::Rect(punto.x * 32, punto.y * 32, 32, 32));
+        }
+    }
+}
+
 
 
 

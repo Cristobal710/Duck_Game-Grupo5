@@ -15,19 +15,24 @@ class Editor {
 
     Button boton_fondo;
     Button boton_tiles;
+    Button boton_spawn;
     
     bool mostrar_fondos_disponibles;
     bool mostrar_tiles_disponibles;
+    bool mostrar_spawns_disponibles;
 
     std::map<std::string,std::vector<SDL_Point>>  tiles_seleccionados;  
+    std::map<std::string,std::vector<SDL_Point>>  spawn_seleccionados;
 
     std::vector<Button> fondos_posibles_boton;
     std::vector<Button> tiles_posibles_boton;
+    std::vector<Button> spawns_disponibles_boton;
 
    
 
     std::string fondo_actual;
     std::string tile_actual;
+    std::string spawn_actual;
 
 
     
@@ -43,6 +48,10 @@ class Editor {
         
     };
 
+    std::vector<std::string> spawn_img = {
+        "../resources/Grey-Duck.png"
+    };
+
     
 
     public:
@@ -54,13 +63,17 @@ class Editor {
     void renderizar_fondo();
     void set_tile(std::string path_tile);
     void renderizar_tiles();
+    void set_spawn(std::string path_spawn);
+    void renderizar_spawn();
     
     void mostrar_opciones_fondo();
     void mostrar_opciones_tiles();
+    void mostrar_opciones_spawn();
     
 
     void actualizar_fondo(int indice);
     void actualizar_tiles(int indice);
+    void actualizar_spawn(int indice);
     
     void limpiar_pantalla();
     
