@@ -2,6 +2,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "../common/common_pato.h"
+#include "../common/common_estado_pato.h"
+#include "../common/common_constantes.h"
 
 #define DURACION_FRAME 1000 / 30 // 30 frames por segundo
 
@@ -98,8 +100,8 @@ void InterfazGrafica::obtener_estado_juego(SDL2pp::Rect& rect_destino, bool& est
         Pato pato = ultimo_estado.patos.front();
         rect_destino.SetX(pato.get_pos_x());
         rect_destino.SetY(pato.get_pos_y());
-        estado_pato = pato.se_mueve_derecha;
-
+        estado_pato = pato.estado.get_estado_movimiento() == MOVER_DERECHA;
+        std::cout << "Estado pato: " << estado_pato << std::endl;
     } else {
         estado_pato = false;
     }

@@ -30,7 +30,7 @@ void ServerProtocolo::enviar_pato(Pato& pato) {
     enviar_dos_bytes(pato.get_pos_x());
     enviar_dos_bytes(pato.get_pos_y());
     enviar_dos_bytes(pato.get_direccion());
-    enviar_dos_bytes(pato.se_mueve_derecha);
+    enviar_byte(pato.estado.get_estado_movimiento());
     enviar_dos_bytes(pato.esta_apuntando_arriba());
     enviar_dos_bytes(pato.esta_tirado_al_piso());
     enviar_dos_bytes(pato.esta_vivo());

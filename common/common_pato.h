@@ -5,6 +5,7 @@
 
 #include "common_arma.h"
 #include "common_constantes.h"
+#include "common_estado_pato.h"
 
 class Pato: public Entidad {
 private:
@@ -20,7 +21,7 @@ private:
     // uint8_t color;  // hacer map con colores
 
 public:
-    bool se_mueve_derecha;
+    EstadoPato estado;
     Pato(uint16_t id, uint16_t pos_x, uint16_t pos_y, uint8_t direccion);
     //~Pato();
     // uint8_t get_color();

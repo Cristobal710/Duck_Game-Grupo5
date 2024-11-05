@@ -13,7 +13,7 @@ Pato::Pato(uint16_t id, uint16_t pos_x, uint16_t pos_y, uint8_t direccion):
         apunta_arriba(false),
         tirado_al_piso(false),
         direccion(direccion),
-        se_mueve_derecha(false) {
+        estado() {
     // if (color == "rojo") {
     //     this->color = 1;
     // } else if (color == "azul") {
@@ -30,14 +30,15 @@ Pato::Pato(uint16_t id, uint16_t pos_x, uint16_t pos_y, uint8_t direccion):
 // Pato::~Pato() { delete arma; }
 
 void Pato::moverse_izquierda() {
-    pos_x--;
+    pos_x-=3;
     direccion = DIRECCION_IZQUIERDA;
+    estado.set_moviendo_izquierda();
 }
 
 void Pato::moverse_derecha() {
-    pos_x += 1;
+    pos_x += 3;
     direccion = DIRECCION_DERECHA;
-    se_mueve_derecha = true;
+    estado.set_moviendo_derecha();
 }
 
 void Pato::saltar() { pos_y++; }

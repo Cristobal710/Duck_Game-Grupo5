@@ -12,6 +12,8 @@
 #include "../common/common_pato.h"
 #include "../common/common_protocolo.h"
 #include "../common/common_socket.h"
+#include "../common/common_constantes.h"
+#include "../common/common_estado_pato.h"
 
 #include "cliente_comando.h"
 

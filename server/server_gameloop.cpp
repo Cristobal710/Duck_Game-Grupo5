@@ -69,7 +69,7 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
             break;
         default:
             // hacer metodo que ponga quieto al pato
-            pato.se_mueve_derecha = false;
+            pato.estado.set_dejar_de_moverse();
             break;
 
     }
@@ -85,7 +85,8 @@ void GameLoop::run() {
         while (true) {
             std::vector<EventoServer> eventos = clientes.recibir_mensajes_clientes();
             if (eventos.empty()) {
-                pato.se_mueve_derecha = false;
+                pato.estado.set_dejar_de_moverse();
+                //cola_estados_juego.push(ultimo_estado);
             }
             for(EventoServer evento : eventos){
                 procesar_evento(evento, ultimo_estado);

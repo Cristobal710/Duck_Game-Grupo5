@@ -16,6 +16,9 @@
 #include "../common/common_protocolo.h"
 #include "../common/common_queue.h"
 #include "../common/common_socket.h"
+#include "../common/common_constantes.h"
+#include "../common/common_estado_pato.h"
+
 
 #include "server_evento.h"
 
