@@ -40,13 +40,13 @@ void MovimientoLateral::mostrar_frame_izquierda() {
         puntero_movimiento_izquierda = 0;
     }
     SDL_RenderCopyEx(renderer.Get(), movimiento_pato[puntero_movimiento_izquierda].Get(), &rect_inicio, &rect_dibujado, 0,
-                         nullptr, SDL_FLIP_HORIZONTAL);
+                     nullptr, SDL_FLIP_HORIZONTAL);
     
 }
 
 SDL2pp::Texture& MovimientoLateral::mostrar_frame() { return movimiento_pato[0]; }
 
-void MovimientoLateral::pato_movimiento(uint8_t& movimiento, int pos_x, int pos_y) {
+void MovimientoLateral::pato_movimiento(uint8_t& movimiento, uint8_t& direccion_pato, int pos_x, int pos_y) {
     if (movimiento == MOVER_DERECHA){
         rect_dibujado.SetX(pos_x);
         rect_dibujado.SetY(pos_y);
@@ -61,8 +61,14 @@ void MovimientoLateral::pato_movimiento(uint8_t& movimiento, int pos_x, int pos_
     } else {
         puntero_movimiento_derecha = 0;
         puntero_movimiento_izquierda = 0;
-        renderer.Copy(mostrar_frame(), rect_inicio,
-        rect_dibujado);
+
+        if (direccion_pato == DIRECCION_IZQUIERDA) {
+            SDL_RenderCopyEx(renderer.Get(), movimiento_pato[puntero_movimiento_izquierda].Get(), &rect_inicio, &rect_dibujado, 0,
+                nullptr, SDL_FLIP_HORIZONTAL);
+        } else {
+            renderer.Copy(mostrar_frame(), rect_inicio, rect_dibujado);
+        }
+        //renderer.Copy(mostrar_frame(), rect_inicio, rect_dibujado);
     }
 }
 

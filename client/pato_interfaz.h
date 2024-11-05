@@ -38,7 +38,7 @@ public:
 
     SDL2pp::Texture& mostrar_frame();
 
-    void dibujar(uint8_t& estado_pato, int pos_x, int pos_y);
+    void dibujar(uint8_t& estado_pato, uint8_t& direccion_pato, int pos_x, int pos_y);
 };
 
 #endif  // PATO_INTERFAZ_H

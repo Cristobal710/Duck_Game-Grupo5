@@ -20,7 +20,7 @@ void ClienteProtocolo::recibir_pato(std::list<Pato>& patos) {
     uint16_t id = recibir_dos_bytes(cerrado);
     uint16_t pos_x = recibir_dos_bytes(cerrado);
     uint16_t pos_y = recibir_dos_bytes(cerrado);
-    uint16_t direccion = recibir_dos_bytes(cerrado);
+    uint8_t direccion = recibir_byte(cerrado);
     uint8_t estado_movimiento = recibir_byte(cerrado);
     uint16_t apunta_arriba = recibir_dos_bytes(cerrado);
     uint16_t tirado_al_piso = recibir_dos_bytes(cerrado);
