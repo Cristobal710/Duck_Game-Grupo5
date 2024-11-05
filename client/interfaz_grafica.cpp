@@ -3,6 +3,7 @@
 #include <SDL2/SDL_image.h>
 #include "../common/common_pato.h"
 
+#define DURACION_FRAME 1000 / 30 // 30 frames por segundo
 
 InterfazGrafica::InterfazGrafica(Queue<ComandoGrafica>& queue, Queue<EstadoJuego>& cola_estado_juego):
         comandos_cliente(queue),
@@ -16,9 +17,7 @@ InterfazGrafica::InterfazGrafica(Queue<ComandoGrafica>& queue, Queue<EstadoJuego
 
 {}
 
-
 void InterfazGrafica::iniciar() {
-
 
     SDL_Init(SDL_INIT_VIDEO);
     IMG_Init(IMG_INIT_PNG);
@@ -31,24 +30,36 @@ void InterfazGrafica::iniciar() {
     SDL2pp::Rect rect_dibujado = {100, 100, 32, 32};  // posición inicial
 
     bool estado_pato = false;
+    Uint32 tiempo_ultimo_frame = SDL_GetTicks();
 
     while (correr_programa) {
-        manejar_eventos(rect_inicio, rect_dibujado, pato);
-        renderer.Clear();
-        obtener_estado_juego(rect_dibujado, estado_pato);
-        
-        std::string movimiento_pato;
-        if (estado_pato){
-            movimiento_pato = "d";
-        } 
-        fondo.dibujar(renderer);
-        pato.dibujar(movimiento_pato, rect_dibujado.GetX(), rect_dibujado.GetY());
+        Uint32 tiempo_actual = SDL_GetTicks();
+        Uint32 tiempo_transcurrido = tiempo_actual - tiempo_ultimo_frame;
 
-        renderer.Present();
-        SDL_Delay(30); //aproximado 30 frames por segundo. Hay que cambiarlo
+        if (tiempo_transcurrido >= DURACION_FRAME) {
+            manejar_eventos(rect_inicio, rect_dibujado, pato);
+            renderer.Clear();
+            obtener_estado_juego(rect_dibujado, estado_pato);
+
+            std::string movimiento_pato;
+            if (estado_pato) {
+                movimiento_pato = "d";
+            }
+
+            fondo.dibujar(renderer);
+            pato.dibujar(movimiento_pato, rect_dibujado.GetX(), rect_dibujado.GetY());
+
+            renderer.Present();
+            
+            tiempo_ultimo_frame = tiempo_actual; //resetear el tiempo del ultimo frame al actual
+        } else {
+            SDL_Delay(DURACION_FRAME - tiempo_transcurrido); //"rest" para evitar uso excesivo de CPU
+        }
     }
 
     IMG_Quit();
+    //SDL_DestroyRenderer(renderer);
+    //SDL_DestroyWindow(window)
     SDL_Quit();
 }
 
