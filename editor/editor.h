@@ -6,7 +6,11 @@
 #include <map>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <fstream>
 #include <SDL2pp/SDL2pp.hh>
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
 
 class Editor {
     private:
@@ -76,7 +80,7 @@ class Editor {
     void actualizar_spawn(int indice);
     
     void limpiar_pantalla();
-    
+    void guardar_mapa(std::string& nombre_archivo);
 
 }
 ;

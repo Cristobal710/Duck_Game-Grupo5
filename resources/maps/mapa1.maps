@@ -1,0 +1,145 @@
+{
+    "background": "../resources/backgrounds/forest.png",
+    "spawns": [
+        {
+            "x": 14,
+            "y": 13
+        },
+        {
+            "x": 19,
+            "y": 13
+        }
+    ],
+    "tiles": [
+        {
+            "texture": "../resources/backgrounds/city.png",
+            "x": 13,
+            "y": 11
+        },
+        {
+            "texture": "../resources/backgrounds/city.png",
+            "x": 13,
+            "y": 10
+        },
+        {
+            "texture": "../resources/backgrounds/city.png",
+            "x": 13,
+            "y": 9
+        },
+        {
+            "texture": "../resources/backgrounds/city.png",
+            "x": 14,
+            "y": 9
+        },
+        {
+            "texture": "../resources/backgrounds/city.png",
+            "x": 15,
+            "y": 9
+        },
+        {
+            "texture": "../resources/backgrounds/city.png",
+            "x": 16,
+            "y": 9
+        },
+        {
+            "texture": "../resources/backgrounds/city.png",
+            "x": 18,
+            "y": 9
+        },
+        {
+            "texture": "../resources/backgrounds/city.png",
+            "x": 20,
+            "y": 9
+        },
+        {
+            "texture": "../resources/backgrounds/city.png",
+            "x": 16,
+            "y": 9
+        },
+        {
+            "texture": "../resources/backgrounds/city.png",
+            "x": 19,
+            "y": 9
+        },
+        {
+            "texture": "../resources/backgrounds/city.png",
+            "x": 17,
+            "y": 9
+        },
+        {
+            "texture": "../resources/backgrounds/city.png",
+            "x": 20,
+            "y": 10
+        },
+        {
+            "texture": "../resources/backgrounds/city.png",
+            "x": 20,
+            "y": 11
+        },
+        {
+            "texture": "../resources/backgrounds/city.png",
+            "x": 20,
+            "y": 13
+        },
+        {
+            "texture": "../resources/backgrounds/city.png",
+            "x": 20,
+            "y": 14
+        },
+        {
+            "texture": "../resources/backgrounds/city.png",
+            "x": 20,
+            "y": 12
+        },
+        {
+            "texture": "../resources/backgrounds/city.png",
+            "x": 19,
+            "y": 14
+        },
+        {
+            "texture": "../resources/backgrounds/city.png",
+            "x": 16,
+            "y": 14
+        },
+        {
+            "texture": "../resources/backgrounds/city.png",
+            "x": 15,
+            "y": 14
+        },
+        {
+            "texture": "../resources/backgrounds/city.png",
+            "x": 13,
+            "y": 14
+        },
+        {
+            "texture": "../resources/backgrounds/city.png",
+            "x": 13,
+            "y": 12
+        },
+        {
+            "texture": "../resources/backgrounds/city.png",
+            "x": 13,
+            "y": 13
+        },
+        {
+            "texture": "../resources/backgrounds/city.png",
+            "x": 15,
+            "y": 14
+        },
+        {
+            "texture": "../resources/backgrounds/city.png",
+            "x": 14,
+            "y": 14
+        },
+        {
+            "texture": "../resources/backgrounds/city.png",
+            "x": 17,
+            "y": 14
+        },
+        {
+            "texture": "../resources/backgrounds/city.png",
+            "x": 18,
+            "y": 14
+        }
+    ]
+}

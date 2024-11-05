@@ -164,13 +164,14 @@ void Editor::iniciar_editor() {
     // initEntities();
 
     // initMap();
-    
-    guardar_mapa();
-
 
     SDL_Quit();
     IMG_Quit();
     
+     std::string nombre_archivo;
+    std::getline(std::cin, nombre_archivo);
+
+    guardar_mapa(nombre_archivo);
 }
 
 void Editor::set_fondo(std::string path_fondo) {
@@ -293,6 +294,49 @@ void Editor::renderizar_spawn() {
     }
 }
 
+void Editor::guardar_mapa(std::string& nombre_archivo) {
+    json json_mapa;
 
+    if (!fondo_actual.empty()){
+        json_mapa["background"] = fondo_actual;
+    }
+
+    for (const auto& tiles : tiles_seleccionados) {
+        std::vector<SDL_Point> puntos = tiles.second;
+
+        for (const auto& punto : puntos){
+            json json_tiles;
+            json_tiles["texture"] = tiles.first;
+            json_tiles["x"] = punto.x;
+            json_tiles["y"] = punto.y;
+            json_mapa["tiles"].push_back(json_tiles);
+        }
+    }
+
+    for (const auto& spawns : spawn_seleccionados) {
+        std::vector<SDL_Point> puntos = spawns.second;
+
+        for (const auto& punto : puntos){
+            json json_spawns;
+            json_spawns["x"] = punto.x;
+            json_spawns["y"] = punto.y;
+            json_mapa["spawns"].push_back(json_spawns);
+        }
+    }
+
+    std::string file_nombre = "../resources/maps/" + nombre_archivo + ".maps";
+
+    std::ofstream file_final(file_nombre);
+
+    if (file_final.is_open()) {
+        
+        file_final << json_mapa.dump(4); 
+
+        file_final.close();
+        std::cout << "Map exported successfully to: " << file_nombre << std::endl;
+    } else {
+        std::cerr << "Failed to open file: " << file_nombre << std::endl;
+    }
+}
 
 

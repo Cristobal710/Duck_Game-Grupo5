@@ -71,6 +71,14 @@ if(TALLER_CLIENT OR TALLER_EDITOR)
 
     FetchContent_MakeAvailable(libSDL2_image)
 
+    # Fetch nlohmann/json library
+    FetchContent_Declare(
+        nlohmann_json
+        GIT_REPOSITORY https://github.com/nlohmann/json.git
+        GIT_TAG v3.11.2 # specify the version you need
+    )
+    FetchContent_MakeAvailable(nlohmann_json)
+
 endif()
 
 # Program section
@@ -97,7 +105,8 @@ if(TALLER_CLIENT)
         taller_common 
         SDL2pp::SDL2pp 
         SDL2::SDL2 
-        SDL2_image::SDL2_image)  
+        SDL2_image::SDL2_image
+        nlohmann_json)  
 endif()
 
 if(TALLER_SERVER)
@@ -134,7 +143,7 @@ if(TALLER_EDITOR)
     target_include_directories(taller_editor PRIVATE ${libSDL2pp_SOURCE_DIR})
 
     # Link the taller_common lib target
-    target_link_libraries(taller_editor taller_common SDL2pp::SDL2pp)
+    target_link_libraries(taller_editor taller_common SDL2pp::SDL2pp nlohmann_json)
 endif()
 
 
