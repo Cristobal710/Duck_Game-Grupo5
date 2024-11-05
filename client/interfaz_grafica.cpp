@@ -43,12 +43,6 @@ void InterfazGrafica::iniciar() {
             renderer.Clear();
             obtener_estado_juego(rect_dibujado, estado_pato);
 
-            std::cout << "estado_pato" << static_cast<int> (estado_pato) << std::endl;
-            //std::string movimiento_pato;
-            //if (estado_pato) {
-            //    movimiento_pato = "d";
-            //}
-
             fondo.dibujar(renderer);
             pato.dibujar(estado_pato, rect_dibujado.GetX(), rect_dibujado.GetY());
 
@@ -82,7 +76,9 @@ void InterfazGrafica::manejar_eventos(SDL_Rect& rect_inicio, SDL2pp::Rect& rect_
                 comandos_cliente.push(comando_cliente);
             }
             if (evento.key.keysym.sym == SDLK_a) {
-                pato.pato_camina_izquierda(renderer, rect_inicio, rect_dibujado);
+                comando_cliente.tecla = "a";
+                comando_cliente.jugador_id = 3;
+                comandos_cliente.push(comando_cliente);
             }
             if (evento.key.keysym.sym == SDLK_SPACE) {
                 pato.pato_salta(renderer, rect_inicio, rect_dibujado);
@@ -102,7 +98,7 @@ void InterfazGrafica::obtener_estado_juego(SDL2pp::Rect& rect_destino, uint8_t& 
         rect_destino.SetX(pato.get_pos_x());
         rect_destino.SetY(pato.get_pos_y());
         estado_pato = pato.estado.get_estado_movimiento();
-        std::cout << "Estado pato: " << static_cast<int>(estado_pato) << std::endl;
+
     } else {
         estado_pato = false;
     }
