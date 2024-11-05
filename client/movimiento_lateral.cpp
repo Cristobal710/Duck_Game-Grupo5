@@ -24,39 +24,46 @@ void MovimientoLateral::frames_movimientos(SDL2pp::Renderer& renderer, SDL2pp::S
     }
 
 
-void MovimientoLateral::mostrar_frame_derecha() {
-    puntero_movimiento_derecha++;
-    if (puntero_movimiento_derecha == 6){
-        puntero_movimiento_derecha = 0;
+void MovimientoLateral::mostrar_frame_derecha(int it) {
+    if (it > NUM_FRAMES_MOVIMIENTO_PATO){
+    renderer.Copy(movimiento_pato[(it % NUM_FRAMES_MOVIMIENTO_PATO)], rect_inicio,
+        rect_dibujado);
+    return;
     }
-    renderer.Copy(movimiento_pato[puntero_movimiento_derecha], rect_inicio,
+    renderer.Copy(movimiento_pato[(it)], rect_inicio,
         rect_dibujado);
     
 }
 
-void MovimientoLateral::mostrar_frame_izquierda() {
+void MovimientoLateral::mostrar_frame_izquierda(int it) {
     puntero_movimiento_izquierda++;
     if (puntero_movimiento_izquierda == 6){
         puntero_movimiento_izquierda = 0;
     }
-    SDL_RenderCopyEx(renderer.Get(), movimiento_pato[puntero_movimiento_izquierda].Get(), &rect_inicio, &rect_dibujado, 0,
+    if (it > NUM_FRAMES_MOVIMIENTO_PATO){
+    SDL_RenderCopyEx(renderer.Get(), movimiento_pato[it % NUM_FRAMES_MOVIMIENTO_PATO].Get(), &rect_inicio, &rect_dibujado, 0,
                      nullptr, SDL_FLIP_HORIZONTAL);
+    return;
+    }
+    SDL_RenderCopyEx(renderer.Get(), movimiento_pato[it].Get(), &rect_inicio, &rect_dibujado, 0,
+                     nullptr, SDL_FLIP_HORIZONTAL);
+    
     
 }
 
 SDL2pp::Texture& MovimientoLateral::mostrar_frame() { return movimiento_pato[0]; }
 
-void MovimientoLateral::pato_movimiento(uint8_t& movimiento, uint8_t& direccion_pato, int pos_x, int pos_y) {
+void MovimientoLateral::pato_movimiento(uint8_t& movimiento, uint8_t& direccion_pato, int pos_x, int pos_y, int it) {
     if (movimiento == MOVER_DERECHA){
         rect_dibujado.SetX(pos_x);
         rect_dibujado.SetY(pos_y);
-        mostrar_frame_derecha();
+        mostrar_frame_derecha(it);
        
     
     } else if (movimiento == MOVER_IZQUIERDA) {
         rect_dibujado.SetX(pos_x);
         rect_dibujado.SetY(pos_y);
-        mostrar_frame_izquierda();
+        mostrar_frame_izquierda(it);
         
     } else {
         puntero_movimiento_derecha = 0;

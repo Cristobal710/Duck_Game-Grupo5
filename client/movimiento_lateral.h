@@ -19,13 +19,13 @@ class MovimientoLateral {
     void cargar_frames(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet, int offset_y,
                        std::vector<SDL2pp::Texture>& texturas, int num_frames);
     
-    void mostrar_frame_derecha();
-    void mostrar_frame_izquierda();
+    void mostrar_frame_derecha(int it);
+    void mostrar_frame_izquierda(int it);
     SDL2pp::Texture& mostrar_frame();
 
     public:
     MovimientoLateral(SDL2pp::Renderer& renderer, const std::string& pato_path, int pos_x, int pos_y);
-    void pato_movimiento(uint8_t& movimiento, uint8_t& direccion_pato, int pos_x, int pos_y);
+    void pato_movimiento(uint8_t& movimiento, uint8_t& direccion_pato, int pos_x, int pos_y, int it);
 };
 
 

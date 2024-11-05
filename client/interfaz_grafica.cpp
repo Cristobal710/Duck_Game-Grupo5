@@ -4,6 +4,7 @@
 #include "../common/common_pato.h"
 #include "../common/common_estado_pato.h"
 #include "../common/common_constantes.h"
+#include <cmath>
 
 #define DURACION_FRAME 1000 / 30 // 30 frames por segundo
 
@@ -33,24 +34,39 @@ void InterfazGrafica::iniciar() {
 
     uint8_t estado_pato = BYTE_NULO;
     uint8_t direccion_pato = DIRECCION_DERECHA;
-    Uint32 tiempo_ultimo_frame = SDL_GetTicks();
+    
+    float tiempo_ultimo_frame = SDL_GetTicks();
+    int it = 0;
 
     while (correr_programa) {
-        Uint32 tiempo_actual = SDL_GetTicks();
-        Uint32 tiempo_transcurrido = tiempo_actual - tiempo_ultimo_frame;
-
-        if (tiempo_transcurrido >= DURACION_FRAME) {
-            manejar_eventos(rect_inicio, rect_dibujado, pato);
-            renderer.Clear();
-            obtener_estado_juego(rect_dibujado, estado_pato, direccion_pato);
-
-            fondo.dibujar(renderer);
-            pato.dibujar(estado_pato, direccion_pato, rect_dibujado.GetX(), rect_dibujado.GetY());
-
-            renderer.Present();
+        
+        manejar_eventos(rect_inicio, rect_dibujado, pato);
+        renderer.Clear();
+        obtener_estado_juego(rect_dibujado, estado_pato, direccion_pato);
+        fondo.dibujar(renderer);
+        pato.dibujar(estado_pato, direccion_pato, rect_dibujado.GetX(), rect_dibujado.GetY(), it);
+        renderer.Present();
             
-            tiempo_ultimo_frame = tiempo_actual; //resetear el tiempo del ultimo frame al actual
+        
+        //ahora calculamos cuanto tardamos en hacer todo, si nos pasamos, drop & rest.
+        Uint32 tiempo_actual = SDL_GetTicks();
+        int32_t descansar = DURACION_FRAME - (tiempo_actual - tiempo_ultimo_frame);
+
+        if (descansar < 0){ //entonces nos atrasamos, tenemos que esperar a la siguiente iteracion, drop & rest.
+            int32_t behind = -descansar;  
+            descansar = DURACION_FRAME - (behind % DURACION_FRAME);
+            int32_t lost = behind + descansar;
+
+            tiempo_ultimo_frame += lost;
+            it += static_cast<int>(lost / DURACION_FRAME);
+            if (lost % DURACION_FRAME != 0 && (lost < 0) != (DURACION_FRAME < 0)) {
+                it--;  
+            }
         }
+        SDL_Delay(descansar);
+        tiempo_ultimo_frame += DURACION_FRAME;
+        it += 1;
+        
     }
 
     IMG_Quit();
