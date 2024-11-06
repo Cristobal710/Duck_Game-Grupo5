@@ -46,7 +46,7 @@ void InterfazGrafica::iniciar() {
         renderer.Clear();
         obtener_estado_juego(rect_dibujado, estado_pato_movimiento, se_tira_al_piso, estado_pato_salto, direccion_pato);
         fondo.dibujar(renderer);
-        pato.dibujar(estado_pato_movimiento, direccion_pato, se_tira_al_piso,  rect_dibujado.GetX(), rect_dibujado.GetY(), it);
+        pato.dibujar(estado_pato_movimiento, estado_pato_salto, direccion_pato, se_tira_al_piso, rect_dibujado.GetX(), rect_dibujado.GetY(), it);
         renderer.Present();
             
         
