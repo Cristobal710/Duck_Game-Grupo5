@@ -21,24 +21,39 @@ void MovimientoAgachado::frames_agachado(SDL2pp::Renderer& renderer, SDL2pp::Sur
     cargar_frames(renderer, sprite_sheet, 70, movimiento_pato_agachado, NUM_FRAMES_PATO_AGACHADO);
 }
 
-void MovimientoAgachado::mostrar_frame_agachado(int it) {
+void MovimientoAgachado::mostrar_frames_agachado(int it) {
+    int frame = NUM_FRAMES_PATO_AGACHADO - 1 - (it % NUM_FRAMES_PATO_AGACHADO);
+
     if (it > NUM_FRAMES_PATO_AGACHADO) {
-        renderer.Copy(movimiento_pato_agachado[(it % NUM_FRAMES_PATO_AGACHADO)], rect_inicio,
-                      rect_dibujado);
+        renderer.Copy(movimiento_pato_agachado[0], rect_inicio, rect_dibujado);
         return;
     }
-    renderer.Copy(movimiento_pato_agachado[(it)], rect_inicio,
-                  rect_dibujado);
+    renderer.Copy(movimiento_pato_agachado[frame], rect_inicio, rect_dibujado);
+}
+
+void MovimientoAgachado::mostrar_frames_levantarse(int it) {
+    int frame = it % NUM_FRAMES_PATO_AGACHADO;
+
+    if (it > NUM_FRAMES_PATO_AGACHADO) {
+        renderer.Copy(movimiento_pato_agachado[NUM_FRAMES_PATO_AGACHADO - 1], rect_inicio, rect_dibujado);
+        return;
+    }
+    renderer.Copy(movimiento_pato_agachado[frame], rect_inicio, rect_dibujado);
 }
 
 SDL2pp::Texture& MovimientoAgachado::mostrar_frame() {
     return movimiento_pato_agachado[0];
 }
 
-void MovimientoAgachado::pato_agachado(int pos_x, int pos_y, int it){
+void MovimientoAgachado::pato_agachado(uint8_t& esta_agachado, int pos_x, int pos_y, int it){
     rect_dibujado.SetX(pos_x);
     rect_dibujado.SetY(pos_y);
-    mostrar_frame_agachado(it);
+    if(esta_agachado == TIRAR_PISO){
+        mostrar_frames_agachado(it);
+    } else {
+        mostrar_frames_levantarse(it);
+    }
+    
 }
 
 void MovimientoAgachado::cargar_frames(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet,

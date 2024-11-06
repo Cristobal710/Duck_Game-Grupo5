@@ -42,10 +42,13 @@ void MovimientoSalto::pato_salta(uint8_t& movimiento, int pos_x, int pos_y, int 
     if (movimiento == SALTAR_ALETEAR) {
         mostrar_frame_salto(it);
         puntero_salto = (puntero_salto + 1) % NUM_FRAMES_SALTA_PATO;
-    } else if (movimiento == CAER) {
         mostrar_frame_caida(it);
         puntero_caida = (puntero_caida + 1) % NUM_FRAMES_CAE_PATO;
-    }
+    } 
+    //else if (movimiento == CAER) {
+    //    mostrar_frame_caida(it);
+    //    puntero_caida = (puntero_caida + 1) % NUM_FRAMES_CAE_PATO;
+    //}
 }
 
 void MovimientoSalto::cargar_frames(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet,

@@ -26,7 +26,7 @@ class InterfazGrafica {
 
 
     void manejar_eventos();
-    void obtener_estado_juego(SDL2pp::Rect& rect_destino, uint8_t& estado_pato_movimiento, bool& se_tira_al_piso, uint8_t& estado_pato_salto, uint8_t& direccion_pato);
+    void obtener_estado_juego(SDL2pp::Rect& rect_destino, uint8_t& estado_pato_movimiento, uint8_t& se_tira_al_piso, uint8_t& estado_pato_salto, uint8_t& direccion_pato);
 
     public:
     InterfazGrafica(Queue<ComandoGrafica>& cola_comandos, Queue<EstadoJuego>& cola_estado_juego);

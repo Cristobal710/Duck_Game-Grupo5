@@ -23,9 +23,9 @@ void ClienteProtocolo::recibir_pato(std::list<Pato>& patos) {
     uint8_t direccion = recibir_byte(cerrado);
     uint8_t estado_movimiento = recibir_byte(cerrado);
     uint8_t estado_salto = recibir_byte(cerrado);
-    uint16_t apunta_arriba = recibir_dos_bytes(cerrado);
-    uint16_t tirado_al_piso = recibir_dos_bytes(cerrado);
-    uint16_t esta_vivo = recibir_dos_bytes(cerrado);
+    uint16_t apunta_arriba = recibir_byte(cerrado);
+    uint16_t estado_agachado = recibir_byte(cerrado);
+    uint16_t esta_vivo = recibir_byte(cerrado);
     uint16_t casco_inventario = recibir_dos_bytes(cerrado);
     uint16_t armadura_inventario = recibir_dos_bytes(cerrado);
     uint16_t casco_equipado = recibir_dos_bytes(cerrado);
@@ -34,12 +34,9 @@ void ClienteProtocolo::recibir_pato(std::list<Pato>& patos) {
     // uint8_t municion_disponible = recibir_byte(cerrado);
 
     Pato pato(id, pos_x, pos_y, direccion);
-    pato.estado = EstadoPato(estado_movimiento, estado_salto);
+    pato.estado = EstadoPato(estado_movimiento, estado_salto, estado_agachado);
     if (static_cast<bool>(apunta_arriba)) {
         pato.apuntar_arriba();
-    }
-    if (static_cast<bool>(tirado_al_piso)) {
-        pato.tirarse_al_piso();
     }
     if (static_cast<bool>(casco_inventario)) {
         pato.tomar_casco();
@@ -193,10 +190,3 @@ EstadoJuego ClienteProtocolo::recibir_estado_juego() {
     // estado_juego.armas = recibir_armas();
     return estado_juego;
 }
-
-// -se puede tener una banana y un arma a la vez? como funciona el inventario?
-// -como funciona el salto? porque un salto de 3 casillas no se puede ejecutar en una unica
-// iteracion ya que el cliente va a ver un teletransporte en lugar de un salto. Lo mismo la caida.
-// Cuantas iteraciones se necesitan para que un pato caiga 3 casillas por ejemplo? En cuanto a la
-// fisica -las fisicas del juego como funcionan? se calculan con alguna funcion de la gravedad o
-// algo asi?

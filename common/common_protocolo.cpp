@@ -10,7 +10,7 @@ Protocolo::Protocolo(Socket& socket): socket(socket), acciones() {
     acciones["click_izq"] = DISPARAR;
     acciones["r"] = RECARGAR;
     acciones["e"] = TOMAR_ARMA;
-    acciones["q"] = TIRAR_PISO;
+    acciones["s"] = TIRAR_PISO;
 }
 
 void Protocolo::enviar_byte(const uint8_t byte) { 

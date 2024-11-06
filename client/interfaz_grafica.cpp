@@ -33,7 +33,7 @@ void InterfazGrafica::iniciar() {
     SDL2pp::Rect rect_dibujado = {100, 100, 32, 32};  // posición inicial
 
     uint8_t estado_pato_movimiento = BYTE_NULO;
-    bool se_tira_al_piso = false;
+    uint8_t se_tira_al_piso = BYTE_NULO;
     uint8_t estado_pato_salto = BYTE_NULO;
     uint8_t direccion_pato = DIRECCION_DERECHA;
     
@@ -108,11 +108,16 @@ void InterfazGrafica::manejar_eventos() {
                 comando_cliente.jugador_id = 3;
                 comandos_cliente.push(comando_cliente);
             }
+            if (evento.key.keysym.sym == SDLK_SPACE) {
+                comando_cliente.tecla = " ";
+                comando_cliente.jugador_id = 3;
+                comandos_cliente.push(comando_cliente);
+            }
         }
     }
 }
 
-void InterfazGrafica::obtener_estado_juego(SDL2pp::Rect& rect_destino, uint8_t& estado_pato_movimiento, bool& se_tira_al_piso, uint8_t& estado_pato_salto, uint8_t& direccion_pato) {
+void InterfazGrafica::obtener_estado_juego(SDL2pp::Rect& rect_destino, uint8_t& estado_pato_movimiento, uint8_t& se_tira_al_piso, uint8_t& estado_pato_salto, uint8_t& direccion_pato) {
     //deberia ser bloqueante?
     EstadoJuego ultimo_estado; 
     // cambiar if por while hasta quedarme con el ulitmo estado de juego y dibujo el ultimo
@@ -121,12 +126,11 @@ void InterfazGrafica::obtener_estado_juego(SDL2pp::Rect& rect_destino, uint8_t& 
         rect_destino.SetX(pato.get_pos_x());
         rect_destino.SetY(pato.get_pos_y());
         estado_pato_movimiento = pato.estado.get_estado_movimiento();
-        se_tira_al_piso = pato.esta_tirado_al_piso();
+        se_tira_al_piso = pato.estado.get_estado_agachado();
         estado_pato_salto = pato.estado.get_estado_salto();
-        //bool esta_agachado = pato.esta_tirado_al_piso();
-        //std::cout <<  "Esta agachado: " << esta_agachado << std::endl;
-        //std::cout << "Estado pato: " << static_cast<int>(estado_pato_movimiento) << std::endl;
-        //std::cout << "Estado salto: " << static_cast<int>(estado_pato_salto) << std::endl;
+        std::cout <<  "Esta agachado: " << static_cast<int>(se_tira_al_piso) << std::endl;
+        std::cout << "Estado pato: " << static_cast<int>(estado_pato_movimiento) << std::endl;
+        std::cout << "Estado salto: " << static_cast<int>(estado_pato_salto) << std::endl;
         direccion_pato = pato.get_direccion();
 
     } else {

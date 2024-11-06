@@ -96,9 +96,9 @@ void PatoInterfaz::pato_agachado(SDL2pp::Renderer& renderer, SDL_Rect& rect_inic
 
 SDL2pp::Texture& PatoInterfaz::mostrar_frame() { return movimiento_pato[0]; }
 
-void PatoInterfaz::dibujar(uint8_t& estado_pato_movimiento, uint8_t& estado_pato_salto, uint8_t& direccion_pato, bool se_tira_al_piso, int pos_x, int pos_y, int it) {
-    if(se_tira_al_piso){
-        movimiento_pato_agachado.pato_agachado(pos_x, pos_y, it);
+void PatoInterfaz::dibujar(uint8_t& estado_pato_movimiento, uint8_t& estado_pato_salto, uint8_t& direccion_pato, uint8_t& se_tira_al_piso, int pos_x, int pos_y, int it) {
+    if(se_tira_al_piso == TIRAR_PISO){
+        movimiento_pato_agachado.pato_agachado(se_tira_al_piso, pos_x, pos_y, it);
         return;
     } else if (estado_pato_salto == SALTAR_ALETEAR || estado_pato_salto == CAER) {
         movimiento_pato_salto.pato_salta(estado_pato_salto, pos_x, pos_y, it);

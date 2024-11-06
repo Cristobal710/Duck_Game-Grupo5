@@ -11,9 +11,11 @@ Pato::Pato(uint16_t id, uint16_t pos_x, uint16_t pos_y, uint8_t direccion):
         casco_equipado(false),
         vivo(true),
         apunta_arriba(false),
-        tirado_al_piso(false),
         direccion(direccion),
-        estado() {
+        estado(),
+        contador_salto(0),
+        contador_caer(0) 
+        {
     // if (color == "rojo") {
     //     this->color = 1;
     // } else if (color == "azul") {
@@ -44,6 +46,11 @@ void Pato::moverse_derecha() {
 void Pato::saltar() { 
     pos_y++; 
     estado.set_saltar();
+    contador_salto++;
+    if (contador_salto == 3) {
+        estado.set_dejar_de_saltar();
+        contador_salto = 0;
+    }
 }
 
 void Pato::planear() { pos_y--; }
@@ -51,6 +58,11 @@ void Pato::planear() { pos_y--; }
 void Pato::caer() { 
     pos_y-=3; 
     estado.set_caer();
+    contador_caer++;
+    if (contador_caer == 5) {
+        estado.set_dejar_de_caer();
+        contador_caer = 0;
+    }
 }
 
 void Pato::tomar_arma(Arma* nuevaArma) { arma = nuevaArma; }
@@ -72,10 +84,11 @@ void Pato::dejar_de_apuntar_arriba() { apunta_arriba = false; }
 bool Pato::esta_apuntando_arriba() { return apunta_arriba; }
 
 void Pato::tirarse_al_piso() {
-    tirado_al_piso = true;
+    estado.set_agacharse();
 }
-
-bool Pato::esta_tirado_al_piso() { return tirado_al_piso; }
+void Pato::levantarse_del_piso(){
+    estado.set_dejar_de_agacharse();
+}
 
 void Pato::tomar_armadura() { tomo_armadura = true; }
 

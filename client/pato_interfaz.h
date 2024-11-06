@@ -42,7 +42,7 @@ public:
 
     SDL2pp::Texture& mostrar_frame();
 
-    void dibujar(uint8_t& estado_pato_movimiento, uint8_t& estado_pato_salto, uint8_t& direccion_pato, bool se_tira_al_piso, int pos_x, int pos_y, int it);
+    void dibujar(uint8_t& estado_pato_movimiento, uint8_t& estado_pato_salto, uint8_t& direccion_pato, uint8_t& se_tira_al_piso, int pos_x, int pos_y, int it);
 };
 
 #endif  // PATO_INTERFAZ_H

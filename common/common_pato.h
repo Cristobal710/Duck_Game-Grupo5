@@ -16,12 +16,13 @@ private:
     bool casco_equipado;
     bool vivo;
     bool apunta_arriba;
-    bool tirado_al_piso;
     uint8_t direccion;
     // uint8_t color;  // hacer map con colores
 
 public:
     EstadoPato estado;
+    uint8_t contador_salto;
+    uint8_t contador_caer;
     Pato(uint16_t id, uint16_t pos_x, uint16_t pos_y, uint8_t direccion);
     //~Pato();
     // uint8_t get_color();
@@ -36,6 +37,7 @@ public:
     void apuntar_arriba();
     void dejar_de_apuntar_arriba();
     void tirarse_al_piso();
+    void levantarse_del_piso();
     void tomar_armadura();
     void tomar_casco();
     void equipar_armadura();
