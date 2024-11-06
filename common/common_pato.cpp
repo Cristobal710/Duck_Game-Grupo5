@@ -41,9 +41,17 @@ void Pato::moverse_derecha() {
     estado.set_moviendo_derecha();
 }
 
-void Pato::saltar() { pos_y++; }
+void Pato::saltar() { 
+    pos_y++; 
+    estado.set_saltar();
+}
 
 void Pato::planear() { pos_y--; }
+
+void Pato::caer() { 
+    pos_y-=3; 
+    estado.set_caer();
+}
 
 void Pato::tomar_arma(Arma* nuevaArma) { arma = nuevaArma; }
 
