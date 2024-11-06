@@ -110,6 +110,7 @@ void InterfazGrafica::manejar_eventos(SDL_Rect& rect_inicio, SDL2pp::Rect& rect_
 void InterfazGrafica::obtener_estado_juego(SDL2pp::Rect& rect_destino, uint8_t& estado_pato, uint8_t& direccion_pato) {
     //deberia ser bloqueante?
     EstadoJuego ultimo_estado; 
+    // cambiar if por while hasta quedarme con el ulitmo estado de juego y dibujo el ultimo
     if (estado_juego.try_pop(ultimo_estado)) {
         Pato pato = ultimo_estado.patos.front();
         rect_destino.SetX(pato.get_pos_x());

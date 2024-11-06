@@ -92,6 +92,9 @@ void GameLoop::run() {
                 procesar_evento(evento, ultimo_estado);
                 cola_estados_juego.push(ultimo_estado);
             }
+            // aplicar logica del juego, balas, gravedad, etc
+            // pushear
+            // sleep
         }
     }
 
