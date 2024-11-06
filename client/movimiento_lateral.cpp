@@ -75,7 +75,6 @@ void MovimientoLateral::pato_movimiento(uint8_t& movimiento, uint8_t& direccion_
         } else {
             renderer.Copy(mostrar_frame(), rect_inicio, rect_dibujado);
         }
-        //renderer.Copy(mostrar_frame(), rect_inicio, rect_dibujado);
     }
 }
 

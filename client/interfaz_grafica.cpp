@@ -29,10 +29,12 @@ void InterfazGrafica::iniciar() {
     //PatoInterfaz pato = PatoInterfaz(renderer, sprite_pato_gris);
     //FondoInterfaz fondo = FondoInterfaz(renderer, "../resources/forest.png");
 
-    SDL2pp::Rect rect_inicio = {1, 8, 32, 32};
+    //SDL2pp::Rect rect_inicio = {1, 8, 32, 32};
     SDL2pp::Rect rect_dibujado = {100, 100, 32, 32};  // posición inicial
 
-    uint8_t estado_pato = BYTE_NULO;
+    uint8_t estado_pato_movimiento = BYTE_NULO;
+    bool se_tira_al_piso = false;
+    uint8_t estado_pato_salto = BYTE_NULO;
     uint8_t direccion_pato = DIRECCION_DERECHA;
     
     float tiempo_ultimo_frame = SDL_GetTicks();
@@ -40,11 +42,11 @@ void InterfazGrafica::iniciar() {
 
     while (correr_programa) {
         
-        manejar_eventos(rect_inicio, rect_dibujado, pato);
+        manejar_eventos();
         renderer.Clear();
-        obtener_estado_juego(rect_dibujado, estado_pato, direccion_pato);
+        obtener_estado_juego(rect_dibujado, estado_pato_movimiento, se_tira_al_piso, estado_pato_salto, direccion_pato);
         fondo.dibujar(renderer);
-        pato.dibujar(estado_pato, direccion_pato, rect_dibujado.GetX(), rect_dibujado.GetY(), it);
+        pato.dibujar(estado_pato_movimiento, direccion_pato, se_tira_al_piso,  rect_dibujado.GetX(), rect_dibujado.GetY(), it);
         renderer.Present();
             
         
@@ -73,8 +75,7 @@ void InterfazGrafica::iniciar() {
     SDL_Quit();
 }
 
-void InterfazGrafica::manejar_eventos(SDL_Rect& rect_inicio, SDL2pp::Rect& rect_dibujado,
-                                      PatoInterfaz& pato) {
+void InterfazGrafica::manejar_eventos() {
     SDL_Event evento;
     while (SDL_PollEvent(&evento)) {
 
@@ -97,17 +98,21 @@ void InterfazGrafica::manejar_eventos(SDL_Rect& rect_inicio, SDL2pp::Rect& rect_
                 comando_cliente.jugador_id = 3;
                 comandos_cliente.push(comando_cliente);
             }
-            if (evento.key.keysym.sym == SDLK_SPACE) {
-                pato.pato_salta(renderer, rect_inicio, rect_dibujado);
+            if (evento.key.keysym.sym == SDLK_w) {
+                comando_cliente.tecla = "w";
+                comando_cliente.jugador_id = 3;
+                comandos_cliente.push(comando_cliente);
             }
-            if (evento.key.keysym.sym == SDLK_DOWN) {
-                pato.pato_agachado(renderer, rect_inicio, rect_dibujado);
+            if (evento.key.keysym.sym == SDLK_s) {
+                comando_cliente.tecla = "s";
+                comando_cliente.jugador_id = 3;
+                comandos_cliente.push(comando_cliente);
             }
         }
     }
 }
 
-void InterfazGrafica::obtener_estado_juego(SDL2pp::Rect& rect_destino, uint8_t& estado_pato, uint8_t& direccion_pato) {
+void InterfazGrafica::obtener_estado_juego(SDL2pp::Rect& rect_destino, uint8_t& estado_pato_movimiento, bool& se_tira_al_piso, uint8_t& estado_pato_salto, uint8_t& direccion_pato) {
     //deberia ser bloqueante?
     EstadoJuego ultimo_estado; 
     // cambiar if por while hasta quedarme con el ulitmo estado de juego y dibujo el ultimo
@@ -115,11 +120,17 @@ void InterfazGrafica::obtener_estado_juego(SDL2pp::Rect& rect_destino, uint8_t& 
         Pato pato = ultimo_estado.patos.front();
         rect_destino.SetX(pato.get_pos_x());
         rect_destino.SetY(pato.get_pos_y());
-        estado_pato = pato.estado.get_estado_movimiento();
+        estado_pato_movimiento = pato.estado.get_estado_movimiento();
+        se_tira_al_piso = pato.esta_tirado_al_piso();
+        estado_pato_salto = pato.estado.get_estado_salto();
+        //bool esta_agachado = pato.esta_tirado_al_piso();
+        //std::cout <<  "Esta agachado: " << esta_agachado << std::endl;
+        //std::cout << "Estado pato: " << static_cast<int>(estado_pato_movimiento) << std::endl;
+        //std::cout << "Estado salto: " << static_cast<int>(estado_pato_salto) << std::endl;
         direccion_pato = pato.get_direccion();
 
     } else {
-        estado_pato = false;
+        estado_pato_movimiento = false;
     }
 }
 

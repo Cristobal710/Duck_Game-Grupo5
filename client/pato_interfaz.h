@@ -3,12 +3,14 @@
 
 #include <vector>
 #include "movimiento_lateral.h"
+#include "movimiento_agachado.h"
 #include <SDL2/SDL_image.h>
 #include <SDL2pp/SDL2pp.hh>
 
 class PatoInterfaz {
 private:
     MovimientoLateral movimiento_pato_lateral;
+    MovimientoAgachado movimiento_pato_agachado;
     std::vector<SDL2pp::Texture> movimiento_pato;
     std::vector<SDL2pp::Texture> salto_pato;
     std::vector<SDL2pp::Texture> acostarse_pato;
@@ -38,7 +40,7 @@ public:
 
     SDL2pp::Texture& mostrar_frame();
 
-    void dibujar(uint8_t& estado_pato, uint8_t& direccion_pato, int pos_x, int pos_y, int it);
+    void dibujar(uint8_t& estado_pato, uint8_t& direccion_pato, bool se_tira_al_piso, int pos_x, int pos_y, int it);
 };
 
 #endif  // PATO_INTERFAZ_H

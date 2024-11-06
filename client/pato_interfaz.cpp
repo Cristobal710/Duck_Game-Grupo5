@@ -1,5 +1,6 @@
 #include "pato_interfaz.h"
 
+#include "../common/common_constantes.h"
 #include <SDL2/SDL_image.h>
 
 #define NUM_FRAMES_MOVIMIENTO_PATO 6
@@ -9,7 +10,8 @@
 #define PIXEL_PATO 32
 
 PatoInterfaz::PatoInterfaz(SDL2pp::Renderer& renderer, const std::string& pato_path):
-    movimiento_pato_lateral(renderer, pato_path, 150, 150)
+    movimiento_pato_lateral(renderer, pato_path, 150, 150),
+    movimiento_pato_agachado(renderer, pato_path, 150, 150)
 {
     SDL2pp::Surface sprite_pato(IMG_Load(pato_path.c_str()));
     
@@ -93,7 +95,11 @@ void PatoInterfaz::pato_agachado(SDL2pp::Renderer& renderer, SDL_Rect& rect_inic
 
 SDL2pp::Texture& PatoInterfaz::mostrar_frame() { return movimiento_pato[0]; }
 
-void PatoInterfaz::dibujar(uint8_t& estado_pato, uint8_t& direccion_pato, int pos_x, int pos_y, int it) {
+void PatoInterfaz::dibujar(uint8_t& estado_pato, uint8_t& direccion_pato, bool se_tira_al_piso, int pos_x, int pos_y, int it) {
+    if(se_tira_al_piso){
+        movimiento_pato_agachado.pato_agachado(pos_x, pos_y, it);
+        return;
+    }
     movimiento_pato_lateral.pato_movimiento(estado_pato, direccion_pato, pos_x, pos_y, it);
 }
 
