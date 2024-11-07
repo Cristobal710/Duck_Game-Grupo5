@@ -40,6 +40,14 @@ void InterfazGrafica::iniciar() {
     float tiempo_ultimo_frame = SDL_GetTicks();
     int it = 0;
 
+
+    //MAPA mapa_a_jugar = ();
+    //mapa_a_jugar.procesar();
+
+    // while (jugando_juego){
+
+    // }
+
     while (correr_programa) {
         
         manejar_eventos();
@@ -64,6 +72,7 @@ void InterfazGrafica::iniciar() {
             if (tiempo_perdido % DURACION_FRAME != 0 && (tiempo_perdido < 0) != (DURACION_FRAME < 0)) {
                 it--;  
             }
+            std::cout << "pierdo un frame" << std::endl;
         }
         SDL_Delay(descansar);
         tiempo_ultimo_frame += DURACION_FRAME;
@@ -129,9 +138,9 @@ void InterfazGrafica::obtener_estado_juego(SDL2pp::Rect& rect_destino, uint8_t& 
         estado_pato_movimiento = pato.estado.get_estado_movimiento();
         se_tira_al_piso = pato.estado.get_estado_agachado();
         estado_pato_salto = pato.estado.get_estado_salto();
-        std::cout <<  "Esta agachado: " << static_cast<int>(se_tira_al_piso) << std::endl;
-        std::cout << "Estado pato: " << static_cast<int>(estado_pato_movimiento) << std::endl;
-        std::cout << "Estado salto: " << static_cast<int>(estado_pato_salto) << std::endl;
+        // std::cout <<  "Esta agachado: " << static_cast<int>(se_tira_al_piso) << std::endl;
+        // std::cout << "Estado pato: " << static_cast<int>(estado_pato_movimiento) << std::endl;
+        // std::cout << "Estado salto: " << static_cast<int>(estado_pato_salto) << std::endl;
         direccion_pato = pato.get_direccion();
         hubo_estado_nuevo = true;
     } 
