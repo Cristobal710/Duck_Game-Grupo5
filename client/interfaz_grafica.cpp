@@ -55,13 +55,13 @@ void InterfazGrafica::iniciar() {
         int32_t descansar = DURACION_FRAME - (tiempo_actual - tiempo_ultimo_frame);
 
         if (descansar < 0){ //entonces nos atrasamos, tenemos que esperar a la siguiente iteracion, drop & rest.
-            int32_t behind = -descansar;  
-            descansar = DURACION_FRAME - (behind % DURACION_FRAME);
-            int32_t lost = behind + descansar;
+            int32_t tiempo_atrasado = -descansar;  
+            descansar = DURACION_FRAME - (tiempo_atrasado % DURACION_FRAME);
+            int32_t tiempo_perdido = tiempo_atrasado + descansar;
 
-            tiempo_ultimo_frame += lost;
-            it += static_cast<int>(lost / DURACION_FRAME);
-            if (lost % DURACION_FRAME != 0 && (lost < 0) != (DURACION_FRAME < 0)) {
+            tiempo_ultimo_frame += tiempo_perdido;
+            it += static_cast<int>(tiempo_perdido / DURACION_FRAME);
+            if (tiempo_perdido % DURACION_FRAME != 0 && (tiempo_perdido < 0) != (DURACION_FRAME < 0)) {
                 it--;  
             }
         }
@@ -120,8 +120,9 @@ void InterfazGrafica::manejar_eventos() {
 void InterfazGrafica::obtener_estado_juego(SDL2pp::Rect& rect_destino, uint8_t& estado_pato_movimiento, uint8_t& se_tira_al_piso, uint8_t& estado_pato_salto, uint8_t& direccion_pato) {
     //deberia ser bloqueante?
     EstadoJuego ultimo_estado; 
+    bool hubo_estado_nuevo = false;
     // cambiar if por while hasta quedarme con el ulitmo estado de juego y dibujo el ultimo
-    if (estado_juego.try_pop(ultimo_estado)) {
+    while (estado_juego.try_pop(ultimo_estado)) {
         Pato pato = ultimo_estado.patos.front();
         rect_destino.SetX(pato.get_pos_x());
         rect_destino.SetY(pato.get_pos_y());
@@ -132,8 +133,9 @@ void InterfazGrafica::obtener_estado_juego(SDL2pp::Rect& rect_destino, uint8_t& 
         std::cout << "Estado pato: " << static_cast<int>(estado_pato_movimiento) << std::endl;
         std::cout << "Estado salto: " << static_cast<int>(estado_pato_salto) << std::endl;
         direccion_pato = pato.get_direccion();
-
-    } else {
+        hubo_estado_nuevo = true;
+    } 
+    if (!hubo_estado_nuevo){
         estado_pato_movimiento = false;
     }
 }
