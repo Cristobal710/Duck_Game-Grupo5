@@ -1,7 +1,9 @@
 #include "server_gameloop.h"
 
 #include "../common/common_constantes.h"
+#include <SDL2/SDL.h>
 
+#define RATE 1000 / 30
 #define BAZOOKA "Bazooka"
 #define CHAINSAW "Chainsaw"
 #define DEATH_RAY "Death ray"
@@ -26,6 +28,8 @@ GameLoop::GameLoop(Queue<EstadoJuego>& cola_estados_juego,
 // void GameLoop::eliminar_clientes_cerrados() {
 //     clientes.eliminar_clientes_cerrados();
 // }
+
+
 
 void GameLoop::agregar_cliente(ServerClient& cliente, Queue<EventoServer>& cola_cliente) {
     clientes.agregar_cliente(cliente, cola_cliente);
@@ -69,59 +73,69 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
     }
 }
 
-// void GameLoop::enviar_estado_juego_si_cambio(Pato& pato, EstadoJuego& estado_anterior) {
-//     if (pato.estado.get_estado_agachado() != estado_anterior.patos.front().estado.get_estado_agachado() || pato.estado.get_estado_movimiento() != estado_anterior.patos.front().estado.get_estado_movimiento()) {
-//         std::cout << "cambio" << std::endl;
-//         cola_estados_juego.push(ultimo_estado);
-//     }
-// }
+void GameLoop::enviar_estado_juego_si_cambio(Pato& pato, EstadoJuego& estado_anterior) {
+    if (pato.estado.get_estado_agachado() != estado_anterior.patos.front().estado.get_estado_agachado() || pato.estado.get_estado_movimiento() != estado_anterior.patos.front().estado.get_estado_movimiento()) {
+        std::cout << "cambio" << std::endl;
+        cola_estados_juego.push(ultimo_estado);
+    }
+}
 
-#include <chrono>
  
 void GameLoop::run() {
     Pato pato(3, 0, 0, 0);
     ultimo_estado.patos.emplace_back(pato);
- 
-    const std::chrono::milliseconds intervalo(16);
- 
+    //pasar estado inicial del mapa.
+    float tiempo_ultimo_frame = SDL_GetTicks();
+
     while (!(*esta_cerrado)) {
         //eliminar_clientes_cerrados();
- 
+
         while (true) {
-            auto tiempo_inicio = std::chrono::steady_clock::now();
- 
             EstadoJuego estado_anterior = ultimo_estado;
             std::vector<EventoServer> eventos = clientes.recibir_mensajes_clientes();
-            if (eventos.empty()) {
-                for (Pato& pato : ultimo_estado.patos) {
+            
+           if (eventos.empty()) {
+                pato.estado.set_dejar_de_moverse();
+                //cola_estados_juego.push(ultimo_estado);
+                for (Pato& pato: ultimo_estado.patos) {
                     pato.estado.set_dejar_de_moverse();
                     pato.estado.set_dejar_de_agacharse();
-                    // enviar_estado_juego_si_cambio(pato, estado_anterior);
+                    //enviar_estado_juego_si_cambio(pato, estado_anterior);
                 }
             }
-            for (EventoServer& evento : eventos) {
+            for(EventoServer evento : eventos){
                 procesar_evento(evento, ultimo_estado);
                 cola_estados_juego.push(ultimo_estado);
             }
-            for (Pato& pato : ultimo_estado.patos) {
+            for (Pato& pato: ultimo_estado.patos) {
                 if (pato.estado.get_estado_salto() == SALTAR_ALETEAR) {
                     pato.saltar();
                     // cola_estados_juego.push(ultimo_estado);
                 }
             }
-            // enviar_estado_juego_si_cambio(pato, estado_anterior);
             // aplicar logica del juego, balas, gravedad, etc
             // pushear
- 
-            auto tiempo_fin = std::chrono::steady_clock::now();
-            auto duracion = std::chrono::duration_cast<std::chrono::milliseconds>(tiempo_fin - tiempo_inicio);
- 
-            if (duracion < intervalo) {
-                std::this_thread::sleep_for(intervalo - duracion);
+            enviar_estado_juego_si_cambio(pato, estado_anterior);
+
+            Uint32 tiempo_actual = SDL_GetTicks();
+            int32_t descansar = RATE - (tiempo_actual - tiempo_ultimo_frame);
+
+            if (descansar < 0){ //entonces nos atrasamos, tenemos que esperar a la siguiente iteracion, drop & rest.
+                int32_t tiempo_atrasado = -descansar;
+                descansar = RATE - (tiempo_atrasado % RATE);
+                int32_t tiempo_perdido = tiempo_atrasado + descansar;
+
+                tiempo_ultimo_frame += tiempo_perdido;
             }
+
+            SDL_Delay(descansar);
+            tiempo_ultimo_frame += RATE;
         }
     }
+
+    //cerrar_gameloop();
 }
+
 
     //cerrar_gameloop();
 

@@ -25,7 +25,7 @@ private:
     // void eliminar_clientes_cerrados();
     // void cerrar_gameloop();
     void ejecutar_accion(uint8_t accion, Pato& pato);
-    //void enviar_estado_juego_si_cambio(Pato& pato, EstadoJuego& estado_juego);
+    void enviar_estado_juego_si_cambio(Pato& pato, EstadoJuego& estado_juego);
 
 public:
     GameLoop(Queue<EstadoJuego>& cola_estados_juego,
