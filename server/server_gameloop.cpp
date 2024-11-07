@@ -76,28 +76,34 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
 //     }
 // }
 
+#include <chrono>
+ 
 void GameLoop::run() {
     Pato pato(3, 0, 0, 0);
     ultimo_estado.patos.emplace_back(pato);
-
+ 
+    const std::chrono::milliseconds intervalo(16);
+ 
     while (!(*esta_cerrado)) {
         //eliminar_clientes_cerrados();
-     
+ 
         while (true) {
+            auto tiempo_inicio = std::chrono::steady_clock::now();
+ 
             EstadoJuego estado_anterior = ultimo_estado;
             std::vector<EventoServer> eventos = clientes.recibir_mensajes_clientes();
             if (eventos.empty()) {
-                for (Pato& pato: ultimo_estado.patos) {
+                for (Pato& pato : ultimo_estado.patos) {
                     pato.estado.set_dejar_de_moverse();
                     pato.estado.set_dejar_de_agacharse();
-                    //enviar_estado_juego_si_cambio(pato, estado_anterior);
+                    // enviar_estado_juego_si_cambio(pato, estado_anterior);
                 }
             }
-            for(EventoServer evento : eventos){
+            for (EventoServer& evento : eventos) {
                 procesar_evento(evento, ultimo_estado);
                 cola_estados_juego.push(ultimo_estado);
             }
-            for (Pato& pato: ultimo_estado.patos) {
+            for (Pato& pato : ultimo_estado.patos) {
                 if (pato.estado.get_estado_salto() == SALTAR_ALETEAR) {
                     pato.saltar();
                     // cola_estados_juego.push(ultimo_estado);
@@ -106,9 +112,16 @@ void GameLoop::run() {
             // enviar_estado_juego_si_cambio(pato, estado_anterior);
             // aplicar logica del juego, balas, gravedad, etc
             // pushear
-            // sleep
+ 
+            auto tiempo_fin = std::chrono::steady_clock::now();
+            auto duracion = std::chrono::duration_cast<std::chrono::milliseconds>(tiempo_fin - tiempo_inicio);
+ 
+            if (duracion < intervalo) {
+                std::this_thread::sleep_for(intervalo - duracion);
+            }
         }
     }
+}
 
     //cerrar_gameloop();
-}
+
