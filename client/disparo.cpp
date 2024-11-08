@@ -8,11 +8,12 @@
 Disparo::Disparo(SDL2pp::Renderer& renderer, const std::string& disparo_path, const std::string& bala_path, int pos_x, int pos_y)
     : arma(), 
       bala(), 
-      rect_inicio(0, 0, PIXEL_DISPARO, PIXEL_DISPARO), 
-      rect_dibujado(pos_x, pos_y, PIXEL_DISPARO, PIXEL_DISPARO), 
+      rect_inicio_arma(0, 0, PIXEL_DISPARO, PIXEL_DISPARO), 
+      rect_dibujado_arma(pos_x, pos_y, PIXEL_DISPARO, PIXEL_DISPARO), 
       rect_inicio_bala(0, 0, PIXEL_BALA_X, PIXEL_BALA_Y),
-      rect_dibujado_bala((pos_x + 5), pos_y, PIXEL_BALA_X, PIXEL_BALA_Y),
-      renderer(renderer)
+      rect_dibujado_bala(pos_x, pos_y, PIXEL_BALA_X, PIXEL_BALA_Y),
+      renderer(renderer),
+      velocidad_bala(5)
 {
     SDL2pp::Surface sprite_disparo(IMG_Load(disparo_path.c_str()));
     SDL2pp::Surface sprite_bala(IMG_Load(bala_path.c_str()));
@@ -47,36 +48,37 @@ void Disparo::mostrar_frame_bala(uint8_t& direccion_pato, int it) {
     }
 }
 
-void Disparo::mostrar_frame_arma(uint8_t& direccion_pato, int it) {
-    if (it > NUM_FRAMES_DISPARO) {
-        if(direccion_pato == DIRECCION_DERECHA) {
-            renderer.Copy(arma[0], rect_inicio, rect_dibujado);
-        } else {
-            SDL_RenderCopyEx(renderer.Get(), arma[0].Get(), &rect_inicio, &rect_dibujado, 0,
-                     nullptr, SDL_FLIP_HORIZONTAL);
-        }
+void Disparo::mostrar_frame_arma(uint8_t& direccion_pato) {
+    if (direccion_pato == DIRECCION_DERECHA) {
+        renderer.Copy(arma[0], rect_inicio_arma, rect_dibujado_arma);
     } else {
-        if(direccion_pato == DIRECCION_DERECHA) {
-            renderer.Copy(arma[0], rect_inicio, rect_dibujado);
-        } else {
-            SDL_RenderCopyEx(renderer.Get(), arma[0].Get(), &rect_inicio, &rect_dibujado, 0,
-                     nullptr, SDL_FLIP_HORIZONTAL);
-        }
+        SDL_RenderCopyEx(renderer.Get(), arma[0].Get(), &rect_inicio_arma, &rect_dibujado_arma, 0, nullptr, SDL_FLIP_HORIZONTAL);
     }
 }
 
 void Disparo::mostrar_disparo(uint8_t& estado_disparo, uint8_t& direccion_pato, int pos_x, int pos_y, int it) {
-    rect_dibujado.SetX(pos_x);
-    rect_dibujado.SetY(pos_y);
+    rect_dibujado_arma.SetX(pos_x);
+    rect_dibujado_arma.SetY(pos_y);
 
-    rect_dibujado_bala.SetX(pos_x + 5);
+    rect_dibujado_bala.SetX(pos_x);
     rect_dibujado_bala.SetY(pos_y);
 
     if (estado_disparo == MOVER_DERECHA) {
+        if (direccion_pato == DIRECCION_DERECHA) {
+            rect_dibujado_bala.SetX(rect_dibujado_bala.GetX() + velocidad_bala);
+        } else {
+            rect_dibujado_bala.SetX(rect_dibujado_bala.GetX() - velocidad_bala);
+        }
         mostrar_frame_bala(direccion_pato, it);
     } else {
-        mostrar_frame_arma(direccion_pato, it);
+        reiniciar_bala(pos_x, pos_y);
+        mostrar_frame_arma(direccion_pato);
     }
+}
+
+void Disparo::reiniciar_bala(int pos_x, int pos_y) {
+    rect_dibujado_bala.SetX(pos_x + 5);
+    rect_dibujado_bala.SetY(pos_y);
 }
 
 void Disparo::cargar_frames(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet,
