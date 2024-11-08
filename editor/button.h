@@ -15,14 +15,16 @@ class Button {
     std::string label;
     bool mouse_encima;
 
+    TTF_Font* font;  
+    SDL2pp::Color textColor;
+    
+
     bool clickeo_boton(int x, int y) const;
     
     public:
-    Button(int x, int y, int w, int h, const std::string& label);
-    
+    Button(int x, int y, int w, int h, const std::string& label,TTF_Font* font);
     void render(SDL2pp::Renderer& renderer);
     void evento_click(const SDL_Event& event, std::function<void()> onClick);
-
 
 };
 

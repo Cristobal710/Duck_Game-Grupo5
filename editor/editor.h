@@ -16,14 +16,16 @@ class Editor {
     private:
     SDL2pp::Window window;
     SDL2pp::Renderer renderer;
-
-    Button boton_fondo;
-    Button boton_tiles;
-    Button boton_spawn;
     
     bool mostrar_fondos_disponibles;
     bool mostrar_tiles_disponibles;
     bool mostrar_spawns_disponibles;
+
+    TTF_Font* font;
+
+    Button boton_fondo;
+    Button boton_tiles;
+    Button boton_spawn;
 
     std::map<std::string,std::vector<SDL_Point>>  tiles_seleccionados;  
     std::map<std::string,std::vector<SDL_Point>>  spawn_seleccionados;
@@ -53,7 +55,7 @@ class Editor {
     };
 
     std::vector<std::string> spawn_img = {
-        "../resources/Random/Grey-Duck.png",
+        "../resources/Grey-Duck.png",
     };
 
     
@@ -82,6 +84,7 @@ class Editor {
     void limpiar_pantalla();
     void guardar_mapa(std::string& nombre_archivo);
 
+    std::string nombre_entidad(const std::string& path);
 }
 ;
 

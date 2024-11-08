@@ -5,27 +5,24 @@
 Editor::Editor(): window("Editor", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                               SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_RESIZABLE),
                   renderer(window, -1, SDL_RENDERER_ACCELERATED),   
-boton_fondo(10, 10, 180, 50, "Elegir Fondo"),
-boton_tiles(200, 10, 180, 50, "Elegir Tiles"),
-boton_spawn(390, 10, 180, 50, "Spawns de patos"),
+
 mostrar_fondos_disponibles(false), mostrar_tiles_disponibles(false),
-mostrar_spawns_disponibles(false),
+mostrar_spawns_disponibles(false), font(TTF_OpenFont("../resources/fonts/Open_Sans/static/OpenSans-Italic.ttf", 12)),
+boton_fondo(10, 10, 180, 50, "Elegir Fondo", font),
+boton_tiles(200, 10, 180, 50, "Elegir Tiles", font),
+boton_spawn(390, 10, 180, 50, "Spawns de patos", font),
 tiles_seleccionados(), spawn_seleccionados() 
-{}
+    {}
 
 
 void Editor::iniciar_editor() {
     
     SDL_Init(SDL_INIT_VIDEO);
     IMG_Init(IMG_INIT_PNG);
-    
+    //TTF_Init();
+
     SDL_ShowCursor(1);
-
     inicializar_botones();
-
-    //setteo "default" de valores
-    // set_fondo(fondos_img[0]);
-    // set_tile(tiles_img[0]);
 
     bool correr_programa = true;
     SDL_Event event;
@@ -166,18 +163,21 @@ void Editor::iniciar_editor() {
     // initEntities();
 
     // initMap();
+    //cerrar_botones();
 
     SDL_Quit();
     IMG_Quit();
-    
-    std::cout << "Ingresar nombre del archivo para guardarlo o ENTER para cerrar el programa: " << std::endl;
+    //TTF_Quit();
+
+    std::cout << "Ingresar nombre del archivo para guardarlo o apriete ENTER para cerrar el programa: " << std::endl;
 
     std::string nombre_archivo;
     std::getline(std::cin, nombre_archivo);
-    if (!nombre_archivo.empty()){
-        guardar_mapa(nombre_archivo);
+    if (nombre_archivo.empty()){
+        return;
     }
-
+    guardar_mapa(nombre_archivo);
+    renderer.~Renderer();
 }
 
 void Editor::set_fondo(std::string path_fondo) {
@@ -186,15 +186,15 @@ void Editor::set_fondo(std::string path_fondo) {
 
 void Editor::inicializar_botones() {
     for (size_t i = 0; i < fondos_img.size(); ++i) {
-        fondos_posibles_boton.emplace_back(10, 70 + i * 60, 180, 50, fondos_img[i]);
+        fondos_posibles_boton.emplace_back(10, 70 + i * 60, 180, 50, nombre_entidad(fondos_img[i]), font);
     }
 
     for (size_t i = 0; i < tiles_img.size(); ++i) {
-        tiles_posibles_boton.emplace_back(200, 70 + i * 60, 180, 50, tiles_img[i]);
+        tiles_posibles_boton.emplace_back(200, 70 + i * 60, 180, 50, nombre_entidad(tiles_img[i]) , font);
     }
 
     for (size_t i = 0; i < spawn_img.size(); ++i) {
-        spawns_disponibles_boton.emplace_back(390, 70 + i * 60, 180, 50, spawn_img[i]);
+        spawns_disponibles_boton.emplace_back(390, 70 + i * 60, 180, 50, nombre_entidad(spawn_img[i]), font);
     }
 }
 
@@ -306,31 +306,35 @@ void Editor::guardar_mapa(std::string& nombre_archivo) {
     if (!fondo_actual.empty()){
         json_mapa["background"] = fondo_actual;
     }
-
-    for (const auto& tiles : tiles_seleccionados) {
+    if (!tiles_seleccionados.empty()){
+        for (const auto& tiles : tiles_seleccionados) {
         std::vector<SDL_Point> puntos = tiles.second;
 
         for (const auto& punto : puntos){
-            json json_tiles;
-            json_tiles["texture"] = tiles.first;
-            json_tiles["x"] = punto.x;
-            json_tiles["y"] = punto.y;
-            json_mapa["tiles"].push_back(json_tiles);
+                json json_tiles;
+                json_tiles["texture"] = tiles.first;
+                json_tiles["x"] = punto.x;
+                json_tiles["y"] = punto.y;
+                json_mapa["tiles"].push_back(json_tiles);
+            }
         }
     }
-
-    for (const auto& spawns : spawn_seleccionados) {
+    
+    if (!spawn_seleccionados.empty()){
+        for (const auto& spawns : spawn_seleccionados) {
         std::vector<SDL_Point> puntos = spawns.second;
 
         for (const auto& punto : puntos){
-            json json_spawns;
-            json_spawns["x"] = punto.x;
-            json_spawns["y"] = punto.y;
-            json_mapa["spawns"].push_back(json_spawns);
+                json json_spawns;
+                json_spawns["x"] = punto.x;
+                json_spawns["y"] = punto.y;
+                json_mapa["spawns"].push_back(json_spawns);
+            }
         }
     }
+    
 
-    std::string file_nombre = "../resources/maps/" + nombre_archivo + ".maps";
+    std::string file_nombre = "../resources/maps/" + nombre_archivo;
 
     std::ofstream file_final(file_nombre);
 
@@ -345,4 +349,15 @@ void Editor::guardar_mapa(std::string& nombre_archivo) {
     }
 }
 
-
+std::string Editor::nombre_entidad(const std::string& path) { 
+    
+    size_t lastSlash = path.find_last_of("/\\");
+   
+    std::string filename = (lastSlash == std::string::npos) ? path : path.substr(lastSlash + 1);
+    
+    size_t dotPos = filename.find_last_of('.');
+    if (dotPos != std::string::npos) {
+        filename = filename.substr(0, dotPos);
+    }
+    return filename;
+ }
