@@ -5,6 +5,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <string>
+#include <SDL2/SDL_ttf.h>
 #include <functional>
 
 class Button {
@@ -13,6 +14,7 @@ class Button {
     SDL2pp::Rect rect;
     std::string label;
     bool mouse_encima;
+
     bool clickeo_boton(int x, int y) const;
     
     public:
