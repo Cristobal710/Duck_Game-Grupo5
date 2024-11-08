@@ -79,7 +79,7 @@ void MovimientoLateral::pato_movimiento(uint8_t& movimiento, uint8_t& direccion_
 }
 
 
-void MovimientoLateral::cargar_frames(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet,
+/*void MovimientoLateral::cargar_frames(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet,
                                  int offset_y, std::vector<SDL2pp::Texture>& texturas,
                                  int num_frames) {
     for (int i = 0; i < num_frames; ++i) {
@@ -99,4 +99,4 @@ void MovimientoLateral::cargar_frames(SDL2pp::Renderer& renderer, SDL2pp::Surfac
 
         texturas.emplace_back(std::move(sprite_textura));
     }
-}
+}*/

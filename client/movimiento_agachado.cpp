@@ -9,7 +9,7 @@ int pos_x, int pos_y):
     movimiento_pato_agachado(),
     puntero_agachado_derecha(0),
     puntero_agachado_izquierda(0),
-    rect_inicio(1, 8, PIXEL_PATO, PIXEL_PATO),  // Ajusta el valor de `offset_y` a la posición de frames agachado
+    rect_inicio(1, 8, PIXEL_PATO, PIXEL_PATO),
     rect_dibujado(pos_x, pos_y, PIXEL_PATO, PIXEL_PATO),
     renderer(renderer)
 {
@@ -56,7 +56,7 @@ void MovimientoAgachado::pato_agachado(uint8_t& esta_agachado, int pos_x, int po
     
 }
 
-void MovimientoAgachado::cargar_frames(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet,
+/*void MovimientoAgachado::cargar_frames(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet,
                                        int offset_y, std::vector<SDL2pp::Texture>& texturas,
                                        int num_frames) {
     for (int i = 0; i < num_frames; ++i) {
@@ -73,4 +73,4 @@ void MovimientoAgachado::cargar_frames(SDL2pp::Renderer& renderer, SDL2pp::Surfa
         SDL2pp::Texture sprite_textura(renderer, sprite_superficie);
         texturas.emplace_back(std::move(sprite_textura));
     }
-}
+}*/

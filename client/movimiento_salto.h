@@ -4,8 +4,9 @@
 #include <vector>
 #include <SDL2/SDL_image.h>
 #include <SDL2pp/SDL2pp.hh>
+#include "movimiento.h"
 
-class MovimientoSalto {
+class MovimientoSalto : public Movimiento {
 private:
     std::vector<SDL2pp::Texture> salto_frames;
     std::vector<SDL2pp::Texture> caida_frames;
@@ -17,8 +18,6 @@ private:
 
     void frames_salto(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet);
     void frames_caida(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet);
-    void cargar_frames(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet, int offset_y,
-                       std::vector<SDL2pp::Texture>& texturas, int num_frames);
     
     void mostrar_frame_salto(int it);
     void mostrar_frame_caida(int it);

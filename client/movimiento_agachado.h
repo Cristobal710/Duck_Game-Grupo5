@@ -4,8 +4,9 @@
 #include <vector>
 #include <SDL2/SDL_image.h>
 #include <SDL2pp/SDL2pp.hh>
+#include "movimiento.h"
 
-class MovimientoAgachado {
+class MovimientoAgachado : public Movimiento {
     private:
     std::vector<SDL2pp::Texture> movimiento_pato_agachado;
     int puntero_agachado_derecha;
@@ -15,8 +16,6 @@ class MovimientoAgachado {
     SDL2pp::Renderer& renderer;
 
     void frames_agachado(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet);
-    void cargar_frames(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet, int offset_y,
-                       std::vector<SDL2pp::Texture>& texturas, int num_frames);
     
     void mostrar_frames_agachado(int it);
     void mostrar_frames_levantarse(int it);

@@ -51,7 +51,7 @@ void MovimientoSalto::pato_salta(uint8_t& movimiento, int pos_x, int pos_y, int 
     //}
 }
 
-void MovimientoSalto::cargar_frames(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet,
+/*void MovimientoSalto::cargar_frames(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet,
                                  int offset_y, std::vector<SDL2pp::Texture>& texturas,
                                  int num_frames) {
     for (int i = 0; i < num_frames; ++i) {
@@ -71,6 +71,6 @@ void MovimientoSalto::cargar_frames(SDL2pp::Renderer& renderer, SDL2pp::Surface&
 
         texturas.emplace_back(std::move(sprite_textura));
     }
-}
+}*/
 
 
