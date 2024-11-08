@@ -16,7 +16,8 @@ InterfazGrafica::InterfazGrafica(Queue<ComandoGrafica>& queue, Queue<EstadoJuego
                               1280, 720, SDL_WINDOW_RESIZABLE)),
         renderer(window, -1, SDL_RENDERER_ACCELERATED), 
         fondo(renderer, "../resources/backgrounds/forest.png"),
-        pato(renderer, "../resources/Grey-Duck.png")
+        pato(renderer, "../resources/Grey-Duck.png"),
+        disparo(renderer, "../resources/weapons/Darts.png", 0, 0)
 
 {}
 
@@ -36,6 +37,7 @@ void InterfazGrafica::iniciar() {
     uint8_t se_tira_al_piso = BYTE_NULO;
     uint8_t estado_pato_salto = BYTE_NULO;
     uint8_t direccion_pato = DIRECCION_DERECHA;
+    uint8_t estado_disparo = BYTE_NULO;
     
     float tiempo_ultimo_frame = SDL_GetTicks();
     int it = 0;
@@ -52,9 +54,13 @@ void InterfazGrafica::iniciar() {
         
         manejar_eventos();
         renderer.Clear();
-        obtener_estado_juego(rect_dibujado, estado_pato_movimiento, se_tira_al_piso, estado_pato_salto, direccion_pato);
+        obtener_estado_juego(rect_dibujado, estado_pato_movimiento, se_tira_al_piso, estado_pato_salto, direccion_pato, estado_disparo);
         fondo.dibujar(renderer);
         pato.dibujar(estado_pato_movimiento, estado_pato_salto, direccion_pato, se_tira_al_piso, rect_dibujado.GetX(), rect_dibujado.GetY(), it);
+        disparo.mostrar_disparo(estado_disparo, direccion_pato, rect_dibujado.GetX(), rect_dibujado.GetY(), it);
+        //if(estado_disparo == DISPARAR){
+        //    disparo.mostrar_disparo(estado_disparo, rect_dibujado.GetX(), rect_dibujado.GetY(), it);
+        //}
         renderer.Present();
             
         
@@ -122,11 +128,18 @@ void InterfazGrafica::manejar_eventos() {
                 comando_cliente.jugador_id = 3;
                 comandos_cliente.push(comando_cliente);
             }
+            if (evento.key.keysym.sym == SDL_MOUSEBUTTONDOWN) {
+                if (evento.button.button == SDL_BUTTON_LEFT) {
+                    comando_cliente.tecla = "click_izq";
+                    comando_cliente.jugador_id = 3;
+                    comandos_cliente.push(comando_cliente);
+                }
+            }
         }
     }
 }
 
-void InterfazGrafica::obtener_estado_juego(SDL2pp::Rect& rect_destino, uint8_t& estado_pato_movimiento, uint8_t& se_tira_al_piso, uint8_t& estado_pato_salto, uint8_t& direccion_pato) {
+void InterfazGrafica::obtener_estado_juego(SDL2pp::Rect& rect_destino, uint8_t& estado_pato_movimiento, uint8_t& se_tira_al_piso, uint8_t& estado_pato_salto, uint8_t& direccion_pato, uint8_t& estado_disparo) {
     //deberia ser bloqueante?
     EstadoJuego ultimo_estado; 
     bool hubo_estado_nuevo = false;
@@ -142,6 +155,8 @@ void InterfazGrafica::obtener_estado_juego(SDL2pp::Rect& rect_destino, uint8_t& 
         // std::cout << "Estado pato: " << static_cast<int>(estado_pato_movimiento) << std::endl;
         // std::cout << "Estado salto: " << static_cast<int>(estado_pato_salto) << std::endl;
         direccion_pato = pato.get_direccion();
+        //estado_disparo = pato.estado.get_estado_disparo();
+        estado_disparo = BYTE_NULO;
         hubo_estado_nuevo = true;
     } 
     if (!hubo_estado_nuevo){

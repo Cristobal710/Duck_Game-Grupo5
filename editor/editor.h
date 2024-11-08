@@ -49,11 +49,11 @@ class Editor {
     };
     std::vector<std::string> tiles_img = {
         "../resources/TileSets/Tileset_Fantasy.png",
-        
+        "../resources/TileSets/greyBlock.png"
     };
 
     std::vector<std::string> spawn_img = {
-        "../resources/Grey-Duck.png"
+        "../resources/Random/Grey-Duck.png",
     };
 
     

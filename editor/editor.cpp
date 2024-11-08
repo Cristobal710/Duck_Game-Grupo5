@@ -81,9 +81,11 @@ void Editor::iniciar_editor() {
             if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_RIGHT) {
                 if (!tile_actual.empty()) {
                     tile_actual.clear();
+                    mostrar_tiles_disponibles = false;
                 }
                 if (!spawn_actual.empty()) {
                     spawn_actual.clear();
+                    mostrar_spawns_disponibles = false;
                 }
             }
 
@@ -168,10 +170,14 @@ void Editor::iniciar_editor() {
     SDL_Quit();
     IMG_Quit();
     
-     std::string nombre_archivo;
-    std::getline(std::cin, nombre_archivo);
+    std::cout << "Ingresar nombre del archivo para guardarlo o ENTER para cerrar el programa: " << std::endl;
 
-    guardar_mapa(nombre_archivo);
+    std::string nombre_archivo;
+    std::getline(std::cin, nombre_archivo);
+    if (!nombre_archivo.empty()){
+        guardar_mapa(nombre_archivo);
+    }
+
 }
 
 void Editor::set_fondo(std::string path_fondo) {
@@ -187,7 +193,7 @@ void Editor::inicializar_botones() {
         tiles_posibles_boton.emplace_back(200, 70 + i * 60, 180, 50, tiles_img[i]);
     }
 
-    for (size_t i = 0; i < tiles_img.size(); ++i) {
+    for (size_t i = 0; i < spawn_img.size(); ++i) {
         spawns_disponibles_boton.emplace_back(390, 70 + i * 60, 180, 50, spawn_img[i]);
     }
 }
@@ -211,7 +217,7 @@ void Editor::actualizar_fondo(int indice) {
 }
 
 void Editor::actualizar_tiles(int indice) {
-    set_tile(fondos_img[indice]);
+    set_tile(tiles_img[indice]);
     renderizar_tiles();
 }
 
@@ -333,9 +339,9 @@ void Editor::guardar_mapa(std::string& nombre_archivo) {
         file_final << json_mapa.dump(4); 
 
         file_final.close();
-        std::cout << "Map exported successfully to: " << file_nombre << std::endl;
+        std::cout << "Mapa guardado correctamente en: " << file_nombre << std::endl;
     } else {
-        std::cerr << "Failed to open file: " << file_nombre << std::endl;
+        std::cerr << "No pudo abrirse el archivo " << file_nombre << std::endl;
     }
 }
 

@@ -4,9 +4,9 @@
 #include <vector>
 #include <SDL2/SDL_image.h>
 #include <SDL2pp/SDL2pp.hh>
+#include "movimiento.h"
 
-
-class MovimientoLateral {
+class MovimientoLateral : public Movimiento {
     private:
     std::vector<SDL2pp::Texture> movimiento_pato;
     int puntero_movimiento_derecha;
@@ -16,9 +16,7 @@ class MovimientoLateral {
     SDL2pp::Renderer& renderer;
 
     void frames_movimientos(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet);
-    void cargar_frames(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet, int offset_y,
-                       std::vector<SDL2pp::Texture>& texturas, int num_frames);
-    
+   
     void mostrar_frame_derecha(int it);
     void mostrar_frame_izquierda(int it);
     SDL2pp::Texture& mostrar_frame();
