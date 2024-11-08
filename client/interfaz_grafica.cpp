@@ -17,7 +17,7 @@ InterfazGrafica::InterfazGrafica(Queue<ComandoGrafica>& queue, Queue<EstadoJuego
         renderer(window, -1, SDL_RENDERER_ACCELERATED), 
         fondo(renderer, "../resources/backgrounds/forest.png"),
         pato(renderer, "../resources/Grey-Duck.png"),
-        disparo(renderer, "../resources/weapons/Darts.png", 0, 0)
+        disparo(renderer, "../resources/weapons/Darts.png", "../resources/weapons/Darts.png", 0, 0)
 
 {}
 
@@ -57,8 +57,8 @@ void InterfazGrafica::iniciar() {
         obtener_estado_juego(rect_dibujado, estado_pato_movimiento, se_tira_al_piso, estado_pato_salto, direccion_pato, estado_disparo);
         fondo.dibujar(renderer);
         pato.dibujar(estado_pato_movimiento, estado_pato_salto, direccion_pato, se_tira_al_piso, rect_dibujado.GetX(), rect_dibujado.GetY(), it);
-        disparo.mostrar_disparo(estado_disparo, direccion_pato, rect_dibujado.GetX(), rect_dibujado.GetY(), it);
-        //if(estado_disparo == DISPARAR){
+        disparo.mostrar_disparo(estado_pato_movimiento, direccion_pato, rect_dibujado.GetX(), rect_dibujado.GetY(), it);
+        //if(estado_disparo == TIENE_ARMA){
         //    disparo.mostrar_disparo(estado_disparo, rect_dibujado.GetX(), rect_dibujado.GetY(), it);
         //}
         renderer.Present();
