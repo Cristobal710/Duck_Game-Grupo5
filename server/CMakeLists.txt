@@ -7,6 +7,7 @@ target_sources(taller_server
     server_gameloop.cpp
     server_proteger_clientes.cpp
     server_protocolo.cpp
+    server_lector_json.cpp
     
     ../common/common_liberror.cpp 
     ../common/common_resolver.cpp
@@ -24,6 +25,8 @@ target_sources(taller_server
     server_gameloop.h
     server_proteger_clientes.h
     server_protocolo.h
+    server_lector_json.h
+
 
     ../common/common_liberror.h
     ../common/common_queue.h
@@ -32,6 +35,7 @@ target_sources(taller_server
     ../common/common_socket.h
     ../common/common_thread.h
     ../common/common_protocolo.h
+
     )
 
     target_include_directories(taller_server

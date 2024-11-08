@@ -124,8 +124,10 @@ if(TALLER_SERVER)
     # Link the taller_common lib target
     target_link_libraries(taller_server taller_common
     SDL2pp::SDL2pp 
-    SDL2::SDL2)
-    
+    SDL2::SDL2
+    nlohmann_json)
+
+   
 endif()
 
 if(TALLER_EDITOR)
