@@ -84,7 +84,25 @@ void GameLoop::enviar_estado_juego_si_cambio(Pato& pato, EstadoJuego& estado_ant
 void GameLoop::run() {
     Pato pato(3, 0, 0, 0);
     ultimo_estado.patos.emplace_back(pato);
-    //pasar estado inicial del mapa.
+    
+    
+    //lector de un mapa desde un archivo json guardado en la carpeta de mapas
+    LectorJson lector_mapa = LectorJson();
+
+    Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa1");
+    //aca esta el mapa, las colisiones estan guardadas en la clase (tiles).
+    //hay que enviar toda esta informacion a cada cliente una vez antes de empezar la partida
+    //para que el cliente grafico puede mostrar correctamente el mapa, hacer que de el lado del
+    //cliente se reciba este objeto nuevamente, es decir, serializarlo en un objeto mapa igual al que 
+    //hay aca. Supongo que hay que mover la definicion del mapa a common y no solo a servidor.
+    //una vez que recibamos del socket este objeto mapa podemos mostrarlo en el juego a traves de la interfaz.
+
+    std::cout << mapa.getFondo() << std::endl;
+    std::map<std::string, std::vector<SDL_Point>> tiles = mapa.getTiles();
+    std::vector<SDL_Point> posiciones_tiles = tiles.at(("../resources/TileSets/greyBlock.png"));
+    for (SDL_Point punto : posiciones_tiles){
+        std::cout << "x: " << punto.x << " y: " << punto.y  << std::endl;
+    }
     float tiempo_ultimo_frame = SDL_GetTicks();
 
     while (!(*esta_cerrado)) {

@@ -5,7 +5,8 @@
 #include <map>
 #include <string>
 #include <vector>
-
+#include "server_mapa.h"
+#include "server_lector_json.h"
 #include "../common/common_estado_juego.h"
 #include "../common/common_queue.h"
 #include "../common/common_thread.h"
