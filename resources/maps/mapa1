@@ -1,0 +1,158 @@
+{
+    "background": "../resources/backgrounds/forest.png",
+    "equipamiento": [
+        {
+            "armadura": "../resources/armors/chestPlatePickup.png",
+            "x": 38,
+            "y": 23
+        },
+        {
+            "casco": "../resources/armors/knightHelmet.png",
+            "x": 41,
+            "y": 23
+        },
+        {
+            "arma": "../resources/weapons/ak47.png",
+            "x": 12,
+            "y": 11
+        }
+    ],
+    "spawns": [
+        {
+            "x": 14,
+            "y": 11
+        }
+    ],
+    "tiles": [
+        {
+            "texture": "../resources/TileSets/greyBlock.png",
+            "x": 12,
+            "y": 12
+        },
+        {
+            "texture": "../resources/TileSets/greyBlock.png",
+            "x": 14,
+            "y": 12
+        },
+        {
+            "texture": "../resources/TileSets/greyBlock.png",
+            "x": 13,
+            "y": 12
+        },
+        {
+            "texture": "../resources/TileSets/greyBlock.png",
+            "x": 16,
+            "y": 12
+        },
+        {
+            "texture": "../resources/TileSets/greyBlock.png",
+            "x": 18,
+            "y": 12
+        },
+        {
+            "texture": "../resources/TileSets/greyBlock.png",
+            "x": 15,
+            "y": 12
+        },
+        {
+            "texture": "../resources/TileSets/greyBlock.png",
+            "x": 17,
+            "y": 12
+        },
+        {
+            "texture": "../resources/TileSets/greyBlock.png",
+            "x": 20,
+            "y": 12
+        },
+        {
+            "texture": "../resources/TileSets/greyBlock.png",
+            "x": 19,
+            "y": 12
+        },
+        {
+            "texture": "../resources/TileSets/greyBlock.png",
+            "x": 21,
+            "y": 11
+        },
+        {
+            "texture": "../resources/TileSets/greyBlock.png",
+            "x": 21,
+            "y": 10
+        },
+        {
+            "texture": "../resources/TileSets/greyBlock.png",
+            "x": 21,
+            "y": 9
+        },
+        {
+            "texture": "../resources/TileSets/greyBlock.png",
+            "x": 21,
+            "y": 8
+        },
+        {
+            "texture": "../resources/TileSets/greyBlock.png",
+            "x": 20,
+            "y": 7
+        },
+        {
+            "texture": "../resources/TileSets/greyBlock.png",
+            "x": 19,
+            "y": 7
+        },
+        {
+            "texture": "../resources/TileSets/greyBlock.png",
+            "x": 18,
+            "y": 7
+        },
+        {
+            "texture": "../resources/TileSets/greyBlock.png",
+            "x": 16,
+            "y": 7
+        },
+        {
+            "texture": "../resources/TileSets/greyBlock.png",
+            "x": 15,
+            "y": 7
+        },
+        {
+            "texture": "../resources/TileSets/greyBlock.png",
+            "x": 14,
+            "y": 7
+        },
+        {
+            "texture": "../resources/TileSets/greyBlock.png",
+            "x": 13,
+            "y": 7
+        },
+        {
+            "texture": "../resources/TileSets/greyBlock.png",
+            "x": 12,
+            "y": 7
+        },
+        {
+            "texture": "../resources/TileSets/greyBlock.png",
+            "x": 17,
+            "y": 7
+        },
+        {
+            "texture": "../resources/TileSets/greyBlock.png",
+            "x": 11,
+            "y": 8
+        },
+        {
+            "texture": "../resources/TileSets/greyBlock.png",
+            "x": 11,
+            "y": 9
+        },
+        {
+            "texture": "../resources/TileSets/greyBlock.png",
+            "x": 11,
+            "y": 10
+        },
+        {
+            "texture": "../resources/TileSets/greyBlock.png",
+            "x": 11,
+            "y": 11
+        }
+    ]
+}

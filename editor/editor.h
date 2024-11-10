@@ -20,25 +20,35 @@ class Editor {
     bool mostrar_fondos_disponibles;
     bool mostrar_tiles_disponibles;
     bool mostrar_spawns_disponibles;
+    bool mostrar_equipamiento_disponibles;
+    bool mostrar_cajas_disponibles;
 
     TTF_Font* font;
 
     Button boton_fondo;
     Button boton_tiles;
     Button boton_spawn;
+    Button boton_equipamiento;
+    Button boton_cajas;
 
     std::map<std::string,std::vector<SDL_Point>>  tiles_seleccionados;  
     std::map<std::string,std::vector<SDL_Point>>  spawn_seleccionados;
+    std::map<std::string,std::vector<SDL_Point>>  equipamiento_seleccionados;
+    std::map<std::string,std::vector<SDL_Point>>  cajas_seleccionados;
 
     std::vector<Button> fondos_posibles_boton;
     std::vector<Button> tiles_posibles_boton;
     std::vector<Button> spawns_disponibles_boton;
+    std::vector<Button> equipamiento_disponibles_boton;
+    std::vector<Button> cajas_disponibles_boton;
 
    
 
     std::string fondo_actual;
     std::string tile_actual;
     std::string spawn_actual;
+    std::string equipamiento_actual;
+    std::string caja_actual;
 
 
     
@@ -58,6 +68,16 @@ class Editor {
         "../resources/Grey-Duck.png",
     };
 
+    std::vector<std::string> equipamiento_img = {
+        "../resources/armors/knightHelmet.png",
+        "../resources/weapons/ak47.png",
+        "../resources/armors/chestPlatePickup.png",
+    };
+
+    std::vector<std::string> cajas_img = {
+        "../resources/TileSets/uiBox.png",
+    };
+
     
 
     public:
@@ -71,15 +91,23 @@ class Editor {
     void renderizar_tiles();
     void set_spawn(std::string path_spawn);
     void renderizar_spawn();
+    void set_equipamiento(std::string path_equipamiento);
+    void renderizar_equipamiento();
+    void set_caja(std::string path_caja);
+    void renderizar_caja();
     
     void mostrar_opciones_fondo();
     void mostrar_opciones_tiles();
     void mostrar_opciones_spawn();
+    void mostrar_opciones_equipamiento();
+    void mostrar_opciones_cajas();
     
 
     void actualizar_fondo(int indice);
     void actualizar_tiles(int indice);
     void actualizar_spawn(int indice);
+    void actualizar_equipamiento(int indice);
+    void actualizar_cajas(int indice);
     
     void limpiar_pantalla();
     void guardar_mapa(std::string& nombre_archivo);
