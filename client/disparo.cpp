@@ -56,12 +56,14 @@ void Disparo::mostrar_frame_arma(uint8_t& direccion_pato) {
     }
 }
 
-void Disparo::mostrar_disparo(uint8_t& estado_disparo, uint8_t& direccion_pato, int pos_x, int pos_y, int it) {
+void Disparo::mostrar_disparo(uint8_t& estado_disparo, uint8_t& direccion_pato, int pos_x, int pos_y, int it, float zoom_factor) {
     rect_dibujado_arma.SetX(pos_x);
     rect_dibujado_arma.SetY(pos_y);
 
     rect_dibujado_bala.SetX(pos_x);
     rect_dibujado_bala.SetY(pos_y);
+
+    set_zoom_in(zoom_factor, rect_dibujado_arma, pos_x, pos_y);
 
     if (estado_disparo == MOVER_DERECHA) {
         if (direccion_pato == DIRECCION_DERECHA) {

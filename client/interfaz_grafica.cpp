@@ -59,7 +59,7 @@ void InterfazGrafica::iniciar() {
         obtener_estado_juego(rect_dibujado, estado_pato_movimiento, se_tira_al_piso, estado_pato_salto, direccion_pato, estado_disparo);
         fondo.dibujar(renderer, zoom_factor);
         pato.dibujar(estado_pato_movimiento, estado_pato_salto, direccion_pato, se_tira_al_piso, rect_dibujado.GetX(), rect_dibujado.GetY(), it, zoom_factor);
-        disparo.mostrar_disparo(estado_pato_movimiento, direccion_pato, rect_dibujado.GetX(), rect_dibujado.GetY(), it);
+        disparo.mostrar_disparo(estado_pato_movimiento, direccion_pato, rect_dibujado.GetX(), rect_dibujado.GetY(), it, zoom_factor);
         //if(estado_disparo == TIENE_ARMA){
         //    disparo.mostrar_disparo(estado_disparo, rect_dibujado.GetX(), rect_dibujado.GetY(), it);
         //}
