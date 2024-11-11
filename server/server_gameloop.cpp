@@ -44,6 +44,7 @@ void GameLoop::procesar_evento(EventoServer& evento, EstadoJuego& estado_juego) 
 }
 
 void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
+    Bala bala;
     switch (accion) {
         case MOVER_IZQUIERDA:
             pato.moverse_izquierda();
@@ -63,6 +64,16 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
         case TOMAR_ARMA:
             // llamar a un metodo que recorra el array de armas y devuelva la cercana al pato
             // pato.tomar_arma();
+            break;
+        case DISPARAR:
+            pato.disparar();
+            if (!pato.esta_apuntando_arriba()){
+                Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_direccion(), pato.get_pos_x() + pato.get_arma()->get_alcance(), pato.get_pos_y());
+                ultimo_estado.balas.push_back(bala);
+            } else {
+                Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_direccion(), pato.get_pos_x(), pato.get_pos_y() + pato.get_arma()->get_alcance());
+                ultimo_estado.balas.push_back(bala);
+            }
             break;
         default:
             // hacer metodo que ponga quieto al pato
