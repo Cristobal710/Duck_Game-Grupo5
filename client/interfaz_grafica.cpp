@@ -52,21 +52,21 @@ void InterfazGrafica::iniciar() {
 
     // }
 
-    PatoInterfaz pato2(renderer, "../resources/Grey-Duck.png");
+    PatoInterfaz pato2(renderer, "../resources/Random/White-Duck.png");
+    PatoInterfaz pato3(renderer, "../resources/Random/Yellow-Duck.png");
 
     while (correr_programa) {
         
         manejar_eventos();
         renderer.Clear();
         obtener_estado_juego(rect_dibujado, estado_pato_movimiento, se_tira_al_piso, estado_pato_salto, direccion_pato, estado_disparo);
-        fondo.dibujar(renderer, 1.0f, 3.0f, rect_dibujado.GetX(), rect_dibujado.GetY(), 200, 200);
+        fondo.dibujar(renderer, 1.0f, 2.0f, rect_dibujado.GetX(), rect_dibujado.GetY(), 1200, 700);
         pato.dibujar(estado_pato_movimiento, estado_pato_salto, direccion_pato, se_tira_al_piso, rect_dibujado.GetX(), rect_dibujado.GetY(), it, zoom_factor);
         disparo.mostrar_disparo(estado_pato_movimiento, direccion_pato, rect_dibujado.GetX(), rect_dibujado.GetY(), it, zoom_factor);
-        //if(estado_disparo == TIENE_ARMA){
-        //    disparo.mostrar_disparo(estado_disparo, rect_dibujado.GetX(), rect_dibujado.GetY(), it);
-        //}
+        
         uint8_t byte_nulo = BYTE_NULO;
-        pato2.dibujar(byte_nulo, byte_nulo, byte_nulo, byte_nulo, 200, 200, it, 1.0f);
+        pato2.dibujar(byte_nulo, byte_nulo, byte_nulo, byte_nulo, 400, 400, it, 1.0f);
+        pato3.dibujar(byte_nulo, byte_nulo, byte_nulo, byte_nulo, 1200, 700, it, 1.0f);
         renderer.Present();
             
         

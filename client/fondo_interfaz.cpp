@@ -4,88 +4,78 @@
 FondoInterfaz::FondoInterfaz(SDL2pp::Renderer& renderer, const std::string& fondo_path):
         fondo_texture(renderer, SDL2pp::Surface(IMG_Load(fondo_path.c_str()))) {}
 
-/*void FondoInterfaz::dibujar(SDL2pp::Renderer& renderer, float zoom_factor) {
+
+void FondoInterfaz::dibujar(SDL2pp::Renderer& renderer, float zoom_minimo, float zoom_maximo, 
+                            int pato1_x, int pato1_y, int pato2_x, int pato2_y) {
     int window_width, window_height;
     SDL_GetRendererOutputSize(renderer.Get(), &window_width, &window_height);
 
-    // Scale the background size based on the zoom factor
-    SDL2pp::Rect destination_rect(
-        0, 0,
-        static_cast<int>(window_width * zoom_factor),
-        static_cast<int>(window_height * zoom_factor)
-    );
+    float distancia = std::sqrt(std::pow(pato2_x - pato1_x, 2) + std::pow(pato2_y - pato1_y, 2));
 
-    // Center the background if it's zoomed in
-    destination_rect.x = (window_width - destination_rect.w) / 2;
-    destination_rect.y = (window_height - destination_rect.h) / 2;
+    float limite_distancia = 900.0f; 
 
-    renderer.Copy(fondo_texture, SDL2pp::Optional<SDL2pp::Rect>(), destination_rect);
-}*/
+    float zoom_factor;
 
-/*void FondoInterfaz::dibujar(SDL2pp::Renderer& renderer, float zoom_factor, int duck_x, int duck_y) {
-    int window_width, window_height;
-    SDL_GetRendererOutputSize(renderer.Get(), &window_width, &window_height);
+    if (distancia > limite_distancia) {
+       
+        zoom_factor = 1.0f;
+    } else {
+        
+        zoom_factor = std::max(zoom_minimo, std::min(zoom_maximo, zoom_maximo - (distancia / 1200.0f)));
+    }
 
-    // Scale the background size based on the zoom factor
-    //int scaled_width = static_cast<int>(fondo_texture.GetWidth() * zoom_factor);
-    //int scaled_height = static_cast<int>(fondo_texture.GetHeight() * zoom_factor);
+    int min_x = std::min(pato1_x, pato2_x);
+    int max_x = std::max(pato1_x, pato2_x);
+    int min_y = std::min(pato1_y, pato2_y);
+    int max_y = std::max(pato1_y, pato2_y);
 
-    // Calculate the offset so the duck stays in the center
-    int offset_x = static_cast<int>(duck_x * zoom_factor) - (window_width / 2);
-    int offset_y = static_cast<int>(duck_y * zoom_factor) - (window_height / 2);
 
-    // Define the destination rectangle with adjusted position and scale
-    SDL2pp::Rect destination_rect(
-        -offset_x, // Move background to keep duck centered
-        -offset_y, // Move background to keep duck centered
-        static_cast<int>(window_width * zoom_factor),
-        static_cast<int>(window_height * zoom_factor)
-    );
+    int padding = 50; 
+    min_x -= padding;
+    max_x += padding;
+    min_y -= padding;
+    max_y += padding;
 
-    // Render the background with the calculated offset and scaling
-    renderer.Copy(fondo_texture, SDL2pp::Optional<SDL2pp::Rect>(), destination_rect);
-}*/
-
-void FondoInterfaz::dibujar(SDL2pp::Renderer& renderer, float min_zoom, float max_zoom, 
-                            int duck1_x, int duck1_y, int duck2_x, int duck2_y) {
-    int window_width, window_height;
-    SDL_GetRendererOutputSize(renderer.Get(), &window_width, &window_height);
-
-    // Calculate the distance between the two ducks
-    float distance = std::sqrt(std::pow(duck2_x - duck1_x, 2) + std::pow(duck2_y - duck1_y, 2));
-
-    // Adjust the zoom factor based on the distance between ducks
-    // Here we normalize the distance within a range to map it to zoom levels
-    float zoom_factor = std::max(min_zoom, std::min(max_zoom, max_zoom - (distance / 300.0f))); // Adjust 300.0f as needed
-
-    // Calculate the midpoint between the two ducks
-    int center_x = (duck1_x + duck2_x) / 2;
-    int center_y = (duck1_y + duck2_y) / 2;
-
-    // Get the original size of the background
+   
     int background_width = fondo_texture.GetWidth();
     int background_height = fondo_texture.GetHeight();
 
-    // Scale the background size based on the zoom factor
-    int scaled_width = static_cast<int>(background_width * zoom_factor);
-    int scaled_height = static_cast<int>(background_height * zoom_factor);
+  
+    int visible_width = static_cast<int>(window_width / zoom_factor);
+    int visible_height = static_cast<int>(window_height / zoom_factor);
 
-    // Calculate offset to keep the midpoint centered
-    int offset_x = static_cast<int>(center_x * zoom_factor) - (window_width / 2);
-    int offset_y = static_cast<int>(center_y * zoom_factor) - (window_height / 2);
+   
+    visible_width = std::min(visible_width, background_width);
+    visible_height = std::min(visible_height, background_height);
 
-    // Clamp the offset to ensure the background doesn’t move beyond its boundaries
-    offset_x = std::max(0, std::min(offset_x, scaled_width - window_width));
-    offset_y = std::max(0, std::min(offset_y, scaled_height - window_height));
+    
+    int center_x = (min_x + max_x) / 2;
+    int center_y = (min_y + max_y) / 2;
 
-    // Define the destination rectangle for the background with the adjusted position and scale
+    
+    int nuevo_x = center_x - visible_width / 2;
+    int nuevo_y = center_y - visible_height / 2;
+
+    nuevo_x = std::max(0, std::min(nuevo_x, background_width - visible_width));
+    nuevo_y = std::max(0, std::min(nuevo_y, background_height - visible_height));
+
+    
     SDL2pp::Rect destination_rect(
-        -offset_x, -offset_y, scaled_width, scaled_height
+        -nuevo_x,  
+        -nuevo_y,   
+        static_cast<int>(window_width * zoom_factor),
+        static_cast<int>(window_height * zoom_factor)
     );
 
-    // Render the background with the calculated offset and scaling
     renderer.Copy(fondo_texture, SDL2pp::Optional<SDL2pp::Rect>(), destination_rect);
 }
+
+
+
+   
+
+
+
 
 
 
