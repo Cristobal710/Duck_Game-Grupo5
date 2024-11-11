@@ -129,11 +129,9 @@ void ClienteProtocolo::recibir_bala(std::list<Bala>& balas) {
     uint16_t id = recibir_dos_bytes(cerrado);
     uint16_t pos_x = recibir_dos_bytes(cerrado);
     uint16_t pos_y = recibir_dos_bytes(cerrado);
-    uint16_t pos_x_final = recibir_dos_bytes(cerrado);
-    uint16_t pos_y_final = recibir_dos_bytes(cerrado);
     uint8_t direccion = recibir_byte(cerrado);
 
-    Bala bala(id, pos_x, pos_y, pos_x_final, pos_y_final, direccion);
+    Bala bala(id, pos_x, pos_y, 0, 0, direccion);
     balas.push_back(bala);
 }
 
@@ -186,6 +184,7 @@ std::list<Granada> ClienteProtocolo::recibir_granadas() {
 EstadoJuego ClienteProtocolo::recibir_estado_juego() {
     EstadoJuego estado_juego;
     estado_juego.patos = recibir_patos();
+    estado_juego.balas = recibir_balas();
     // estado_juego.cajas = recibir_cajas();
     // estado_juego.armas = recibir_armas();
     return estado_juego;

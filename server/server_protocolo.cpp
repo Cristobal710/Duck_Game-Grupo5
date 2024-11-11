@@ -91,8 +91,8 @@ void ServerProtocolo::enviar_estado_juego(EstadoJuego& estado) {
     // enviar_cajas(estado.cajas);
     // enviar_byte(estado.armas.size());
     // enviar_armas(estado.armas);
-    // enviar_byte(estado.balas.size());
-    // enviar_balas(estado.balas);
+    enviar_byte(estado.balas.size());
+    enviar_balas(estado.balas);
     // enviar_byte(estado.granadas.size());
     // enviar_granadas(estado.granadas);
 }
@@ -134,11 +134,9 @@ void ServerProtocolo::enviar_arma(Arma& arma) {
 }
 
 void ServerProtocolo::enviar_bala(Bala& bala) {
-    enviar_byte(bala.get_id());
-    enviar_byte(bala.get_pos_x());
-    enviar_byte(bala.get_pos_y());
-    enviar_byte(bala.get_pos_x_final());
-    enviar_byte(bala.get_pos_y_final());
+    enviar_dos_bytes(bala.get_id());
+    enviar_dos_bytes(bala.get_pos_x());
+    enviar_dos_bytes(bala.get_pos_y());
     enviar_byte(bala.get_direccion());
 }
 

@@ -5,8 +5,9 @@
 #include <SDL2/SDL_image.h>
 #include <vector>
 #include "../common/common_constantes.h"
+#include "movimiento.h"
 
-class Disparo {
+class Disparo : public Movimiento {
 private:
     std::vector<SDL2pp::Texture> arma;
     std::vector<SDL2pp::Texture> bala;
@@ -26,7 +27,7 @@ private:
 
 public:
     Disparo(SDL2pp::Renderer& renderer, const std::string& disparo_path, const std::string& bala_path, int pos_x, int pos_y);  
-    void mostrar_disparo(uint8_t& estado_disparo, uint8_t& direccion_pato, int pos_x, int pos_y, int it);
+    void mostrar_disparo(uint8_t& estado_disparo, uint8_t& direccion_pato, int pos_x, int pos_y, int it, float zoom_factor);
 
 };
 

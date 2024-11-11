@@ -44,6 +44,7 @@ void GameLoop::procesar_evento(EventoServer& evento, EstadoJuego& estado_juego) 
 }
 
 void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
+    Bala bala;
     switch (accion) {
         case MOVER_IZQUIERDA:
             pato.moverse_izquierda();
@@ -64,6 +65,16 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
             // llamar a un metodo que recorra el array de armas y devuelva la cercana al pato
             // pato.tomar_arma();
             break;
+        case DISPARAR:
+            pato.disparar();
+            if (!pato.esta_apuntando_arriba()){
+                Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_direccion(), pato.get_pos_x() + pato.get_arma()->get_alcance(), pato.get_pos_y());
+                ultimo_estado.balas.push_back(bala);
+            } else {
+                Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_direccion(), pato.get_pos_x(), pato.get_pos_y() + pato.get_arma()->get_alcance());
+                ultimo_estado.balas.push_back(bala);
+            }
+            break;
         default:
             // hacer metodo que ponga quieto al pato
             pato.estado.set_dejar_de_moverse();
@@ -78,6 +89,32 @@ void GameLoop::enviar_estado_juego_si_cambio(Pato& pato, EstadoJuego& estado_ant
         std::cout << "cambio" << std::endl;
         cola_estados_juego.push(ultimo_estado);
     }
+}
+
+void GameLoop::terminar_acciones_patos() {
+    for (Pato& pato: ultimo_estado.patos) {
+        pato.estado.set_dejar_de_moverse();
+        pato.estado.set_dejar_de_agacharse();
+        pato.levantarse_del_piso();
+        pato.dejar_de_apuntar_arriba();
+        // dejar de disparar
+    }
+}
+
+void GameLoop::drop_and_rest(float tiempo_ultimo_frame){
+    Uint32 tiempo_actual = SDL_GetTicks();
+    int32_t descansar = RATE - (tiempo_actual - tiempo_ultimo_frame);
+
+    if (descansar < 0){ //entonces nos atrasamos, tenemos que esperar a la siguiente iteracion, drop & rest.
+        int32_t tiempo_atrasado = -descansar;
+        descansar = RATE - (tiempo_atrasado % RATE);
+        int32_t tiempo_perdido = tiempo_atrasado + descansar;
+
+        tiempo_ultimo_frame += tiempo_perdido;
+    }
+
+    SDL_Delay(descansar);
+    tiempo_ultimo_frame += RATE;
 }
 
  
@@ -113,13 +150,7 @@ void GameLoop::run() {
             std::vector<EventoServer> eventos = clientes.recibir_mensajes_clientes();
             
            if (eventos.empty()) {
-                pato.estado.set_dejar_de_moverse();
-                //cola_estados_juego.push(ultimo_estado);
-                for (Pato& pato: ultimo_estado.patos) {
-                    pato.estado.set_dejar_de_moverse();
-                    pato.estado.set_dejar_de_agacharse();
-                    //enviar_estado_juego_si_cambio(pato, estado_anterior);
-                }
+                terminar_acciones_patos();
             }
             for(EventoServer evento : eventos){
                 procesar_evento(evento, ultimo_estado);
@@ -134,20 +165,7 @@ void GameLoop::run() {
             // aplicar logica del juego, balas, gravedad, etc
             // pushear
             enviar_estado_juego_si_cambio(pato, estado_anterior);
-
-            Uint32 tiempo_actual = SDL_GetTicks();
-            int32_t descansar = RATE - (tiempo_actual - tiempo_ultimo_frame);
-
-            if (descansar < 0){ //entonces nos atrasamos, tenemos que esperar a la siguiente iteracion, drop & rest.
-                int32_t tiempo_atrasado = -descansar;
-                descansar = RATE - (tiempo_atrasado % RATE);
-                int32_t tiempo_perdido = tiempo_atrasado + descansar;
-
-                tiempo_ultimo_frame += tiempo_perdido;
-            }
-
-            SDL_Delay(descansar);
-            tiempo_ultimo_frame += RATE;
+            drop_and_rest(tiempo_ultimo_frame);
         }
     }
 
