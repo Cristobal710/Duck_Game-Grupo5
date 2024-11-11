@@ -17,7 +17,7 @@ private:
 public:
     PatoInterfaz(SDL2pp::Renderer& renderer, const std::string& pato_path);
 
-    void dibujar(uint8_t& estado_pato_movimiento, uint8_t& estado_pato_salto, uint8_t& direccion_pato, uint8_t& se_tira_al_piso, int pos_x, int pos_y, int it);
+    void dibujar(uint8_t& estado_pato_movimiento, uint8_t& estado_pato_salto, uint8_t& direccion_pato, uint8_t& se_tira_al_piso, int pos_x, int pos_y, int it, float zoom_factor);
 
 };
 

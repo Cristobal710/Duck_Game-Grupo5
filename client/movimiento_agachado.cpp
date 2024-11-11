@@ -45,13 +45,12 @@ SDL2pp::Texture& MovimientoAgachado::mostrar_frame() {
     return movimiento_pato_agachado[0];
 }
 
-void MovimientoAgachado::pato_agachado(uint8_t& esta_agachado, int pos_x, int pos_y, int it){
-    rect_dibujado.SetX(pos_x);
-    rect_dibujado.SetY(pos_y);
-    if(esta_agachado == TIRAR_PISO){
+void MovimientoAgachado::pato_agachado(uint8_t& esta_agachado, int& pos_x, int& pos_y, int it, float zoom_factor) {
+    set_zoom_in(zoom_factor, rect_dibujado, pos_x, pos_y);
+
+    if (esta_agachado == TIRAR_PISO) {
         mostrar_frames_agachado(it);
     } else {
         mostrar_frames_levantarse(it);
     }
-    
 }

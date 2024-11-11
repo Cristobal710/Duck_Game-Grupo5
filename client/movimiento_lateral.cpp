@@ -53,18 +53,16 @@ void MovimientoLateral::mostrar_frame_izquierda(int it) {
 
 SDL2pp::Texture& MovimientoLateral::mostrar_frame() { return movimiento_pato[0]; }
 
-void MovimientoLateral::pato_movimiento(uint8_t& movimiento, uint8_t& direccion_pato, int pos_x, int pos_y, int it) {
-    if (movimiento == MOVER_DERECHA){
-        rect_dibujado.SetX(pos_x);
-        rect_dibujado.SetY(pos_y);
+void MovimientoLateral::pato_movimiento(uint8_t& movimiento, uint8_t& direccion_pato, int& pos_x, int& pos_y, int it, float zoom_factor) {
+    set_zoom_in(zoom_factor, rect_dibujado, pos_x, pos_y);
+
+    const int move_speed = 5;
+    if (movimiento == MOVER_DERECHA) {
+        pos_x += move_speed;
         mostrar_frame_derecha(it);
-       
-    
     } else if (movimiento == MOVER_IZQUIERDA) {
-        rect_dibujado.SetX(pos_x);
-        rect_dibujado.SetY(pos_y);
+        pos_x -= move_speed;
         mostrar_frame_izquierda(it);
-        
     } else {
         puntero_movimiento_derecha = 0;
         puntero_movimiento_izquierda = 0;

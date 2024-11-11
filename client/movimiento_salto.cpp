@@ -35,9 +35,8 @@ void MovimientoSalto::mostrar_frame_caida(int it) {
     renderer.Copy(caida_frames[it % NUM_FRAMES_CAE_PATO], rect_inicio, rect_dibujado);
 }
 
-void MovimientoSalto::pato_salta(uint8_t& movimiento, int pos_x, int pos_y, int it) {
-    rect_dibujado.SetX(pos_x);
-    rect_dibujado.SetY(pos_y);
+void MovimientoSalto::pato_salta(uint8_t& movimiento, int& pos_x, int& pos_y, int it, float zoom_factor) {
+    set_zoom_in(zoom_factor, rect_dibujado, pos_x, pos_y);
 
     if (movimiento == SALTAR_ALETEAR) {
         mostrar_frame_salto(it);
@@ -45,8 +44,9 @@ void MovimientoSalto::pato_salta(uint8_t& movimiento, int pos_x, int pos_y, int 
         mostrar_frame_caida(it);
         puntero_caida = (puntero_caida + 1) % NUM_FRAMES_CAE_PATO;
     } 
-    //else if (movimiento == CAER) {
+    // Uncomment if the CAER behavior is needed
+    // else if (movimiento == CAER) {
     //    mostrar_frame_caida(it);
     //    puntero_caida = (puntero_caida + 1) % NUM_FRAMES_CAE_PATO;
-    //}
+    // }
 }

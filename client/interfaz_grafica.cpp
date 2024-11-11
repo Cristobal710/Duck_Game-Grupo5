@@ -33,6 +33,8 @@ void InterfazGrafica::iniciar() {
     //SDL2pp::Rect rect_inicio = {1, 8, 32, 32};
     SDL2pp::Rect rect_dibujado = {100, 100, 32, 32};  // posición inicial
 
+    float zoom_factor = 2.0f;
+
     uint8_t estado_pato_movimiento = BYTE_NULO;
     uint8_t se_tira_al_piso = BYTE_NULO;
     uint8_t estado_pato_salto = BYTE_NULO;
@@ -55,8 +57,8 @@ void InterfazGrafica::iniciar() {
         manejar_eventos();
         renderer.Clear();
         obtener_estado_juego(rect_dibujado, estado_pato_movimiento, se_tira_al_piso, estado_pato_salto, direccion_pato, estado_disparo);
-        fondo.dibujar(renderer);
-        pato.dibujar(estado_pato_movimiento, estado_pato_salto, direccion_pato, se_tira_al_piso, rect_dibujado.GetX(), rect_dibujado.GetY(), it);
+        fondo.dibujar(renderer, zoom_factor);
+        pato.dibujar(estado_pato_movimiento, estado_pato_salto, direccion_pato, se_tira_al_piso, rect_dibujado.GetX(), rect_dibujado.GetY(), it, zoom_factor);
         disparo.mostrar_disparo(estado_pato_movimiento, direccion_pato, rect_dibujado.GetX(), rect_dibujado.GetY(), it);
         //if(estado_disparo == TIENE_ARMA){
         //    disparo.mostrar_disparo(estado_disparo, rect_dibujado.GetX(), rect_dibujado.GetY(), it);

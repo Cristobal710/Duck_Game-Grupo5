@@ -23,7 +23,7 @@ class MovimientoAgachado : public Movimiento {
 
     public:
     MovimientoAgachado(SDL2pp::Renderer& renderer, const std::string& pato_path, int pos_x, int pos_y);
-    void pato_agachado(uint8_t& esta_agachado, int pos_x, int pos_y, int it);
+    void pato_agachado(uint8_t& esta_agachado, int& pos_x, int& pos_y, int it, float zoom_factor);
 };
 
 #endif  // MOVIMIENTO_AGACHADO_H
