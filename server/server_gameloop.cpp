@@ -80,6 +80,32 @@ void GameLoop::enviar_estado_juego_si_cambio(Pato& pato, EstadoJuego& estado_ant
     }
 }
 
+void GameLoop::terminar_acciones_patos() {
+    for (Pato& pato: ultimo_estado.patos) {
+        pato.estado.set_dejar_de_moverse();
+        pato.estado.set_dejar_de_agacharse();
+        pato.levantarse_del_piso();
+        pato.dejar_de_apuntar_arriba();
+        // dejar de disparar
+    }
+}
+
+void GameLoop::drop_and_rest(float tiempo_ultimo_frame){
+    Uint32 tiempo_actual = SDL_GetTicks();
+    int32_t descansar = RATE - (tiempo_actual - tiempo_ultimo_frame);
+
+    if (descansar < 0){ //entonces nos atrasamos, tenemos que esperar a la siguiente iteracion, drop & rest.
+        int32_t tiempo_atrasado = -descansar;
+        descansar = RATE - (tiempo_atrasado % RATE);
+        int32_t tiempo_perdido = tiempo_atrasado + descansar;
+
+        tiempo_ultimo_frame += tiempo_perdido;
+    }
+
+    SDL_Delay(descansar);
+    tiempo_ultimo_frame += RATE;
+}
+
  
 void GameLoop::run() {
     Pato pato(3, 0, 0, 0);
@@ -113,13 +139,7 @@ void GameLoop::run() {
             std::vector<EventoServer> eventos = clientes.recibir_mensajes_clientes();
             
            if (eventos.empty()) {
-                pato.estado.set_dejar_de_moverse();
-                //cola_estados_juego.push(ultimo_estado);
-                for (Pato& pato: ultimo_estado.patos) {
-                    pato.estado.set_dejar_de_moverse();
-                    pato.estado.set_dejar_de_agacharse();
-                    //enviar_estado_juego_si_cambio(pato, estado_anterior);
-                }
+                terminar_acciones_patos();
             }
             for(EventoServer evento : eventos){
                 procesar_evento(evento, ultimo_estado);
@@ -134,20 +154,7 @@ void GameLoop::run() {
             // aplicar logica del juego, balas, gravedad, etc
             // pushear
             enviar_estado_juego_si_cambio(pato, estado_anterior);
-
-            Uint32 tiempo_actual = SDL_GetTicks();
-            int32_t descansar = RATE - (tiempo_actual - tiempo_ultimo_frame);
-
-            if (descansar < 0){ //entonces nos atrasamos, tenemos que esperar a la siguiente iteracion, drop & rest.
-                int32_t tiempo_atrasado = -descansar;
-                descansar = RATE - (tiempo_atrasado % RATE);
-                int32_t tiempo_perdido = tiempo_atrasado + descansar;
-
-                tiempo_ultimo_frame += tiempo_perdido;
-            }
-
-            SDL_Delay(descansar);
-            tiempo_ultimo_frame += RATE;
+            drop_and_rest(tiempo_ultimo_frame);
         }
     }
 
