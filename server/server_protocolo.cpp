@@ -1,6 +1,16 @@
 #include "server_protocolo.h"
 #define EXITO 0
 #define ERROR 1
+#define MAPA_CAJAS 0x02
+#define MAPA_TILES 0x03
+#define MAPA_SPAWNS 0x04
+#define MAPA_EQUIPAMIENTO 0x05
+#define ARMADURA "armadura"
+#define ARMA "arma"
+#define CASCO "casco"  
+#define BYTE_ARMADURA 0X06
+#define BYTE_CASCO 0X07
+#define BYTE_ARMA 0X08
 
 ServerProtocolo::ServerProtocolo(Socket& skt): Protocolo(skt) {}
 
@@ -10,6 +20,68 @@ EventoServer ServerProtocolo::recibir_evento() {
     evento.accion = recibir_byte(cerrado);
     evento.jugador_id = recibir_byte(cerrado);
     return evento;
+}
+
+void ServerProtocolo::enviar_coordenada(SDL_Point& coord){
+    enviar_dos_bytes(static_cast<uint16_t>(coord.x));
+    enviar_dos_bytes(static_cast<uint16_t>(coord.y));
+}
+
+void ServerProtocolo::enviar_equipamiento(std::map<std::string, std::vector<SDL_Point>>& equipamiento){
+    enviar_byte(MAPA_EQUIPAMIENTO);
+    for(const auto& key : equipamiento){
+        if(key.first == ARMADURA){
+            enviar_byte(BYTE_ARMADURA);
+        }else if(key.first == ARMA){
+            enviar_byte(BYTE_ARMA);
+        }else if(key.first == CASCO){
+            enviar_byte(BYTE_CASCO);
+        }
+        enviar_string(key.first);
+        std::vector<SDL_Point> coordenadas = equipamiento.at(key.first);
+        for(SDL_Point coord: coordenadas){
+            enviar_coordenada(coord);
+        }
+    }    
+}
+
+void ServerProtocolo::enviar_mapa(Mapa& mapa){
+    enviar_string(mapa.getFondo());
+    std::map<std::string, std::vector<SDL_Point>> spawns =mapa.getSpawns();
+    std::vector<SDL_Point> spawns_list = spawns.at("default");
+    enviar_byte(MAPA_SPAWNS);
+    for(SDL_Point coord : spawns_list){
+        enviar_coordenada(coord);
+    }
+    enviar_byte(MAPA_CAJAS);
+    std::map<std::string, std::vector<SDL_Point>> cajas =mapa.getCajas();
+    std::vector<SDL_Point> cajas_list = cajas.at("default");
+    for(SDL_Point coord : cajas_list){
+        enviar_coordenada(coord);
+    }
+    enviar_byte(MAPA_TILES);
+    std::map<std::string, std::vector<SDL_Point>> tiles =mapa.getTiles();
+    std::vector<SDL_Point> tiles_list = tiles.at("default");
+    for(SDL_Point coord : tiles_list){
+        enviar_coordenada(coord);
+    }
+    std::map<std::string, std::vector<SDL_Point>> equipo = mapa.getEquipamiento();
+    enviar_equipamiento(equipo);    
+}
+
+
+
+
+void ServerProtocolo::enviar_string(const std::string& mensaje) {
+    bool cerrado;
+    uint16_t largo = mensaje.size(); 
+    std::vector<uint8_t> serializado(largo + 2);
+    serializado.insert(serializado.begin(), mensaje.begin(), mensaje.end());
+    serializado.insert(serializado.begin(), largo);
+    serializado.insert(serializado.begin(), largo >> 8);
+    serializado.resize(largo + 2);
+    socket.sendall((serializado.data()), serializado.size(), &cerrado);
+ 
 }
 
 void ServerProtocolo::enviar_estado_juego(EstadoJuego& estado) {
