@@ -73,6 +73,7 @@
         "csignal": "cpp",
         "regex": "cpp",
         "ranges": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "shared_mutex": "cpp"
     }
 }

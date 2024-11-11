@@ -30,8 +30,8 @@ void Protocolo::enviar_dos_bytes(const uint16_t valor) {
     std::vector<uint8_t> data(2);
     data[0] = (valor >> 8) & 0xFF;  // Byte más significativo
     data[1] = valor & 0xFF;         // Byte menos significativo
-    bool berretin;
-    socket.sendall(data.data(), data.size(), &berretin);
+    bool cerrado;
+    socket.sendall(data.data(), data.size(), &cerrado);
 }
 uint16_t Protocolo::recibir_dos_bytes( bool& cerrado) {
     std::vector<uint8_t> datos(2);

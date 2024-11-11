@@ -18,6 +18,7 @@
 #include "../common/common_socket.h"
 #include "../common/common_constantes.h"
 #include "../common/common_estado_pato.h"
+#include "server_mapa.h"
 
 
 #include "server_evento.h"
@@ -32,7 +33,9 @@ class ServerProtocolo: public Protocolo {
 private:
     Comando recibir_nombre();
     uint8_t recibir_caja();
+    void enviar_coordenada(SDL_Point& coord);
     void enviar_pato(Pato& pato);
+    void enviar_mapa(Mapa& mapa);
     void enviar_caja(Caja& caja);
     void enviar_arma(Arma& arma);
     void enviar_bala(Bala& bala);
@@ -43,6 +46,9 @@ private:
     void enviar_balas(std::list<Bala>& balas);
     void enviar_granadas(std::list<Granada>& granadas);
     std::list<uint8_t> serializar_pato(Pato& pato);
+    void enviar_string(const std::string& mensaje);
+    void enviar_equipamiento(std::map<std::string, std::vector<SDL_Point>>& equipamiento);
+
 
 public:
     explicit ServerProtocolo(Socket& socket);
