@@ -7,9 +7,8 @@ Protocolo::Protocolo(Socket& socket): socket(socket), acciones() {
     acciones["a"] = MOVER_IZQUIERDA;
     acciones["w"] = APUNTAR_ARRIBA;
     acciones[" "] = SALTAR_ALETEAR;
-    acciones["click_izq"] = DISPARAR;
-    acciones["r"] = RECARGAR;
-    acciones["e"] = TOMAR_ARMA;
+    acciones["f"] = DISPARAR;
+    acciones["g"] = TOMAR_ARMA;
     acciones["s"] = TIRAR_PISO;
 }
 

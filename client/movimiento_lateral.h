@@ -19,7 +19,7 @@ class MovimientoLateral : public Movimiento {
    
     void mostrar_frame_derecha(int it);
     void mostrar_frame_izquierda(int it);
-    SDL2pp::Texture& mostrar_frame();
+    void mostrar_frame(uint8_t& direccion_pato);
 
     public:
     MovimientoLateral(SDL2pp::Renderer& renderer, const std::string& pato_path, int pos_x, int pos_y);

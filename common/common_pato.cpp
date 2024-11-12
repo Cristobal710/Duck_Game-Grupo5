@@ -44,7 +44,7 @@ void Pato::moverse_derecha() {
 }
 
 void Pato::saltar() { 
-    pos_y++; 
+    pos_y-=3; 
     estado.set_saltar();
     contador_salto++;
     if (contador_salto == 3) {
@@ -56,7 +56,7 @@ void Pato::saltar() {
 void Pato::planear() { pos_y--; }
 
 void Pato::caer() { 
-    pos_y-=3; 
+    pos_y+=3; 
     estado.set_caer();
     contador_caer++;
     if (contador_caer == 5) {
@@ -69,15 +69,28 @@ void Pato::tomar_arma(Arma* nuevaArma) { arma = nuevaArma; }
 
 void Pato::soltar_arma() { arma = nullptr; }
 
-void Pato::disparar() {
-    if (arma) {
-        arma->disparar();
-    } else {
-        // Si el pato no tiene un arma, no puede disparar
+uint8_t Pato::tiene_arma(){ 
+    if (arma != nullptr){
+        return TOMAR_ARMA;
+    } else{
+        return BYTE_NULO;
     }
 }
 
-void Pato::apuntar_arriba() { apunta_arriba = true; }
+void Pato::disparar() {
+    estado.set_disparando();
+    // if (arma) {
+    //     arma->disparar();
+    // } else {
+    //     estado.set_dejar_de_disparar();
+    //     // Si el pato no tiene un arma, no puede disparar
+    // }
+}
+
+void Pato::apuntar_arriba() { 
+    apunta_arriba = true;
+    direccion = DIRECCION_ARRIBA;
+ }
 
 void Pato::dejar_de_apuntar_arriba() { apunta_arriba = false; }
 

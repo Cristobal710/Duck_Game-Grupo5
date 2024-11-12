@@ -87,9 +87,6 @@ void ServerProtocolo::enviar_mapa(Mapa& mapa){
     enviar_equipamiento(equipo);    
 }
 
-
-
-
 void ServerProtocolo::enviar_string(const std::string& mensaje) {
     bool cerrado;
     uint16_t largo = mensaje.size(); 
@@ -124,14 +121,15 @@ void ServerProtocolo::enviar_pato(Pato& pato) {
     enviar_byte(pato.estado.get_estado_salto());
     enviar_byte(pato.esta_apuntando_arriba());
     enviar_byte(pato.estado.get_estado_agachado());
+    enviar_byte(pato.estado.get_estado_disparo());
     enviar_byte(pato.esta_vivo());
     enviar_dos_bytes(pato.casco_en_inventario());
     enviar_dos_bytes(pato.armadura_en_inventario());
     enviar_dos_bytes(pato.get_casco_equipado());
     enviar_dos_bytes(pato.get_armadura_equipada());
-    if (pato.get_arma() != nullptr){
+    if (pato.tiene_arma() == TOMAR_ARMA){
         enviar_dos_bytes((pato.get_arma())->get_id());
-        enviar_dos_bytes((pato.get_arma())->get_municion_disponible());
+        enviar_byte((pato.get_arma())->get_municion_disponible());
     }
 }
 
@@ -148,7 +146,6 @@ void ServerProtocolo::enviar_arma(Arma& arma) {
     enviar_byte(arma.get_pos_y());
     enviar_byte(arma.get_alcance());
     enviar_byte(arma.get_municion_disponible());
-    enviar_byte(arma.get_balas_max());
 }
 
 void ServerProtocolo::enviar_bala(Bala& bala) {

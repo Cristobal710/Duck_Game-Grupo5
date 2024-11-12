@@ -13,7 +13,7 @@ Disparo::Disparo(SDL2pp::Renderer& renderer, const std::string& disparo_path, co
       rect_inicio_bala(0, 0, PIXEL_BALA_X, PIXEL_BALA_Y),
       rect_dibujado_bala(pos_x, pos_y, PIXEL_BALA_X, PIXEL_BALA_Y),
       renderer(renderer),
-      velocidad_bala(5)
+      velocidad_bala(8)
 {
     SDL2pp::Surface sprite_disparo(IMG_Load(disparo_path.c_str()));
     SDL2pp::Surface sprite_bala(IMG_Load(bala_path.c_str()));
@@ -30,7 +30,7 @@ void Disparo::frames_bala(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sh
 }
 
 void Disparo::mostrar_frame_bala(uint8_t& direccion_pato, int it) {
-    //mostrar_frame_gun(direccion_pato, it);
+    mostrar_frame_arma(direccion_pato);
     if(direccion_pato == DIRECCION_DERECHA) {
         if (it > NUM_FRAMES_DISPARO) {
             renderer.Copy(bala[(it % NUM_FRAMES_DISPARO)], rect_inicio_bala, rect_dibujado_bala);

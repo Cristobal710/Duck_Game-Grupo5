@@ -28,7 +28,8 @@ private:
     void ejecutar_accion(uint8_t accion, Pato& pato);
     void enviar_estado_juego_si_cambio(Pato& pato, EstadoJuego& estado_juego);
     void terminar_acciones_patos();
-    void drop_and_rest(float tiempo_ultimo_frame);
+    void drop_and_rest(float& tiempo_ultimo_frame);
+    void aplicar_logica();
 
 public:
     GameLoop(Queue<EstadoJuego>& cola_estados_juego,
