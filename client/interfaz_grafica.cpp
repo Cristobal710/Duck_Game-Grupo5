@@ -55,7 +55,6 @@ void InterfazGrafica::iniciar() {
         
         fondo.dibujar(renderer, 1.0f, 2.0f, rect_dibujado.GetX(), rect_dibujado.GetY(), 1200, 700);
         pato.dibujar(it, zoom_factor);
-        //disparo.mostrar_disparo(estado_pato_movimiento, direccion_pato, rect_dibujado.GetX(), rect_dibujado.GetY(), it, zoom_factor);
         
         pato2.dibujar(it, 1.0f);
         pato3.dibujar(it, 1.0f);
@@ -143,7 +142,6 @@ void InterfazGrafica::obtener_estado_juego() {
     //deberia ser bloqueante?
     EstadoJuego ultimo_estado; 
     bool hubo_estado_nuevo = false;
-    // cambiar if por while hasta quedarme con el ulitmo estado de juego y dibujo el ultimo
 
     while (estado_juego.try_pop(ultimo_estado)) {
         Pato pato_juego = ultimo_estado.patos.front();
@@ -152,9 +150,10 @@ void InterfazGrafica::obtener_estado_juego() {
         pato.actualizar_estado(pato_juego.estado.get_estado_salto(), ESTADO_SALTO);
         pato.actualizar_estado(pato_juego.get_direccion(), ESTADO_DIRECCION);
         pato.actualizar_estado(pato_juego.estado.get_estado_agachado(), ESTADO_PISO);
-        pato.actualizar_equipamiento(pato_juego.estado.get_estado_movimiento(), ESTADO_ARMA);
-        pato.actualizar_equipamiento(pato_juego.estado.get_estado_movimiento(), ESTADO_ARMADURA);
-        pato.actualizar_equipamiento(pato_juego.estado.get_estado_movimiento(), ESTADO_CASCO);
+        pato.actualizar_equipamiento(pato_juego.tiene_arma(), ESTADO_ARMA);
+        pato.actualizar_equipamiento(pato_juego.estado.get_estado_disparo(), ESTADO_BALAS);
+        //pato.actualizar_equipamiento(pato_juego.estado.get_estado_movimiento(), ESTADO_ARMADURA);
+        //pato.actualizar_equipamiento(pato_juego.estado.get_estado_movimiento(), ESTADO_CASCO);
        
         hubo_estado_nuevo = true;
     } 

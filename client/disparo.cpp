@@ -65,7 +65,7 @@ void Disparo::mostrar_disparo(uint8_t& estado_disparo, uint8_t& direccion_pato, 
 
     set_zoom_in(zoom_factor, rect_dibujado_arma, pos_x, pos_y);
 
-    if (estado_disparo == MOVER_DERECHA) {
+    if (estado_disparo == DISPARAR) {
         if (direccion_pato == DIRECCION_DERECHA) {
             rect_dibujado_bala.SetX(rect_dibujado_bala.GetX() + velocidad_bala);
         } else {

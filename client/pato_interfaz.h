@@ -17,6 +17,7 @@ private:
     uint8_t direccion_pato;
     uint8_t se_tira_al_piso;
     uint8_t estado_arma;
+    uint8_t estado_balas;
     //uint8_t arma;
     //uint8_t bala;
     SDL2pp::Renderer& renderer;
@@ -24,7 +25,6 @@ private:
     MovimientoLateral movimiento_pato_lateral;
     MovimientoSalto movimiento_pato_salto;
     MovimientoAgachado movimiento_pato_agachado;
-    Disparo pato_disparo;
 
 public:
     PatoInterfaz(SDL2pp::Renderer& renderer, const std::string& pato_path, int pos_x, int pos_y);
