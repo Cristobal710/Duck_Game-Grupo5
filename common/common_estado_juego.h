@@ -9,9 +9,11 @@
 #include "common_caja.h"
 #include "common_granada.h"
 #include "common_pato.h"
+#include "common_mapa.h"
 
 
 struct EstadoJuego {
+    // Mapa mapa;
     std::list<Pato> patos;
     std::list<Caja> cajas;
     std::list<Arma> armas;

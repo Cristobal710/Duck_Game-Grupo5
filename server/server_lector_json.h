@@ -1,6 +1,6 @@
 #ifndef SERVER_LECTOR_H
 #define SERVER_LECTOR_H
-#include "server_mapa.h"
+#include "../common/common_mapa.h"
 #include <iostream>
 #include <fstream>
 
