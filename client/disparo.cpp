@@ -13,7 +13,7 @@ Disparo::Disparo(SDL2pp::Renderer& renderer, const std::string& disparo_path, co
       rect_inicio_bala(0, 0, PIXEL_BALA_X, PIXEL_BALA_Y),
       rect_dibujado_bala(pos_x, pos_y, PIXEL_BALA_X, PIXEL_BALA_Y),
       renderer(renderer),
-      velocidad_bala(5)
+      velocidad_bala(8)
 {
     SDL2pp::Surface sprite_disparo(IMG_Load(disparo_path.c_str()));
     SDL2pp::Surface sprite_bala(IMG_Load(bala_path.c_str()));

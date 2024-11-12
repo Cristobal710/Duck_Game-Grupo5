@@ -8,6 +8,7 @@
 #include <SDL2/SDL_image.h>
 #include "entidad_interfaz.h"
 #include <SDL2pp/SDL2pp.hh>
+#include "disparo.h"
 
 class PatoInterfaz : public EntidadInterfaz{
 private:
@@ -15,11 +16,15 @@ private:
     uint8_t estado_pato_salto;
     uint8_t direccion_pato;
     uint8_t se_tira_al_piso;
-    uint8_t arma;
+    uint8_t estado_arma;
+    //uint8_t arma;
+    //uint8_t bala;
+    SDL2pp::Renderer& renderer;
     SDL2pp::Rect rect_dibujado;
     MovimientoLateral movimiento_pato_lateral;
     MovimientoSalto movimiento_pato_salto;
     MovimientoAgachado movimiento_pato_agachado;
+    Disparo pato_disparo;
 
 public:
     PatoInterfaz(SDL2pp::Renderer& renderer, const std::string& pato_path, int pos_x, int pos_y);
@@ -29,6 +34,7 @@ public:
     void actualizar_estado(uint8_t estado_nuevo, std::string tipo_estado);
     void actualizar_posicion(int pos_x, int pos_y);
     void actualizar_equipamiento(uint8_t estado_nuevo, std::string tipo_estado);
+    Disparo tomar_arma(SDL2pp::Renderer& renderer, const std::string& arma_path, const std::string& bala_path);
 };
 
 #endif  // PATO_INTERFAZ_H

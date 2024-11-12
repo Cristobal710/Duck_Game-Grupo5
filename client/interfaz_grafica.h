@@ -23,7 +23,6 @@ class InterfazGrafica {
     SDL2pp::Renderer renderer;
     FondoInterfaz fondo;
     PatoInterfaz pato;
-    Disparo disparo;
 
 
     void manejar_eventos();

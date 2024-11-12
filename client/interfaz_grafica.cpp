@@ -16,9 +16,7 @@ InterfazGrafica::InterfazGrafica(Queue<ComandoGrafica>& queue, Queue<EstadoJuego
                               1280, 720, SDL_WINDOW_RESIZABLE)),
         renderer(window, -1, SDL_RENDERER_ACCELERATED), 
         fondo(renderer, "../resources/backgrounds/forest.png"),
-        pato(renderer, "../resources/Grey-Duck.png", 0 , 0),
-        disparo(renderer, "../resources/weapons/Darts.png", "../resources/weapons/Darts.png", 0, 0)
-
+        pato(renderer, "../resources/Grey-Duck.png", 0 , 0)
 {}
 
 void InterfazGrafica::iniciar() {
