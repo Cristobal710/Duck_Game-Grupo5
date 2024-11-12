@@ -69,9 +69,6 @@ void ServerProtocolo::enviar_mapa(Mapa& mapa){
     enviar_equipamiento(equipo);    
 }
 
-
-
-
 void ServerProtocolo::enviar_string(const std::string& mensaje) {
     bool cerrado;
     uint16_t largo = mensaje.size(); 
