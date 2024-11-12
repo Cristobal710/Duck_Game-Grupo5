@@ -137,11 +137,6 @@ void InterfazGrafica::manejar_eventos() {
                 comando_cliente.jugador_id = 3;
                 comandos_cliente.push(comando_cliente);
             }
-            if (evento.key.keysym.sym == SDLK_r) {
-                comando_cliente.tecla = "r";
-                comando_cliente.jugador_id = 3;
-                comandos_cliente.push(comando_cliente);
-            }
         }
     }
 }

@@ -106,8 +106,7 @@ void ClienteProtocolo::recibir_arma(std::list<Arma>& armas) {
     uint8_t pos_y = recibir_byte(cerrado);
     uint8_t alcance = recibir_byte(cerrado);
     uint8_t municion_disponible = recibir_byte(cerrado);
-    uint8_t balas_max = recibir_byte(cerrado);
-    Arma arma(id, pos_x, pos_y, alcance, municion_disponible, balas_max);
+    Arma arma(id, pos_x, pos_y, alcance, municion_disponible);
     armas.push_back(arma);
 }
 

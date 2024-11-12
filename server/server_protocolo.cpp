@@ -131,7 +131,6 @@ void ServerProtocolo::enviar_arma(Arma& arma) {
     enviar_byte(arma.get_pos_y());
     enviar_byte(arma.get_alcance());
     enviar_byte(arma.get_municion_disponible());
-    enviar_byte(arma.get_balas_max());
 }
 
 void ServerProtocolo::enviar_bala(Bala& bala) {
