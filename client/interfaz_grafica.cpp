@@ -134,12 +134,20 @@ void InterfazGrafica::manejar_eventos() {
                 comando_cliente.jugador_id = 3;
                 comandos_cliente.push(comando_cliente);
             }
-            if (evento.key.keysym.sym == SDL_MOUSEBUTTONDOWN) {
-                if (evento.button.button == SDL_BUTTON_LEFT) {
-                    comando_cliente.tecla = "click_izq";
-                    comando_cliente.jugador_id = 3;
-                    comandos_cliente.push(comando_cliente);
-                }
+            if (evento.key.keysym.sym == SDLK_f) {
+                comando_cliente.tecla = "f";
+                comando_cliente.jugador_id = 3;
+                comandos_cliente.push(comando_cliente);
+            }
+            if (evento.key.keysym.sym == SDLK_g) {
+                comando_cliente.tecla = "g";
+                comando_cliente.jugador_id = 3;
+                comandos_cliente.push(comando_cliente);
+            }
+            if (evento.key.keysym.sym == SDLK_r) {
+                comando_cliente.tecla = "r";
+                comando_cliente.jugador_id = 3;
+                comandos_cliente.push(comando_cliente);
             }
         }
     }

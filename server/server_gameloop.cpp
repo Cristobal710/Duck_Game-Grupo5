@@ -67,13 +67,13 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
             break;
         case DISPARAR:
             pato.disparar();
-            if (!pato.esta_apuntando_arriba()){
-                Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_direccion(), pato.get_pos_x() + pato.get_arma()->get_alcance(), pato.get_pos_y());
-                ultimo_estado.balas.push_back(bala);
-            } else {
-                Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_direccion(), pato.get_pos_x(), pato.get_pos_y() - pato.get_arma()->get_alcance());
-                ultimo_estado.balas.push_back(bala);
-            }
+            // if (!pato.esta_apuntando_arriba()){
+            //     Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_direccion(), pato.get_pos_x() + pato.get_arma()->get_alcance(), pato.get_pos_y());
+            //     ultimo_estado.balas.push_back(bala);
+            // } else {
+            //     Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_direccion(), pato.get_pos_x(), pato.get_pos_y() - pato.get_arma()->get_alcance());
+            //     ultimo_estado.balas.push_back(bala);
+            // }
             break;
         default:
             // hacer metodo que ponga quieto al pato
