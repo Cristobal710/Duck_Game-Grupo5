@@ -24,7 +24,7 @@ private:
 
 public:
     MovimientoSalto(SDL2pp::Renderer& renderer, const std::string& pato_path, int pos_x, int pos_y);
-    void pato_salta(uint8_t& movimiento, int& pos_x, int& pos_y, int it, float zoom_factor);
+    void pato_salta(uint8_t& movimiento, int pos_x, int pos_y, int it, float zoom_factor);
 };
 
 #endif

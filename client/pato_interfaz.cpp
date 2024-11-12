@@ -40,7 +40,7 @@ void PatoInterfaz::actualizar_estado(uint8_t estado_nuevo, std::string tipo_esta
     if (tipo_estado == ESTADO_MOVIMIENTO){
         estado_pato_movimiento = estado_nuevo;
     }
-    if (tipo_estado == ESTADO_DIRECCION){
+    if (tipo_estado == ESTADO_SALTO){
         estado_pato_salto = estado_nuevo;
     }
     if (tipo_estado == ESTADO_DIRECCION){

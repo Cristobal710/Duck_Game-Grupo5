@@ -28,14 +28,14 @@ void MovimientoSalto::frames_caida(SDL2pp::Renderer& renderer, SDL2pp::Surface& 
 }
 
 void MovimientoSalto::mostrar_frame_salto(int it) {
-    renderer.Copy(salto_frames[it % NUM_FRAMES_SALTA_PATO], rect_inicio, rect_dibujado);
+    renderer.Copy(salto_frames[(it % NUM_FRAMES_SALTA_PATO)], rect_inicio, rect_dibujado);
 }
 
 void MovimientoSalto::mostrar_frame_caida(int it) {
-    renderer.Copy(caida_frames[it % NUM_FRAMES_CAE_PATO], rect_inicio, rect_dibujado);
+    renderer.Copy(caida_frames[(it % NUM_FRAMES_CAE_PATO)], rect_inicio, rect_dibujado);
 }
 
-void MovimientoSalto::pato_salta(uint8_t& movimiento, int& pos_x, int& pos_y, int it, float zoom_factor) {
+void MovimientoSalto::pato_salta(uint8_t& movimiento, int pos_x, int pos_y, int it, float zoom_factor) {
     set_zoom_in(zoom_factor, rect_dibujado, pos_x, pos_y);
 
     if (movimiento == SALTAR_ALETEAR) {

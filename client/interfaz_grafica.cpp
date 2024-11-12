@@ -140,7 +140,7 @@ void InterfazGrafica::manejar_eventos() {
 
 void InterfazGrafica::obtener_estado_juego() {
     //deberia ser bloqueante?
-    EstadoJuego ultimo_estado; 
+    EstadoJuego ultimo_estado;  
     bool hubo_estado_nuevo = false;
 
     while (estado_juego.try_pop(ultimo_estado)) {
@@ -154,6 +154,9 @@ void InterfazGrafica::obtener_estado_juego() {
         pato.actualizar_equipamiento(pato_juego.estado.get_estado_disparo(), ESTADO_BALAS);
         //pato.actualizar_equipamiento(pato_juego.estado.get_estado_movimiento(), ESTADO_ARMADURA);
         //pato.actualizar_equipamiento(pato_juego.estado.get_estado_movimiento(), ESTADO_CASCO);
+        //Balas balas = ultimo_estado.balas.front();
+        //balas.get_direccion();
+        //balas.get_pos_x_final();
        
         hubo_estado_nuevo = true;
     } 
