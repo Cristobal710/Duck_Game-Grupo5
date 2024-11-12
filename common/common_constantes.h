@@ -29,3 +29,35 @@
 #define MAGNUM 0x08
 #define ESCOPETA 0x09
 #define SNIPER 0x0A
+
+
+
+
+
+
+
+
+
+
+
+
+
+#define MAPA_CAJAS 0x02
+#define MAPA_TILES 0x03
+#define MAPA_SPAWNS 0x04
+#define MAPA_EQUIPAMIENTO 0x05
+#define ARMADURA "armadura"
+#define ARMA "arma"
+#define CASCO "casco"  
+#define BYTE_ARMADURA 0X06
+#define BYTE_CASCO 0X07
+#define BYTE_ARMA 0X08
+
+
+
+
+
+
+
+
+

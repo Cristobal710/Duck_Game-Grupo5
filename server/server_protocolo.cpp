@@ -28,17 +28,19 @@ void ServerProtocolo::enviar_coordenada(SDL_Point& coord){
 }
 
 void ServerProtocolo::enviar_equipamiento(std::map<std::string, std::vector<SDL_Point>>& equipamiento){
-    enviar_byte(MAPA_EQUIPAMIENTO);
+//    enviar_byte(MAPA_EQUIPAMIENTO);
+    enviar_dos_bytes(equipamiento.size());
     for(const auto& key : equipamiento){
-        if(key.first == ARMADURA){
-            enviar_byte(BYTE_ARMADURA);
-        }else if(key.first == ARMA){
-            enviar_byte(BYTE_ARMA);
-        }else if(key.first == CASCO){
-            enviar_byte(BYTE_CASCO);
-        }
+//        if(key.first == ARMADURA){
+//            enviar_byte(BYTE_ARMADURA);
+//        }else if(key.first == ARMA){
+//            enviar_byte(BYTE_ARMA);
+//        }else if(key.first == CASCO){
+//            enviar_byte(BYTE_CASCO);
+//        }
         enviar_string(key.first);
         std::vector<SDL_Point> coordenadas = equipamiento.at(key.first);
+        enviar_dos_bytes(coordenadas.size());
         for(SDL_Point coord: coordenadas){
             enviar_coordenada(coord);
         }
@@ -47,24 +49,40 @@ void ServerProtocolo::enviar_equipamiento(std::map<std::string, std::vector<SDL_
 
 void ServerProtocolo::enviar_mapa(Mapa& mapa){
     enviar_string(mapa.getFondo());
+    
     std::map<std::string, std::vector<SDL_Point>> spawns =mapa.getSpawns();
     std::vector<SDL_Point> spawns_list = spawns.at("default");
-    enviar_byte(MAPA_SPAWNS);
+
+    // enviar_byte(MAPA_SPAWNS);
+    uint16_t size_spawns = spawns_list.size();
+    enviar_dos_bytes(size_spawns);
     for(SDL_Point coord : spawns_list){
         enviar_coordenada(coord);
     }
-    enviar_byte(MAPA_CAJAS);
     std::map<std::string, std::vector<SDL_Point>> cajas =mapa.getCajas();
     std::vector<SDL_Point> cajas_list = cajas.at("default");
+
+//    enviar_byte(MAPA_CAJAS);
+    uint16_t size_cajas = cajas_list.size();
+    enviar_dos_bytes(size_cajas);
     for(SDL_Point coord : cajas_list){
         enviar_coordenada(coord);
     }
-    enviar_byte(MAPA_TILES);
+
+
     std::map<std::string, std::vector<SDL_Point>> tiles =mapa.getTiles();
-    std::vector<SDL_Point> tiles_list = tiles.at("default");
-    for(SDL_Point coord : tiles_list){
-        enviar_coordenada(coord);
+    uint16_t largo_tiles = tiles.size();
+    enviar_dos_bytes(largo_tiles);
+    for(const auto& key : tiles){
+        enviar_string(key.first);
+        std::vector<SDL_Point> tiles_list = tiles.at(key.first);
+        uint16_t size_tiles = tiles_list.size();
+        enviar_dos_bytes(size_tiles);
+        for(SDL_Point coord : tiles_list){
+            enviar_coordenada(coord);
+        }
     }
+
     std::map<std::string, std::vector<SDL_Point>> equipo = mapa.getEquipamiento();
     enviar_equipamiento(equipo);    
 }

@@ -1,6 +1,5 @@
-#ifndef MAPA_H
-#define MAPA_H
-#include <SDL2pp/SDL2pp.hh>
+#ifndef COMMON_MAPA_H
+#define COMMON_MAPA_H
 #include <SDL2/SDL.h>
 #include <string>
 #include <nlohmann/json.hpp>
@@ -16,6 +15,9 @@ class Mapa {
     std::map<std::string,std::vector<SDL_Point>>  cajas;
 
     public:
+    Mapa(){}
+
+
     static Mapa from_json(const json& j, Mapa& mapa) {
         
         mapa.fondo = j.at("background").get<std::string>();
@@ -68,6 +70,13 @@ class Mapa {
     const std::map<std::string, std::vector<SDL_Point>>& getSpawns() const { return spawns; };
     const std::map<std::string, std::vector<SDL_Point>>& getEquipamiento() const { return equipamiento; };
     const std::map<std::string, std::vector<SDL_Point>>& getCajas() const { return cajas; };
+
+    void set_fondo(const std::string& nuevoFondo) { fondo = nuevoFondo; };
+    void set_tiles(const std::map<std::string, std::vector<SDL_Point>>& nuevosTiles) { tiles = nuevosTiles; };
+    void set_spawns(const std::map<std::string, std::vector<SDL_Point>>& nuevosSpawns) { spawns = nuevosSpawns; };
+    void set_equipamiento(const std::map<std::string, std::vector<SDL_Point>>& nuevoEquipamiento) { equipamiento = nuevoEquipamiento; };
+    void set_cajas(const std::map<std::string, std::vector<SDL_Point>>& nuevasCajas) { cajas = nuevasCajas; };
+
 };
 
 #endif
