@@ -41,10 +41,7 @@ void InterfazGrafica::iniciar() {
     uint8_t direccion_pato = DIRECCION_DERECHA;
     uint8_t estado_disparo = BYTE_NULO;
     
-    float tiempo_ultimo_frame = SDL_GetTicks();
     int it = 0;
-
-
     //MAPA mapa_a_jugar = ();
     //mapa_a_jugar.procesar();
 
@@ -56,17 +53,20 @@ void InterfazGrafica::iniciar() {
     PatoInterfaz pato3(renderer, "../resources/Random/Yellow-Duck.png");
 
     while (correr_programa) {
+        float tiempo_ultimo_frame = SDL_GetTicks();
         
-        manejar_eventos();
         renderer.Clear();
+        manejar_eventos();
         obtener_estado_juego(rect_dibujado, estado_pato_movimiento, se_tira_al_piso, estado_pato_salto, direccion_pato, estado_disparo);
+        
         fondo.dibujar(renderer, 1.0f, 2.0f, rect_dibujado.GetX(), rect_dibujado.GetY(), 1200, 700);
         pato.dibujar(estado_pato_movimiento, estado_pato_salto, direccion_pato, se_tira_al_piso, rect_dibujado.GetX(), rect_dibujado.GetY(), it, zoom_factor);
         disparo.mostrar_disparo(estado_pato_movimiento, direccion_pato, rect_dibujado.GetX(), rect_dibujado.GetY(), it, zoom_factor);
         
         uint8_t byte_nulo = BYTE_NULO;
-        pato2.dibujar(byte_nulo, byte_nulo, byte_nulo, byte_nulo, 400, 400, it, 1.0f);
-        pato3.dibujar(byte_nulo, byte_nulo, byte_nulo, byte_nulo, 1200, 700, it, 1.0f);
+        uint8_t byte_derecha = 0x02;
+        pato2.dibujar(byte_nulo, byte_nulo, byte_derecha, byte_nulo, 400, 400, it, 1.0f);
+        pato3.dibujar(byte_nulo, byte_nulo, byte_derecha, byte_nulo, 1200, 700, it, 1.0f);
         renderer.Present();
             
         
@@ -87,9 +87,8 @@ void InterfazGrafica::iniciar() {
             std::cout << "pierdo un frame" << std::endl;
         }
         SDL_Delay(descansar);
-        tiempo_ultimo_frame += DURACION_FRAME;
         it += 1;
-        
+        tiempo_ultimo_frame = tiempo_actual;  
     }
 
     IMG_Quit();
@@ -158,6 +157,7 @@ void InterfazGrafica::obtener_estado_juego(SDL2pp::Rect& rect_destino, uint8_t& 
     EstadoJuego ultimo_estado; 
     bool hubo_estado_nuevo = false;
     // cambiar if por while hasta quedarme con el ulitmo estado de juego y dibujo el ultimo
+
     while (estado_juego.try_pop(ultimo_estado)) {
         Pato pato = ultimo_estado.patos.front();
         rect_destino.SetX(pato.get_pos_x());

@@ -30,7 +30,7 @@ void Disparo::frames_bala(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sh
 }
 
 void Disparo::mostrar_frame_bala(uint8_t& direccion_pato, int it) {
-    //mostrar_frame_gun(direccion_pato, it);
+    mostrar_frame_arma(direccion_pato);
     if(direccion_pato == DIRECCION_DERECHA) {
         if (it > NUM_FRAMES_DISPARO) {
             renderer.Copy(bala[(it % NUM_FRAMES_DISPARO)], rect_inicio_bala, rect_dibujado_bala);

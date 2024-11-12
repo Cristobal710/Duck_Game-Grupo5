@@ -25,54 +25,36 @@ void MovimientoLateral::frames_movimientos(SDL2pp::Renderer& renderer, SDL2pp::S
 
 
 void MovimientoLateral::mostrar_frame_derecha(int it) {
-    if (it > NUM_FRAMES_MOVIMIENTO_PATO){
     renderer.Copy(movimiento_pato[(it % NUM_FRAMES_MOVIMIENTO_PATO)], rect_inicio,
         rect_dibujado);
-    return;
-    }
-    renderer.Copy(movimiento_pato[(it)], rect_inicio,
-        rect_dibujado);
-    
 }
 
 void MovimientoLateral::mostrar_frame_izquierda(int it) {
-    puntero_movimiento_izquierda++;
-    if (puntero_movimiento_izquierda == 6){
-        puntero_movimiento_izquierda = 0;
-    }
-    if (it > NUM_FRAMES_MOVIMIENTO_PATO){
     SDL_RenderCopyEx(renderer.Get(), movimiento_pato[it % NUM_FRAMES_MOVIMIENTO_PATO].Get(), &rect_inicio, &rect_dibujado, 0,
                      nullptr, SDL_FLIP_HORIZONTAL);
-    return;
-    }
-    SDL_RenderCopyEx(renderer.Get(), movimiento_pato[it].Get(), &rect_inicio, &rect_dibujado, 0,
-                     nullptr, SDL_FLIP_HORIZONTAL);
-    
-    
 }
 
-SDL2pp::Texture& MovimientoLateral::mostrar_frame() { return movimiento_pato[0]; }
+void MovimientoLateral::mostrar_frame(uint8_t& direccion_pato) { 
+    if (direccion_pato == DIRECCION_DERECHA){
+        renderer.Copy(movimiento_pato[0], rect_inicio,
+        rect_dibujado);
+    } else if (direccion_pato == DIRECCION_IZQUIERDA) {
+        SDL_RenderCopyEx(renderer.Get(), movimiento_pato[0].Get(), &rect_inicio, &rect_dibujado, 0,
+                     nullptr, SDL_FLIP_HORIZONTAL);
+    }
+}
 
-void MovimientoLateral::pato_movimiento(uint8_t& movimiento, uint8_t& direccion_pato, int& pos_x, int& pos_y, int it, float zoom_factor) {
-    set_zoom_in(zoom_factor, rect_dibujado, pos_x, pos_y);
+void MovimientoLateral::pato_movimiento(uint8_t& movimiento, uint8_t& direccion_pato, int& nueva_pos_x, int& nueva_pos_y, int it, float zoom_factor) {
 
-    const int move_speed = 5;
+    rect_dibujado.SetX(nueva_pos_x);
+    set_zoom_in(zoom_factor, rect_dibujado, nueva_pos_x, nueva_pos_y);
+    
     if (movimiento == MOVER_DERECHA) {
-        pos_x += move_speed;
         mostrar_frame_derecha(it);
     } else if (movimiento == MOVER_IZQUIERDA) {
-        pos_x -= move_speed;
         mostrar_frame_izquierda(it);
     } else {
-        puntero_movimiento_derecha = 0;
-        puntero_movimiento_izquierda = 0;
-
-        if (direccion_pato == DIRECCION_IZQUIERDA) {
-            SDL_RenderCopyEx(renderer.Get(), movimiento_pato[puntero_movimiento_izquierda].Get(), &rect_inicio, &rect_dibujado, 0,
-                nullptr, SDL_FLIP_HORIZONTAL);
-        } else {
-            renderer.Copy(mostrar_frame(), rect_inicio, rect_dibujado);
-        }
-    }
+        mostrar_frame(direccion_pato);
+    } 
 }
 

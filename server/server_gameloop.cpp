@@ -126,7 +126,7 @@ void GameLoop::aplicar_logica(){
     }
 }
 
-void GameLoop::drop_and_rest(float tiempo_ultimo_frame){
+void GameLoop::drop_and_rest(float& tiempo_ultimo_frame){
     Uint32 tiempo_actual = SDL_GetTicks();
     int32_t descansar = RATE - (tiempo_actual - tiempo_ultimo_frame);
 
