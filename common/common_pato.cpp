@@ -77,7 +77,10 @@ void Pato::disparar() {
     }
 }
 
-void Pato::apuntar_arriba() { apunta_arriba = true; }
+void Pato::apuntar_arriba() { 
+    apunta_arriba = true;
+    direccion = DIRECCION_ARRIBA;
+ }
 
 void Pato::dejar_de_apuntar_arriba() { apunta_arriba = false; }
 

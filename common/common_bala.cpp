@@ -13,4 +13,8 @@ uint16_t Bala::get_pos_x_final() { return pos_x_final; }
 
 uint16_t Bala::get_pos_y_final() { return pos_y_final; }
 
+void Bala::set_pos_x(uint16_t pos_x) { this->pos_x = pos_x; }
+
+void Bala::set_pos_y(uint16_t pos_y) { this->pos_y = pos_y; }
+
 uint8_t Bala::get_direccion() { return direccion; }

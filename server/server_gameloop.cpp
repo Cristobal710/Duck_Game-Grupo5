@@ -71,7 +71,7 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
                 Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_direccion(), pato.get_pos_x() + pato.get_arma()->get_alcance(), pato.get_pos_y());
                 ultimo_estado.balas.push_back(bala);
             } else {
-                Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_direccion(), pato.get_pos_x(), pato.get_pos_y() + pato.get_arma()->get_alcance());
+                Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_direccion(), pato.get_pos_x(), pato.get_pos_y() - pato.get_arma()->get_alcance());
                 ultimo_estado.balas.push_back(bala);
             }
             break;
@@ -101,6 +101,31 @@ void GameLoop::terminar_acciones_patos() {
     }
 }
 
+void GameLoop::aplicar_logica(){
+    for (Pato& pato: ultimo_estado.patos) {
+        if (pato.estado.get_estado_salto() == SALTAR_ALETEAR) {
+            pato.saltar();
+        }
+    }
+    for (auto it = ultimo_estado.balas.begin(); it != ultimo_estado.balas.end(); ) {
+        if (it->get_direccion() == DIRECCION_IZQUIERDA) {
+            it->set_pos_x(it->get_pos_x() - 3);
+        }
+        if (it->get_direccion() == DIRECCION_DERECHA) {
+            it->set_pos_x(it->get_pos_x() + 3);
+        }
+        if (it->get_direccion() == DIRECCION_ARRIBA) {
+            it->set_pos_y(it->get_pos_y() - 3);
+        }
+
+        if (it->get_pos_x() == it->get_pos_x_final() && it->get_pos_y() == it->get_pos_y_final()) {
+            it = ultimo_estado.balas.erase(it);
+        } else {
+            ++it;
+        }
+    }
+}
+
 void GameLoop::drop_and_rest(float tiempo_ultimo_frame){
     Uint32 tiempo_actual = SDL_GetTicks();
     int32_t descansar = RATE - (tiempo_actual - tiempo_ultimo_frame);
@@ -119,7 +144,7 @@ void GameLoop::drop_and_rest(float tiempo_ultimo_frame){
 
  
 void GameLoop::run() {
-    Pato pato(3, 0, 0, 0);
+    Pato pato(3, 0, 300, 0);
     ultimo_estado.patos.emplace_back(pato);
     
     
@@ -156,14 +181,9 @@ void GameLoop::run() {
                 procesar_evento(evento, ultimo_estado);
                 cola_estados_juego.push(ultimo_estado);
             }
-            for (Pato& pato: ultimo_estado.patos) {
-                if (pato.estado.get_estado_salto() == SALTAR_ALETEAR) {
-                    pato.saltar();
-                    // cola_estados_juego.push(ultimo_estado);
-                }
-            }
             // aplicar logica del juego, balas, gravedad, etc
             // pushear
+            aplicar_logica();
             enviar_estado_juego_si_cambio(pato, estado_anterior);
             drop_and_rest(tiempo_ultimo_frame);
         }
