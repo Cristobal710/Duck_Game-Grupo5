@@ -26,7 +26,7 @@ public:
     Pato(uint16_t id, uint16_t pos_x, uint16_t pos_y, uint8_t direccion);
     //~Pato();
     // uint8_t get_color();
-    bool tiene_arma();
+    uint8_t tiene_arma();
     void moverse_izquierda();
     void moverse_derecha();
     void saltar();

@@ -112,7 +112,7 @@ void ServerProtocolo::enviar_pato(Pato& pato) {
     enviar_dos_bytes(pato.armadura_en_inventario());
     enviar_dos_bytes(pato.get_casco_equipado());
     enviar_dos_bytes(pato.get_armadura_equipada());
-    if (pato.tiene_arma()){
+    if (pato.tiene_arma() == TOMAR_ARMA){
         enviar_dos_bytes((pato.get_arma())->get_id());
         enviar_byte((pato.get_arma())->get_municion_disponible());
     }
