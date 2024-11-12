@@ -16,7 +16,7 @@ InterfazGrafica::InterfazGrafica(Queue<ComandoGrafica>& queue, Queue<EstadoJuego
                               1280, 720, SDL_WINDOW_RESIZABLE)),
         renderer(window, -1, SDL_RENDERER_ACCELERATED), 
         fondo(renderer, "../resources/backgrounds/forest.png"),
-        pato(renderer, "../resources/Grey-Duck.png"),
+        pato(renderer, "../resources/Grey-Duck.png", 0 , 0),
         disparo(renderer, "../resources/weapons/Darts.png", "../resources/weapons/Darts.png", 0, 0)
 
 {}
@@ -27,21 +27,16 @@ void InterfazGrafica::iniciar() {
     IMG_Init(IMG_INIT_PNG);
 
     SDL2pp::Surface sprite_pato_gris(IMG_Load("../resources/Grey-Duck.png"));
-    //PatoInterfaz pato = PatoInterfaz(renderer, sprite_pato_gris);
-    //FondoInterfaz fondo = FondoInterfaz(renderer, "../resources/forest.png");
+    
 
-    //SDL2pp::Rect rect_inicio = {1, 8, 32, 32};
+    std::vector<EntidadInterfaz> entidades;
+
     SDL2pp::Rect rect_dibujado = {100, 100, 32, 32};  // posición inicial
 
     float zoom_factor = 2.0f;
 
-    uint8_t estado_pato_movimiento = BYTE_NULO;
-    uint8_t se_tira_al_piso = BYTE_NULO;
-    uint8_t estado_pato_salto = BYTE_NULO;
-    uint8_t direccion_pato = DIRECCION_DERECHA;
-    uint8_t estado_disparo = BYTE_NULO;
+    //uint8_t estado_disparo = BYTE_NULO;
     
-    int it = 0;
     //MAPA mapa_a_jugar = ();
     //mapa_a_jugar.procesar();
 
@@ -49,24 +44,23 @@ void InterfazGrafica::iniciar() {
 
     // }
 
-    PatoInterfaz pato2(renderer, "../resources/Random/White-Duck.png");
-    PatoInterfaz pato3(renderer, "../resources/Random/Yellow-Duck.png");
+    PatoInterfaz pato2(renderer, "../resources/Random/White-Duck.png", 400, 400);
+    PatoInterfaz pato3(renderer, "../resources/Random/Yellow-Duck.png", 1200, 700);
 
+    int it = 0;
     while (correr_programa) {
         float tiempo_ultimo_frame = SDL_GetTicks();
         
         renderer.Clear();
         manejar_eventos();
-        obtener_estado_juego(rect_dibujado, estado_pato_movimiento, se_tira_al_piso, estado_pato_salto, direccion_pato, estado_disparo);
+        obtener_estado_juego();
         
         fondo.dibujar(renderer, 1.0f, 2.0f, rect_dibujado.GetX(), rect_dibujado.GetY(), 1200, 700);
-        pato.dibujar(estado_pato_movimiento, estado_pato_salto, direccion_pato, se_tira_al_piso, rect_dibujado.GetX(), rect_dibujado.GetY(), it, zoom_factor);
-        disparo.mostrar_disparo(estado_pato_movimiento, direccion_pato, rect_dibujado.GetX(), rect_dibujado.GetY(), it, zoom_factor);
+        pato.dibujar(it, zoom_factor);
+        //disparo.mostrar_disparo(estado_pato_movimiento, direccion_pato, rect_dibujado.GetX(), rect_dibujado.GetY(), it, zoom_factor);
         
-        uint8_t byte_nulo = BYTE_NULO;
-        uint8_t byte_derecha = 0x02;
-        pato2.dibujar(byte_nulo, byte_nulo, byte_derecha, byte_nulo, 400, 400, it, 1.0f);
-        pato3.dibujar(byte_nulo, byte_nulo, byte_derecha, byte_nulo, 1200, 700, it, 1.0f);
+        pato2.dibujar(it, 1.0f);
+        pato3.dibujar(it, 1.0f);
         renderer.Present();
             
         
@@ -152,29 +146,28 @@ void InterfazGrafica::manejar_eventos() {
     }
 }
 
-void InterfazGrafica::obtener_estado_juego(SDL2pp::Rect& rect_destino, uint8_t& estado_pato_movimiento, uint8_t& se_tira_al_piso, uint8_t& estado_pato_salto, uint8_t& direccion_pato, uint8_t& estado_disparo) {
+void InterfazGrafica::obtener_estado_juego() {
     //deberia ser bloqueante?
     EstadoJuego ultimo_estado; 
     bool hubo_estado_nuevo = false;
     // cambiar if por while hasta quedarme con el ulitmo estado de juego y dibujo el ultimo
 
     while (estado_juego.try_pop(ultimo_estado)) {
-        Pato pato = ultimo_estado.patos.front();
-        rect_destino.SetX(pato.get_pos_x());
-        rect_destino.SetY(pato.get_pos_y());
-        estado_pato_movimiento = pato.estado.get_estado_movimiento();
-        se_tira_al_piso = pato.estado.get_estado_agachado();
-        estado_pato_salto = pato.estado.get_estado_salto();
-        // std::cout <<  "Esta agachado: " << static_cast<int>(se_tira_al_piso) << std::endl;
-        // std::cout << "Estado pato: " << static_cast<int>(estado_pato_movimiento) << std::endl;
-        // std::cout << "Estado salto: " << static_cast<int>(estado_pato_salto) << std::endl;
-        direccion_pato = pato.get_direccion();
-        //estado_disparo = pato.estado.get_estado_disparo();
-        estado_disparo = BYTE_NULO;
+        Pato pato_juego = ultimo_estado.patos.front();
+        pato.actualizar_posicion(pato_juego.get_pos_x(), pato_juego.get_pos_y());
+        pato.actualizar_estado(pato_juego.estado.get_estado_movimiento(), ESTADO_MOVIMIENTO);
+        pato.actualizar_estado(pato_juego.estado.get_estado_salto(), ESTADO_SALTO);
+        pato.actualizar_estado(pato_juego.get_direccion(), ESTADO_DIRECCION);
+        pato.actualizar_estado(pato_juego.estado.get_estado_agachado(), ESTADO_PISO);
+        pato.actualizar_equipamiento(pato_juego.estado.get_estado_movimiento(), ESTADO_ARMA);
+        pato.actualizar_equipamiento(pato_juego.estado.get_estado_movimiento(), ESTADO_ARMADURA);
+        pato.actualizar_equipamiento(pato_juego.estado.get_estado_movimiento(), ESTADO_CASCO);
+       
         hubo_estado_nuevo = true;
     } 
     if (!hubo_estado_nuevo){
-        estado_pato_movimiento = false;
+        pato.actualizar_estado(BYTE_NULO, ESTADO_MOVIMIENTO);
+        pato.actualizar_estado(BYTE_NULO, ESTADO_SALTO);
     }
 }
 
