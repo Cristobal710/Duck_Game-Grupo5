@@ -44,7 +44,7 @@ void Pato::moverse_derecha() {
 }
 
 void Pato::saltar() { 
-    pos_y++; 
+    pos_y-=3; 
     estado.set_saltar();
     contador_salto++;
     if (contador_salto == 3) {
@@ -56,7 +56,7 @@ void Pato::saltar() {
 void Pato::planear() { pos_y--; }
 
 void Pato::caer() { 
-    pos_y-=3; 
+    pos_y+=3; 
     estado.set_caer();
     contador_caer++;
     if (contador_caer == 5) {
