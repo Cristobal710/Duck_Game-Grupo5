@@ -95,6 +95,7 @@ void GameLoop::terminar_acciones_patos() {
     for (Pato& pato: ultimo_estado.patos) {
         pato.estado.set_dejar_de_moverse();
         pato.estado.set_dejar_de_agacharse();
+        pato.estado.set_dejar_de_disparar();
         pato.levantarse_del_piso();
         pato.dejar_de_apuntar_arriba();
         // dejar de disparar
@@ -145,6 +146,7 @@ void GameLoop::drop_and_rest(float& tiempo_ultimo_frame){
  
 void GameLoop::run() {
     Pato pato(3, 0, 300, 0);
+    //pato.tomar_arma(new Arma(1, 0, 255, 15, 30, 10));
     ultimo_estado.patos.emplace_back(pato);
     
     

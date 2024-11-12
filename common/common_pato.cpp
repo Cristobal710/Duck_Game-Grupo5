@@ -70,11 +70,13 @@ void Pato::tomar_arma(Arma* nuevaArma) { arma = nuevaArma; }
 void Pato::soltar_arma() { arma = nullptr; }
 
 void Pato::disparar() {
-    if (arma) {
-        arma->disparar();
-    } else {
-        // Si el pato no tiene un arma, no puede disparar
-    }
+    estado.set_disparando();
+    // if (arma) {
+    //     arma->disparar();
+    // } else {
+    //     estado.set_dejar_de_disparar();
+    //     // Si el pato no tiene un arma, no puede disparar
+    // }
 }
 
 void Pato::apuntar_arriba() { 
