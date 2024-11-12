@@ -69,6 +69,8 @@ void Pato::tomar_arma(Arma* nuevaArma) { arma = nuevaArma; }
 
 void Pato::soltar_arma() { arma = nullptr; }
 
+bool Pato::tiene_arma(){ return arma != nullptr; }
+
 void Pato::disparar() {
     estado.set_disparando();
     // if (arma) {

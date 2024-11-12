@@ -67,13 +67,15 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
             break;
         case DISPARAR:
             pato.disparar();
-            // if (!pato.esta_apuntando_arriba()){
-            //     Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_direccion(), pato.get_pos_x() + pato.get_arma()->get_alcance(), pato.get_pos_y());
-            //     ultimo_estado.balas.push_back(bala);
-            // } else {
-            //     Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_direccion(), pato.get_pos_x(), pato.get_pos_y() - pato.get_arma()->get_alcance());
-            //     ultimo_estado.balas.push_back(bala);
-            // }
+            if (pato.tiene_arma()) {    
+                if (!pato.esta_apuntando_arriba()){
+                    Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_direccion(), pato.get_pos_x() + pato.get_arma()->get_alcance(), pato.get_pos_y());
+                    ultimo_estado.balas.push_back(bala);
+                } else {
+                    Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_direccion(), pato.get_pos_x(), pato.get_pos_y() - pato.get_arma()->get_alcance());
+                    ultimo_estado.balas.push_back(bala);
+                }
+            }
             break;
         default:
             // hacer metodo que ponga quieto al pato
@@ -86,7 +88,6 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
 
 void GameLoop::enviar_estado_juego_si_cambio(Pato& pato, EstadoJuego& estado_anterior) {
     if (pato.estado.get_estado_agachado() != estado_anterior.patos.front().estado.get_estado_agachado() || pato.estado.get_estado_movimiento() != estado_anterior.patos.front().estado.get_estado_movimiento()) {
-        std::cout << "cambio" << std::endl;
         cola_estados_juego.push(ultimo_estado);
     }
 }
@@ -98,7 +99,6 @@ void GameLoop::terminar_acciones_patos() {
         pato.estado.set_dejar_de_disparar();
         pato.levantarse_del_piso();
         pato.dejar_de_apuntar_arriba();
-        // dejar de disparar
     }
 }
 
@@ -131,7 +131,7 @@ void GameLoop::drop_and_rest(float& tiempo_ultimo_frame){
     Uint32 tiempo_actual = SDL_GetTicks();
     int32_t descansar = RATE - (tiempo_actual - tiempo_ultimo_frame);
 
-    if (descansar < 0){ //entonces nos atrasamos, tenemos que esperar a la siguiente iteracion, drop & rest.
+    if (descansar < 0) {
         int32_t tiempo_atrasado = -descansar;
         descansar = RATE - (tiempo_atrasado % RATE);
         int32_t tiempo_perdido = tiempo_atrasado + descansar;
@@ -146,27 +146,11 @@ void GameLoop::drop_and_rest(float& tiempo_ultimo_frame){
  
 void GameLoop::run() {
     Pato pato(3, 0, 300, 0);
-    //pato.tomar_arma(new Arma(1, 0, 255, 15, 30, 10));
+    Arma* arma = new Arma(1, 0, 255, 15, 30);
+    pato.tomar_arma(arma);
     ultimo_estado.patos.emplace_back(pato);
-    
-    
-    //lector de un mapa desde un archivo json guardado en la carpeta de mapas
     LectorJson lector_mapa = LectorJson();
-
     Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa1");
-    //aca esta el mapa, las colisiones estan guardadas en la clase (tiles).
-    //hay que enviar toda esta informacion a cada cliente una vez antes de empezar la partida
-    //para que el cliente grafico puede mostrar correctamente el mapa, hacer que de el lado del
-    //cliente se reciba este objeto nuevamente, es decir, serializarlo en un objeto mapa igual al que 
-    //hay aca. Supongo que hay que mover la definicion del mapa a common y no solo a servidor.
-    //una vez que recibamos del socket este objeto mapa podemos mostrarlo en el juego a traves de la interfaz.
-
-    std::cout << mapa.getFondo() << std::endl;
-    std::map<std::string, std::vector<SDL_Point>> tiles = mapa.getTiles();
-    std::vector<SDL_Point> posiciones_tiles = tiles.at(("../resources/TileSets/greyBlock.png"));
-    for (SDL_Point punto : posiciones_tiles){
-        std::cout << "x: " << punto.x << " y: " << punto.y  << std::endl;
-    }
     float tiempo_ultimo_frame = SDL_GetTicks();
 
     while (!(*esta_cerrado)) {
@@ -190,10 +174,5 @@ void GameLoop::run() {
             drop_and_rest(tiempo_ultimo_frame);
         }
     }
-
     //cerrar_gameloop();
 }
-
-
-    //cerrar_gameloop();
-

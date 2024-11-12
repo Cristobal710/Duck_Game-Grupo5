@@ -31,8 +31,8 @@ void ClienteProtocolo::recibir_pato(std::list<Pato>& patos) {
     uint16_t armadura_inventario = recibir_dos_bytes(cerrado);
     uint16_t casco_equipado = recibir_dos_bytes(cerrado);
     uint16_t armadura_equipada = recibir_dos_bytes(cerrado);
-    // uint8_t arma_id = recibir_byte(cerrado);
-    // uint8_t municion_disponible = recibir_byte(cerrado);
+    uint16_t arma_id = recibir_dos_bytes(cerrado);
+    uint8_t municion_disponible = recibir_byte(cerrado);
 
     Pato pato(id, pos_x, pos_y, direccion);
     pato.estado = EstadoPato(estado_movimiento, estado_salto, estado_agachado, estado_disparo);
@@ -55,9 +55,9 @@ void ClienteProtocolo::recibir_pato(std::list<Pato>& patos) {
         pato.morir();
     }
 
-    //Arma arma(arma_id, pos_x, pos_y, municion_disponible, 30, 10);
+    Arma arma(arma_id, pos_x, pos_y, municion_disponible, 30);
 
-    //pato.tomar_arma(&arma);
+    pato.tomar_arma(&arma);
     patos.push_back(pato);
 }
 
