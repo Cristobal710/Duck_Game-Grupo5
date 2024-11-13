@@ -1,18 +1,16 @@
 #include "bala_interfaz.h"
 
-#define PIXEL_BALA_X 32
-#define PIXEL_BALA_Y 32
 #define CANT_MAX_FRAMES_BALA 3
 
 BalaInterfaz::BalaInterfaz(SDL2pp::Renderer& renderer, const std::string& bala_path, 
                                 int pos_x, int pos_y) :
         bala(), 
-        rect_inicio_bala(0, 0, PIXEL_BALA_X, PIXEL_BALA_Y),
-        rect_dibujado_bala(pos_x, pos_y, PIXEL_BALA_X, PIXEL_BALA_Y),
+        rect_inicio_bala(0, 0, PIXEL_BALA, PIXEL_BALA),
+        rect_dibujado_bala(pos_x, pos_y, PIXEL_BALA, PIXEL_BALA),
         renderer(renderer) 
 {
     SDL2pp::Surface sprite_bala(IMG_Load(bala_path.c_str()));
-    cargar_frames(renderer, sprite_bala, 0, bala, CANT_MAX_FRAMES_BALA, 0, PIXEL_BALA_X, PIXEL_BALA_Y);
+    cargar_frames(renderer, sprite_bala, 0, bala, CANT_MAX_FRAMES_BALA, 0, PIXEL_BALA, PIXEL_BALA);
 }
 
 void BalaInterfaz::set_posicion_bala(uint16_t pos_x_final, uint16_t pos_y_final) {

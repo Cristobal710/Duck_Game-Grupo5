@@ -2,7 +2,6 @@
 
 #include "../common/common_constantes.h"
 #include <SDL2/SDL_image.h>
-#define PIXEL_PATO 32
 
 PatoInterfaz::PatoInterfaz(SDL2pp::Renderer& renderer, const std::string& pato_path, int pos_inicial_x, int pos_inicial_y):
     estado_pato_movimiento(BYTE_NULO),
@@ -18,7 +17,7 @@ PatoInterfaz::PatoInterfaz(SDL2pp::Renderer& renderer, const std::string& pato_p
     movimiento_pato_agachado(renderer, pato_path, 150, 150),
     municion_disponible(0),
     pos_x_final_bala(0), pos_y_final_bala(0),
-    tipo_arma(TipoArma::Banana)
+    tipo_arma(TipoArma::Granada)
 {}
 
 void PatoInterfaz::dibujar(int it, float zoom_factor) {
@@ -117,5 +116,5 @@ Disparo PatoInterfaz::tomar_arma() {
 }
 
 void PatoInterfaz::set_tipo_arma(TipoArma tipo_arma) {
-    tipo_arma = tipo_arma;
+    this.tipo_arma = tipo_arma;
 }

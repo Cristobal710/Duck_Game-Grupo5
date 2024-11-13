@@ -2,8 +2,6 @@
 #include "../common/common_constantes.h"
 
 #define NUM_FRAMES_MOVIMIENTO_PATO 6
-#define PIXEL_PATO 32
-
 
 MovimientoLateral::MovimientoLateral(SDL2pp::Renderer& renderer, const std::string& pato_path, 
 int pos_x, int pos_y):

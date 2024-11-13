@@ -41,16 +41,18 @@ private:
     uint16_t pos_y_final_bala;
     TipoArma tipo_arma;
 
+    Disparo tomar_arma();
+
 public:
     PatoInterfaz(SDL2pp::Renderer& renderer, const std::string& pato_path, int pos_x, int pos_y);
-
     ~PatoInterfaz() override = default;
+    
     void dibujar(int it, float zoom_factor) override;
+    
     void actualizar_estado(uint8_t estado_nuevo, std::string tipo_estado);
     void actualizar_posicion(int pos_x, int pos_y);
     void actualizar_equipamiento(uint8_t estado_nuevo, std::string tipo_estado);
     void actualizar_posicion_bala(uint16_t pos_x_final, uint16_t pos_y_final);
-    Disparo tomar_arma();
     void set_tipo_arma(TipoArma tipo_arma);
 };
 

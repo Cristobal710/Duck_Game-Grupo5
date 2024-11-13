@@ -59,6 +59,11 @@
 #define NO_DISPARO "!f"
 #define NO_AGARRAR_ARMA "!g"
 
+// PIXELES
+#define PIXEL_PATO 32
+#define PIXEL_BALA 32
+#define PIXEL_ARMA 32
+
 
 
 

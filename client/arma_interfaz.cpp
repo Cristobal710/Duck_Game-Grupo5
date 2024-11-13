@@ -1,7 +1,5 @@
 #include "arma_interfaz.h"
 
-#define PIXEL_ARMA 32
-
 ArmaInterfaz::ArmaInterfaz(SDL2pp::Renderer& renderer, const std::string& arma_path, 
                                 int pos_x, int pos_y) :
         renderer(renderer),

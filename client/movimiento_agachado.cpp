@@ -2,7 +2,6 @@
 #include "../common/common_constantes.h"
 
 #define NUM_FRAMES_PATO_AGACHADO 5
-#define PIXEL_PATO 32
 
 MovimientoAgachado::MovimientoAgachado(SDL2pp::Renderer& renderer, const std::string& pato_path, 
 int pos_x, int pos_y):
