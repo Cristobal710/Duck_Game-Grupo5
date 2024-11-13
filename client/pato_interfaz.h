@@ -12,11 +12,11 @@
 
 enum class TipoArma {
     Granada,
-    Banana, //no funca
+    Banana,
     Pew_Pew_Laser,
     Laser_Rifle, //balas raras
     AK47,
-    Pistola_Duelos, //no funca
+    Pistola_Duelos,
     Pistola_Cowboy, //esta muy arriba ver px
     Magnum,
     Escopeta,

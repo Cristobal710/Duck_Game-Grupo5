@@ -18,7 +18,7 @@ PatoInterfaz::PatoInterfaz(SDL2pp::Renderer& renderer, const std::string& pato_p
     movimiento_pato_agachado(renderer, pato_path, 150, 150),
     municion_disponible(0),
     pos_x_final_bala(0), pos_y_final_bala(0),
-    tipo_arma(TipoArma::Granada)
+    tipo_arma(TipoArma::Banana)
 {}
 
 void PatoInterfaz::dibujar(int it, float zoom_factor) {
@@ -87,7 +87,7 @@ Disparo PatoInterfaz::tomar_arma() {
         bala_path = "../resources/weapons/grenade.png";
     } else if (tipo_arma == TipoArma::Banana){
         arma_path = "../resources/weapons/bananaMano.png";
-        bala_path = "../resources/weapons/BananaPiso.png";
+        bala_path = "../resources/weapons/bananaPiso.png";
     } else if (tipo_arma == TipoArma::Pew_Pew_Laser){
         arma_path = "../resources/weapons/pewpewLaser.png";
         bala_path = "../resources/weapons/rafaga.png";
@@ -98,7 +98,7 @@ Disparo PatoInterfaz::tomar_arma() {
         arma_path = "../resources/weapons/ak47.png";
         bala_path = "../resources/weapons/dart.png";
     } else if(tipo_arma == TipoArma::Pistola_Duelos){
-        arma_path = "../resources/weapons/duelPistol.png";
+        arma_path = "../resources/weapons/combatShotgun.png";
         bala_path = "../resources/weapons/dart.png";
     } else if (tipo_arma == TipoArma::Pistola_Cowboy){
         arma_path = "../resources/weapons/cowboyPistol.png";
