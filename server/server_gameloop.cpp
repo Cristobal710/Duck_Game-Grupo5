@@ -173,10 +173,14 @@ void GameLoop::run() {
     ultimo_estado.patos.emplace_back(pato);
     LectorJson lector_mapa = LectorJson();
     Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa1");
+    ultimo_estado.mapa = mapa;
+    cola_estados_juego.push(ultimo_estado);
+
     float tiempo_ultimo_frame = SDL_GetTicks();
 
     while (!(*esta_cerrado)) {
         //eliminar_clientes_cerrados();
+        // ultimo_estado.mapa = Mapa();
         while (true) {
             EstadoJuego estado_anterior = ultimo_estado;
             std::vector<EventoServer> eventos = clientes.recibir_mensajes_clientes();

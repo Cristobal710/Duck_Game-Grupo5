@@ -23,6 +23,7 @@ public:
     EstadoPato estado;
     uint8_t contador_salto;
     uint8_t contador_caer;
+    Pato();
     Pato(uint16_t id, uint16_t pos_x, uint16_t pos_y, uint8_t direccion);
     //~Pato();
     // uint8_t get_color();

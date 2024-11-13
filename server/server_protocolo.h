@@ -5,6 +5,7 @@
 #include <iostream>
 #include <list>
 #include <string>
+#include <map>
 
 #include "../common/common_arma.h"
 #include "../common/common_bala.h"
@@ -35,7 +36,6 @@ private:
     uint8_t recibir_caja();
     void enviar_coordenada(SDL_Point& coord);
     void enviar_pato(Pato& pato);
-    void enviar_mapa(Mapa& mapa);
     void enviar_caja(Caja& caja);
     void enviar_arma(Arma& arma);
     void enviar_bala(Bala& bala);
@@ -48,12 +48,18 @@ private:
     std::list<uint8_t> serializar_pato(Pato& pato);
     void enviar_string(const std::string& mensaje);
     void enviar_equipamiento(std::map<std::string, std::vector<SDL_Point>>& equipamiento);
+    void enviar_spawns(Mapa& mapa);
+    void enviar_cajas_mapa(Mapa& mapa);
+    void enviar_tiles(Mapa& mapa);
+
+
 
 
 public:
     explicit ServerProtocolo(Socket& socket);
     EventoServer recibir_evento();
     void enviar_estado_juego(EstadoJuego& estado);
+    void enviar_mapa(Mapa& mapa);
 };
 
 #endif

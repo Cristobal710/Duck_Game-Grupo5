@@ -1,6 +1,5 @@
 #include "server_.h"
 #include "server_enviar.h"
-#include "server_recibir.h"
 
 #define EXITO 0
 

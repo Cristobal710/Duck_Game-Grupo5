@@ -13,7 +13,7 @@
 
 
 struct EstadoJuego {
-    // Mapa mapa;
+    Mapa mapa;
     std::list<Pato> patos;
     std::list<Caja> cajas;
     std::list<Arma> armas;

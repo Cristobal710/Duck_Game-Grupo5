@@ -18,6 +18,7 @@ ServerEnviar::ServerEnviar(Socket& skt, Queue<EstadoJuego>& estados_juego):
 
 
 void ServerEnviar::run() {
+    
     ServerProtocolo server_protocolo(socket);
     while (!esta_cerrado) {
         try {

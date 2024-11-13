@@ -185,6 +185,7 @@ EstadoJuego ClienteProtocolo::recibir_estado_juego() {
     EstadoJuego estado_juego;
     estado_juego.patos = recibir_patos();
     estado_juego.balas = recibir_balas();
+    estado_juego.mapa = recibir_mapa();
     // estado_juego.cajas = recibir_cajas();
     // estado_juego.armas = recibir_armas();
     return estado_juego;
@@ -237,20 +238,16 @@ void ClienteProtocolo::recibir_tiles(Mapa& mapa){
     std::map<std::string, std::vector<SDL_Point>> tiles;
 
     uint16_t cantidad_textura = recibir_dos_bytes(cerrado);
-    
     for(int i = 0; i<cantidad_textura; i++){
         std::string textura = recibir_string();
         uint16_t largo_tiles = recibir_dos_bytes(cerrado);
-        for (int i = 0; i<largo_tiles; i++){
+        for (int i = 0; i<largo_tiles; i++){       
             tiles[textura].push_back(recibir_coordenada());
+
         }
     }
     mapa.set_tiles(tiles);
 }
-
-
-
-
 
 
 void ClienteProtocolo::recibir_spawns(Mapa& mapa){
@@ -262,7 +259,7 @@ void ClienteProtocolo::recibir_spawns(Mapa& mapa){
         mapa_spawns["default"].push_back(coordenada);
     }
     mapa.set_spawns(mapa_spawns);
-
+    
 }
 
 
@@ -276,24 +273,18 @@ void ClienteProtocolo::recibir_cajas(Mapa& mapa){
     }
     mapa.set_cajas(mapa_cajas);
 
-
 }
 
 
 Mapa ClienteProtocolo::recibir_mapa(){
     Mapa mapa;
+
     std::string fondo = recibir_string();
-
     mapa.set_fondo(fondo);
-
     recibir_spawns(mapa);
-
     recibir_cajas(mapa);
-
     recibir_tiles(mapa);
-
     recibir_equipamiento(mapa);
-
     return mapa;
 
 }
