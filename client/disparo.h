@@ -17,7 +17,7 @@ private:
 
 public:
     Disparo(SDL2pp::Renderer& renderer, const std::string& disparo_path, const std::string& bala_path, int pos_x, int pos_y);  
-    void mostrar_disparo(uint8_t& estado_disparo, uint8_t& direccion_pato, int pos_x, int pos_y, float zoom_factor);
+    void mostrar_disparo(uint8_t& estado_disparo, uint8_t& direccion_pato, int pos_x, int pos_y, float zoom_factor, int it);
 
     ArmaInterfaz& get_arma();
     BalaInterfaz& get_bala();

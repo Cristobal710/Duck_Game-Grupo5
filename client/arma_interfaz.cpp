@@ -11,7 +11,7 @@ ArmaInterfaz::ArmaInterfaz(SDL2pp::Renderer& renderer, const std::string& arma_p
         municion_disponible(0)
 {
     SDL2pp::Surface sprite_arma(IMG_Load(arma_path.c_str()));
-    cargar_frames(renderer, sprite_arma, 21, arma, 1, 2, PIXEL_ARMA, PIXEL_ARMA);
+    cargar_frames(renderer, sprite_arma, 0, arma, 1, 0, PIXEL_ARMA, PIXEL_ARMA);
 }
 
 void ArmaInterfaz::set_municion(uint8_t municion) {

@@ -18,12 +18,12 @@ ArmaInterfaz& Disparo::get_arma() { return arma; }
 BalaInterfaz& Disparo::get_bala() { return bala; }
 
 
-void Disparo::mostrar_disparo(uint8_t& estado_disparo, uint8_t& direccion_pato, int pos_x, int pos_y, float zoom_factor) {
+void Disparo::mostrar_disparo(uint8_t& estado_disparo, uint8_t& direccion_pato, int pos_x, int pos_y, float zoom_factor, int it) {
     arma.set_posicion(pos_x, pos_y, zoom_factor);
 
-    if ((estado_disparo == DISPARAR) && (arma.get_municion_disponible() > 0)) {
+    if ((estado_disparo == DISPARAR) /*&& (arma.get_municion_disponible() > 0)*/) {
         arma.mostrar_frame_arma(direccion_pato);
-        bala.mostrar_frame_bala(direccion_pato);
+        bala.mostrar_frame_bala(direccion_pato, it);
     } else {
         arma.mostrar_frame_arma(direccion_pato);
     }

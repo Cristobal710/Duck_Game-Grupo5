@@ -20,7 +20,7 @@ private:
 
 public:
     BalaInterfaz(SDL2pp::Renderer& renderer, const std::string& bala_path, int pos_x, int pos_y);
-    void mostrar_frame_bala(uint8_t& direccion_pato);
+    void mostrar_frame_bala(uint8_t& direccion_pato, int it);
 
     void set_posicion_bala(uint16_t pos_x_final, uint16_t pos_y_final);
 

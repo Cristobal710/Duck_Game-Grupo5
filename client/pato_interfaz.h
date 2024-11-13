@@ -10,6 +10,19 @@
 #include <SDL2pp/SDL2pp.hh>
 #include "disparo.h"
 
+enum class TipoArma {
+    Granada,
+    Banana, //no funca
+    Pew_Pew_Laser,
+    Laser_Rifle, //balas raras
+    AK47,
+    Pistola_Duelos, //no funca
+    Pistola_Cowboy, //esta muy arriba ver px
+    Magnum,
+    Escopeta,
+    Sniper //esta muy arriba ver px
+};
+
 class PatoInterfaz : public EntidadInterfaz{
 private:
     uint8_t estado_pato_movimiento;
@@ -26,6 +39,7 @@ private:
     uint8_t municion_disponible;
     uint16_t pos_x_final_bala;
     uint16_t pos_y_final_bala;
+    TipoArma tipo_arma;
 
 public:
     PatoInterfaz(SDL2pp::Renderer& renderer, const std::string& pato_path, int pos_x, int pos_y);
@@ -36,7 +50,8 @@ public:
     void actualizar_posicion(int pos_x, int pos_y);
     void actualizar_equipamiento(uint8_t estado_nuevo, std::string tipo_estado);
     void actualizar_posicion_bala(uint16_t pos_x_final, uint16_t pos_y_final);
-    Disparo tomar_arma(SDL2pp::Renderer& renderer, const std::string& arma_path, const std::string& bala_path);
+    Disparo tomar_arma();
+    void set_tipo_arma(TipoArma tipo_arma);
 };
 
 #endif  // PATO_INTERFAZ_H

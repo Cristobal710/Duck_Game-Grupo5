@@ -1,7 +1,8 @@
 #include "bala_interfaz.h"
 
-#define PIXEL_BALA_X 36
-#define PIXEL_BALA_Y 20
+#define PIXEL_BALA_X 32
+#define PIXEL_BALA_Y 32
+#define CANT_MAX_FRAMES_BALA 3
 
 BalaInterfaz::BalaInterfaz(SDL2pp::Renderer& renderer, const std::string& bala_path, 
                                 int pos_x, int pos_y) :
@@ -11,7 +12,7 @@ BalaInterfaz::BalaInterfaz(SDL2pp::Renderer& renderer, const std::string& bala_p
         renderer(renderer) 
 {
     SDL2pp::Surface sprite_bala(IMG_Load(bala_path.c_str()));
-    cargar_frames(renderer, sprite_bala, 22, bala, 3, 83, PIXEL_BALA_X, PIXEL_BALA_Y);
+    cargar_frames(renderer, sprite_bala, 0, bala, CANT_MAX_FRAMES_BALA, 0, PIXEL_BALA_X, PIXEL_BALA_Y);
 }
 
 void BalaInterfaz::set_posicion_bala(uint16_t pos_x_final, uint16_t pos_y_final) {
@@ -19,12 +20,21 @@ void BalaInterfaz::set_posicion_bala(uint16_t pos_x_final, uint16_t pos_y_final)
     rect_dibujado_bala.SetY(pos_y_final); 
 }
 
-void BalaInterfaz::mostrar_frame_bala(uint8_t& direccion_pato) {
+void BalaInterfaz::mostrar_frame_bala(uint8_t& direccion_pato, int it) {
     if(direccion_pato == DIRECCION_DERECHA) {
-        renderer.Copy(bala[0], rect_inicio_bala, rect_dibujado_bala);
+        if(it > CANT_MAX_FRAMES_BALA){
+            renderer.Copy(bala[(it % CANT_MAX_FRAMES_BALA)], rect_inicio_bala, rect_dibujado_bala);
+        } else {
+            renderer.Copy(bala[it], rect_inicio_bala, rect_dibujado_bala);
+        }
     } else {
-        SDL_RenderCopyEx(renderer.Get(), bala[0].Get(), &rect_inicio_bala, &rect_dibujado_bala, 0,
+        if(it > CANT_MAX_FRAMES_BALA){
+            SDL_RenderCopyEx(renderer.Get(), bala[(it % CANT_MAX_FRAMES_BALA)].Get(), &rect_inicio_bala, &rect_dibujado_bala, 0,
                      nullptr, SDL_FLIP_HORIZONTAL);
+        } else {
+            SDL_RenderCopyEx(renderer.Get(), bala[it].Get(), &rect_inicio_bala, &rect_dibujado_bala, 0,
+                     nullptr, SDL_FLIP_HORIZONTAL);
+        }
     }
 }
 
