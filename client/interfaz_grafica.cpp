@@ -197,6 +197,7 @@ void InterfazGrafica::obtener_estado_juego() {
         std::cout << "municion:" << static_cast<int>(pato_juego.get_arma()->get_municion_disponible()) << std::endl;
         pato.actualizar_posicion_bala(balas_juego.get_pos_x(), balas_juego.get_pos_y());
         std::cout << "pos x bala:" << static_cast<int>(balas_juego.get_pos_x()) << std::endl;
+        std::cout << "pos y bala:" << static_cast<int>(balas_juego.get_pos_y()) << std::endl;
         //pato.get_arma().set_tipo_arma(pato_juego.get_arma().get_tipo_arma());
 
         hubo_estado_nuevo = true;

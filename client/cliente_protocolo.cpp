@@ -55,9 +55,8 @@ void ClienteProtocolo::recibir_pato(std::list<Pato>& patos) {
         pato.morir();
     }
 
-    Arma arma(arma_id, pos_x, pos_y, municion_disponible, 30);
-
-    pato.tomar_arma(&arma);
+    Arma* arma = new Arma(arma_id, pos_x, pos_y, municion_disponible, 30);
+    pato.tomar_arma(arma);
     patos.push_back(pato);
 }
 
