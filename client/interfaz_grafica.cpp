@@ -5,6 +5,7 @@
 #include "../common/common_estado_pato.h"
 #include "../common/common_constantes.h"
 #include <cmath>
+#include "../common/common_bala.h"
 
 #define DURACION_FRAME 1000 / 30 // 30 frames por segundo
 
@@ -154,15 +155,19 @@ void InterfazGrafica::obtener_estado_juego() {
         pato.actualizar_equipamiento(pato_juego.estado.get_estado_disparo(), ESTADO_BALAS);
         //pato.actualizar_equipamiento(pato_juego.estado.get_estado_movimiento(), ESTADO_ARMADURA);
         //pato.actualizar_equipamiento(pato_juego.estado.get_estado_movimiento(), ESTADO_CASCO);
-        //Balas balas = ultimo_estado.balas.front();
-        //balas.get_direccion();
-        //balas.get_pos_x_final();
+    
+        Bala balas_juego = ultimo_estado.balas.front();
+        pato.actualizar_equipamiento(pato_juego.get_arma()->get_municion_disponible(), ESTADO_MUNICION);
+        std::cout << "municion:" << static_cast<int>(pato_juego.get_arma()->get_municion_disponible()) << std::endl;
+        pato.actualizar_posicion_bala(balas_juego.get_pos_x_final(), balas_juego.get_pos_y_final());
+        std::cout << "pos x final bala:" << static_cast<int>(balas_juego.get_pos_x_final()) << std::endl;
        
         hubo_estado_nuevo = true;
     } 
     if (!hubo_estado_nuevo){
         pato.actualizar_estado(BYTE_NULO, ESTADO_MOVIMIENTO);
         pato.actualizar_estado(BYTE_NULO, ESTADO_SALTO);
+        pato.actualizar_estado(BYTE_NULO, ESTADO_PISO);
     }
 }
 

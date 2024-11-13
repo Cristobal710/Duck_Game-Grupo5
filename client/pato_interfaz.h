@@ -18,13 +18,14 @@ private:
     uint8_t se_tira_al_piso;
     uint8_t estado_arma;
     uint8_t estado_balas;
-    //uint8_t arma;
-    //uint8_t bala;
     SDL2pp::Renderer& renderer;
     SDL2pp::Rect rect_dibujado;
     MovimientoLateral movimiento_pato_lateral;
     MovimientoSalto movimiento_pato_salto;
     MovimientoAgachado movimiento_pato_agachado;
+    uint8_t municion_disponible;
+    uint16_t pos_x_final_bala;
+    uint16_t pos_y_final_bala;
 
 public:
     PatoInterfaz(SDL2pp::Renderer& renderer, const std::string& pato_path, int pos_x, int pos_y);
@@ -34,6 +35,7 @@ public:
     void actualizar_estado(uint8_t estado_nuevo, std::string tipo_estado);
     void actualizar_posicion(int pos_x, int pos_y);
     void actualizar_equipamiento(uint8_t estado_nuevo, std::string tipo_estado);
+    void actualizar_posicion_bala(uint16_t pos_x_final, uint16_t pos_y_final);
     Disparo tomar_arma(SDL2pp::Renderer& renderer, const std::string& arma_path, const std::string& bala_path);
 };
 

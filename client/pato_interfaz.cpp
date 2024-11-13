@@ -15,7 +15,9 @@ PatoInterfaz::PatoInterfaz(SDL2pp::Renderer& renderer, const std::string& pato_p
     rect_dibujado(pos_inicial_x, pos_inicial_y, PIXEL_PATO, PIXEL_PATO),
     movimiento_pato_lateral(renderer, pato_path, 150, 150),
     movimiento_pato_salto(renderer, pato_path, 150, 150),
-    movimiento_pato_agachado(renderer, pato_path, 150, 150)
+    movimiento_pato_agachado(renderer, pato_path, 150, 150),
+    municion_disponible(0),
+    pos_x_final_bala(0), pos_y_final_bala(0)
 {}
 
 void PatoInterfaz::dibujar(int it, float zoom_factor) {
@@ -32,7 +34,11 @@ void PatoInterfaz::dibujar(int it, float zoom_factor) {
     movimiento_pato_lateral.pato_movimiento(estado_pato_movimiento, direccion_pato, pos_x, pos_y, it, zoom_factor);
     if(estado_arma == TOMAR_ARMA){
         Disparo pato_disparo = tomar_arma(renderer, "../resources/weapons/Darts.png", "../resources/weapons/Darts.png");
-        pato_disparo.mostrar_disparo(estado_balas, direccion_pato, pos_x, pos_y, it, zoom_factor);
+        if(estado_balas == DISPARAR){
+            pato_disparo.get_arma().set_municion(municion_disponible);
+            pato_disparo.get_bala().set_posicion_bala(pos_x_final_bala, pos_y_final_bala);
+        }
+        pato_disparo.mostrar_disparo(estado_balas, direccion_pato, pos_x, pos_y, zoom_factor);
     }
 }
 
@@ -61,8 +67,15 @@ void PatoInterfaz::actualizar_equipamiento(uint8_t estado_nuevo, std::string tip
         estado_arma = estado_nuevo;
     } else if(tipo_estado == ESTADO_BALAS){
         estado_balas = estado_nuevo;
+    } else if(tipo_estado == ESTADO_MUNICION){
+        municion_disponible = estado_nuevo;
     }
     tipo_estado.clear();
+}
+
+void PatoInterfaz::actualizar_posicion_bala(uint16_t pos_x_final, uint16_t pos_y_final) {
+    pos_x_final_bala = pos_x_final;
+    pos_y_final_bala = pos_y_final;
 }
 
 Disparo PatoInterfaz::tomar_arma(SDL2pp::Renderer& renderer, const std::string& arma_path, const std::string& bala_path) {
