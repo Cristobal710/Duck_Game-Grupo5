@@ -10,6 +10,11 @@ Protocolo::Protocolo(Socket& socket): socket(socket), acciones() {
     acciones[DISPARO] = DISPARAR;
     acciones[AGARRAR_ARMA] = TOMAR_ARMA;
     acciones[ABAJO] = TIRAR_PISO;
+    acciones[NO_DERECHA] = DEJAR_MOVER_DERECHA;
+    acciones[NO_IZQUIERDA] = DEJAR_MOVER_IZQUIERDA;
+    acciones[NO_ARRIBA] = DEJAR_APUNTAR_ARRIBA;
+    acciones[NO_SALTO] = DEJAR_SALTAR_ALETEAR;
+    acciones[NO_ABAJO] = DEJAR_TIRAR_PISO;
 }
 
 void Protocolo::enviar_byte(const uint8_t byte) { 

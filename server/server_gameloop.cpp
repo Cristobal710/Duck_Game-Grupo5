@@ -61,6 +61,21 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
         case SALTAR_ALETEAR:
             pato.saltar();
             break;
+        case DEJAR_MOVER_IZQUIERDA:
+            pato.estado.set_dejar_de_moverse();
+            break;
+        case DEJAR_MOVER_DERECHA:
+            pato.estado.set_dejar_de_moverse();
+            break;
+        case DEJAR_APUNTAR_ARRIBA:
+            pato.dejar_de_apuntar_arriba();
+            break;
+        case DEJAR_SALTAR_ALETEAR:
+            pato.estado.set_dejar_de_saltar();
+            break;
+        case DEJAR_TIRAR_PISO:
+            pato.levantarse_del_piso();
+            break;
         case TOMAR_ARMA:
             // llamar a un metodo que recorra el array de armas y devuelva la cercana al pato
             // pato.tomar_arma();
@@ -79,8 +94,6 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
             break;
         default:
             // hacer metodo que ponga quieto al pato
-            pato.estado.set_dejar_de_moverse();
-            pato.levantarse_del_piso();
             break;
 
     }
@@ -164,13 +177,12 @@ void GameLoop::run() {
 
     while (!(*esta_cerrado)) {
         //eliminar_clientes_cerrados();
-
         while (true) {
             EstadoJuego estado_anterior = ultimo_estado;
             std::vector<EventoServer> eventos = clientes.recibir_mensajes_clientes();
             
-           if (eventos.empty()) {
-                terminar_acciones_patos();
+            if (eventos.empty()) {
+                //terminar_acciones_patos();
             }
             for(EventoServer evento : eventos){
                 procesar_evento(evento, ultimo_estado);
