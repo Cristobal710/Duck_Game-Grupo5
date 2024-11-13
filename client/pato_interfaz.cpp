@@ -116,5 +116,5 @@ Disparo PatoInterfaz::tomar_arma() {
 }
 
 void PatoInterfaz::set_tipo_arma(TipoArma tipo_arma) {
-    this.tipo_arma = tipo_arma;
+    tipo_arma = tipo_arma;
 }
