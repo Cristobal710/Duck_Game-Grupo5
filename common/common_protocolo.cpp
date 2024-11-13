@@ -3,13 +3,13 @@
 #include "common_liberror.h"
 
 Protocolo::Protocolo(Socket& socket): socket(socket), acciones() {
-    acciones["d"] = MOVER_DERECHA;
-    acciones["a"] = MOVER_IZQUIERDA;
-    acciones["w"] = APUNTAR_ARRIBA;
-    acciones[" "] = SALTAR_ALETEAR;
-    acciones["f"] = DISPARAR;
-    acciones["g"] = TOMAR_ARMA;
-    acciones["s"] = TIRAR_PISO;
+    acciones[DERECHA] = MOVER_DERECHA;
+    acciones[IZQUIERDA] = MOVER_IZQUIERDA;
+    acciones[ARRIBA] = APUNTAR_ARRIBA;
+    acciones[SALTO] = SALTAR_ALETEAR;
+    acciones[DISPARO] = DISPARAR;
+    acciones[AGARRAR_ARMA] = TOMAR_ARMA;
+    acciones[ABAJO] = TIRAR_PISO;
 }
 
 void Protocolo::enviar_byte(const uint8_t byte) { 

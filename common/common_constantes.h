@@ -42,6 +42,23 @@
 #define ESTADO_MUNICION "MUNICION"
 #define ESTADO_POS_X_FINAL_BALA "POS_X_FINAL_BALA"
 
+// TECLAS
+#define DERECHA "d"
+#define IZQUIERDA "a"
+#define ARRIBA "w"
+#define ABAJO "s"
+#define SALTO " "
+#define DISPARO "f"
+#define AGARRAR_ARMA "g"
+
+#define NO_DERECHA "!d"
+#define NO_IZQUIERDA "!a"
+#define NO_ARRIBA "!w"
+#define NO_ABAJO "!s"
+#define NO_SALTO "! "
+#define NO_DISPARO "!f"
+#define NO_AGARRAR_ARMA "!g"
+
 
 
 

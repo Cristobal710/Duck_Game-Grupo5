@@ -101,37 +101,73 @@ void InterfazGrafica::manejar_eventos() {
                 correr_programa = false;
             }
             if (evento.key.keysym.sym == SDLK_d) {
-                comando_cliente.tecla = "d";
+                comando_cliente.tecla = DERECHA;
                 comando_cliente.jugador_id = 3;
                 comandos_cliente.push(comando_cliente);
             }
             if (evento.key.keysym.sym == SDLK_a) {
-                comando_cliente.tecla = "a";
+                comando_cliente.tecla = IZQUIERDA;
                 comando_cliente.jugador_id = 3;
                 comandos_cliente.push(comando_cliente);
             }
             if (evento.key.keysym.sym == SDLK_w) {
-                comando_cliente.tecla = "w";
+                comando_cliente.tecla = ARRIBA;
                 comando_cliente.jugador_id = 3;
                 comandos_cliente.push(comando_cliente);
             }
             if (evento.key.keysym.sym == SDLK_s) {
-                comando_cliente.tecla = "s";
+                comando_cliente.tecla = ABAJO;
                 comando_cliente.jugador_id = 3;
                 comandos_cliente.push(comando_cliente);
             }
             if (evento.key.keysym.sym == SDLK_SPACE) {
-                comando_cliente.tecla = " ";
+                comando_cliente.tecla = SALTO;
                 comando_cliente.jugador_id = 3;
                 comandos_cliente.push(comando_cliente);
             }
             if (evento.key.keysym.sym == SDLK_f) {
-                comando_cliente.tecla = "f";
+                comando_cliente.tecla = DISPARO;
                 comando_cliente.jugador_id = 3;
                 comandos_cliente.push(comando_cliente);
             }
             if (evento.key.keysym.sym == SDLK_g) {
-                comando_cliente.tecla = "g";
+                comando_cliente.tecla = AGARRAR_ARMA;
+                comando_cliente.jugador_id = 3;
+                comandos_cliente.push(comando_cliente);
+            }
+        } else if (evento.type == SDL_KEYUP) {
+            if (evento.key.keysym.sym == SDLK_d) {
+                comando_cliente.tecla = NO_DERECHA;
+                comando_cliente.jugador_id = 3;
+                comandos_cliente.push(comando_cliente);
+            }
+            if (evento.key.keysym.sym == SDLK_a) {
+                comando_cliente.tecla = NO_IZQUIERDA;
+                comando_cliente.jugador_id = 3;
+                comandos_cliente.push(comando_cliente);
+            }
+            if (evento.key.keysym.sym == SDLK_w) {
+                comando_cliente.tecla = NO_ARRIBA;
+                comando_cliente.jugador_id = 3;
+                comandos_cliente.push(comando_cliente);
+            }
+            if (evento.key.keysym.sym == SDLK_s) {
+                comando_cliente.tecla = NO_ABAJO;
+                comando_cliente.jugador_id = 3;
+                comandos_cliente.push(comando_cliente);
+            }
+            if (evento.key.keysym.sym == SDLK_SPACE) {
+                comando_cliente.tecla = NO_SALTO;
+                comando_cliente.jugador_id = 3;
+                comandos_cliente.push(comando_cliente);
+            }
+            if (evento.key.keysym.sym == SDLK_f) {
+                comando_cliente.tecla = NO_DISPARO;
+                comando_cliente.jugador_id = 3;
+                comandos_cliente.push(comando_cliente);
+            }
+            if (evento.key.keysym.sym == SDLK_g) {
+                comando_cliente.tecla = NO_AGARRAR_ARMA;
                 comando_cliente.jugador_id = 3;
                 comandos_cliente.push(comando_cliente);
             }
