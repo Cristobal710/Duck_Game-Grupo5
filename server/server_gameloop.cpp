@@ -90,6 +90,15 @@ void GameLoop::enviar_estado_juego_si_cambio(Pato& pato, EstadoJuego& estado_ant
     if (pato.estado.get_estado_agachado() != estado_anterior.patos.front().estado.get_estado_agachado() || pato.estado.get_estado_movimiento() != estado_anterior.patos.front().estado.get_estado_movimiento() || pato.estado.get_estado_salto() != estado_anterior.patos.front().estado.get_estado_salto() || pato.estado.get_estado_disparo() != estado_anterior.patos.front().estado.get_estado_disparo()) {
         cola_estados_juego.push(ultimo_estado);
     }
+    bool cambio = false;
+    for (Bala& bala: ultimo_estado.balas) {
+        if (bala.get_pos_x() != estado_anterior.balas.front().get_pos_x() || bala.get_pos_y() != estado_anterior.balas.front().get_pos_y()) {
+            cambio = true;
+        }
+    }
+    if (cambio) {
+        cola_estados_juego.push(ultimo_estado);
+    }
 }
 
 void GameLoop::terminar_acciones_patos() {
