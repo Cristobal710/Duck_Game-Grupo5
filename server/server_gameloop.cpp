@@ -9,6 +9,7 @@
 #define DEATH_RAY "Death ray"
 #define SHOTGUN "Shotgun"
 
+
 GameLoop::GameLoop(Queue<EstadoJuego>& cola_estados_juego,
         bool* conexion):
         mapa_clientes(),
@@ -211,6 +212,15 @@ void GameLoop::run() {
     ultimo_estado.patos.emplace_back(pato);
     LectorJson lector_mapa = LectorJson();
     Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa1");
+    std::vector<Tile> colisiones;
+    std::map<std::string,std::vector<SDL_Point>> tiles = mapa.getTiles();
+    for (auto& key : tiles) {
+        for(SDL_Point p : tiles.at(key.first)){
+            HitBox hitbox(p.x, p.y, ALTO_TILE, ANCHO_TILE);
+            Tile tile(p.x, p.y, hitbox);
+            colisiones.push_back(tile);
+        }
+    }
     ultimo_estado.mapa = mapa;
     cola_estados_juego.push(ultimo_estado);
 
