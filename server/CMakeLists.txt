@@ -14,6 +14,7 @@ target_sources(taller_server
     ../common/common_resolvererror.cpp
     ../common/common_socket.cpp
     ../common/common_protocolo.cpp
+    ../common/common_hitbox.cpp
 
     main.cpp
 

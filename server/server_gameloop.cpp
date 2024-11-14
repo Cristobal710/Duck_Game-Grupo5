@@ -9,6 +9,8 @@
 #define DEATH_RAY "Death ray"
 #define SHOTGUN "Shotgun"
 
+#define ALTO_TILE 32
+#define ANCHO_TILE 32
 
 GameLoop::GameLoop(Queue<EstadoJuego>& cola_estados_juego,
         bool* conexion):
@@ -54,7 +56,6 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
             pato.moverse_derecha();
             break;
         case TIRAR_PISO:
-            
             pato.tirarse_al_piso();
             break;
         case APUNTAR_ARRIBA:

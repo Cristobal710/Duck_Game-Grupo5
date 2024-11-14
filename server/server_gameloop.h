@@ -14,7 +14,7 @@
 #include "server_client.h"
 #include "server_evento.h"
 #include "server_proteger_clientes.h"
-
+#include "common/common_tile.h"
 class GameLoop: public Thread {
 private:
     std::map<ServerClient*, Queue<EventoServer>*> mapa_clientes;

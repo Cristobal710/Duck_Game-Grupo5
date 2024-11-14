@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#define ANCHO_PATO 32
+#define ALTO_PATO 32
 
 Pato::Pato(){}
 
@@ -19,6 +21,7 @@ Pato::Pato(uint16_t id, uint16_t pos_x, uint16_t pos_y, uint8_t direccion):
         contador_salto(0),
         contador_caer(0) 
         {
+    calcular_hitbox(ALTO_PATO, ANCHO_PATO);
     // if (color == "rojo") {
     //     this->color = 1;
     // } else if (color == "azul") {
