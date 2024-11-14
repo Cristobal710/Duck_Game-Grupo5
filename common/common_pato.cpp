@@ -47,7 +47,7 @@ void Pato::moverse_derecha() {
 }
 
 void Pato::saltar() { 
-    pos_y-=5;
+    pos_y-=15;
     estado.set_saltar();
     contador_salto++;
     if (contador_salto == 5) {
