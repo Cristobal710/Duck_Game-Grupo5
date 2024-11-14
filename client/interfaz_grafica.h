@@ -26,7 +26,7 @@ class InterfazGrafica {
     PatoInterfaz pato;
 
 
-    void manejar_eventos(std::set<SDL_Keycode>& keysHeld);
+    void manejar_eventos();
     void obtener_estado_juego(MapaInterfaz& mapa);
 
     public:

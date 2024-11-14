@@ -35,7 +35,6 @@ void InterfazGrafica::iniciar() {
     MapaInterfaz mapa_a_jugar(renderer);
     obtener_estado_juego(mapa_a_jugar);
 
-    std::set<SDL_Keycode> keysHeld;  // Keep track of held keys to avoid sending multiple commands per frame
 
 
     int it = 0;
@@ -43,7 +42,7 @@ void InterfazGrafica::iniciar() {
         float tiempo_ultimo_frame = SDL_GetTicks();
         
         renderer.Clear();
-        manejar_eventos(keysHeld);
+        manejar_eventos();
         obtener_estado_juego(mapa_a_jugar);
         
         mapa_a_jugar.dibujar(rect_dibujado.GetX(), rect_dibujado.GetY(), 1200, 700, it);
@@ -62,8 +61,7 @@ void InterfazGrafica::drop_rest(float& tiempo_ultimo_frame, int& it) {
     Uint32 tiempo_actual = SDL_GetTicks();
     int32_t descansar = DURACION_FRAME - (tiempo_actual - tiempo_ultimo_frame);
 
-    if (descansar <
-        0) {  // entonces nos atrasamos, tenemos que esperar a la siguiente iteracion, drop & rest.
+    if (descansar < 0) {  // entonces nos atrasamos, tenemos que esperar a la siguiente iteracion, drop & rest.
         int32_t tiempo_atrasado = -descansar;
         descansar = DURACION_FRAME - (tiempo_atrasado % DURACION_FRAME);
         int32_t tiempo_perdido = tiempo_atrasado + descansar;
@@ -80,7 +78,7 @@ void InterfazGrafica::drop_rest(float& tiempo_ultimo_frame, int& it) {
     tiempo_ultimo_frame = tiempo_actual;
 }
 
-void InterfazGrafica::manejar_eventos(std::set<SDL_Keycode>& keysHeld) {
+void InterfazGrafica::manejar_eventos() {
     SDL_Event evento;
     
     while (SDL_PollEvent(&evento)) {
@@ -90,7 +88,6 @@ void InterfazGrafica::manejar_eventos(std::set<SDL_Keycode>& keysHeld) {
             correr_programa = false;
 
         } else if (evento.type == SDL_KEYDOWN) {
-                if (keysHeld.find(evento.key.keysym.sym) == keysHeld.end()){
                     if (evento.key.keysym.sym == SDLK_ESCAPE) {
                     correr_programa = false;
                     }
@@ -129,9 +126,6 @@ void InterfazGrafica::manejar_eventos(std::set<SDL_Keycode>& keysHeld) {
                         comando_cliente.jugador_id = 3;
                         comandos_cliente.push(comando_cliente);
                     }
-                }
-                // Add the key to the 'held' set so we don't send the same command repeatedly
-                keysHeld.insert(evento.key.keysym.sym);
         } else if (evento.type == SDL_KEYUP) {
             // When the key is released, stop the movement
             if (evento.key.keysym.sym == SDLK_d) {
@@ -169,9 +163,6 @@ void InterfazGrafica::manejar_eventos(std::set<SDL_Keycode>& keysHeld) {
                 comando_cliente.jugador_id = 3;
                 comandos_cliente.push(comando_cliente);
             }
-
-            // Remove the key from the 'held' set when it's released
-            keysHeld.erase(evento.key.keysym.sym);
         }
     }
 }
