@@ -54,6 +54,7 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
             pato.moverse_derecha();
             break;
         case TIRAR_PISO:
+            
             pato.tirarse_al_piso();
             break;
         case APUNTAR_ARRIBA:

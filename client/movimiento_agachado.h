@@ -17,13 +17,13 @@ class MovimientoAgachado : public Movimiento {
 
     void frames_agachado(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet);
     
-    void mostrar_frames_agachado(int it);
+    void mostrar_frames_agachado(uint8_t direccion_pato);
     void mostrar_frames_levantarse(int it);
     SDL2pp::Texture& mostrar_frame();
 
     public:
     MovimientoAgachado(SDL2pp::Renderer& renderer, const std::string& pato_path, int pos_x, int pos_y);
-    void pato_agachado(uint8_t& esta_agachado, int& pos_x, int& pos_y, int it, float zoom_factor);
+    void pato_agachado(uint8_t& esta_agachado, int& pos_x, int& pos_y, float zoom_factor, uint8_t direccion_pato);
 };
 
 #endif  // MOVIMIENTO_AGACHADO_H

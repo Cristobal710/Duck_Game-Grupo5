@@ -3,7 +3,8 @@
 #include "../common/common_constantes.h"
 #include <SDL2/SDL_image.h>
 
-PatoInterfaz::PatoInterfaz(SDL2pp::Renderer& renderer, const std::string& pato_path, int pos_inicial_x, int pos_inicial_y):
+PatoInterfaz::PatoInterfaz(SDL2pp::Renderer& renderer, const std::string& pato_path, int pos_inicial_x, int pos_inicial_y,
+uint16_t pato_id):
     estado_pato_movimiento(BYTE_NULO),
     estado_pato_salto(BYTE_NULO),
     direccion_pato(DIRECCION_DERECHA),
@@ -17,19 +18,41 @@ PatoInterfaz::PatoInterfaz(SDL2pp::Renderer& renderer, const std::string& pato_p
     movimiento_pato_agachado(renderer, pato_path, 150, 150),
     municion_disponible(0),
     pos_x_final_bala(0), pos_y_final_bala(0),
-    tipo_arma(TipoArma::Granada)
+    tipo_arma(TipoArma::Granada),
+    id_jugador(pato_id)
 {}
+
+
+PatoInterfaz::PatoInterfaz(PatoInterfaz&& other) noexcept 
+:   estado_pato_movimiento(other.estado_pato_movimiento),
+      estado_pato_salto(other.estado_pato_salto),
+      direccion_pato(other.direccion_pato),
+      se_tira_al_piso(other.se_tira_al_piso),
+      estado_arma(other.estado_arma),
+      estado_balas(other.estado_balas),
+        renderer(other.renderer),
+      rect_dibujado(std::move(other.rect_dibujado)),
+      movimiento_pato_lateral(std::move(other.movimiento_pato_lateral)),
+      movimiento_pato_salto(std::move(other.movimiento_pato_salto)),
+      movimiento_pato_agachado(std::move(other.movimiento_pato_agachado)),
+      municion_disponible(other.municion_disponible),
+      pos_x_final_bala(other.pos_x_final_bala),
+      pos_y_final_bala(other.pos_y_final_bala),
+      tipo_arma(other.tipo_arma),
+      id_jugador(other.id_jugador)
+{
+    // No need to reset the moved-from object here.
+}
+
 
 void PatoInterfaz::dibujar(int it, float zoom_factor) {
     int pos_x = rect_dibujado.GetX();
     int pos_y = rect_dibujado.GetY();
     
-    if(se_tira_al_piso == TIRAR_PISO){
-        movimiento_pato_agachado.pato_agachado(se_tira_al_piso, pos_x, pos_y, it, zoom_factor);
-        return;
+    if(se_tira_al_piso == TIRAR_PISO || se_tira_al_piso == DEJAR_TIRAR_PISO){
+        movimiento_pato_agachado.pato_agachado(se_tira_al_piso, pos_x, pos_y, zoom_factor, direccion_pato);
     } else if (estado_pato_salto == SALTAR_ALETEAR || estado_pato_salto == CAER) {
         movimiento_pato_salto.pato_salta(estado_pato_salto, pos_x, pos_y, it, zoom_factor);
-        return;
     }
     movimiento_pato_lateral.pato_movimiento(estado_pato_movimiento, direccion_pato, pos_x, pos_y, it, zoom_factor);
     if(estado_arma == TOMAR_ARMA){
@@ -118,3 +141,10 @@ Disparo PatoInterfaz::tomar_arma() {
 void PatoInterfaz::set_tipo_arma(TipoArma tipo_arma) {
     tipo_arma = tipo_arma;
 }
+
+bool PatoInterfaz::mismo_id(uint16_t id) { 
+    if (id == id_jugador){
+        return true;
+    }
+    return false; 
+    }

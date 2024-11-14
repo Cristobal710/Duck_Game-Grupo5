@@ -14,7 +14,7 @@
 #include "../common/common_estado_juego.h"
 #include "disparo.h"
 #include "mapa_interfaz.h"
-
+#include <set>
 
 class InterfazGrafica {
     private:
@@ -33,6 +33,7 @@ class InterfazGrafica {
     InterfazGrafica(Queue<ComandoGrafica>& cola_comandos, Queue<EstadoJuego>& cola_estado_juego);
     void iniciar();
 
+    void drop_rest(float& tiempo_ultimo_frame, int& it);
 };
 
 #endif  
