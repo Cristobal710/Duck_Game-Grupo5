@@ -121,23 +121,7 @@ void GameLoop::enviar_estado_juego_si_cambio(Pato& pato, EstadoJuego& estado_ant
     }
 }
 
-void GameLoop::terminar_acciones_patos() {
-    for (Pato& pato: ultimo_estado.patos) {
-        pato.estado.set_dejar_de_moverse();
-        pato.estado.set_dejar_de_agacharse();
-        pato.estado.set_dejar_de_disparar();
-        pato.levantarse_del_piso();
-        pato.dejar_de_apuntar_arriba();
-    }
-}
-
-void GameLoop::aplicar_logica(){
-    for (Pato& pato: ultimo_estado.patos) {
-        if (pato.estado.get_estado_salto() == SALTAR_ALETEAR) {
-            std::cout << "entre al if de saltar y el contador es de " << static_cast<int>(pato.contador_salto) << std::endl;
-            pato.saltar();
-        }
-    }
+void GameLoop::avanzar_balas(){
     for (auto it = ultimo_estado.balas.begin(); it != ultimo_estado.balas.end(); ) {
         std::cout << "entre al for de balas" << std::endl;
         std::cout << "direccion bala:" << static_cast<int>(it->get_direccion()) << std::endl;
@@ -153,7 +137,6 @@ void GameLoop::aplicar_logica(){
             it->set_pos_y(it->get_pos_y() - 3);
             std::cout << "pos y bala:" << static_cast<int>(it->get_pos_y()) << std::endl;
         }
-
         if (it->get_pos_x() == it->get_pos_x_final() && it->get_pos_y() == it->get_pos_y_final()) {
             std::cout << "se elimina la bala" << std::endl;
             it = ultimo_estado.balas.erase(it);
@@ -161,6 +144,21 @@ void GameLoop::aplicar_logica(){
             ++it;
         }
     }
+}
+
+void GameLoop::continuar_saltando_patos(){
+    for (Pato& pato: ultimo_estado.patos) {
+        if (pato.estado.get_estado_salto() == SALTAR_ALETEAR) {
+            std::cout << "entre al if de saltar y el contador es de " << static_cast<int>(pato.contador_salto) << std::endl;
+            pato.saltar();
+        }
+    }
+}
+
+void GameLoop::aplicar_logica(){
+    continuar_saltando_patos();
+    avanzar_balas();
+    // aplicar_gravedad();
 }
 
 void GameLoop::drop_and_rest(float& tiempo_ultimo_frame){
@@ -207,7 +205,6 @@ void GameLoop::run() {
                 cola_estados_juego.push(ultimo_estado);
             }
             // aplicar logica del juego, balas, gravedad, etc
-            // pushear
             aplicar_logica();
             enviar_estado_juego_si_cambio(pato, estado_anterior);
             drop_and_rest(tiempo_ultimo_frame);
