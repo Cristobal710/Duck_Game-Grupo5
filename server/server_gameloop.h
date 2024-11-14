@@ -31,6 +31,10 @@ private:
     void continuar_saltando_patos();
     void drop_and_rest(float& tiempo_ultimo_frame);
     void aplicar_logica();
+    void avanzar_balas_direccion_izquierda(std::__cxx11::list<Bala>::iterator& it);
+    void avanzar_balas_direccion_derecha(std::__cxx11::list<Bala>::iterator& it);
+    void avanzar_balas_direccion_arriba(std::__cxx11::list<Bala>::iterator& it);
+    void eliminar_balas_fuera_de_alcance(std::__cxx11::list<Bala>::iterator& it);
 
 public:
     GameLoop(Queue<EstadoJuego>& cola_estados_juego,

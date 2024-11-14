@@ -121,28 +121,50 @@ void GameLoop::enviar_estado_juego_si_cambio(Pato& pato, EstadoJuego& estado_ant
     }
 }
 
+void GameLoop::avanzar_balas_direccion_izquierda(std::__cxx11::list<Bala>::iterator& it){
+    if (it->get_direccion() == DIRECCION_IZQUIERDA) {
+        it->set_pos_x(it->get_pos_x() - 5);
+        std::cout << "pos x bala:" << static_cast<int>(it->get_pos_x()) << std::endl;
+    }
+}
+
+void GameLoop::avanzar_balas_direccion_derecha(std::__cxx11::list<Bala>::iterator& it){
+    if (it->get_direccion() == DIRECCION_DERECHA) {
+        it->set_pos_x(it->get_pos_x() + 5);
+        std::cout << "pos x bala:" << static_cast<int>(it->get_pos_x()) << std::endl;
+    }
+}
+
+void GameLoop::avanzar_balas_direccion_arriba(std::__cxx11::list<Bala>::iterator& it){
+    if (it->get_direccion() == DIRECCION_ARRIBA) {
+        it->set_pos_y(it->get_pos_y() - 5);
+        std::cout << "pos y bala:" << static_cast<int>(it->get_pos_y()) << std::endl;
+    }
+}
+
+void GameLoop::eliminar_balas_fuera_de_alcance(std::__cxx11::list<Bala>::iterator& it){
+    if (it->get_pos_x() >= it->get_pos_x_final() && it->get_pos_y() >= it->get_pos_y_final() && it->get_direccion() == DIRECCION_DERECHA) {
+        std::cout << "se elimina la bala que va a la derecha" << std::endl;
+        it = ultimo_estado.balas.erase(it);
+    } else if (it->get_pos_x() <= it->get_pos_x_final() && it->get_pos_y() <= it->get_pos_y_final() && it->get_direccion() == DIRECCION_IZQUIERDA) {
+        std::cout << "se elimina la bala que va a la izquierda" << std::endl;
+        it = ultimo_estado.balas.erase(it);
+    } else if (it->get_pos_y() <= it->get_pos_y_final() && it->get_direccion() == DIRECCION_ARRIBA) {
+        std::cout << "se elimina la bala que va arriba" << std::endl;
+        it = ultimo_estado.balas.erase(it);
+    } else {
+        ++it;
+    }
+}
+
 void GameLoop::avanzar_balas(){
     for (auto it = ultimo_estado.balas.begin(); it != ultimo_estado.balas.end(); ) {
         std::cout << "entre al for de balas" << std::endl;
         std::cout << "direccion bala:" << static_cast<int>(it->get_direccion()) << std::endl;
-        if (it->get_direccion() == DIRECCION_IZQUIERDA) {
-            it->set_pos_x(it->get_pos_x() - 3);
-            std::cout << "pos x bala:" << static_cast<int>(it->get_pos_x()) << std::endl;
-        }
-        if (it->get_direccion() == DIRECCION_DERECHA) {
-            it->set_pos_x(it->get_pos_x() + 3);
-            std::cout << "pos x bala:" << static_cast<int>(it->get_pos_x()) << std::endl;
-        }
-        if (it->get_direccion() == DIRECCION_ARRIBA) {
-            it->set_pos_y(it->get_pos_y() - 3);
-            std::cout << "pos y bala:" << static_cast<int>(it->get_pos_y()) << std::endl;
-        }
-        if (it->get_pos_x() == it->get_pos_x_final() && it->get_pos_y() == it->get_pos_y_final()) {
-            std::cout << "se elimina la bala" << std::endl;
-            it = ultimo_estado.balas.erase(it);
-        } else {
-            ++it;
-        }
+        avanzar_balas_direccion_izquierda(it);
+        avanzar_balas_direccion_derecha(it);
+        avanzar_balas_direccion_arriba(it);
+        eliminar_balas_fuera_de_alcance(it);
     }
 }
 
@@ -180,7 +202,7 @@ void GameLoop::drop_and_rest(float& tiempo_ultimo_frame){
  
 void GameLoop::run() {
     Pato pato(3, 0, 300, 0);
-    Arma* arma = new Arma(1, 0, 255, 15, 30);
+    Arma* arma = new Arma(1, 0, 255, 15, 300);
     pato.tomar_arma(arma);
     ultimo_estado.patos.emplace_back(pato);
     LectorJson lector_mapa = LectorJson();
@@ -196,15 +218,10 @@ void GameLoop::run() {
         while (true) {
             EstadoJuego estado_anterior = ultimo_estado;
             std::vector<EventoServer> eventos = clientes.recibir_mensajes_clientes();
-            
-            if (eventos.empty()) {
-                //terminar_acciones_patos();
-            }
             for(EventoServer evento : eventos){
                 procesar_evento(evento, ultimo_estado);
                 cola_estados_juego.push(ultimo_estado);
             }
-            // aplicar logica del juego, balas, gravedad, etc
             aplicar_logica();
             enviar_estado_juego_si_cambio(pato, estado_anterior);
             drop_and_rest(tiempo_ultimo_frame);
