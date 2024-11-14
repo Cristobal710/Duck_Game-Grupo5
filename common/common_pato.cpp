@@ -47,10 +47,10 @@ void Pato::moverse_derecha() {
 }
 
 void Pato::saltar() { 
-    pos_y-=3; 
+    pos_y-=5;
     estado.set_saltar();
     contador_salto++;
-    if (contador_salto == 3) {
+    if (contador_salto == 5) {
         estado.set_dejar_de_saltar();
         contador_salto = 0;
     }
@@ -59,13 +59,13 @@ void Pato::saltar() {
 void Pato::planear() { pos_y--; }
 
 void Pato::caer() { 
-    pos_y+=3; 
-    estado.set_caer();
-    contador_caer++;
-    if (contador_caer == 5) {
-        estado.set_dejar_de_caer();
-        contador_caer = 0;
-    }
+    // pos_y+=3; 
+    // estado.set_caer();
+    // contador_caer++;
+    // if (contador_caer == 5) {
+    //     estado.set_dejar_de_caer();
+    //     contador_caer = 0;
+    // }
 }
 
 void Pato::tomar_arma(Arma* nuevaArma) { arma = nuevaArma; }

@@ -59,7 +59,10 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
             pato.apuntar_arriba();
             break;
         case SALTAR_ALETEAR:
-            pato.saltar();
+            std::cout << "entre al case de saltar" << std::endl;
+            if (pato.estado.get_estado_salto() != SALTAR_ALETEAR) {
+                pato.saltar();
+            }
             break;
         case DEJAR_MOVER_IZQUIERDA:
             pato.estado.set_dejar_de_moverse();
@@ -98,7 +101,6 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
             }
             break;
         default:
-            // hacer metodo que ponga quieto al pato
             break;
 
     }
@@ -132,6 +134,7 @@ void GameLoop::terminar_acciones_patos() {
 void GameLoop::aplicar_logica(){
     for (Pato& pato: ultimo_estado.patos) {
         if (pato.estado.get_estado_salto() == SALTAR_ALETEAR) {
+            std::cout << "entre al if de saltar y el contador es de " << static_cast<int>(pato.contador_salto) << std::endl;
             pato.saltar();
         }
     }
