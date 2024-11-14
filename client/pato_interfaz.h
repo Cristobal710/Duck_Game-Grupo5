@@ -1,6 +1,6 @@
 #ifndef PATO_INTERFAZ_H
 #define PATO_INTERFAZ_H
-
+#include <iostream>
 #include <vector>
 #include "movimiento_lateral.h"
 #include "movimiento_salto.h"
@@ -9,6 +9,7 @@
 #include "entidad_interfaz.h"
 #include <SDL2pp/SDL2pp.hh>
 #include "disparo.h"
+#include <cstdint>
 
 enum class TipoArma {
     Granada,
@@ -40,12 +41,17 @@ private:
     uint16_t pos_x_final_bala;
     uint16_t pos_y_final_bala;
     TipoArma tipo_arma;
+    uint16_t id_jugador;
 
     Disparo tomar_arma();
 
 public:
-    PatoInterfaz(SDL2pp::Renderer& renderer, const std::string& pato_path, int pos_x, int pos_y);
+    PatoInterfaz(SDL2pp::Renderer& renderer, const std::string& pato_path, int pos_x, int pos_y, uint16_t pato_id);
     ~PatoInterfaz() override = default;
+    
+     // Move constructor
+    PatoInterfaz(PatoInterfaz&& other) noexcept;
+
     
     void dibujar(int it, float zoom_factor) override;
     
@@ -54,6 +60,7 @@ public:
     void actualizar_equipamiento(uint8_t estado_nuevo, std::string tipo_estado);
     void actualizar_posicion_bala(uint16_t pos_x_final, uint16_t pos_y_final);
     void set_tipo_arma(TipoArma tipo_arma);
+    bool mismo_id(uint16_t id);
 };
 
 #endif  // PATO_INTERFAZ_H

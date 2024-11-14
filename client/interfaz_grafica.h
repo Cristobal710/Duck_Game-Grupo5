@@ -14,7 +14,7 @@
 #include "../common/common_estado_juego.h"
 #include "disparo.h"
 #include "mapa_interfaz.h"
-
+#include <set>
 
 class InterfazGrafica {
     private:
@@ -26,13 +26,14 @@ class InterfazGrafica {
     PatoInterfaz pato;
 
 
-    void manejar_eventos();
+    void manejar_eventos(std::set<SDL_Keycode>& keysHeld);
     void obtener_estado_juego(MapaInterfaz& mapa);
 
     public:
     InterfazGrafica(Queue<ComandoGrafica>& cola_comandos, Queue<EstadoJuego>& cola_estado_juego);
     void iniciar();
 
+    void drop_rest(float& tiempo_ultimo_frame, int& it);
 };
 
 #endif  

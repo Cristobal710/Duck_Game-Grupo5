@@ -20,21 +20,25 @@ void MovimientoAgachado::frames_agachado(SDL2pp::Renderer& renderer, SDL2pp::Sur
     cargar_frames(renderer, sprite_sheet, 70, movimiento_pato_agachado, NUM_FRAMES_PATO_AGACHADO);
 }
 
-void MovimientoAgachado::mostrar_frames_agachado(int it) {
-    int frame = NUM_FRAMES_PATO_AGACHADO - 1 - (it % NUM_FRAMES_PATO_AGACHADO);
-
-    if (it > NUM_FRAMES_PATO_AGACHADO) {
-        renderer.Copy(movimiento_pato_agachado[0], rect_inicio, rect_dibujado);
+void MovimientoAgachado::mostrar_frames_agachado(uint8_t direccion_pato) {
+    if (direccion_pato == DIRECCION_DERECHA){
+        renderer.Copy(movimiento_pato_agachado[1], rect_inicio, rect_dibujado);
         return;
+    } else if (direccion_pato == DIRECCION_IZQUIERDA){
+    SDL_RenderCopyEx(renderer.Get(), movimiento_pato_agachado[1].Get(), &rect_inicio, &rect_dibujado, 0,
+                     nullptr, SDL_FLIP_HORIZONTAL);
     }
-    renderer.Copy(movimiento_pato_agachado[frame], rect_inicio, rect_dibujado);
 }
 
 void MovimientoAgachado::mostrar_frames_levantarse(int it) {
     int frame = it % NUM_FRAMES_PATO_AGACHADO;
 
-    if (it > NUM_FRAMES_PATO_AGACHADO) {
-        renderer.Copy(movimiento_pato_agachado[NUM_FRAMES_PATO_AGACHADO - 1], rect_inicio, rect_dibujado);
+    if (frame == 0){
+        renderer.Copy(movimiento_pato_agachado[frame + 2], rect_inicio, rect_dibujado);
+        return;
+    }
+    if (frame == 1){
+        renderer.Copy(movimiento_pato_agachado[frame + 1], rect_inicio, rect_dibujado);
         return;
     }
     renderer.Copy(movimiento_pato_agachado[frame], rect_inicio, rect_dibujado);
@@ -44,12 +48,15 @@ SDL2pp::Texture& MovimientoAgachado::mostrar_frame() {
     return movimiento_pato_agachado[0];
 }
 
-void MovimientoAgachado::pato_agachado(uint8_t& esta_agachado, int& pos_x, int& pos_y, int it, float zoom_factor) {
+void MovimientoAgachado::pato_agachado(uint8_t& esta_agachado, int& pos_x, int& pos_y, float zoom_factor,
+uint8_t direccion_pato) {
     set_zoom_in(zoom_factor, rect_dibujado, pos_x, pos_y);
-
+    std::cout << static_cast<int>(esta_agachado) << std::endl;
     if (esta_agachado == TIRAR_PISO) {
-        mostrar_frames_agachado(it);
-    } else {
-        mostrar_frames_levantarse(it);
-    }
+        mostrar_frames_agachado(direccion_pato);
+        //std::cout << "me agacho" << std::endl;
+    } else if (esta_agachado == DEJAR_TIRAR_PISO) {
+        mostrar_frames_levantarse(direccion_pato);
+        std::cout << "me levanto" << std::endl;
+    } 
 }
