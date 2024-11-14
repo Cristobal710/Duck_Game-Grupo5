@@ -16,7 +16,6 @@ InterfazGrafica::InterfazGrafica(Queue<ComandoGrafica>& queue, Queue<EstadoJuego
         window(SDL2pp::Window("SDL2 Image Demo", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                               1280, 720, SDL_WINDOW_RESIZABLE)),
         renderer(window, -1, SDL_RENDERER_ACCELERATED), 
-        fondo(renderer, "../resources/backgrounds/forest.png"),
         pato(renderer, "../resources/Grey-Duck.png", 0 , 0)
 {}
 
@@ -34,14 +33,10 @@ void InterfazGrafica::iniciar() {
 
     float zoom_factor = 2.0f;
 
-    //uint8_t estado_disparo = BYTE_NULO;
     
-    //MAPA mapa_a_jugar = ();
-    //mapa_a_jugar.procesar();
+    MapaInterfaz mapa_a_jugar(renderer);
 
-    // while (jugando_juego){
-
-    // }
+    obtener_estado_juego(mapa_a_jugar);
 
     PatoInterfaz pato2(renderer, "../resources/Random/White-Duck.png", 400, 400);
     PatoInterfaz pato3(renderer, "../resources/Random/Yellow-Duck.png", 1200, 700);
@@ -52,9 +47,9 @@ void InterfazGrafica::iniciar() {
         
         renderer.Clear();
         manejar_eventos();
-        obtener_estado_juego();
+        obtener_estado_juego(mapa_a_jugar);
         
-        fondo.dibujar(renderer, 1.0f, 2.0f, rect_dibujado.GetX(), rect_dibujado.GetY(), 1200, 700);
+        mapa_a_jugar.dibujar(rect_dibujado.GetX(), rect_dibujado.GetY(), 1200, 700);
         pato.dibujar(it, zoom_factor);
         
         pato2.dibujar(it, 1.0f);
@@ -175,7 +170,7 @@ void InterfazGrafica::manejar_eventos() {
     }
 }
 
-void InterfazGrafica::obtener_estado_juego() {
+void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
     //deberia ser bloqueante?
     EstadoJuego ultimo_estado;  
     bool hubo_estado_nuevo = false;
@@ -208,5 +203,34 @@ void InterfazGrafica::obtener_estado_juego() {
         pato.actualizar_estado(BYTE_NULO, ESTADO_SALTO);
         pato.actualizar_estado(BYTE_NULO, ESTADO_PISO);
     }
+    Mapa mapa_a_jugar = ultimo_estado.mapa;
+    
+    if (mapa_a_jugar.esta_procesado()){
+        return;
+    }
+
+    //procesar fondo
+    std::string fondo = mapa_a_jugar.getFondo();
+    if (!fondo.empty()){
+        mapa.set_fondo(fondo);
+    }
+
+
+    //procesar tiles
+    std::map<std::string, std::vector<SDL_Point>> tiles = mapa_a_jugar.getTiles();
+
+    for (const auto& textura_punto : tiles) {
+        
+        std::string path_textura = textura_punto.first;
+
+        std::vector<SDL_Point> puntos = textura_punto.second;
+
+
+        for (const auto& punto : puntos){
+            mapa.agregar_tile(path_textura, punto.x, punto.y);
+        }
+    }
+
+    
 }
 

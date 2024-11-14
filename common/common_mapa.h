@@ -8,6 +8,7 @@ using json = nlohmann::json;
 
 class Mapa {
     private:
+    bool mapa_procesado;
     std::string fondo;
     std::map<std::string,std::vector<SDL_Point>>  tiles;
     std::map<std::string,std::vector<SDL_Point>>  spawns;
@@ -20,6 +21,7 @@ class Mapa {
 
     static Mapa from_json(const json& j, Mapa& mapa) {
         
+        mapa.mapa_procesado = false;
         mapa.fondo = j.at("background").get<std::string>();
 
         
@@ -76,7 +78,7 @@ class Mapa {
     void set_spawns(const std::map<std::string, std::vector<SDL_Point>>& nuevosSpawns) { spawns = nuevosSpawns; };
     void set_equipamiento(const std::map<std::string, std::vector<SDL_Point>>& nuevoEquipamiento) { equipamiento = nuevoEquipamiento; };
     void set_cajas(const std::map<std::string, std::vector<SDL_Point>>& nuevasCajas) { cajas = nuevasCajas; };
-
+    bool esta_procesado() {return mapa_procesado;};
 };
 
 #endif

@@ -13,6 +13,8 @@
 #include "../common/common_queue.h"
 #include "../common/common_estado_juego.h"
 #include "disparo.h"
+#include "mapa_interfaz.h"
+
 
 class InterfazGrafica {
     private:
@@ -21,12 +23,11 @@ class InterfazGrafica {
     bool correr_programa;
     SDL2pp::Window window;
     SDL2pp::Renderer renderer;
-    FondoInterfaz fondo;
     PatoInterfaz pato;
 
 
     void manejar_eventos();
-    void obtener_estado_juego();
+    void obtener_estado_juego(MapaInterfaz& mapa);
 
     public:
     InterfazGrafica(Queue<ComandoGrafica>& cola_comandos, Queue<EstadoJuego>& cola_estado_juego);
