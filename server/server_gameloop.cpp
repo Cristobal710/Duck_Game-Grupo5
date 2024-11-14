@@ -74,6 +74,10 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
             pato.dejar_de_apuntar_arriba();
             break;
         case DEJAR_SALTAR_ALETEAR:
+            if (pato.contador_salto == 5) {
+                pato.estado.set_dejar_de_saltar();
+                pato.contador_salto = 0;
+            }
             // pato.estado.set_dejar_de_saltar();
             break;
         case DEJAR_TIRAR_PISO:

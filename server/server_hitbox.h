@@ -1,7 +1,8 @@
+#ifndef HITBOX_H
+#define HITBOX_H
+
 #include <SDL2/SDL.h>
-
-
-
+#include <cstdint>
 
 class HitBox{
     public:
@@ -10,5 +11,6 @@ class HitBox{
     SDL_Point superior_der;
     SDL_Point inferior_izq;
     SDL_Point inferior_der;
+};
 
-}
+#endif
