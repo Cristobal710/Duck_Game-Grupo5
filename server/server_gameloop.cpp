@@ -84,10 +84,15 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
             pato.disparar();
             if (pato.tiene_arma()) {    
                 if (!pato.esta_apuntando_arriba()){
-                    Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_direccion(), pato.get_pos_x() + pato.get_arma()->get_alcance(), pato.get_pos_y());
-                    ultimo_estado.balas.push_back(bala);
+                    if (pato.get_direccion() == DIRECCION_DERECHA) {
+                        Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x() + pato.get_arma()->get_alcance(), pato.get_pos_y(), pato.get_direccion());
+                        ultimo_estado.balas.push_back(bala);
+                    } else {
+                        Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x() - pato.get_arma()->get_alcance(), pato.get_pos_y(), pato.get_direccion());
+                        ultimo_estado.balas.push_back(bala);
+                    }
                 } else {
-                    Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_direccion(), pato.get_pos_x(), pato.get_pos_y() - pato.get_arma()->get_alcance());
+                    Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x(), pato.get_pos_y() - pato.get_arma()->get_alcance(), pato.get_direccion());
                     ultimo_estado.balas.push_back(bala);
                 }
             }
@@ -131,17 +136,23 @@ void GameLoop::aplicar_logica(){
         }
     }
     for (auto it = ultimo_estado.balas.begin(); it != ultimo_estado.balas.end(); ) {
+        std::cout << "entre al for de balas" << std::endl;
+        std::cout << "direccion bala:" << static_cast<int>(it->get_direccion()) << std::endl;
         if (it->get_direccion() == DIRECCION_IZQUIERDA) {
             it->set_pos_x(it->get_pos_x() - 3);
+            std::cout << "pos x bala:" << static_cast<int>(it->get_pos_x()) << std::endl;
         }
         if (it->get_direccion() == DIRECCION_DERECHA) {
             it->set_pos_x(it->get_pos_x() + 3);
+            std::cout << "pos x bala:" << static_cast<int>(it->get_pos_x()) << std::endl;
         }
         if (it->get_direccion() == DIRECCION_ARRIBA) {
             it->set_pos_y(it->get_pos_y() - 3);
+            std::cout << "pos y bala:" << static_cast<int>(it->get_pos_y()) << std::endl;
         }
 
         if (it->get_pos_x() == it->get_pos_x_final() && it->get_pos_y() == it->get_pos_y_final()) {
+            std::cout << "se elimina la bala" << std::endl;
             it = ultimo_estado.balas.erase(it);
         } else {
             ++it;
