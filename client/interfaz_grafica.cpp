@@ -181,23 +181,24 @@ void InterfazGrafica::obtener_estado_juego() {
     bool hubo_estado_nuevo = false;
 
     while (estado_juego.try_pop(ultimo_estado)) {
-        Pato pato_juego = ultimo_estado.patos.front();
-        pato.actualizar_posicion(pato_juego.get_pos_x(), pato_juego.get_pos_y());
-        pato.actualizar_estado(pato_juego.estado.get_estado_movimiento(), ESTADO_MOVIMIENTO);
-        pato.actualizar_estado(pato_juego.estado.get_estado_salto(), ESTADO_SALTO);
-        pato.actualizar_estado(pato_juego.get_direccion(), ESTADO_DIRECCION);
-        pato.actualizar_estado(pato_juego.estado.get_estado_agachado(), ESTADO_PISO);
-        pato.actualizar_equipamiento(pato_juego.tiene_arma(), ESTADO_ARMA);
-        pato.actualizar_equipamiento(pato_juego.estado.get_estado_disparo(), ESTADO_BALAS);
-        //pato.actualizar_equipamiento(pato_juego.estado.get_estado_movimiento(), ESTADO_ARMADURA);
-        //pato.actualizar_equipamiento(pato_juego.estado.get_estado_movimiento(), ESTADO_CASCO);
-    
-        Bala balas_juego = ultimo_estado.balas.front();
-        pato.actualizar_equipamiento(pato_juego.get_arma()->get_municion_disponible(), ESTADO_MUNICION);
-        std::cout << "municion:" << static_cast<int>(pato_juego.get_arma()->get_municion_disponible()) << std::endl;
-        pato.actualizar_posicion_bala(balas_juego.get_pos_x(), balas_juego.get_pos_y());
-        std::cout << "pos x bala:" << static_cast<int>(balas_juego.get_pos_x()) << std::endl;
-        std::cout << "pos y bala:" << static_cast<int>(balas_juego.get_pos_y()) << std::endl;
+        for (Pato pato_juego: ultimo_estado.patos) {
+            pato.actualizar_posicion(pato_juego.get_pos_x(), pato_juego.get_pos_y());
+            pato.actualizar_estado(pato_juego.estado.get_estado_movimiento(), ESTADO_MOVIMIENTO);
+            pato.actualizar_estado(pato_juego.estado.get_estado_salto(), ESTADO_SALTO);
+            pato.actualizar_estado(pato_juego.get_direccion(), ESTADO_DIRECCION);
+            pato.actualizar_estado(pato_juego.estado.get_estado_agachado(), ESTADO_PISO);
+            pato.actualizar_equipamiento(pato_juego.tiene_arma(), ESTADO_ARMA);
+            pato.actualizar_equipamiento(pato_juego.estado.get_estado_disparo(), ESTADO_BALAS);
+            pato.actualizar_equipamiento(pato_juego.get_arma()->get_municion_disponible(), ESTADO_MUNICION);
+            //pato.actualizar_equipamiento(pato_juego.estado.get_estado_movimiento(), ESTADO_ARMADURA);
+            //pato.actualizar_equipamiento(pato_juego.estado.get_estado_movimiento(), ESTADO_CASCO);
+        }
+        for (Bala balas_juego: ultimo_estado.balas) {
+            pato.actualizar_posicion_bala(balas_juego.get_pos_x(), balas_juego.get_pos_y());
+            std::cout << "pos x bala:" << static_cast<int>(balas_juego.get_pos_x()) << std::endl;
+            std::cout << "pos y bala:" << static_cast<int>(balas_juego.get_pos_y()) << std::endl;
+        }
+        //std::cout << "municion:" << static_cast<int>(pato_juego.get_arma()->get_municion_disponible()) << std::endl;
         //pato.get_arma().set_tipo_arma(pato_juego.get_arma().get_tipo_arma());
 
         hubo_estado_nuevo = true;
