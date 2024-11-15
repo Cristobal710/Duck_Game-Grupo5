@@ -23,7 +23,6 @@ class InterfazGrafica {
     bool correr_programa;
     SDL2pp::Window window;
     SDL2pp::Renderer renderer;
-    PatoInterfaz pato;
 
 
     void manejar_eventos();

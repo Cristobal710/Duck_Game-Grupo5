@@ -12,6 +12,7 @@ private:
     SDL2pp::Rect rect_inicio_bala;
     SDL2pp::Rect rect_dibujado_bala;
     SDL2pp::Renderer& renderer;
+    uint8_t direccion;
 
     void cargar_frames(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet,
                    int offset_y, std::vector<SDL2pp::Texture>& texturas,
@@ -19,8 +20,8 @@ private:
 
 
 public:
-    BalaInterfaz(SDL2pp::Renderer& renderer, const std::string& bala_path, int pos_x, int pos_y);
-    void mostrar_frame_bala(uint8_t& direccion_pato, int it);
+    BalaInterfaz(SDL2pp::Renderer& renderer, const std::string& bala_path, int pos_x, int pos_y, uint8_t direccion);
+    void dibujar(int it);
 
     void set_posicion_bala(uint16_t pos_x_final, uint16_t pos_y_final);
 

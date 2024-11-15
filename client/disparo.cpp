@@ -10,7 +10,7 @@
 Disparo::Disparo(SDL2pp::Renderer& renderer, const std::string& disparo_path, const std::string& bala_path, int pos_x, int pos_y)
     :renderer(renderer),
     arma(renderer, disparo_path, pos_x, pos_y),
-    bala(renderer, bala_path, pos_x, pos_y)
+    bala(renderer, bala_path, pos_x, pos_y, DIRECCION_DERECHA)
 {}
 
 ArmaInterfaz& Disparo::get_arma() { return arma; }
@@ -23,7 +23,7 @@ void Disparo::mostrar_disparo(uint8_t& estado_disparo, uint8_t& direccion_pato, 
 
     if ((estado_disparo == DISPARAR) /*&& (arma.get_municion_disponible() > 0)*/) {
         arma.mostrar_frame_arma(direccion_pato);
-        bala.mostrar_frame_bala(direccion_pato, it);
+        bala.dibujar(it);
     } else {
         arma.mostrar_frame_arma(direccion_pato);
     }

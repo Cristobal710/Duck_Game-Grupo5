@@ -3,11 +3,11 @@
 #define CANT_MAX_FRAMES_BALA 3
 
 BalaInterfaz::BalaInterfaz(SDL2pp::Renderer& renderer, const std::string& bala_path, 
-                                int pos_x, int pos_y) :
+                                int pos_x, int pos_y, uint8_t direccion) :
         bala(), 
         rect_inicio_bala(0, 0, PIXEL_BALA, PIXEL_BALA),
         rect_dibujado_bala(pos_x, pos_y, PIXEL_BALA, PIXEL_BALA),
-        renderer(renderer) 
+        renderer(renderer), direccion(direccion) 
 {
     SDL2pp::Surface sprite_bala(IMG_Load(bala_path.c_str()));
     cargar_frames(renderer, sprite_bala, 0, bala, CANT_MAX_FRAMES_BALA, 0, PIXEL_BALA, PIXEL_BALA);
@@ -18,8 +18,8 @@ void BalaInterfaz::set_posicion_bala(uint16_t pos_x_final, uint16_t pos_y_final)
     rect_dibujado_bala.SetY(pos_y_final); 
 }
 
-void BalaInterfaz::mostrar_frame_bala(uint8_t& direccion_pato, int it) {
-    if(direccion_pato == DIRECCION_DERECHA) {
+void BalaInterfaz::dibujar(int it) {
+    if(direccion == DIRECCION_DERECHA) {
         if(it > CANT_MAX_FRAMES_BALA){
             renderer.Copy(bala[(it % CANT_MAX_FRAMES_BALA)], rect_inicio_bala, rect_dibujado_bala);
         } else {

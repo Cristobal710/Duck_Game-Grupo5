@@ -2,7 +2,7 @@
 #include <utility>
 MapaInterfaz::MapaInterfaz(SDL2pp::Renderer& renderer): 
 renderer(renderer), fondo(renderer, "../resources/backgrounds/city.png"), tiles(),
-patos(), mapa_procesado(false)
+patos(), balas(), mapa_procesado(false), camara(1280, 720)
 {}
 
 void MapaInterfaz::set_fondo(std::string fondo_path) {
@@ -20,6 +20,11 @@ void MapaInterfaz::agregar_spawn(std::string id_jugador, int x, int y) {
     patos.emplace_back(std::move(pato));
 }
 
+void MapaInterfaz::agregar_bala(std::string path_bala, int x, int y, uint8_t direccion) {
+    BalaInterfaz bala(renderer, path_bala, x, y, direccion);
+    balas.emplace_back(std::move(bala));
+}
+
 PatoInterfaz& MapaInterfaz::get_pato_con_id(uint16_t id) {
     for (PatoInterfaz& pato : patos){
         if (pato.mismo_id(id)){
@@ -35,13 +40,31 @@ void MapaInterfaz::procesado() {
     mapa_procesado = true;
 }
 
-void MapaInterfaz::dibujar(int x1, int y1, int x2, int y2, int it){
-    fondo.dibujar(1.0f, 2.0f, x1, y1, x2, y2);
+void MapaInterfaz::dibujar(int it){
+    
+    float zoom_factor = 1.0f;
+
+    if (!patos.empty()){
+        PatoInterfaz& pato_cliente = patos.front();
+        camara.actualizar(pato_cliente, patos);
+    }
+    zoom_factor = camara.obtener_zoom();
+
+    SDL2pp::Rect posicion_camara = camara.obtener_rect_camara();
+
+    std::cout << posicion_camara.x  << " " << posicion_camara.y << std::endl;
+
+    fondo.dibujar(zoom_factor, posicion_camara.x, posicion_camara.y);
+
     for (TileInterfaz& tile : tiles){
-        tile.dibujar();
+        tile.dibujar(zoom_factor);
     }
     for (PatoInterfaz& pato : patos){
-        pato.dibujar(it, 2.0f);
+        pato.dibujar(it, zoom_factor);
     }
+    for (BalaInterfaz& bala : balas){
+        bala.dibujar(it);
+    }
+    balas.clear();
 }
 

@@ -15,8 +15,7 @@ InterfazGrafica::InterfazGrafica(Queue<ComandoGrafica>& queue, Queue<EstadoJuego
         correr_programa(true),
         window(SDL2pp::Window("SDL2 Image Demo", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                               1280, 720, SDL_WINDOW_RESIZABLE)),
-        renderer(window, -1, SDL_RENDERER_ACCELERATED), 
-        pato(renderer, "../resources/Grey-Duck.png", 0 , 0, 0)
+        renderer(window, -1, SDL_RENDERER_ACCELERATED)
 {}
 
 void InterfazGrafica::iniciar() {
@@ -24,18 +23,8 @@ void InterfazGrafica::iniciar() {
     SDL_Init(SDL_INIT_VIDEO);
     IMG_Init(IMG_INIT_PNG);
     
-
-    std::vector<EntidadInterfaz> entidades;
-
-    SDL2pp::Rect rect_dibujado = {100, 100, 32, 32};  // posición inicial
-
-    //float zoom_factor = 2.0f;
-
-    
     MapaInterfaz mapa_a_jugar(renderer);
     obtener_estado_juego(mapa_a_jugar);
-
-
 
     int it = 0;
     while (correr_programa) {
@@ -45,7 +34,7 @@ void InterfazGrafica::iniciar() {
         manejar_eventos();
         obtener_estado_juego(mapa_a_jugar);
         
-        mapa_a_jugar.dibujar(rect_dibujado.GetX(), rect_dibujado.GetY(), 1200, 700, it);
+        mapa_a_jugar.dibujar(it);
         renderer.Present();
             
         
@@ -217,7 +206,7 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
             std::cout << id_jugador << std::endl;
             mapa.agregar_spawn(id_jugador, posicion.front().x, posicion.front().y);
         }
-
+        mapa.agregar_spawn("pepito", 700, 500);
         mapa.procesado();
     }
     
@@ -244,14 +233,17 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
             //pato_prueba.get_arma().set_tipo_arma(pato_juego.get_arma().get_tipo_arma());
         
             for (Bala balas_juego: ultimo_estado.balas) {
-                pato_prueba.actualizar_posicion_bala(balas_juego.get_pos_x(), balas_juego.get_pos_y());
-                std::cout << "pos x bala:" << static_cast<int>(balas_juego.get_pos_x()) << std::endl;
-                std::cout << "pos y bala:" << static_cast<int>(balas_juego.get_pos_y()) << std::endl;
+                mapa.agregar_bala("../resources/weapons/grenadePin.png", balas_juego.get_pos_x(),
+                balas_juego.get_pos_y(), balas_juego.get_direccion());
+                // pato_prueba.actualizar_posicion_bala(balas_juego.get_pos_x(), balas_juego.get_pos_y());
+                // std::cout << "pos x bala:" << static_cast<int>(balas_juego.get_pos_x()) << std::endl;
+                // std::cout << "pos y bala:" << static_cast<int>(balas_juego.get_pos_y()) << std::endl;
             }
             //std::cout << "municion:" << static_cast<int>(pato_juego.get_arma()->get_municion_disponible()) << std::endl;
        
         }
         hubo_estado_nuevo = true;
+        //mostrar balas
     } 
     if (!hubo_estado_nuevo){
         for (Pato pato_juego: ultimo_estado.patos) {

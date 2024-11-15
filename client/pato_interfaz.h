@@ -61,6 +61,10 @@ public:
     void actualizar_posicion_bala(uint16_t pos_x_final, uint16_t pos_y_final);
     void set_tipo_arma(TipoArma tipo_arma);
     bool mismo_id(uint16_t id);
+    int pos_x();
+    int pos_y();
+    int get_w();
+    int get_h();
 };
 
 #endif  // PATO_INTERFAZ_H

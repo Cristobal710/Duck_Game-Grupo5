@@ -22,7 +22,7 @@ class TileInterfaz {
     TileInterfaz(const TileInterfaz& other) = delete;
     TileInterfaz& operator=(const TileInterfaz& other) = delete;
 
-    void dibujar();
+    void dibujar(float zoom_factor);
 };
 
 

@@ -40,9 +40,7 @@ PatoInterfaz::PatoInterfaz(PatoInterfaz&& other) noexcept
       pos_y_final_bala(other.pos_y_final_bala),
       tipo_arma(other.tipo_arma),
       id_jugador(other.id_jugador)
-{
-    // No need to reset the moved-from object here.
-}
+{}
 
 
 void PatoInterfaz::dibujar(int it, float zoom_factor) {
@@ -149,4 +147,12 @@ bool PatoInterfaz::mismo_id(uint16_t id) {
         return true;
     }
     return false; 
-    }
+}
+
+int PatoInterfaz::pos_x() { return rect_dibujado.GetX(); }
+
+int PatoInterfaz::pos_y() { return rect_dibujado.GetY();  }
+
+int PatoInterfaz::get_w() { return rect_dibujado.GetW(); }
+
+int PatoInterfaz::get_h() { return rect_dibujado.GetH(); }
