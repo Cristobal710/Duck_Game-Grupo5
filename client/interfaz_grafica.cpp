@@ -242,15 +242,15 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
             //pato.actualizar_equipamiento(pato_juego.estado.get_estado_movimiento(), ESTADO_ARMADURA);
             //pato.actualizar_equipamiento(pato_juego.estado.get_estado_movimiento(), ESTADO_CASCO);
             //pato_prueba.get_arma().set_tipo_arma(pato_juego.get_arma().get_tipo_arma());
-        }
-        for (Bala balas_juego: ultimo_estado.balas) {
-            //pato_prueba.actualizar_posicion_bala(balas_juego.get_pos_x(), balas_juego.get_pos_y());
-            std::cout << "pos x bala:" << static_cast<int>(balas_juego.get_pos_x()) << std::endl;
-            std::cout << "pos y bala:" << static_cast<int>(balas_juego.get_pos_y()) << std::endl;
-        }
-        //std::cout << "municion:" << static_cast<int>(pato_juego.get_arma()->get_municion_disponible()) << std::endl;
+        
+            for (Bala balas_juego: ultimo_estado.balas) {
+                pato_prueba.actualizar_posicion_bala(balas_juego.get_pos_x(), balas_juego.get_pos_y());
+                std::cout << "pos x bala:" << static_cast<int>(balas_juego.get_pos_x()) << std::endl;
+                std::cout << "pos y bala:" << static_cast<int>(balas_juego.get_pos_y()) << std::endl;
+            }
+            //std::cout << "municion:" << static_cast<int>(pato_juego.get_arma()->get_municion_disponible()) << std::endl;
        
-
+        }
         hubo_estado_nuevo = true;
     } 
     if (!hubo_estado_nuevo){
