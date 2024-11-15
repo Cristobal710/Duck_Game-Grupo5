@@ -21,7 +21,7 @@ Pato::Pato(uint16_t id, uint16_t pos_x, uint16_t pos_y, uint8_t direccion):
         contador_salto(0),
         contador_caer(0) 
         {
-    calcular_hitbox(ALTO_PATO, ANCHO_PATO);
+    calcular_hitbox();
     // if (color == "rojo") {
     //     this->color = 1;
     // } else if (color == "azul") {
@@ -33,6 +33,10 @@ Pato::Pato(uint16_t id, uint16_t pos_x, uint16_t pos_y, uint8_t direccion):
     // } else {
     //     this->color = 0;
     // }
+}
+
+void Pato::calcular_hitbox() {
+    hitbox = HitBox(pos_x, pos_y, ALTO_PATO, ANCHO_PATO);
 }
 
 // Pato::~Pato() { delete arma; }

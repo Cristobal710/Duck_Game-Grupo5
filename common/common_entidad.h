@@ -12,13 +12,14 @@ protected:
     HitBox hitbox;
 
 public:
+    virtual void calcular_hitbox();
     Entidad();
     Entidad(uint16_t id, uint16_t pos_x, uint16_t pos_y);
     uint16_t get_id();
     uint16_t get_pos_x();
     uint16_t get_pos_y();
     HitBox get_hitbox();
-    void calcular_hitbox(uint16_t largo, uint16_t ancho);
+    virtual ~Entidad(); 
 };
 
 #endif

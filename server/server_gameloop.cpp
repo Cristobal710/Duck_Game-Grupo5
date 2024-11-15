@@ -238,6 +238,9 @@ void GameLoop::run() {
                 procesar_evento(evento, ultimo_estado);
                 cola_estados_juego.push(ultimo_estado);
             }
+            for (Pato& pato: ultimo_estado.patos) {
+                pato.calcular_hitbox();
+            }
             aplicar_logica();
             enviar_estado_juego_si_cambio(pato, estado_anterior);
             drop_and_rest(tiempo_ultimo_frame);

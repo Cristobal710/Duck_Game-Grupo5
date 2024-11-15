@@ -20,6 +20,7 @@ private:
     // uint8_t color;  // hacer map con colores
 
 public:
+    void calcular_hitbox() override;
     EstadoPato estado;
     uint8_t contador_salto;
     uint8_t contador_caer;

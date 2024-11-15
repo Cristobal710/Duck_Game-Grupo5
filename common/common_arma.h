@@ -11,6 +11,7 @@ protected:
     uint16_t alcance;
 
 public:
+    void calcular_hitbox() override;
     Arma(uint16_t id, uint16_t pos_x, uint16_t pos_y, uint8_t municion_disponible,
          uint16_t alcance);
     void disparar();

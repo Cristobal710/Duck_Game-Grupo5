@@ -14,7 +14,6 @@ HitBox Entidad::get_hitbox() {
     return hitbox; 
 }
 
-void Entidad::calcular_hitbox(uint16_t largo, uint16_t ancho){
-    HitBox hitbox_entidad(pos_x, pos_y, largo, ancho);
-    hitbox = hitbox_entidad;
-}
+void Entidad::calcular_hitbox() {}
+
+Entidad::~Entidad() {}

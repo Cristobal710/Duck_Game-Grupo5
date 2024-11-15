@@ -10,7 +10,13 @@ Bala::Bala(uint16_t id, uint16_t pos_x, uint16_t pos_y, uint16_t pos_x_final, ui
         Entidad(id, pos_x, pos_y),
         pos_x_final(pos_x_final),
         pos_y_final(pos_y_final),
-        direccion(direccion) { calcular_hitbox(ALTO_BALA, ANCHO_BALA); }
+        direccion(direccion) { 
+        calcular_hitbox();
+        }
+
+void Bala::calcular_hitbox() {
+    hitbox = HitBox(pos_x, pos_y, ALTO_BALA, ANCHO_BALA);
+}
 
 uint16_t Bala::get_pos_x_final() { return pos_x_final; }
 
