@@ -15,6 +15,8 @@
 #include "server_evento.h"
 #include "server_proteger_clientes.h"
 #include "common/common_tile.h"
+#include "../common/common_tipo_colision.h"
+
 class GameLoop: public Thread {
 private:
     std::map<ServerClient*, Queue<EventoServer>*> mapa_clientes;
@@ -22,6 +24,7 @@ private:
     Queue<EstadoJuego>& cola_estados_juego;
     bool* esta_cerrado;
     EstadoJuego ultimo_estado;
+    std::vector<Tile> colisiones;
 
     // void eliminar_clientes_cerrados();
     // void cerrar_gameloop();
@@ -35,6 +38,9 @@ private:
     void avanzar_balas_direccion_derecha(std::__cxx11::list<Bala>::iterator& it);
     void avanzar_balas_direccion_arriba(std::__cxx11::list<Bala>::iterator& it);
     void eliminar_balas_fuera_de_alcance(std::__cxx11::list<Bala>::iterator& it);
+    void calcular_colisiones_tiles(Mapa mapa);
+    void crear_bala(Pato& pato);
+    void aplicar_gravedad();
 
 public:
     GameLoop(Queue<EstadoJuego>& cola_estados_juego,

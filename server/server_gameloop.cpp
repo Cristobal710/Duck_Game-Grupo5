@@ -32,8 +32,6 @@ GameLoop::GameLoop(Queue<EstadoJuego>& cola_estados_juego,
 //     clientes.eliminar_clientes_cerrados();
 // }
 
-
-
 void GameLoop::agregar_cliente(ServerClient& cliente, Queue<EventoServer>& cola_cliente) {
     clientes.agregar_cliente(cliente, cola_cliente);
 }
@@ -92,24 +90,28 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
             break;
         case DISPARAR:
             pato.disparar();
-            if (pato.tiene_arma()) {    
-                if (!pato.esta_apuntando_arriba()){
-                    if (pato.get_direccion() == DIRECCION_DERECHA) {
-                        Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x() + pato.get_arma()->get_alcance(), pato.get_pos_y(), pato.get_direccion());
-                        ultimo_estado.balas.push_back(bala);
-                    } else {
-                        Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x() - pato.get_arma()->get_alcance(), pato.get_pos_y(), pato.get_direccion());
-                        ultimo_estado.balas.push_back(bala);
-                    }
-                } else {
-                    Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x(), pato.get_pos_y() - pato.get_arma()->get_alcance(), pato.get_direccion());
-                    ultimo_estado.balas.push_back(bala);
-                }
-            }
+            crear_bala(pato);
             break;
         default:
             break;
 
+    }
+}
+
+void GameLoop::crear_bala(Pato& pato){
+    if (pato.tiene_arma()) {    
+        if (!pato.esta_apuntando_arriba()){
+            if (pato.get_direccion() == DIRECCION_DERECHA) {
+                Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x() + pato.get_arma()->get_alcance(), pato.get_pos_y(), pato.get_direccion());
+                ultimo_estado.balas.push_back(bala);
+            } else {
+                Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x() - pato.get_arma()->get_alcance(), pato.get_pos_y(), pato.get_direccion());
+                ultimo_estado.balas.push_back(bala);
+            }
+        } else {
+            Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x(), pato.get_pos_y() - pato.get_arma()->get_alcance(), pato.get_direccion());
+            ultimo_estado.balas.push_back(bala);
+        }
     }
 }
 
@@ -184,10 +186,23 @@ void GameLoop::continuar_saltando_patos(){
     }
 }
 
+// void GameLoop::aplicar_gravedad(){
+//     for (Pato& pato: ultimo_estado.patos) {
+//         for (Tile& tile: colisiones) {
+//             if (pato.colisiona_con_tile(tile.get_hitbox()) == Piso) {
+//                 pato.estado.set_dejar_de_caer();
+//                 break;
+//             } else {
+//                 pato.caer();
+//             }
+//         }
+//     }
+// }
+
 void GameLoop::aplicar_logica(){
     continuar_saltando_patos();
     avanzar_balas();
-    // aplicar_gravedad();
+    //aplicar_gravedad();
 }
 
 void GameLoop::drop_and_rest(float& tiempo_ultimo_frame){
@@ -206,15 +221,7 @@ void GameLoop::drop_and_rest(float& tiempo_ultimo_frame){
     tiempo_ultimo_frame += RATE;
 }
 
- 
-void GameLoop::run() {
-    Pato pato(3, 0, 300, 0);
-    Arma* arma = new Arma(1, 0, 255, 15, 300);
-    pato.tomar_arma(arma);
-    ultimo_estado.patos.emplace_back(pato);
-    LectorJson lector_mapa = LectorJson();
-    Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa1");
-    std::vector<Tile> colisiones;
+void GameLoop::calcular_colisiones_tiles(Mapa mapa){
     std::map<std::string,std::vector<SDL_Point>> tiles = mapa.getTiles();
     for (auto& key : tiles) {
         for(SDL_Point p : tiles.at(key.first)){
@@ -223,9 +230,17 @@ void GameLoop::run() {
             colisiones.push_back(tile);
         }
     }
+}
+
+void GameLoop::run() {
+    Pato pato(3, 0, 300, 0);
+    Arma* arma = new Arma(1, 0, 255, 15, 300);
+    pato.tomar_arma(arma);
+    ultimo_estado.patos.emplace_back(pato);
+    LectorJson lector_mapa = LectorJson();
+    Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa1");
     ultimo_estado.mapa = mapa;
     cola_estados_juego.push(ultimo_estado);
-
     float tiempo_ultimo_frame = SDL_GetTicks();
 
     while (!(*esta_cerrado)) {
@@ -240,6 +255,9 @@ void GameLoop::run() {
             }
             for (Pato& pato: ultimo_estado.patos) {
                 pato.calcular_hitbox();
+            }
+            for (Bala& bala: ultimo_estado.balas) {
+                bala.calcular_hitbox();
             }
             aplicar_logica();
             enviar_estado_juego_si_cambio(pato, estado_anterior);

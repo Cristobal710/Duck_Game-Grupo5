@@ -162,3 +162,26 @@ bool Pato::armadura_en_inventario() { return armadura_equipada; }
 bool Pato::casco_en_inventario() { return tomo_casco; }
 
 // int Pato::get_color() { return color; }
+
+TipoColision Pato::colisiona_con_tile(HitBox hitbox_tile) {
+    if (hitbox.colisiona_arriba_con(hitbox_tile)) {
+        return Techo;
+    }
+    if (hitbox.colisiona_abajo_con(hitbox_tile)) {
+        return Piso;
+    }
+    if (hitbox.colisiona_izquierda_con(hitbox_tile)) {
+        return Pared;
+    }
+    if (hitbox.colisiona_derecha_con(hitbox_tile)) {
+        return Pared;
+    }
+    return Nada;
+}
+
+TipoColision Pato::colisiona_con_bala(HitBox hitbox_bala) {
+    if (hitbox.colisiona_arriba_con(hitbox_bala) || hitbox.colisiona_abajo_con(hitbox_bala) || hitbox.colisiona_izquierda_con(hitbox_bala) || hitbox.colisiona_derecha_con(hitbox_bala)) {
+        return Balas;
+    }
+    return Nada;
+}

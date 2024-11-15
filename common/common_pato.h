@@ -6,6 +6,7 @@
 #include "common_arma.h"
 #include "common_constantes.h"
 #include "common_estado_pato.h"
+#include "common_tipo_colision.h"
 
 class Pato: public Entidad {
 private:
@@ -56,6 +57,8 @@ public:
     bool esta_apuntando_arriba();
     bool esta_tirado_al_piso();
     void morir();
+    TipoColision colisiona_con_tile(HitBox hitbox);
+    TipoColision colisiona_con_bala(HitBox hitbox);
 };
 
 #endif
