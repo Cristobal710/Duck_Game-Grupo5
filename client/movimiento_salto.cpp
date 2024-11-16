@@ -2,7 +2,7 @@
 #include "../common/common_constantes.h"
 
 #define NUM_FRAMES_SALTA_PATO 3
-#define NUM_FRAMES_CAE_PATO 3
+#define NUM_FRAMES_CAE_PATO 2
 
 MovimientoSalto::MovimientoSalto(SDL2pp::Renderer& renderer, const std::string& pato_path,
                                  int pos_x, int pos_y):

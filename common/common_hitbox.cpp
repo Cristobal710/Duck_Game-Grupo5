@@ -2,8 +2,8 @@
 
 HitBox::HitBox() {}
 
-HitBox::HitBox(uint16_t pos_x, uint16_t pos_y, uint16_t largo, uint16_t ancho) {
-    hitbox_rect = SDL2pp::Rect(pos_x, pos_y, largo, ancho);
+HitBox::HitBox(uint16_t pos_x, uint16_t pos_y, uint16_t ancho, uint16_t largo) {
+    hitbox_rect = SDL2pp::Rect(pos_x, pos_y, ancho, largo);
 }
 
 SDL2pp::Rect HitBox::get_hitbox_rect() {

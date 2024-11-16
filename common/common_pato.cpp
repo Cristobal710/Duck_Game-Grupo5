@@ -3,8 +3,8 @@
 #include <iostream>
 #include <SDL2pp/SDL2pp.hh>
 
-#define ANCHO_PATO 32
-#define ALTO_PATO 32
+#define ANCHO_PATO 24
+#define ALTO_PATO 36
 
 Pato::Pato(){}
 
@@ -36,8 +36,10 @@ Pato::Pato(uint16_t id, uint16_t pos_x, uint16_t pos_y, uint8_t direccion):
     // }
 }
 
+
+
 void Pato::calcular_hitbox() {
-    hitbox = HitBox(pos_x, pos_y, ALTO_PATO, ANCHO_PATO);
+    hitbox = HitBox(pos_x, pos_y, ANCHO_PATO, ALTO_PATO);
 }
 
 // Pato::~Pato() { delete arma; }
@@ -169,15 +171,19 @@ TipoColision Pato::colisiona_con_tile(SDL2pp::Rect hitbox_tile) {
         return Nada;
     }
     if (hitbox.colisiona_arriba_con(hitbox_tile)) {
+        std::cout<<"colisiona arriba"<<std::endl;
         return Piso;
     }
     if (hitbox.colisiona_abajo_con(hitbox_tile)) {
+        std::cout<<"colisiona abajo"<<std::endl;
         return Techo;
     }
     if (hitbox.colisiona_izquierda_con(hitbox_tile)) {
+        std::cout<<"colisiona izq"<<std::endl;
         return Pared;
     }
     if (hitbox.colisiona_derecha_con(hitbox_tile)) {
+        std::cout<<"colisiona der"<<std::endl;
         return Pared;
     }
     return Nada;
