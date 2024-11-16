@@ -49,8 +49,8 @@ void Editor::iniciar_editor() {
                 
                 if (!tile_actual.empty()) {
                     // tamano de los tiles, 32x32 por ahora
-                    int tile_x = x / 32; 
-                    int tile_y = y / 32;
+                    int tile_x = x / 16; 
+                    int tile_y = y / 16;
 
                     
                     if (tiles_seleccionados.count(tile_actual) > 0){ //nos permite buscar si ya pusimos tiles
@@ -382,7 +382,7 @@ void Editor::renderizar_tiles() {
 
         for (const auto& punto : puntos){
             renderer.Copy(textura, SDL2pp::Optional<SDL2pp::Rect>(),
-                      SDL2pp::Rect(punto.x * 32, punto.y * 32, 32, 32));
+                      SDL2pp::Rect(punto.x * 16, punto.y * 16, 16, 16));
         }
     }
 }
@@ -514,8 +514,8 @@ void Editor::guardar_mapa(std::string& nombre_archivo) {
         for (const auto& punto : puntos){
                 json json_tiles;
                 json_tiles["texture"] = tiles.first;
-                json_tiles["x"] = (punto.x) * 32;
-                json_tiles["y"] = (punto.y) * 32;
+                json_tiles["x"] = (punto.x) * 16;
+                json_tiles["y"] = (punto.y) * 16;
                 json_mapa["tiles"].push_back(json_tiles);
             }
         }

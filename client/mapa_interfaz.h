@@ -14,7 +14,9 @@ class MapaInterfaz {
     private:
     SDL2pp::Renderer& renderer;
     FondoInterfaz fondo;
-    std::vector<TileInterfaz> tiles;
+    std::unordered_map<int, std::vector<TileInterfaz>> horizontalGroups;
+    std::unordered_map<int, std::vector<TileInterfaz>> verticalGroups;
+    //std::vector<TileInterfaz> tiles;
     std::vector<PatoInterfaz> patos;
     std::vector<BalaInterfaz> balas;
     bool mapa_procesado;

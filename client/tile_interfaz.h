@@ -22,7 +22,10 @@ class TileInterfaz {
     TileInterfaz(const TileInterfaz& other) = delete;
     TileInterfaz& operator=(const TileInterfaz& other) = delete;
 
-    void dibujar(float zoom_factor);
+    void dibujar(float zoom_factor, int pos_x, int pos_y);
+    void set_zoom_in(float& zoom_factor, SDL2pp::Rect& source_rect, int& pos_x, int& pos_y);
+    int get_pos_x();
+    int get_pos_y();
 };
 
 
