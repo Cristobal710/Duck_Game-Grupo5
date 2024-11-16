@@ -48,13 +48,13 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
     Bala bala;
     switch (accion) {
         case MOVER_IZQUIERDA:
-            pato.moverse_izquierda();
+            pato.estado.set_moviendo_izquierda();
             break;
         case MOVER_DERECHA:
-            pato.moverse_derecha();
+            pato.estado.set_moviendo_derecha();
             break;
         case TIRAR_PISO:
-            pato.tirarse_al_piso();
+            pato.estado.set_agacharse();
             break;
         case APUNTAR_ARRIBA:
             pato.apuntar_arriba();
@@ -98,6 +98,28 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
 
     }
 }
+
+void GameLoop::aplicar_estados(){
+    for(Pato& pato : ultimo_estado.patos){
+        if(pato.estado.get_estado_movimiento() == MOVER_DERECHA){
+            pato.moverse_derecha();
+        }else if(pato.estado.get_estado_movimiento() == MOVER_IZQUIERDA){
+            pato.moverse_izquierda();
+        }
+        if(pato.estado.get_estado_agachado() == TIRAR_PISO ){
+            pato.tirarse_al_piso();
+        }
+       
+    }
+}
+
+
+
+
+
+
+
+
 
 void GameLoop::crear_bala(Pato& pato){
     if (pato.tiene_arma()) {    
@@ -179,7 +201,7 @@ void GameLoop::avanzar_balas(){
     }
 }
 
-void GameLoop::continuar_saltando_patos(){
+void GameLoop::continuar_saltando_patos() {
     for (Pato& pato: ultimo_estado.patos) {
         if (pato.estado.get_estado_salto() == SALTAR_ALETEAR) {
             //std::cout << "entre al if de saltar y el contador es de " << static_cast<int>(pato.contador_salto) << std::endl;
@@ -195,6 +217,11 @@ void GameLoop::frenar_saltos_patos_si_colisionan(){
                 pato.estado.set_dejar_de_saltar();
                 pato.contador_salto = 0;
                 // std::cout << "frene el salto" << std::endl;
+                break;
+            }
+            if (pato.colisiona_con_tile(tile.get_hitbox()) == Pared){
+                pato.estado.set_dejar_de_moverse();
+                std::cout<<"entre a frenar pato pared"<<std::endl;
                 break;
             }
         }
@@ -220,6 +247,7 @@ void GameLoop::aplicar_gravedad(){
 }
 
 void GameLoop::aplicar_logica(){
+    aplicar_estados();
     frenar_saltos_patos_si_colisionan();
     continuar_saltando_patos();
     avanzar_balas();
@@ -293,7 +321,7 @@ void GameLoop::run() {
             std::vector<EventoServer> eventos = clientes.recibir_mensajes_clientes();
             for(EventoServer evento : eventos){
                 procesar_evento(evento, ultimo_estado);
-                cola_estados_juego.push(ultimo_estado);
+                //cola_estados_juego.push(ultimo_estado);
             }
             actualizar_hitbox_entidades();
             aplicar_logica();

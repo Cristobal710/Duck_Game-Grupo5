@@ -43,6 +43,7 @@ private:
     void crear_bala(Pato& pato);
     void actualizar_hitbox_entidades();
     void aplicar_gravedad();
+    void aplicar_estados();
 
 public:
     GameLoop(Queue<EstadoJuego>& cola_estados_juego,
