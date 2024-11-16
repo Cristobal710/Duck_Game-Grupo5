@@ -233,13 +233,27 @@ void GameLoop::calcular_colisiones_tiles(Mapa mapa){
 }
 
 void GameLoop::run() {
-    Pato pato(3, 0, 300, 0);
-    Arma* arma = new Arma(1, 0, 255, 15, 300);
-    pato.tomar_arma(arma);
-    ultimo_estado.patos.emplace_back(pato);
+    int pos_x = 0;
+    int pos_y = 0;
     LectorJson lector_mapa = LectorJson();
     Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa1");
     ultimo_estado.mapa = mapa;
+
+    std::map<std::string, std::vector<SDL_Point>> spawns = ultimo_estado.mapa.getSpawns();
+    for (const auto& id_posicion : spawns) {
+            
+            std::string id_jugador = id_posicion.first;
+
+            std::vector<SDL_Point> posicion = id_posicion.second;
+
+            pos_x = posicion.front().x;
+            pos_y = posicion.front().y;
+        }
+    Pato pato(3, pos_x, pos_y, 0);
+    Arma* arma = new Arma(1, pos_x, pos_y, 15, 300);
+    pato.tomar_arma(arma);
+    ultimo_estado.patos.emplace_back(pato);
+  
     cola_estados_juego.push(ultimo_estado);
     float tiempo_ultimo_frame = SDL_GetTicks();
 

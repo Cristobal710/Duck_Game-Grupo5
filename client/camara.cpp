@@ -17,26 +17,16 @@ void Camara::actualizar(PatoInterfaz& jugador_principal, std::vector<PatoInterfa
         }
     }
     
-    // Ajustar el zoom en función de la distancia máxima
     zoom = 1.0f / (distancia_maxima / 500.0f);  
-    zoom = std::max(1.0f, std::min(zoom, 2.5f));  
+    zoom = std::max(1.0f, std::min(zoom, 2.4f));  
 
-    // Ahora actualizamos la posición de la cámara
-    camara.x = jugador_principal.pos_x() + jugador_principal.get_w() / 2 - ancho_ventana / 2;
-    camara.y = jugador_principal.pos_y() + jugador_principal.get_h() / 2 - alto_ventana / 2;
+    camara.x = jugador_principal.pos_x() - ancho_ventana / 2 / zoom;
+    camara.w = jugador_principal.get_w();
+    camara.y = jugador_principal.pos_y() - alto_ventana / 2 / zoom;
+    camara.h = jugador_principal.get_h();
 
-    // Limitar la cámara a los límites de la pantalla
-    camara.x = std::min(camara.x, ancho_ventana);
-    camara.y = std::min(camara.y, alto_ventana);
-
-    float zoom_max_x = std::min(float(1280), float(camara.w)); // El zoom máximo según el ancho del mapa
-    float zoom_max_y = std::min(float(720), float(camara.h)) ;  // El zoom máximo según la altura del mapa
-
-    // El zoom máximo será el mínimo entre los límites de ancho y alto
-    float zoom_max = std::min(zoom_max_x, zoom_max_y);
-
-    zoom = std::min(zoom, zoom_max);
-    
+    // camara.x = std::min(camara.x, ancho_ventana);
+    // camara.y = std::min(camara.y, alto_ventana);
 }
 
 SDL2pp::Rect Camara::obtener_rect_camara() const {

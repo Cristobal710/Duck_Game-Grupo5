@@ -193,20 +193,13 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
         }
 
         // procesar spawns
-        std::map<std::string, std::vector<SDL_Point>> spawns = mapa_a_jugar.getSpawns();
 
-        std::cout << spawns.size() << std::endl;
-
-        for (const auto& id_posicion : spawns) {
-            
-            std::string id_jugador = id_posicion.first;
-
-            std::vector<SDL_Point> posicion = id_posicion.second;
-
-            std::cout << id_jugador << std::endl;
-            mapa.agregar_spawn(id_jugador, posicion.front().x, posicion.front().y);
+        for (auto& pato : ultimo_estado.patos) {
+            int pos_x = static_cast<int>(pato.get_pos_x());
+            int pos_y = static_cast<int>(pato.get_pos_y());
+            mapa.agregar_spawn("default",pos_x ,pos_y);
         }
-        mapa.agregar_spawn("pepito", 700, 500);
+        mapa.agregar_spawn("pepito", 736, 352);
         mapa.procesado();
     }
     

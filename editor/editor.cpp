@@ -514,8 +514,8 @@ void Editor::guardar_mapa(std::string& nombre_archivo) {
         for (const auto& punto : puntos){
                 json json_tiles;
                 json_tiles["texture"] = tiles.first;
-                json_tiles["x"] = punto.x;
-                json_tiles["y"] = punto.y;
+                json_tiles["x"] = (punto.x) * 32;
+                json_tiles["y"] = (punto.y) * 32;
                 json_mapa["tiles"].push_back(json_tiles);
             }
         }
@@ -527,8 +527,8 @@ void Editor::guardar_mapa(std::string& nombre_archivo) {
 
         for (const auto& punto : puntos){
                 json json_spawns;
-                json_spawns["x"] = punto.x;
-                json_spawns["y"] = punto.y;
+                json_spawns["x"] = (punto.x) * 32;
+                json_spawns["y"] = (punto.y) * 32;
                 json_mapa["spawns"].push_back(json_spawns);
             }
         }
@@ -542,18 +542,18 @@ void Editor::guardar_mapa(std::string& nombre_archivo) {
                 json json_equipment;
                 if (equipamiento.first == ARMADURA){
                     json_equipment["armadura"] = equipamiento.first;
-                    json_equipment["x"] = punto.x;
-                    json_equipment["y"] = punto.y;
+                    json_equipment["x"] = (punto.x) * 16;
+                    json_equipment["y"] = (punto.y) * 16;
                     json_mapa["equipamiento"].push_back(json_equipment);
                 } else if (equipamiento.first == ARMA){
                     json_equipment["arma"] = equipamiento.first;
-                    json_equipment["x"] = punto.x;
-                    json_equipment["y"] = punto.y;
+                    json_equipment["x"] = (punto.x) * 32;
+                    json_equipment["y"] = (punto.y) * 32;
                     json_mapa["equipamiento"].push_back(json_equipment);
                 } else {
                     json_equipment["casco"] = equipamiento.first;
-                    json_equipment["x"] = punto.x;
-                    json_equipment["y"] = punto.y;
+                    json_equipment["x"] = (punto.x) * 16;
+                    json_equipment["y"] = (punto.y) * 16;
                     json_mapa["equipamiento"].push_back(json_equipment);
                 }
 
@@ -568,8 +568,8 @@ void Editor::guardar_mapa(std::string& nombre_archivo) {
 
         for (const auto& punto : puntos){
                 json json_cajas;
-                json_cajas["x"] = punto.x;
-                json_cajas["y"] = punto.y;
+                json_cajas["x"] = (punto.x) * 32;
+                json_cajas["y"] = (punto.y) * 32;
                 json_mapa["spawns"].push_back(json_cajas);
             }
         }

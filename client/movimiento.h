@@ -37,11 +37,11 @@ void set_zoom_in(float& zoom_factor, SDL2pp::Rect& rect_dibujado, int& pos_x, in
     int original_height = PIXEL_PATO;
     rect_dibujado.SetW(static_cast<int>(original_width * zoom_factor));
     rect_dibujado.SetH(static_cast<int>(original_height * zoom_factor));
-
+    pos_x = pos_x;
+    pos_y = pos_y;
     rect_dibujado.SetX(pos_x - (rect_dibujado.GetW() - original_width) / 2);
     rect_dibujado.SetY(pos_y - (rect_dibujado.GetH() - original_height) / 2);
 }
-
 };
 
 #endif // MOVIMIENTO_H

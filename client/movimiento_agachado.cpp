@@ -51,7 +51,6 @@ SDL2pp::Texture& MovimientoAgachado::mostrar_frame() {
 void MovimientoAgachado::pato_agachado(uint8_t& esta_agachado, int& pos_x, int& pos_y, float zoom_factor,
 uint8_t direccion_pato) {
     set_zoom_in(zoom_factor, rect_dibujado, pos_x, pos_y);
-    std::cout << static_cast<int>(esta_agachado) << std::endl;
     if (esta_agachado == TIRAR_PISO) {
         mostrar_frames_agachado(direccion_pato);
         //std::cout << "me agacho" << std::endl;

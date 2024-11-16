@@ -16,6 +16,7 @@ void MapaInterfaz::agregar_tile(std::string tile_path, int x, int y){
 
 void MapaInterfaz::agregar_spawn(std::string id_jugador, int x, int y) {
     id_jugador.clear();
+    
     PatoInterfaz pato(renderer, "../resources/Grey-Duck.png", x, y, 3);
     patos.emplace_back(std::move(pato));
 }
@@ -41,19 +42,17 @@ void MapaInterfaz::procesado() {
 }
 
 void MapaInterfaz::dibujar(int it){
-    
-    float zoom_factor = 1.0f;
 
     if (!patos.empty()){
         PatoInterfaz& pato_cliente = patos.front();
+        
         camara.actualizar(pato_cliente, patos);
     }
-    zoom_factor = camara.obtener_zoom();
+    float zoom_factor = camara.obtener_zoom();
 
     SDL2pp::Rect posicion_camara = camara.obtener_rect_camara();
 
-    std::cout << posicion_camara.x  << " " << posicion_camara.y << std::endl;
-
+    
     fondo.dibujar(zoom_factor, posicion_camara.x, posicion_camara.y);
 
     for (TileInterfaz& tile : tiles){
