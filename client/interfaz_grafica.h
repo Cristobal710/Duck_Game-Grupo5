@@ -24,7 +24,7 @@ class InterfazGrafica {
     SDL2pp::Renderer renderer;
 
 
-    void manejar_eventos();
+    void manejar_eventos(std::set<SDL_Keycode>& keysHeld);
     void obtener_estado_juego(MapaInterfaz& mapa);
 
     public:

@@ -52,7 +52,8 @@ void PatoInterfaz::dibujar(int it, float zoom_factor) {
         return;
     }
     if (estado_pato_salto == SALTAR_ALETEAR || estado_pato_salto == CAER) {
-        movimiento_pato_salto.pato_salta(estado_pato_salto, pos_x, pos_y, it, zoom_factor);
+        movimiento_pato_salto.pato_salta(estado_pato_salto, pos_x, pos_y, it, zoom_factor, direccion_pato);
+        return;
     }
     movimiento_pato_lateral.pato_movimiento(estado_pato_movimiento, direccion_pato, pos_x, pos_y, it, zoom_factor);
     if(estado_arma == TOMAR_ARMA){

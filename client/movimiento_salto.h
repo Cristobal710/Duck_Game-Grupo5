@@ -19,8 +19,8 @@ private:
     void frames_salto(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet);
     void frames_caida(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet);
     
-    void mostrar_frame_salto(int it);
-    void mostrar_frame_caida(int it);
+    void mostrar_frame_salto(int it, uint8_t direccion);
+    void mostrar_frame_caida(int it, uint8_t direccion);
 
     void cargar_frames(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet,
                     int offset_y, std::vector<SDL2pp::Texture>& texturas,
@@ -28,7 +28,7 @@ private:
 
 public:
     MovimientoSalto(SDL2pp::Renderer& renderer, const std::string& pato_path, int pos_x, int pos_y);
-    void pato_salta(uint8_t& movimiento, int pos_x, int pos_y, int it, float zoom_factor);
+    void pato_salta(uint8_t& movimiento, int pos_x, int pos_y, int it, float zoom_factor, uint8_t direccion);
 };
 
 #endif

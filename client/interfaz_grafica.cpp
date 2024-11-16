@@ -25,19 +25,19 @@ void InterfazGrafica::iniciar() {
     
     MapaInterfaz mapa_a_jugar(renderer);
     obtener_estado_juego(mapa_a_jugar);
-
+    
+    std::set<SDL_Keycode> keysHeld;
     int it = 0;
     while (correr_programa) {
         float tiempo_ultimo_frame = SDL_GetTicks();
         
         renderer.Clear();
-        manejar_eventos();
+        manejar_eventos(keysHeld);
         obtener_estado_juego(mapa_a_jugar);
         
         mapa_a_jugar.dibujar(it);
         renderer.Present();
             
-        
         //ahora calculamos cuanto tardamos en hacer todo, si nos pasamos, drop & rest.
         drop_rest(tiempo_ultimo_frame, it);
     }
@@ -67,7 +67,7 @@ void InterfazGrafica::drop_rest(float& tiempo_ultimo_frame, int& it) {
     tiempo_ultimo_frame = tiempo_actual;
 }
 
-void InterfazGrafica::manejar_eventos() {
+void InterfazGrafica::manejar_eventos(std::set<SDL_Keycode>& keysHeld) {
     SDL_Event evento;
     
     while (SDL_PollEvent(&evento)) {
@@ -77,44 +77,47 @@ void InterfazGrafica::manejar_eventos() {
             correr_programa = false;
 
         } else if (evento.type == SDL_KEYDOWN) {
-                    if (evento.key.keysym.sym == SDLK_ESCAPE) {
+            if(keysHeld.find(evento.key.keysym.sym) == keysHeld.end()) {
+                if (evento.key.keysym.sym == SDLK_ESCAPE) {
                     correr_programa = false;
-                    }
-                    if (evento.key.keysym.sym == SDLK_d) {
-                        comando_cliente.tecla = DERECHA;
-                        comando_cliente.jugador_id = 3;
-                        comandos_cliente.push(comando_cliente);
-                    }
-                    if (evento.key.keysym.sym == SDLK_a) {
-                        comando_cliente.tecla = IZQUIERDA;
-                        comando_cliente.jugador_id = 3;
-                        comandos_cliente.push(comando_cliente);
-                    }
-                    if (evento.key.keysym.sym == SDLK_w) {
-                        comando_cliente.tecla = ARRIBA;
-                        comando_cliente.jugador_id = 3;
-                        comandos_cliente.push(comando_cliente);
-                    }
-                    if (evento.key.keysym.sym == SDLK_s) {
-                        comando_cliente.tecla = ABAJO;
-                        comando_cliente.jugador_id = 3;
-                        comandos_cliente.push(comando_cliente);
-                    }
-                    if (evento.key.keysym.sym == SDLK_SPACE) {
-                        comando_cliente.tecla = SALTO;
-                        comando_cliente.jugador_id = 3;
-                        comandos_cliente.push(comando_cliente);
-                    }
-                    if (evento.key.keysym.sym == SDLK_f) {
-                        comando_cliente.tecla = DISPARO;
-                        comando_cliente.jugador_id = 3;
-                        comandos_cliente.push(comando_cliente);
-                    }
-                    if (evento.key.keysym.sym == SDLK_g) {
-                        comando_cliente.tecla = AGARRAR_ARMA;
-                        comando_cliente.jugador_id = 3;
-                        comandos_cliente.push(comando_cliente);
-                    }
+                }
+                if (evento.key.keysym.sym == SDLK_d) {
+                    comando_cliente.tecla = DERECHA;
+                    comando_cliente.jugador_id = 3;
+                    comandos_cliente.push(comando_cliente);
+                }
+                if (evento.key.keysym.sym == SDLK_a) {
+                    comando_cliente.tecla = IZQUIERDA;
+                    comando_cliente.jugador_id = 3;
+                    comandos_cliente.push(comando_cliente);
+                }
+                if (evento.key.keysym.sym == SDLK_w) {
+                    comando_cliente.tecla = ARRIBA;
+                    comando_cliente.jugador_id = 3;
+                    comandos_cliente.push(comando_cliente);
+                }
+                if (evento.key.keysym.sym == SDLK_s) {
+                    comando_cliente.tecla = ABAJO;
+                    comando_cliente.jugador_id = 3;
+                    comandos_cliente.push(comando_cliente);
+                }
+                if (evento.key.keysym.sym == SDLK_SPACE) {
+                    comando_cliente.tecla = SALTO;
+                    comando_cliente.jugador_id = 3;
+                    comandos_cliente.push(comando_cliente);
+                }
+                if (evento.key.keysym.sym == SDLK_f) {
+                    comando_cliente.tecla = DISPARO;
+                    comando_cliente.jugador_id = 3;
+                    comandos_cliente.push(comando_cliente);
+                }
+                if (evento.key.keysym.sym == SDLK_g) {
+                    comando_cliente.tecla = AGARRAR_ARMA;
+                    comando_cliente.jugador_id = 3;
+                    comandos_cliente.push(comando_cliente);
+                }
+            }
+            keysHeld.insert(evento.key.keysym.sym);
         } else if (evento.type == SDL_KEYUP) {
             // When the key is released, stop the movement
             if (evento.key.keysym.sym == SDLK_d) {
@@ -152,6 +155,7 @@ void InterfazGrafica::manejar_eventos() {
                 comando_cliente.jugador_id = 3;
                 comandos_cliente.push(comando_cliente);
             }
+            keysHeld.erase(evento.key.keysym.sym);
         }
     }
 }
@@ -165,9 +169,6 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
     }
 
     Mapa mapa_a_jugar = ultimo_estado.mapa;
-    
-
-
     if (!mapa.esta_procesado()){
         
         //procesar fondo
@@ -176,16 +177,13 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
             mapa.set_fondo(fondo);
         }
 
-
         //procesar tiles
         std::map<std::string, std::vector<SDL_Point>> tiles = mapa_a_jugar.getTiles();
 
         for (const auto& textura_punto : tiles) {
             
             std::string path_textura = textura_punto.first;
-
             std::vector<SDL_Point> puntos = textura_punto.second;
-
 
             for (const auto& punto : puntos){
                 mapa.agregar_tile(path_textura, punto.x, punto.y);
@@ -193,7 +191,6 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
         }
 
         // procesar spawns
-
         for (auto& pato : ultimo_estado.patos) {
             int pos_x = static_cast<int>(pato.get_pos_x());
             int pos_y = static_cast<int>(pato.get_pos_y());
@@ -202,7 +199,6 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
         mapa.agregar_spawn("pepito", 736, 352);
         mapa.procesado();
     }
-    
     
     bool hubo_estado_nuevo = false;
 

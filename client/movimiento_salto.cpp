@@ -26,21 +26,31 @@ void MovimientoSalto::frames_caida(SDL2pp::Renderer& renderer, SDL2pp::Surface& 
     cargar_frames(renderer, sprite_sheet, 38, caida_frames, NUM_FRAMES_CAE_PATO, 97, PIXEL_PATO, PIXEL_PATO);
 }
 
-void MovimientoSalto::mostrar_frame_salto(int it) {
-    renderer.Copy(salto_frames[(it % NUM_FRAMES_SALTA_PATO)], rect_inicio, rect_dibujado);
+void MovimientoSalto::mostrar_frame_salto(int it, uint8_t direccion) {
+    if(direccion == DIRECCION_DERECHA) {
+        renderer.Copy(salto_frames[(it % NUM_FRAMES_SALTA_PATO)], rect_inicio, rect_dibujado);
+    } else {
+        SDL_RenderCopyEx(renderer.Get(), salto_frames[it % NUM_FRAMES_SALTA_PATO].Get(), &rect_inicio, &rect_dibujado, 0,
+                         nullptr, SDL_FLIP_HORIZONTAL);
+    }
 }
 
-void MovimientoSalto::mostrar_frame_caida(int it) {
-    renderer.Copy(caida_frames[(it % NUM_FRAMES_CAE_PATO)], rect_inicio, rect_dibujado);
+void MovimientoSalto::mostrar_frame_caida(int it, uint8_t direccion) {
+    if(direccion == DIRECCION_DERECHA) {
+        renderer.Copy(caida_frames[(it % NUM_FRAMES_CAE_PATO)], rect_inicio, rect_dibujado);
+    } else {
+        SDL_RenderCopyEx(renderer.Get(), caida_frames[it % NUM_FRAMES_CAE_PATO].Get(), &rect_inicio, &rect_dibujado, 0,
+                         nullptr, SDL_FLIP_HORIZONTAL);
+    }
 }
 
-void MovimientoSalto::pato_salta(uint8_t& movimiento, int pos_x, int pos_y, int it, float zoom_factor) {
+void MovimientoSalto::pato_salta(uint8_t& movimiento, int pos_x, int pos_y, int it, float zoom_factor, uint8_t direccion) {
     set_zoom_in(zoom_factor, rect_dibujado, pos_x, pos_y);
 
     if (movimiento == SALTAR_ALETEAR) {
-        mostrar_frame_salto(it);
+        mostrar_frame_salto(it, direccion);
     } else if (movimiento == CAER) {
-        mostrar_frame_caida(it);
+        mostrar_frame_caida(it, direccion);
     }
 }
 
