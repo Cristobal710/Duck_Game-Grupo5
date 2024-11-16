@@ -1,6 +1,7 @@
 #include "common_pato.h"
 
 #include <iostream>
+#include <SDL2pp/SDL2pp.hh>
 
 #define ANCHO_PATO 32
 #define ALTO_PATO 32
@@ -163,25 +164,17 @@ bool Pato::casco_en_inventario() { return tomo_casco; }
 
 // int Pato::get_color() { return color; }
 
-TipoColision Pato::colisiona_con_tile(HitBox hitbox_tile) {
-    if (hitbox.colisiona_arriba_con(hitbox_tile)) {
-        return Techo;
-    }
-    if (hitbox.colisiona_abajo_con(hitbox_tile)) {
-        return Piso;
-    }
-    if (hitbox.colisiona_izquierda_con(hitbox_tile)) {
-        return Pared;
-    }
-    if (hitbox.colisiona_derecha_con(hitbox_tile)) {
-        return Pared;
+TipoColision Pato::colisiona_con_tile(SDL2pp::Rect hitbox_tile) {
+    if (hitbox.get_hitbox_rect().Intersects(hitbox_tile)) {
+        std::cout << "colisiona con tile" << std::endl;
     }
     return Nada;
 }
 
 TipoColision Pato::colisiona_con_bala(HitBox hitbox_bala) {
-    if (hitbox.colisiona_arriba_con(hitbox_bala) || hitbox.colisiona_abajo_con(hitbox_bala) || hitbox.colisiona_izquierda_con(hitbox_bala) || hitbox.colisiona_derecha_con(hitbox_bala)) {
-        return Balas;
-    }
+    // if (hitbox.colisiona_arriba_con(hitbox_bala) || hitbox.colisiona_abajo_con(hitbox_bala) || hitbox.colisiona_izquierda_con(hitbox_bala) || hitbox.colisiona_derecha_con(hitbox_bala)) {
+    //     return Balas;
+    // }
+    std::cout << "pos x bala:" << static_cast<int>(hitbox_bala.get_hitbox_rect().x) << std::endl;
     return Nada;
 }

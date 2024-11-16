@@ -9,8 +9,8 @@
 #define DEATH_RAY "Death ray"
 #define SHOTGUN "Shotgun"
 
-#define ALTO_TILE 32
-#define ANCHO_TILE 32
+#define ALTO_TILE 16
+#define ANCHO_TILE 16
 
 GameLoop::GameLoop(Queue<EstadoJuego>& cola_estados_juego,
         bool* conexion):
@@ -225,7 +225,9 @@ void GameLoop::calcular_colisiones_tiles(Mapa mapa){
     std::map<std::string,std::vector<SDL_Point>> tiles = mapa.getTiles();
     for (auto& key : tiles) {
         for(SDL_Point p : tiles.at(key.first)){
-            HitBox hitbox(p.x, p.y, ALTO_TILE, ANCHO_TILE);
+            SDL2pp::Rect hitbox(p.x, p.y, ANCHO_TILE, ALTO_TILE);
+            std::cout << "pos x tile:" << static_cast<int>(p.x) << std::endl;
+            std::cout << "pos y tile:" << static_cast<int>(p.y) << std::endl;
             Tile tile(p.x, p.y, hitbox);
             colisiones.push_back(tile);
         }
@@ -240,22 +242,20 @@ void GameLoop::run() {
     ultimo_estado.mapa = mapa;
 
     std::map<std::string, std::vector<SDL_Point>> spawns = ultimo_estado.mapa.getSpawns();
-    for (const auto& id_posicion : spawns) {
-            
-            std::string id_jugador = id_posicion.first;
-
-            std::vector<SDL_Point> posicion = id_posicion.second;
-
-            pos_x = posicion.front().x;
-            pos_y = posicion.front().y;
-        }
-    Pato pato(3, pos_x, pos_y, 0);
+    for (const auto& id_posicion : spawns) {        
+        std::string id_jugador = id_posicion.first;
+        std::vector<SDL_Point> posicion = id_posicion.second;
+        pos_x = posicion.front().x;
+        pos_y = posicion.front().y;
+    }
+    Pato pato(3, 0, 380, 0);
     Arma* arma = new Arma(1, pos_x, pos_y, 15, 300);
     pato.tomar_arma(arma);
     ultimo_estado.patos.emplace_back(pato);
   
     cola_estados_juego.push(ultimo_estado);
     float tiempo_ultimo_frame = SDL_GetTicks();
+    calcular_colisiones_tiles(mapa);
 
     while (!(*esta_cerrado)) {
         //eliminar_clientes_cerrados();
@@ -269,6 +269,12 @@ void GameLoop::run() {
             }
             for (Pato& pato: ultimo_estado.patos) {
                 pato.calcular_hitbox();
+            }
+            for (Tile& tile: colisiones) {
+                for (Pato& pato: ultimo_estado.patos) {
+                    pato.colisiona_con_tile(tile.get_hitbox());
+                    //std::cout << "colision:" << static_cast<int>(colision) << std::endl;
+                }
             }
             for (Bala& bala: ultimo_estado.balas) {
                 bala.calcular_hitbox();

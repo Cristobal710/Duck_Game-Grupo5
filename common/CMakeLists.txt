@@ -7,6 +7,7 @@ file(GLOB COMMON_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 target_link_libraries(taller_common
     PRIVATE
     nlohmann_json::nlohmann_json
+    SDL2pp::SDL2pp
 )
 
 target_sources(taller_common
