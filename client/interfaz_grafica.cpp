@@ -1,6 +1,7 @@
 #include "interfaz_grafica.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
 #include "../common/common_pato.h"
 #include "../common/common_estado_pato.h"
 #include "../common/common_constantes.h"
@@ -18,11 +19,46 @@ InterfazGrafica::InterfazGrafica(Queue<ComandoGrafica>& queue, Queue<EstadoJuego
         renderer(window, -1, SDL_RENDERER_ACCELERATED)
 {}
 
+void InterfazGrafica::iniciar_audio_fondo(){
+    if (SDL_Init(SDL_INIT_AUDIO) < 0) {
+        std::cerr << "SDL_Init failed: " << SDL_GetError() << std::endl;
+        return;
+    }
+    if (Mix_Init(MIX_INIT_MP3 | MIX_INIT_OGG) != (MIX_INIT_MP3 | MIX_INIT_OGG)) {
+        std::cerr << "Mix_Init failed: " << Mix_GetError() << std::endl;
+        return;
+    }
+    if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) < 0) {
+        std::cerr << "Mix_OpenAudio failed: " << Mix_GetError() << std::endl;
+        return;
+    }
+    // Check supported formats
+    if (!Mix_QuerySpec(nullptr, nullptr, nullptr)) {
+        std::cerr << "Mix_QuerySpec failed: " << Mix_GetError() << std::endl;
+        return;
+    }
+    // Path to your audio file (replace with your actual file path)
+    const char* audioFilePath = "../resources/sounds/background_music.mp3";  // or .wav file
+    // Load the audio file
+    Mix_Music* music = Mix_LoadMUS(audioFilePath);
+    if (!music) {
+        std::cerr << "Mix_LoadMUS failed: " << Mix_GetError() << std::endl;
+        return;
+    }
+
+    // Play the music
+    if (Mix_PlayMusic(music, -1) == -1) {
+        std::cerr << "Mix_PlayMusic failed: " << Mix_GetError() << std::endl;
+        return;
+    }
+}
+
 void InterfazGrafica::iniciar() {
 
     SDL_Init(SDL_INIT_VIDEO);
     IMG_Init(IMG_INIT_PNG);
-    
+    iniciar_audio_fondo();
+
     MapaInterfaz mapa_a_jugar(renderer);
     obtener_estado_juego(mapa_a_jugar);
     
@@ -42,8 +78,10 @@ void InterfazGrafica::iniciar() {
         drop_rest(tiempo_ultimo_frame, it);
     }
 
+    //Mix_FreeMusic(music);
     IMG_Quit();
     SDL_Quit();
+    Mix_Quit();
 }
 
 void InterfazGrafica::drop_rest(float& tiempo_ultimo_frame, int& it) {

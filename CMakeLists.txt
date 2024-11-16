@@ -50,6 +50,7 @@ target_include_directories(taller_common PUBLIC .)
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(SDL2_ttf REQUIRED)
+find_package(SDL2_mixer REQUIRED)
 
 # Include Freetype's directory in the project's include paths
 include_directories(${FREETYPE_INCLUDE_DIRS})
@@ -111,7 +112,8 @@ if(TALLER_CLIENT)
         SDL2::SDL2 
         SDL2_image::SDL2_image
         nlohmann_json
-        SDL2_ttf::SDL2_ttf)  
+        SDL2_ttf::SDL2_ttf
+        SDL2_mixer::SDL2_mixer)  
 endif()
 
 if(TALLER_SERVER)
@@ -130,7 +132,8 @@ if(TALLER_SERVER)
     target_link_libraries(taller_server taller_common
     SDL2pp::SDL2pp 
     SDL2::SDL2
-    nlohmann_json)
+    nlohmann_json
+    SDL2_mixer::SDL2_mixer)
 
    
 endif()
@@ -152,7 +155,7 @@ if(TALLER_EDITOR)
     target_include_directories(taller_editor PRIVATE ${libSDL2pp_SOURCE_DIR})
 
     # Link the taller_common lib target
-    target_link_libraries(taller_editor taller_common SDL2pp::SDL2pp nlohmann_json SDL2_ttf::SDL2_ttf)
+    target_link_libraries(taller_editor taller_common SDL2pp::SDL2pp nlohmann_json SDL2_ttf::SDL2_ttf SDL2_mixer::SDL2_mixer)
 endif()
 
 

@@ -23,7 +23,7 @@ class InterfazGrafica {
     SDL2pp::Window window;
     SDL2pp::Renderer renderer;
 
-
+    void iniciar_audio_fondo();
     void manejar_eventos(std::set<SDL_Keycode>& keysHeld);
     void obtener_estado_juego(MapaInterfaz& mapa);
 
