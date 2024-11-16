@@ -32,6 +32,7 @@ private:
     void enviar_estado_juego_si_cambio(Pato& pato, EstadoJuego& estado_juego);
     void avanzar_balas();
     void continuar_saltando_patos();
+    void frenar_saltos_patos_si_colisionan();
     void drop_and_rest(float& tiempo_ultimo_frame);
     void aplicar_logica();
     void avanzar_balas_direccion_izquierda(std::__cxx11::list<Bala>::iterator& it);
@@ -40,6 +41,7 @@ private:
     void eliminar_balas_fuera_de_alcance(std::__cxx11::list<Bala>::iterator& it);
     void calcular_colisiones_tiles(Mapa mapa);
     void crear_bala(Pato& pato);
+    void actualizar_hitbox_entidades();
     void aplicar_gravedad();
 
 public:

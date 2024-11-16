@@ -67,13 +67,13 @@ void Pato::saltar() {
 void Pato::planear() { pos_y--; }
 
 void Pato::caer() { 
-    // pos_y+=3; 
-    // estado.set_caer();
-    // contador_caer++;
-    // if (contador_caer == 5) {
-    //     estado.set_dejar_de_caer();
-    //     contador_caer = 0;
-    // }
+    pos_y+=3; 
+    estado.set_caer();
+    contador_caer++;
+    if (contador_caer == 5) {
+        estado.set_dejar_de_caer();
+        contador_caer = 0;
+    }
 }
 
 void Pato::tomar_arma(Arma* nuevaArma) { arma = nuevaArma; }
@@ -165,12 +165,23 @@ bool Pato::casco_en_inventario() { return tomo_casco; }
 // int Pato::get_color() { return color; }
 
 TipoColision Pato::colisiona_con_tile(SDL2pp::Rect hitbox_tile) {
-    if (hitbox.get_hitbox_rect().Intersects(hitbox_tile)) {
-        std::cout << "colisiona con tile" << std::endl;
+    if (hitbox.no_colisiona(hitbox_tile)) {
+        return Nada;
+    }
+    if (hitbox.colisiona_arriba_con(hitbox_tile)) {
+        return Piso;
+    }
+    if (hitbox.colisiona_abajo_con(hitbox_tile)) {
+        return Techo;
+    }
+    if (hitbox.colisiona_izquierda_con(hitbox_tile)) {
+        return Pared;
+    }
+    if (hitbox.colisiona_derecha_con(hitbox_tile)) {
+        return Pared;
     }
     return Nada;
 }
-
 TipoColision Pato::colisiona_con_bala(HitBox hitbox_bala) {
     // if (hitbox.colisiona_arriba_con(hitbox_bala) || hitbox.colisiona_abajo_con(hitbox_bala) || hitbox.colisiona_izquierda_con(hitbox_bala) || hitbox.colisiona_derecha_con(hitbox_bala)) {
     //     return Balas;

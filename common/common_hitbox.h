@@ -12,10 +12,12 @@ class HitBox {
         
         SDL2pp::Rect hitbox_rect;
         SDL2pp::Rect get_hitbox_rect();
-        // bool colisiona_arriba_con(const HitBox& hitbox);
-        // bool colisiona_abajo_con(const HitBox& hitbox);
-        // bool colisiona_izquierda_con(const HitBox& hitbox);
-        // bool colisiona_derecha_con(const HitBox& hitbox);
+        bool no_colisiona(const SDL2pp::Rect hitbox);
+        bool colisiona_arriba_con(const SDL2pp::Rect hitbox);
+        bool colisiona_abajo_con(const SDL2pp::Rect hitbox);
+        bool colisiona_izquierda_con(const SDL2pp::Rect hitbox);
+        bool colisiona_derecha_con(const SDL2pp::Rect hitbox);
+        int calcular_minima_superposicion(SDL2pp::Rect hitbox_entidad);
 };
 
 #endif
