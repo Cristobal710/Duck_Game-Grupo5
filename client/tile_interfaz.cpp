@@ -52,10 +52,20 @@ TileInterfaz& TileInterfaz::operator=(TileInterfaz&& other) noexcept {
 }
 
 void TileInterfaz::dibujar(float zoom_factor, int pos_x, int pos_y) {
-
-    SDL2pp::Rect rectangulo_a_dibujar(pos_x, pos_y, rectangulo.w * zoom_factor, rectangulo.h * zoom_factor);
-    renderer.Copy(tile_texture, SDL2pp::Optional<SDL2pp::Rect>(),
-                      rectangulo_a_dibujar);
+    /*int render_x = static_cast<int>((rectangulo.x - pos_x) * zoom_factor);
+    int render_y = static_cast<int>((rectangulo.y - pos_y) * zoom_factor);
+    int render_w = static_cast<int>(rectangulo.w * zoom_factor);
+    int render_h = static_cast<int>(rectangulo.h * zoom_factor);
+    
+    SDL2pp::Rect render_rect(render_x, render_y, render_w, render_h);
+    renderer.Copy(tile_texture, SDL2pp::Optional<SDL2pp::Rect>(), render_rect);*/
+    renderer.Copy(tile_texture, SDL2pp::Optional<SDL2pp::Rect>(), rectangulo);
+    zoom_factor = zoom_factor;
+    pos_x = pos_x;
+    pos_y = pos_y;
+    ///SDL2pp::Rect rectangulo_a_dibujar(pos_x, pos_y, rectangulo.w * zoom_factor, rectangulo.h * zoom_factor);
+    //renderer.Copy(tile_texture, SDL2pp::Optional<SDL2pp::Rect>(),
+    //                  rectangulo_a_dibujar);
 }
 
 int TileInterfaz::get_pos_x() { return rectangulo.x; }

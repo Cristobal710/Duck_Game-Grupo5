@@ -8,15 +8,16 @@
 #include "bala_interfaz.h"
 #include <SDL2pp/SDL2pp.hh>
 #include "camara.h"
+#include <unordered_map>
 
 class MapaInterfaz {
 
     private:
     SDL2pp::Renderer& renderer;
     FondoInterfaz fondo;
-    std::unordered_map<int, std::vector<TileInterfaz>> horizontalGroups;
-    std::unordered_map<int, std::vector<TileInterfaz>> verticalGroups;
-    //std::vector<TileInterfaz> tiles;
+    //std::unordered_map<int, std::vector<TileInterfaz>> horizontalGroups;
+    //std::unordered_map<int, std::vector<TileInterfaz>> verticalGroups;
+    std::vector<TileInterfaz> tiles;
     std::vector<PatoInterfaz> patos;
     std::vector<BalaInterfaz> balas;
     bool mapa_procesado;
