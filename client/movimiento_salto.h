@@ -22,6 +22,10 @@ private:
     void mostrar_frame_salto(int it);
     void mostrar_frame_caida(int it);
 
+    void cargar_frames(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet,
+                    int offset_y, std::vector<SDL2pp::Texture>& texturas,
+                    int num_frames, int offset_x, int pixeles_x, int pixeles_y);
+
 public:
     MovimientoSalto(SDL2pp::Renderer& renderer, const std::string& pato_path, int pos_x, int pos_y);
     void pato_salta(uint8_t& movimiento, int pos_x, int pos_y, int it, float zoom_factor);

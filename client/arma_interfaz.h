@@ -13,7 +13,6 @@ private:
     SDL2pp::Rect rect_inicio_arma;
     SDL2pp::Rect rect_dibujado_arma;
     uint8_t municion_disponible;
-    //uint8_t alcance;
 
     void cargar_frames(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet,
                    int offset_y, std::vector<SDL2pp::Texture>& texturas,
@@ -23,14 +22,11 @@ private:
 public:
 
     ArmaInterfaz(SDL2pp::Renderer& renderer, const std::string& arma_path, int pos_x, int pos_y);
-    void mostrar_frame_arma(uint8_t& direccion_pato);
+    void dibujar(uint8_t& direccion_pato);
     
     void set_municion(uint8_t municion);
     uint8_t get_municion_disponible();
     void set_posicion(int pos_x, int pos_y, float& zoom_factor);
-    //uint8_t get_alcance();
-
-
 
 };
 

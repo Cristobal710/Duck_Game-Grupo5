@@ -8,8 +8,8 @@
 #include <SDL2/SDL_image.h>
 #include "entidad_interfaz.h"
 #include <SDL2pp/SDL2pp.hh>
-#include "disparo.h"
 #include <cstdint>
+#include "arma_interfaz.h"
 
 enum class TipoArma {
     Granada,
@@ -43,7 +43,7 @@ private:
     TipoArma tipo_arma;
     uint16_t id_jugador;
 
-    Disparo tomar_arma();
+    ArmaInterfaz tomar_arma();
 
 public:
     PatoInterfaz(SDL2pp::Renderer& renderer, const std::string& pato_path, int pos_x, int pos_y, uint16_t pato_id);

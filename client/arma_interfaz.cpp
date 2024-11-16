@@ -26,7 +26,7 @@ void ArmaInterfaz::set_posicion(int pos_x, int pos_y, float& zoom_factor) {
     set_zoom_in(zoom_factor, rect_dibujado_arma, pos_x, pos_y);
 }
 
-void ArmaInterfaz::mostrar_frame_arma(uint8_t& direccion_pato) {
+void ArmaInterfaz::dibujar(uint8_t& direccion_pato) {
     if (direccion_pato == DIRECCION_DERECHA) {
         renderer.Copy(arma[0], rect_inicio_arma, rect_dibujado_arma);
     } else {

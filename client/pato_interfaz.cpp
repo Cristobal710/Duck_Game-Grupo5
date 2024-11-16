@@ -49,19 +49,15 @@ void PatoInterfaz::dibujar(int it, float zoom_factor) {
     
     if(se_tira_al_piso == TIRAR_PISO || se_tira_al_piso == DEJAR_TIRAR_PISO){
         movimiento_pato_agachado.pato_agachado(se_tira_al_piso, pos_x, pos_y, zoom_factor, direccion_pato);
-        //return;
+        return;
     }
     if (estado_pato_salto == SALTAR_ALETEAR || estado_pato_salto == CAER) {
         movimiento_pato_salto.pato_salta(estado_pato_salto, pos_x, pos_y, it, zoom_factor);
     }
     movimiento_pato_lateral.pato_movimiento(estado_pato_movimiento, direccion_pato, pos_x, pos_y, it, zoom_factor);
     if(estado_arma == TOMAR_ARMA){
-        Disparo pato_disparo = tomar_arma();
-        if(estado_balas == DISPARAR){
-            pato_disparo.get_arma().set_municion(municion_disponible);
-            pato_disparo.get_bala().set_posicion_bala(pos_x_final_bala, pos_y_final_bala);
-        }
-        pato_disparo.mostrar_disparo(estado_balas, direccion_pato, pos_x, pos_y, zoom_factor, it);
+        ArmaInterfaz arma = tomar_arma();
+        arma.dibujar(direccion_pato);
     }
 }
 
@@ -96,46 +92,40 @@ void PatoInterfaz::actualizar_equipamiento(uint8_t estado_nuevo, std::string tip
     tipo_estado.clear();
 }
 
-void PatoInterfaz::actualizar_posicion_bala(uint16_t pos_x_final, uint16_t pos_y_final) {
-    pos_x_final_bala = pos_x_final;
-    pos_y_final_bala = pos_y_final;
-}
-
-Disparo PatoInterfaz::tomar_arma() {
+ArmaInterfaz PatoInterfaz::tomar_arma() {
     std::string arma_path; 
-    std::string bala_path;
     if(tipo_arma == TipoArma::Granada){
         arma_path = "../resources/weapons/grenadeLauncher.png";
-        bala_path = "../resources/weapons/grenade.png";
+        //bala_path = "../resources/weapons/grenade.png";
     } else if (tipo_arma == TipoArma::Banana){
         arma_path = "../resources/weapons/bananaMano.png";
-        bala_path = "../resources/weapons/bananaPiso.png";
+        //bala_path = "../resources/weapons/bananaPiso.png";
     } else if (tipo_arma == TipoArma::Pew_Pew_Laser){
         arma_path = "../resources/weapons/pewpewLaser.png";
-        bala_path = "../resources/weapons/rafaga.png";
+        //bala_path = "../resources/weapons/rafaga.png";
     } else if (tipo_arma == TipoArma::Laser_Rifle){
         arma_path = "../resources/weapons/laserRifle.png";
-        bala_path = "../resources/weapons/rayos.png";
+        //bala_path = "../resources/weapons/rayos.png";
     } else if (tipo_arma == TipoArma::AK47){
         arma_path = "../resources/weapons/ak47.png";
-        bala_path = "../resources/weapons/dart.png";
+        //bala_path = "../resources/weapons/dart.png";
     } else if(tipo_arma == TipoArma::Pistola_Duelos){
         arma_path = "../resources/weapons/combatShotgun.png";
-        bala_path = "../resources/weapons/dart.png";
+        //bala_path = "../resources/weapons/dart.png";
     } else if (tipo_arma == TipoArma::Pistola_Cowboy){
         arma_path = "../resources/weapons/cowboyPistol.png";
-        bala_path = "../resources/weapons/dart.png";
+        //bala_path = "../resources/weapons/dart.png";
     } else if (tipo_arma == TipoArma::Magnum){
         arma_path = "../resources/weapons/magnum.png";
-        bala_path = "../resources/weapons/dart.png";
+        //bala_path = "../resources/weapons/dart.png";
     } else if (tipo_arma == TipoArma::Escopeta){
         arma_path = "../resources/weapons/shotgun.png";
-        bala_path = "../resources/weapons/dart.png";
+        //bala_path = "../resources/weapons/dart.png";
     } else if (tipo_arma == TipoArma::Sniper){
         arma_path = "../resources/weapons/sniper.png";
-        bala_path = "../resources/weapons/dart.png";
+        //bala_path = "../resources/weapons/dart.png";
     }
-    return Disparo(renderer, arma_path, bala_path, rect_dibujado.GetX(), rect_dibujado.GetY());
+    return ArmaInterfaz(renderer, arma_path, rect_dibujado.GetX(), rect_dibujado.GetY());
 }
 
 void PatoInterfaz::set_tipo_arma(TipoArma tipo_arma) {

@@ -12,7 +12,6 @@
 #include "cliente_comando.h"
 #include "../common/common_queue.h"
 #include "../common/common_estado_juego.h"
-#include "disparo.h"
 #include "mapa_interfaz.h"
 #include <set>
 

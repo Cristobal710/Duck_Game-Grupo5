@@ -20,19 +20,10 @@ void BalaInterfaz::set_posicion_bala(uint16_t pos_x_final, uint16_t pos_y_final)
 
 void BalaInterfaz::dibujar(int it) {
     if(direccion == DIRECCION_DERECHA) {
-        if(it > CANT_MAX_FRAMES_BALA){
             renderer.Copy(bala[(it % CANT_MAX_FRAMES_BALA)], rect_inicio_bala, rect_dibujado_bala);
-        } else {
-            renderer.Copy(bala[it], rect_inicio_bala, rect_dibujado_bala);
-        }
     } else {
-        if(it > CANT_MAX_FRAMES_BALA){
-            SDL_RenderCopyEx(renderer.Get(), bala[(it % CANT_MAX_FRAMES_BALA)].Get(), &rect_inicio_bala, &rect_dibujado_bala, 0,
+        SDL_RenderCopyEx(renderer.Get(), bala[(it % CANT_MAX_FRAMES_BALA)].Get(), &rect_inicio_bala, &rect_dibujado_bala, 0,
                      nullptr, SDL_FLIP_HORIZONTAL);
-        } else {
-            SDL_RenderCopyEx(renderer.Get(), bala[it].Get(), &rect_inicio_bala, &rect_dibujado_bala, 0,
-                     nullptr, SDL_FLIP_HORIZONTAL);
-        }
     }
 }
 
