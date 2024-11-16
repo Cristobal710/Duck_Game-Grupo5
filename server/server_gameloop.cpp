@@ -219,11 +219,11 @@ void GameLoop::frenar_saltos_patos_si_colisionan(){
                 // std::cout << "frene el salto" << std::endl;
                 break;
             }
-            if (pato.colisiona_con_tile(tile.get_hitbox()) == Pared){
-                pato.estado.set_dejar_de_moverse();
-                std::cout<<"entre a frenar pato pared"<<std::endl;
-                break;
-            }
+            // if (pato.colisiona_con_tile(tile.get_hitbox()) == Pared){
+            //     pato.estado.set_dejar_de_moverse();
+            //     std::cout<<"entre a frenar pato pared"<<std::endl;
+            //     break;
+            // }
         }
     }
 }
@@ -321,7 +321,7 @@ void GameLoop::run() {
             std::vector<EventoServer> eventos = clientes.recibir_mensajes_clientes();
             for(EventoServer evento : eventos){
                 procesar_evento(evento, ultimo_estado);
-                //cola_estados_juego.push(ultimo_estado);
+                cola_estados_juego.push(ultimo_estado);
             }
             actualizar_hitbox_entidades();
             aplicar_logica();
