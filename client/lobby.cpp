@@ -21,11 +21,41 @@ void Lobby::cargar_boton(std::string& texto, SDL_Rect& boton_rect){
     
 
 void Lobby::cargar_texto_boton(std::string& texto, SDL_Rect& boton_rect){
-    TTF_Init();
+    /*TTF_Init();
     TTF_Font* font = TTF_OpenFont("../resources/lobby/lobby_font.TTF", 24);
     SDL_Color color_texto = {255, 165, 0, 255};
     SDL_Surface* surface_texto = TTF_RenderText_Solid(font, texto.c_str(), color_texto);
+    SDL_Texture* texture_texto = SDL_CreateTextureFromSurface(renderer, surface_texto);*/
+    // Initialize SDL_ttf
+    if (TTF_Init() == -1) {
+        std::cout << "SDL_ttf could not initialize! TTF_Error: " << TTF_GetError() << std::endl;
+        return;
+    }
+
+    // Crear y renderizar el texto dentro del botón
+    TTF_Font* font = TTF_OpenFont("../resources/lobby/lobby_font.TTF", 24);  // Abrir fuente (ajusta el tamaño)
+    if (font == NULL) {
+        std::cout << "Error loading font: " << TTF_GetError() << std::endl;
+        return;
+    }
+
+    // Crear una superficie con el texto
+    SDL_Color color_texto = {255, 165, 0, 255};  // Blanco para el texto (puedes cambiar el color)
+    SDL_Surface* surface_texto = TTF_RenderText_Solid(font, texto.c_str(), color_texto);  // Texto a mostrar
+    if (surface_texto == NULL) {
+        std::cout << "Error creating text surface: " << TTF_GetError() << std::endl;
+        TTF_CloseFont(font);
+        return;
+    }
+
+    // Convertir la superficie en una textura
     SDL_Texture* texture_texto = SDL_CreateTextureFromSurface(renderer, surface_texto);
+    if (texture_texto == NULL) {
+        std::cout << "Error creating text texture: " << SDL_GetError() << std::endl;
+        SDL_FreeSurface(surface_texto);
+        TTF_CloseFont(font);
+        return;
+    }
 
     SDL_Rect rect_texto = {
         boton_rect.x + (boton_rect.w - surface_texto->w) / 2,
