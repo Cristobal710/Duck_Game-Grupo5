@@ -115,14 +115,6 @@ void GameLoop::aplicar_estados(){
     }
 }
 
-
-
-
-
-
-
-
-
 void GameLoop::crear_bala(Pato& pato){
     if (pato.tiene_arma()) {    
         if (!pato.esta_apuntando_arriba()){
@@ -308,7 +300,6 @@ void GameLoop::calcular_colisiones_balas(EstadoJuego estado_juego){
 
 }
 
-
 void GameLoop::actualizar_hitbox_entidades(){
     for (Pato& pato: ultimo_estado.patos) {
         pato.calcular_hitbox();
@@ -341,7 +332,7 @@ void GameLoop::run() {
     // std::cout<<static_cast<int>(pato_dos.get_id())<<std::endl;
     // Arma* arma_dos = new Arma(1, pos_x+20, pos_y, 15, 300);
     // pato_dos.tomar_arma(arma_dos);
-    ultimo_estado.patos.emplace_back(pato_dos);
+    // ultimo_estado.patos.emplace_back(pato_dos);
     cola_estados_juego.push(ultimo_estado);
     float tiempo_ultimo_frame = SDL_GetTicks();
     calcular_colisiones_tiles(mapa);
