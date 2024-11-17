@@ -26,6 +26,7 @@ enum class TipoArma {
 
 class PatoInterfaz : public EntidadInterfaz{
 private:
+    bool vivo;
     uint8_t estado_pato_movimiento;
     uint8_t estado_pato_salto;
     uint8_t direccion_pato;
@@ -38,8 +39,6 @@ private:
     MovimientoSalto movimiento_pato_salto;
     MovimientoAgachado movimiento_pato_agachado;
     uint8_t municion_disponible;
-    uint16_t pos_x_final_bala;
-    uint16_t pos_y_final_bala;
     TipoArma tipo_arma;
     uint16_t id_jugador;
 
@@ -58,9 +57,10 @@ public:
     void actualizar_estado(uint8_t estado_nuevo, std::string tipo_estado);
     void actualizar_posicion(int pos_x, int pos_y);
     void actualizar_equipamiento(uint8_t estado_nuevo, std::string tipo_estado);
-    void actualizar_posicion_bala(uint16_t pos_x_final, uint16_t pos_y_final);
     void set_tipo_arma(TipoArma tipo_arma);
     bool mismo_id(uint16_t id);
+    void set_esta_vivo(bool estado);
+    bool esta_vivo();
     int pos_x();
     int pos_y();
     int get_w();

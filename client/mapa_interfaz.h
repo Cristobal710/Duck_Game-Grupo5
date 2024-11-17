@@ -25,7 +25,7 @@ class MapaInterfaz {
 
     public:
     MapaInterfaz(SDL2pp::Renderer& renderer);
-    void dibujar(int it);
+    int dibujar(int it);
     void set_fondo(std::string fondo_path);
     void agregar_tile(std::string fondo_path, int x, int y);
     void agregar_spawn(std::string id_jugador, int x, int y);

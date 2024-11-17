@@ -1,5 +1,9 @@
 #include "mapa_interfaz.h"
 #include <utility>
+
+#define ERROR 1
+#define EXITO 0
+
 MapaInterfaz::MapaInterfaz(SDL2pp::Renderer& renderer): 
 renderer(renderer), fondo(renderer, "../resources/backgrounds/city.png"), tiles(),
 patos(), balas(), mapa_procesado(false), camara(1280, 720)
@@ -41,7 +45,7 @@ void MapaInterfaz::procesado() {
     mapa_procesado = true;
 }
 
-void MapaInterfaz::dibujar(int it){
+int MapaInterfaz::dibujar(int it){
 
     if (!patos.empty()){
         PatoInterfaz& pato_cliente = patos.front();
@@ -111,10 +115,14 @@ void MapaInterfaz::dibujar(int it){
     // }
     for (PatoInterfaz& pato : patos){
         pato.dibujar(it, zoom_factor);
+        if (!pato.esta_vivo()){
+            return ERROR;
+        }
     }
     for (BalaInterfaz& bala : balas){
         bala.dibujar(it);
     }
     balas.clear();
+    return EXITO;
 }
 

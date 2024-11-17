@@ -51,6 +51,10 @@ void InterfazGrafica::iniciar_audio_fondo(){
         std::cerr << "Mix_PlayMusic failed: " << Mix_GetError() << std::endl;
         return;
     }
+
+    int sdl_volume = static_cast<int>((5 / 10.0) * 128);
+    Mix_VolumeMusic(sdl_volume);
+
 }
 
 void InterfazGrafica::iniciar() {
@@ -64,6 +68,7 @@ void InterfazGrafica::iniciar() {
     
     std::set<SDL_Keycode> keysHeld;
     int it = 0;
+    int pato_vivo = 0;
     while (correr_programa) {
         float tiempo_ultimo_frame = SDL_GetTicks();
         
@@ -71,11 +76,15 @@ void InterfazGrafica::iniciar() {
         manejar_eventos(keysHeld);
         obtener_estado_juego(mapa_a_jugar);
         
-        mapa_a_jugar.dibujar(it);
+        pato_vivo = mapa_a_jugar.dibujar(it);
         renderer.Present();
             
         //ahora calculamos cuanto tardamos en hacer todo, si nos pasamos, drop & rest.
         drop_rest(tiempo_ultimo_frame, it);
+        
+        if(pato_vivo == 1){
+            correr_programa = false;
+        }
     }
 
     //Mix_FreeMusic(music);
@@ -247,6 +256,7 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
             }
             PatoInterfaz& pato_prueba = mapa.get_pato_con_id(pato_juego.get_id());
             //pato = mapa.get_pato_con_id(pato_juego.get_id());
+            pato_prueba.set_esta_vivo(pato_juego.esta_vivo());
             pato_prueba.actualizar_posicion(pato_juego.get_pos_x(), pato_juego.get_pos_y());
             pato_prueba.actualizar_estado(pato_juego.estado.get_estado_movimiento(), ESTADO_MOVIMIENTO);
             pato_prueba.actualizar_estado(pato_juego.estado.get_estado_salto(), ESTADO_SALTO);

@@ -44,8 +44,16 @@ void MovimientoAgachado::mostrar_frames_levantarse(int it) {
     renderer.Copy(movimiento_pato_agachado[frame], rect_inicio, rect_dibujado);
 }
 
-SDL2pp::Texture& MovimientoAgachado::mostrar_frame() {
-    return movimiento_pato_agachado[0];
+void MovimientoAgachado::mostrar_muerte(int pos_x, int pos_y, float zoom_factor, uint8_t direccion_pato) {
+    set_zoom_in(zoom_factor, rect_dibujado, pos_x, pos_y);
+    
+    if (direccion_pato == DIRECCION_DERECHA){
+        renderer.Copy(movimiento_pato_agachado[1], rect_inicio, rect_dibujado);
+        return;
+    } else {
+        SDL_RenderCopyEx(renderer.Get(), movimiento_pato_agachado[1].Get(), &rect_inicio, &rect_dibujado, 0,
+                     nullptr, SDL_FLIP_HORIZONTAL);
+    }
 }
 
 void MovimientoAgachado::pato_agachado(uint8_t& esta_agachado, int& pos_x, int& pos_y, float zoom_factor,
