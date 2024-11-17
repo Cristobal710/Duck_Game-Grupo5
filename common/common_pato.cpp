@@ -171,7 +171,7 @@ TipoColision Pato::colisiona_con_tile(SDL2pp::Rect hitbox_tile) {
         return Nada;
     }
     if (hitbox.colisiona_arriba_con(hitbox_tile)) {
-        std::cout<<"colisiona arriba"<<std::endl;
+        //std::cout<<"colisiona arriba"<<std::endl;
         return Piso;
     }
     if (hitbox.colisiona_abajo_con(hitbox_tile)) {
@@ -180,6 +180,10 @@ TipoColision Pato::colisiona_con_tile(SDL2pp::Rect hitbox_tile) {
     }
     if (hitbox.colisiona_izquierda_con(hitbox_tile)) {
         std::cout<<"colisiona izq"<<std::endl;
+        if(hitbox_tile.GetTopLeft().x == hitbox.get_hitbox_rect().GetBottomRight().x){
+            std::cout<<"colisiono con esquina"<<std::endl;
+
+        }
         return Pared;
     }
     if (hitbox.colisiona_derecha_con(hitbox_tile)) {
@@ -188,10 +192,16 @@ TipoColision Pato::colisiona_con_tile(SDL2pp::Rect hitbox_tile) {
     }
     return Nada;
 }
-TipoColision Pato::colisiona_con_bala(HitBox hitbox_bala) {
-    // if (hitbox.colisiona_arriba_con(hitbox_bala) || hitbox.colisiona_abajo_con(hitbox_bala) || hitbox.colisiona_izquierda_con(hitbox_bala) || hitbox.colisiona_derecha_con(hitbox_bala)) {
-    //     return Balas;
-    // }
+TipoColision Pato::colisiona_con_bala(Bala& bala) {
+    HitBox hitbox_bala = bala.get_hitbox();
+    if(bala.get_id_origen() == id){
+        // std::cout<<"id BALA  if"<<static_cast<int>(bala.get_id_origen())<<std::endl;
+        // std::cout<<"id PATO  "<<static_cast<int>(id)<<std::endl;
+        return Nada;
+    }
+    if (hitbox.colisiona_arriba_con(hitbox_bala.get_hitbox_rect()) || hitbox.colisiona_abajo_con(hitbox_bala.get_hitbox_rect()) || hitbox.colisiona_izquierda_con(hitbox_bala.get_hitbox_rect()) || hitbox.colisiona_derecha_con(hitbox_bala.get_hitbox_rect())) {
+        return Balas;
+    }
     std::cout << "pos x bala:" << static_cast<int>(hitbox_bala.get_hitbox_rect().x) << std::endl;
     return Nada;
 }

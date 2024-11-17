@@ -41,6 +41,7 @@ void GameLoop::procesar_evento(EventoServer& evento, EstadoJuego& estado_juego) 
         if (pato.get_id() == evento.jugador_id) {
             ejecutar_accion(evento.accion, pato);
         }
+
     }
 }
 
@@ -86,6 +87,7 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
             pato.levantarse_del_piso();
             break;
         case TOMAR_ARMA:
+            pato.saltar();
             // llamar a un metodo que recorra el array de armas y devuelva la cercana al pato
             // pato.tomar_arma();
             break;
@@ -125,25 +127,28 @@ void GameLoop::crear_bala(Pato& pato){
     if (pato.tiene_arma()) {    
         if (!pato.esta_apuntando_arriba()){
             if (pato.get_direccion() == DIRECCION_DERECHA) {
-                Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x() + pato.get_arma()->get_alcance(), pato.get_pos_y(), pato.get_direccion());
+                Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x() + pato.get_arma()->get_alcance(), pato.get_pos_y(), pato.get_direccion(), pato.get_id());
                 ultimo_estado.balas.push_back(bala);
             } else {
-                Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x() - pato.get_arma()->get_alcance(), pato.get_pos_y(), pato.get_direccion());
+                Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x() - pato.get_arma()->get_alcance(), pato.get_pos_y(), pato.get_direccion(), pato.get_id());
                 ultimo_estado.balas.push_back(bala);
             }
         } else {
-            Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x(), pato.get_pos_y() - pato.get_arma()->get_alcance(), pato.get_direccion());
+            Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x(), pato.get_pos_y() - pato.get_arma()->get_alcance(), pato.get_direccion(), pato.get_id());
             ultimo_estado.balas.push_back(bala);
         }
     }
 }
 
 void GameLoop::enviar_estado_juego_si_cambio(Pato& pato, EstadoJuego& estado_anterior) {
-    if (pato.estado.get_estado_agachado() != estado_anterior.patos.front().estado.get_estado_agachado() || pato.estado.get_estado_movimiento() != estado_anterior.patos.front().estado.get_estado_movimiento() || pato.estado.get_estado_salto() != estado_anterior.patos.front().estado.get_estado_salto() || pato.estado.get_estado_disparo() != estado_anterior.patos.front().estado.get_estado_disparo()) {
-        cola_estados_juego.push(ultimo_estado);
-    }
-    if (pato.get_pos_x() != estado_anterior.patos.front().get_pos_x() || pato.get_pos_y() != estado_anterior.patos.front().get_pos_y()) {
-        cola_estados_juego.push(ultimo_estado);
+    pato = pato;
+    for(Pato& pato :ultimo_estado.patos){
+        if (pato.estado.get_estado_agachado() != estado_anterior.patos.front().estado.get_estado_agachado() || pato.estado.get_estado_movimiento() != estado_anterior.patos.front().estado.get_estado_movimiento() || pato.estado.get_estado_salto() != estado_anterior.patos.front().estado.get_estado_salto() || pato.estado.get_estado_disparo() != estado_anterior.patos.front().estado.get_estado_disparo()) {
+            cola_estados_juego.push(ultimo_estado);
+        }
+        if (pato.get_pos_x() != estado_anterior.patos.front().get_pos_x() || pato.get_pos_y() != estado_anterior.patos.front().get_pos_y()) {            
+            cola_estados_juego.push(ultimo_estado);
+        }
     }
     bool cambio = false;
     for (Bala& bala: ultimo_estado.balas) {
@@ -195,7 +200,7 @@ void GameLoop::eliminar_balas_fuera_de_alcance(std::__cxx11::list<Bala>::iterato
 void GameLoop::avanzar_balas(){
     for (auto it = ultimo_estado.balas.begin(); it != ultimo_estado.balas.end(); ) {
         avanzar_balas_direccion_izquierda(it);
-        avanzar_balas_direccion_derecha(it);
+        avanzar_balas_direccion_derecha(it);    
         avanzar_balas_direccion_arriba(it);
         eliminar_balas_fuera_de_alcance(it);
     }
@@ -281,6 +286,29 @@ void GameLoop::calcular_colisiones_tiles(Mapa mapa){
     }
 }
 
+
+void GameLoop::calcular_colisiones_balas(EstadoJuego estado_juego){
+    for(Pato& pato : estado_juego.patos){
+        for (auto it = ultimo_estado.balas.begin(); it != ultimo_estado.balas.end(); ) {
+            if(pato.colisiona_con_bala(*it) == Balas && (it->get_id_origen() != pato.get_id())){
+
+                std::cout<<"===BALA COLISIONA CON PATO==="<<std::endl;
+                it = ultimo_estado.balas.erase(it);  
+            }else{
+                it++;
+            }
+            //if(pato.get_hitbox().colisiona_izquierda_con(bala.get_hitbox().get_hitbox_rect())){
+            //    std::cout<<pato.get_pos_x()<<" ==== "<<pato.get_pos_y() <<std::endl;
+//
+            //    
+            //}
+        }
+
+    }
+
+}
+
+
 void GameLoop::actualizar_hitbox_entidades(){
     for (Pato& pato: ultimo_estado.patos) {
         pato.calcular_hitbox();
@@ -296,6 +324,7 @@ void GameLoop::run() {
     LectorJson lector_mapa = LectorJson();
     Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa1");
     ultimo_estado.mapa = mapa;
+    //cola_estados_juego.push(ultimo_estado);
 
     std::map<std::string, std::vector<SDL_Point>> spawns = ultimo_estado.mapa.getSpawns();
     for (const auto& id_posicion : spawns) {        
@@ -308,7 +337,11 @@ void GameLoop::run() {
     Arma* arma = new Arma(1, pos_x, pos_y, 15, 300);
     pato.tomar_arma(arma);
     ultimo_estado.patos.emplace_back(pato);
-  
+    // Pato pato_dos(4, pos_x +20, pos_y, 0);
+    // std::cout<<static_cast<int>(pato_dos.get_id())<<std::endl;
+    // Arma* arma_dos = new Arma(1, pos_x+20, pos_y, 15, 300);
+    // pato_dos.tomar_arma(arma_dos);
+    ultimo_estado.patos.emplace_back(pato_dos);
     cola_estados_juego.push(ultimo_estado);
     float tiempo_ultimo_frame = SDL_GetTicks();
     calcular_colisiones_tiles(mapa);
@@ -325,6 +358,7 @@ void GameLoop::run() {
             }
             actualizar_hitbox_entidades();
             aplicar_logica();
+            calcular_colisiones_balas(ultimo_estado);
             enviar_estado_juego_si_cambio(pato, estado_anterior);
             drop_and_rest(tiempo_ultimo_frame);
         }

@@ -7,6 +7,7 @@
 #include "common_constantes.h"
 #include "common_estado_pato.h"
 #include "common_tipo_colision.h"
+#include "common_bala.h"
 
 class Pato: public Entidad {
 private:
@@ -58,7 +59,8 @@ public:
     bool esta_tirado_al_piso();
     void morir();
     TipoColision colisiona_con_tile(SDL2pp::Rect hitbox_tile);
-    TipoColision colisiona_con_bala(HitBox hitbox);
+    TipoColision colisiona_con_bala(Bala& bala);
+    
 };
 
 #endif
