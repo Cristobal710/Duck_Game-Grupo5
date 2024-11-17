@@ -53,7 +53,7 @@ public:
 
     
     void dibujar(int it, float zoom_factor) override;
-    
+
     void actualizar_estado(uint8_t estado_nuevo, std::string tipo_estado);
     void actualizar_posicion(int pos_x, int pos_y);
     void actualizar_equipamiento(uint8_t estado_nuevo, std::string tipo_estado);

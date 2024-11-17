@@ -18,10 +18,10 @@ void MapaInterfaz::agregar_tile(std::string tile_path, int x, int y){
     tiles.emplace_back(std::move(tile));
 }
 
-void MapaInterfaz::agregar_spawn(std::string id_jugador, int x, int y) {
-    id_jugador.clear();
-    
-    PatoInterfaz pato(renderer, "../resources/Grey-Duck.png", x, y, 3);
+void MapaInterfaz::agregar_spawn(uint16_t id_jugador, int x, int y) {
+    //id_jugador.clear();
+
+    PatoInterfaz pato(renderer, "../resources/Grey-Duck.png", x, y, id_jugador);
     patos.emplace_back(std::move(pato));
 }
 

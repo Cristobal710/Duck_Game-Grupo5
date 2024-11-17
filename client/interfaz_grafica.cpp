@@ -7,6 +7,7 @@
 #include "../common/common_constantes.h"
 #include <cmath>
 #include "../common/common_bala.h"
+#include "lobby.h"
 #define DURACION_FRAME 1000 / 30 // 30 frames por segundo
 
 
@@ -19,50 +20,32 @@ InterfazGrafica::InterfazGrafica(Queue<ComandoGrafica>& queue, Queue<EstadoJuego
         renderer(window, -1, SDL_RENDERER_ACCELERATED)
 {}
 
-void InterfazGrafica::iniciar_audio_fondo(){
-    if (SDL_Init(SDL_INIT_AUDIO) < 0) {
-        std::cerr << "SDL_Init failed: " << SDL_GetError() << std::endl;
-        return;
-    }
-    if (Mix_Init(MIX_INIT_MP3 | MIX_INIT_OGG) != (MIX_INIT_MP3 | MIX_INIT_OGG)) {
-        std::cerr << "Mix_Init failed: " << Mix_GetError() << std::endl;
-        return;
-    }
-    if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) < 0) {
-        std::cerr << "Mix_OpenAudio failed: " << Mix_GetError() << std::endl;
-        return;
-    }
-    // Check supported formats
-    if (!Mix_QuerySpec(nullptr, nullptr, nullptr)) {
-        std::cerr << "Mix_QuerySpec failed: " << Mix_GetError() << std::endl;
-        return;
-    }
-    // Path to your audio file (replace with your actual file path)
-    const char* audioFilePath = "../resources/sounds/background_music.mp3";  // or .wav file
-    // Load the audio file
-    Mix_Music* music = Mix_LoadMUS(audioFilePath);
-    if (!music) {
-        std::cerr << "Mix_LoadMUS failed: " << Mix_GetError() << std::endl;
-        return;
-    }
-
-    // Play the music
-    if (Mix_PlayMusic(music, -1) == -1) {
-        std::cerr << "Mix_PlayMusic failed: " << Mix_GetError() << std::endl;
-        return;
-    }
-
+void InterfazGrafica::iniciar_audio(std::string audio_path){
+    SDL_Init(SDL_INIT_AUDIO);
+    Mix_Init(MIX_INIT_MP3 | MIX_INIT_OGG);
+    Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
+    Mix_QuerySpec(nullptr, nullptr, nullptr);;
+    Mix_Music* music = Mix_LoadMUS(audio_path.c_str());
+    Mix_PlayMusic(music, -1);
     int sdl_volume = static_cast<int>((5 / 10.0) * 128);
     Mix_VolumeMusic(sdl_volume);
-
 }
 
 void InterfazGrafica::iniciar() {
 
     SDL_Init(SDL_INIT_VIDEO);
     IMG_Init(IMG_INIT_PNG);
-    iniciar_audio_fondo();
 
+    // Create lobby instance
+    Lobby lobby(renderer.Get());
+    bool partida_empezada = false;
+    while (!partida_empezada) {
+        lobby.dibujar();
+        partida_empezada = lobby.manejar_eventos();
+    }
+
+    std::string audio_fondo_path = "../resources/sounds/background_music.mp3";
+    iniciar_audio(audio_fondo_path);
     MapaInterfaz mapa_a_jugar(renderer);
     obtener_estado_juego(mapa_a_jugar);
     
@@ -241,9 +224,9 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
         for (auto& pato : ultimo_estado.patos) {
             int pos_x = static_cast<int>(pato.get_pos_x());
             int pos_y = static_cast<int>(pato.get_pos_y());
-            mapa.agregar_spawn("default",pos_x ,pos_y);
+            mapa.agregar_spawn(pato.get_id(), pos_x, pos_y);
         }
-        mapa.agregar_spawn("pepito", 736, 352);
+        mapa.agregar_spawn(8, 736, 352);
         mapa.procesado();
     }
     
@@ -251,11 +234,7 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
 
     while (estado_juego.try_pop(ultimo_estado)) {
         for (Pato pato_juego: ultimo_estado.patos) {
-            if (pato_juego.get_id() != 3){
-                break;
-            }
             PatoInterfaz& pato_prueba = mapa.get_pato_con_id(pato_juego.get_id());
-            //pato = mapa.get_pato_con_id(pato_juego.get_id());
             pato_prueba.set_esta_vivo(pato_juego.esta_vivo());
             pato_prueba.actualizar_posicion(pato_juego.get_pos_x(), pato_juego.get_pos_y());
             pato_prueba.actualizar_estado(pato_juego.estado.get_estado_movimiento(), ESTADO_MOVIMIENTO);
