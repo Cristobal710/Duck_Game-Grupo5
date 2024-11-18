@@ -127,15 +127,15 @@ void ServerProtocolo::enviar_string(const std::string& mensaje) {
 
 void ServerProtocolo::enviar_estado_juego(EstadoJuego& estado) {
     
-    // enviar_byte(estado.cajas.size());
-    // enviar_cajas(estado.cajas);
-    // enviar_byte(estado.armas.size());
-    // enviar_armas(estado.armas);
     enviar_byte(static_cast<uint8_t>(estado.patos.size()));
     enviar_patos(estado.patos);
     enviar_byte(estado.balas.size());
     enviar_balas(estado.balas);
     enviar_mapa(estado.mapa);
+    enviar_byte(estado.cajas.size());
+    enviar_cajas(estado.cajas);
+    enviar_byte(estado.armas.size());
+    enviar_armas(estado.armas);
     // enviar_byte(estado.granadas.size());
     // enviar_granadas(estado.granadas);
 }

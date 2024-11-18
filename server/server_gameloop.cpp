@@ -278,13 +278,13 @@ void GameLoop::calcular_colisiones_tiles(Mapa mapa){
     }
 }
 
-
 void GameLoop::calcular_colisiones_balas(){
     for(Pato& pato : ultimo_estado.patos){
         for (auto it = ultimo_estado.balas.begin(); it != ultimo_estado.balas.end();) {
             if(pato.colisiona_con_bala(*it) == Balas){
-                it = ultimo_estado.balas.erase(it);  
-            }else{
+                it = ultimo_estado.balas.erase(it);
+                pato.recibir_danio();
+            }else {
                 it++;
             }
         }
@@ -315,19 +315,32 @@ void GameLoop::run() {
         pos_x = posicion.front().x;
         pos_y = posicion.front().y;
     }
+    for (const auto& cajas : ultimo_estado.mapa.getCajas()) {
+        for (SDL_Point posicion_caja : cajas.second) {
+            Caja caja(ultimo_estado.cajas.size() + 1, posicion_caja.x, posicion_caja.y, 0x05);
+            ultimo_estado.cajas.push_back(caja);
+        }
+    }
+    // for (const auto& armas : ultimo_estado.mapa.getEquipamiento()) {
+    //     for (SDL_Point posicion_arma : armas.second) {
+    //         Arma* arma = new Arma(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, 15, 300);
+    //         ultimo_estado.armas.push_back(*arma);
+    //     }
+    // }
     Pato pato(3, pos_x, pos_y, 0);
     Arma* arma = new Arma(1, pos_x, pos_y, 15, 300);
     pato.tomar_arma(arma);
     ultimo_estado.patos.emplace_back(pato);
-    pos_x+=20;
-    std::cout<<pos_x<<std::endl;
-    Pato pato_dos(4, pos_x , pos_y, 0);
-    std::cout<<static_cast<int>(pato_dos.get_id())<<std::endl;
-    Arma* arma_dos = new Arma(1, pos_x, pos_y, 15, 300);
-    pato_dos.tomar_arma(arma_dos);
-    
 
+    Pato pato_dos(4, pos_x+20, pos_y, 0);
+    Arma* arma_dos = new Arma(1, pos_x, pos_y, 15, 300);
+    pato_dos.tomar_armadura();
+    pato_dos.equipar_armadura();
+    pato_dos.tomar_casco();
+    pato_dos.equipar_casco();
+    pato_dos.tomar_arma(arma_dos);
     ultimo_estado.patos.emplace_back(pato_dos);
+
     cola_estados_juego.push(ultimo_estado);
     float tiempo_ultimo_frame = SDL_GetTicks();
     calcular_colisiones_tiles(mapa);
@@ -341,6 +354,13 @@ void GameLoop::run() {
             for(EventoServer evento : eventos){
                 procesar_evento(evento, ultimo_estado);
                 cola_estados_juego.push(ultimo_estado);
+            }
+            for (auto it=ultimo_estado.patos.begin(); it!=ultimo_estado.patos.end();){
+                if(!it->esta_vivo()){
+                    it = ultimo_estado.patos.erase(it);
+                }else{
+                    it++;
+                }
             }
             actualizar_hitbox_entidades();
             aplicar_logica();

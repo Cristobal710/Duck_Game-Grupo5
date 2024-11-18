@@ -179,16 +179,16 @@ std::list<Granada> ClienteProtocolo::recibir_granadas() {
     return granadas;
 }
 
-
 EstadoJuego ClienteProtocolo::recibir_estado_juego() {
     EstadoJuego estado_juego;
     estado_juego.patos = recibir_patos();
     estado_juego.balas = recibir_balas();
     estado_juego.mapa = recibir_mapa();
-    // estado_juego.cajas = recibir_cajas();
-    // estado_juego.armas = recibir_armas();
+    estado_juego.cajas = recibir_cajas();
+    estado_juego.armas = recibir_armas();
     return estado_juego;
 }
+
 std::string ClienteProtocolo::recibir_string() {
     std::vector<uint8_t> mensajeSize(2);
     bool cerrado;

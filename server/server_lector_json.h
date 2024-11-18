@@ -6,11 +6,8 @@
 
 class LectorJson {
 public:
-    explicit LectorJson() = default;  // Constructor predeterminado
+    explicit LectorJson() = default;
     Mapa procesar_mapa(const std::string& ruta);
-
-private:
-    // Puedes agregar atributos privados aquí si necesitas mantener algún estado
 };
 
-#endif // SERVER_LECTOR_H
+#endif
