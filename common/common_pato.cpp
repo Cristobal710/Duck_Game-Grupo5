@@ -184,6 +184,7 @@ TipoColision Pato::colisiona_con_tile(SDL2pp::Rect hitbox_tile) {
     }
     return Nada;
 }
+
 TipoColision Pato::colisiona_con_bala(Bala& bala) {
     HitBox hitbox_bala = bala.get_hitbox();
     if (hitbox.no_colisiona(hitbox_bala.get_hitbox_rect())) {
