@@ -156,33 +156,33 @@ void GameLoop::enviar_estado_juego_si_cambio(Pato& pato, EstadoJuego& estado_ant
 void GameLoop::avanzar_balas_direccion_izquierda(std::__cxx11::list<Bala>::iterator& it){
     if (it->get_direccion() == DIRECCION_IZQUIERDA) {
         it->set_pos_x(it->get_pos_x() - 5);
-        // std::cout << "pos x bala:" << static_cast<int>(it->get_pos_x()) << std::endl;
+        //std::cout << "pos x bala avance:" << static_cast<int>(it->get_pos_x()) << std::endl;
     }
 }
 
 void GameLoop::avanzar_balas_direccion_derecha(std::__cxx11::list<Bala>::iterator& it){
     if (it->get_direccion() == DIRECCION_DERECHA) {
         it->set_pos_x(it->get_pos_x() + 5);
-        // std::cout << "pos x bala:" << static_cast<int>(it->get_pos_x()) << std::endl;
+        //std::cout << "pos x bala avance :" << static_cast<int>(it->get_pos_x()) << std::endl;
     }
 }
 
 void GameLoop::avanzar_balas_direccion_arriba(std::__cxx11::list<Bala>::iterator& it){
     if (it->get_direccion() == DIRECCION_ARRIBA) {
         it->set_pos_y(it->get_pos_y() - 5);
-        // std::cout << "pos y bala:" << static_cast<int>(it->get_pos_y()) << std::endl;
+        //std::cout << "pos y bala avance :" << static_cast<int>(it->get_pos_y()) << std::endl;
     }
 }
 
 void GameLoop::eliminar_balas_fuera_de_alcance(std::__cxx11::list<Bala>::iterator& it){
     if (it->get_pos_x() >= it->get_pos_x_final() && it->get_pos_y() >= it->get_pos_y_final() && it->get_direccion() == DIRECCION_DERECHA) {
-        // std::cout << "se elimina la bala que va a la derecha" << std::endl;
+        //std::cout << "se elimina la bala que va a la derecha" << std::endl;
         it = ultimo_estado.balas.erase(it);
     } else if (it->get_pos_x() <= it->get_pos_x_final() && it->get_pos_y() <= it->get_pos_y_final() && it->get_direccion() == DIRECCION_IZQUIERDA) {
-        // std::cout << "se elimina la bala que va a la izquierda" << std::endl;
+        //std::cout << "se elimina la bala que va a la izquierda" << std::endl;
         it = ultimo_estado.balas.erase(it);
     } else if (it->get_pos_y() <= it->get_pos_y_final() && it->get_direccion() == DIRECCION_ARRIBA) {
-        // std::cout << "se elimina la bala que va arriba" << std::endl;
+        //std::cout << "se elimina la bala que va arriba" << std::endl;
         it = ultimo_estado.balas.erase(it);
     } else {
         ++it;
@@ -279,25 +279,16 @@ void GameLoop::calcular_colisiones_tiles(Mapa mapa){
 }
 
 
-void GameLoop::calcular_colisiones_balas(EstadoJuego estado_juego){
-    for(Pato& pato : estado_juego.patos){
-        for (auto it = ultimo_estado.balas.begin(); it != ultimo_estado.balas.end(); ) {
-            if(pato.colisiona_con_bala(*it) == Balas && (it->get_id_origen() != pato.get_id())){
-
-                std::cout<<"===BALA COLISIONA CON PATO==="<<std::endl;
+void GameLoop::calcular_colisiones_balas(){
+    for(Pato& pato : ultimo_estado.patos){
+        for (auto it = ultimo_estado.balas.begin(); it != ultimo_estado.balas.end();) {
+            if(pato.colisiona_con_bala(*it) == Balas){
                 it = ultimo_estado.balas.erase(it);  
             }else{
                 it++;
             }
-            //if(pato.get_hitbox().colisiona_izquierda_con(bala.get_hitbox().get_hitbox_rect())){
-            //    std::cout<<pato.get_pos_x()<<" ==== "<<pato.get_pos_y() <<std::endl;
-//
-            //    
-            //}
         }
-
     }
-
 }
 
 void GameLoop::actualizar_hitbox_entidades(){
@@ -328,11 +319,15 @@ void GameLoop::run() {
     Arma* arma = new Arma(1, pos_x, pos_y, 15, 300);
     pato.tomar_arma(arma);
     ultimo_estado.patos.emplace_back(pato);
-    // Pato pato_dos(4, pos_x +20, pos_y, 0);
-    // std::cout<<static_cast<int>(pato_dos.get_id())<<std::endl;
-    // Arma* arma_dos = new Arma(1, pos_x+20, pos_y, 15, 300);
-    // pato_dos.tomar_arma(arma_dos);
-    // ultimo_estado.patos.emplace_back(pato_dos);
+    pos_x+=20;
+    std::cout<<pos_x<<std::endl;
+    Pato pato_dos(4, pos_x , pos_y, 0);
+    std::cout<<static_cast<int>(pato_dos.get_id())<<std::endl;
+    Arma* arma_dos = new Arma(1, pos_x, pos_y, 15, 300);
+    pato_dos.tomar_arma(arma_dos);
+    
+
+    ultimo_estado.patos.emplace_back(pato_dos);
     cola_estados_juego.push(ultimo_estado);
     float tiempo_ultimo_frame = SDL_GetTicks();
     calcular_colisiones_tiles(mapa);
@@ -349,7 +344,7 @@ void GameLoop::run() {
             }
             actualizar_hitbox_entidades();
             aplicar_logica();
-            calcular_colisiones_balas(ultimo_estado);
+            calcular_colisiones_balas();
             enviar_estado_juego_si_cambio(pato, estado_anterior);
             drop_and_rest(tiempo_ultimo_frame);
         }

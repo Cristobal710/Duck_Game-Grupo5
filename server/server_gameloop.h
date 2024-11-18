@@ -44,7 +44,7 @@ private:
     void actualizar_hitbox_entidades();
     void aplicar_gravedad();
     void aplicar_estados();
-    void calcular_colisiones_balas(EstadoJuego estado_juego);
+    void calcular_colisiones_balas();
 
 public:
     GameLoop(Queue<EstadoJuego>& cola_estados_juego,
