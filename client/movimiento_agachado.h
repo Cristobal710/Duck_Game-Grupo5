@@ -14,6 +14,7 @@ class MovimientoAgachado : public Movimiento {
     SDL2pp::Rect rect_inicio;
     SDL2pp::Rect rect_dibujado;
     SDL2pp::Renderer& renderer;
+    SDL_Color color;
 
     void frames_agachado(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet);
     
@@ -21,7 +22,7 @@ class MovimientoAgachado : public Movimiento {
     void mostrar_frames_levantarse(int it);
     
     public:
-    MovimientoAgachado(SDL2pp::Renderer& renderer, const std::string& pato_path, int pos_x, int pos_y);
+    MovimientoAgachado(SDL2pp::Renderer& renderer, const std::string& pato_path, int pos_x, int pos_y, SDL_Color color);
     void pato_agachado(uint8_t& esta_agachado, int& pos_x, int& pos_y, float zoom_factor, uint8_t direccion_pato);
     void mostrar_muerte(int pos_x, int pos_y, float zoom_factor, uint8_t direccion_pato);
 };
