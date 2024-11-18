@@ -20,7 +20,8 @@ uint16_t pato_id, SDL_Color color):
     municion_disponible(0),
     tipo_arma(TipoArma::Granada),
     id_jugador(pato_id),
-    color(color)
+    color(color),
+    ya_dibujado_muerto(false)
 {}
 
 
@@ -47,11 +48,6 @@ PatoInterfaz::PatoInterfaz(PatoInterfaz&& other) noexcept
 void PatoInterfaz::dibujar(int it, float zoom_factor) {
     int pos_x = rect_dibujado.GetX();
     int pos_y = rect_dibujado.GetY();
-
-    if(!vivo){
-        movimiento_pato_agachado.mostrar_muerte(pos_x, pos_y, zoom_factor, direccion_pato);
-        return;
-    }
     
     if(se_tira_al_piso == TIRAR_PISO || se_tira_al_piso == DEJAR_TIRAR_PISO){
         movimiento_pato_agachado.pato_agachado(se_tira_al_piso, pos_x, pos_y, zoom_factor, direccion_pato);
@@ -149,6 +145,16 @@ bool PatoInterfaz::mismo_id(uint16_t id) {
 void PatoInterfaz::set_esta_vivo(bool estado) { vivo = estado; }
 
 bool PatoInterfaz::esta_vivo() { return vivo; }
+
+void PatoInterfaz::dibujar_muerto(float zoom_factor) {
+    if(ya_dibujado_muerto){
+        return;
+    }
+    int pos_x = rect_dibujado.GetX();
+    int pos_y = rect_dibujado.GetY();
+    movimiento_pato_agachado.mostrar_muerte(pos_x, pos_y, zoom_factor, direccion_pato);
+    ya_dibujado_muerto = true;
+}
 
 int PatoInterfaz::pos_x() { return rect_dibujado.GetX(); }
 

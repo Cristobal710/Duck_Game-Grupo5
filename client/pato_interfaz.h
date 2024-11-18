@@ -42,6 +42,7 @@ private:
     TipoArma tipo_arma;
     uint16_t id_jugador;
     SDL_Color color;
+    bool ya_dibujado_muerto;
 
     ArmaInterfaz tomar_arma();
 
@@ -62,6 +63,7 @@ public:
     bool mismo_id(uint16_t id);
     void set_esta_vivo(bool estado);
     bool esta_vivo();
+    void dibujar_muerto(float zoom_factor);
     int pos_x();
     int pos_y();
     int get_w();

@@ -119,8 +119,13 @@ int MapaInterfaz::dibujar(int it){
     //     tile.dibujar(zoom_factor, pos_x, pos_y);
     //     contador++;
     // }
+
     for (PatoInterfaz& pato : patos){
-        pato.dibujar(it, zoom_factor);
+        if(pato.esta_vivo()){
+            pato.dibujar(it, zoom_factor);
+        } else {
+            pato.dibujar_muerto(zoom_factor);
+        }
     }
     
     for (BalaInterfaz& bala : balas){
