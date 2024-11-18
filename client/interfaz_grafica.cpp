@@ -38,12 +38,19 @@ void InterfazGrafica::iniciar() {
 
     // Create lobby instance
     Lobby lobby(renderer.Get());
-    bool partida_empezada = false;
-    while (!partida_empezada) {
+    while (!lobby.empezo()) {
         lobby.dibujar();
-        partida_empezada = lobby.manejar_eventos();
+        lobby.manejar_eventos();
     }
 
+    // aca hay q mandar cuantos jugadores selecciono y si creo una partida nueva
+    // o se unio a una existente al servidor
+    //por ahora:
+    int cant_jugadores = lobby.cantidad_jugadores();
+    while(cant_jugadores != 1){
+        //loop
+    }
+    
     std::string audio_fondo_path = "../resources/sounds/background_music.mp3";
     iniciar_audio(audio_fondo_path);
     MapaInterfaz mapa_a_jugar(renderer);
