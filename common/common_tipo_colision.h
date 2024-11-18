@@ -2,7 +2,8 @@
 #define TIPO_COLISION_H
 
 enum TipoColision {
-    Pared,
+    ParedIzquierda,
+    ParedDerecha,
     Piso,
     Techo,
     Balas,

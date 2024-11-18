@@ -20,7 +20,7 @@
     "spawns": [
         {
             "x": 384,
-            "y": 352
+            "y": 100
         },
         {
             "x": 736,
@@ -135,11 +135,6 @@
         {
             "texture": "../resources/TileSets/greyBlock.png",
             "x": 656,
-            "y": 400
-        },
-        {
-            "texture": "../resources/TileSets/greyBlock.png",
-            "x": 656,
             "y": 384
         },
         {
@@ -204,23 +199,13 @@
         },
         {
             "texture": "../resources/TileSets/greyBlock.png",
-            "x": 320,
-            "y": 400
-        },
-        {
-            "texture": "../resources/TileSets/greyBlock.png",
-            "x": 608,
-            "y": 400
-        },
-        {
-            "texture": "../resources/TileSets/greyBlock.png",
-            "x": 768,
-            "y": 400
-        },
-        {
-            "texture": "../resources/TileSets/greyBlock.png",
             "x": 768,
             "y": 384
+        },
+        {
+            "texture": "../resources/TileSets/greyBlock.png",
+            "x": 416,
+            "y": 358
         }
     ]
 }

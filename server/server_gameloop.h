@@ -45,6 +45,8 @@ private:
     void aplicar_gravedad();
     void aplicar_estados();
     void calcular_colisiones_balas();
+    void eliminar_patos_muertos();
+    bool validar_movimiento(Pato& pato, TipoColision tipo_colision);
 
 public:
     GameLoop(Queue<EstadoJuego>& cola_estados_juego,
