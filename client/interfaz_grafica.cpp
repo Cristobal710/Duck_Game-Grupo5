@@ -58,7 +58,6 @@ void InterfazGrafica::iniciar() {
     
     std::set<SDL_Keycode> keysHeld;
     int it = 0;
-    int pato_vivo = 0;
     while (correr_programa) {
         float tiempo_ultimo_frame = SDL_GetTicks();
         
@@ -66,15 +65,12 @@ void InterfazGrafica::iniciar() {
         manejar_eventos(keysHeld);
         obtener_estado_juego(mapa_a_jugar);
         
-        pato_vivo = mapa_a_jugar.dibujar(it);
+        mapa_a_jugar.dibujar(it);
         renderer.Present();
             
         //ahora calculamos cuanto tardamos en hacer todo, si nos pasamos, drop & rest.
         drop_rest(tiempo_ultimo_frame, it);
-        
-        if(pato_vivo == 1){
-            correr_programa = false;
-        }
+
     }
 
     //Mix_FreeMusic(music);

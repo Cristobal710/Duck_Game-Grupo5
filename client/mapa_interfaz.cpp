@@ -121,10 +121,8 @@ int MapaInterfaz::dibujar(int it){
     // }
     for (PatoInterfaz& pato : patos){
         pato.dibujar(it, zoom_factor);
-        if (!pato.esta_vivo()){
-            return ERROR;
-        }
     }
+    
     for (BalaInterfaz& bala : balas){
         bala.dibujar(it);
     }
