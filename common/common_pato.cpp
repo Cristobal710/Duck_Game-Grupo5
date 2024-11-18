@@ -71,11 +71,7 @@ void Pato::planear() { pos_y--; }
 void Pato::caer() { 
     pos_y+=3; 
     estado.set_caer();
-    contador_caer++;
-    if (contador_caer == 5) {
-        estado.set_dejar_de_caer();
-        contador_caer = 0;
-    }
+   
 }
 
 void Pato::tomar_arma(Arma* nuevaArma) { arma = nuevaArma; }
@@ -200,8 +196,8 @@ TipoColision Pato::colisiona_con_bala(Bala& bala) {
         return Nada;
     }
     if (hitbox.colisiona_arriba_con(hitbox_bala.get_hitbox_rect()) || hitbox.colisiona_abajo_con(hitbox_bala.get_hitbox_rect()) || hitbox.colisiona_izquierda_con(hitbox_bala.get_hitbox_rect()) || hitbox.colisiona_derecha_con(hitbox_bala.get_hitbox_rect())) {
+        std::cout << "pos x bala:" << static_cast<int>(hitbox_bala.get_hitbox_rect().x) << std::endl;
         return Balas;
     }
-    std::cout << "pos x bala:" << static_cast<int>(hitbox_bala.get_hitbox_rect().x) << std::endl;
     return Nada;
 }

@@ -28,8 +28,11 @@ Bala::Bala(uint16_t id, uint16_t pos_x, uint16_t pos_y, uint16_t pos_x_final, ui
 
 void Bala::calcular_hitbox() {
     hitbox = HitBox(pos_x, pos_y, ANCHO_BALA, ALTO_BALA);
+    std::cout<<"top der "<<hitbox.get_hitbox_rect().GetTopRight()<<std::endl;
+    std::cout<<"top izq "<<hitbox.get_hitbox_rect().GetTopLeft() <<std::endl;   
+    std::cout<<"bott der "<<hitbox.get_hitbox_rect().GetBottomRight()<<std::endl;
+    std::cout<<"bott izq "<<hitbox.get_hitbox_rect().GetBottomLeft()<<std::endl;
 }
-
 uint16_t Bala::get_pos_x_final() { return pos_x_final; }
 
 uint16_t Bala::get_pos_y_final() { return pos_y_final; }
