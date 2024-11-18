@@ -15,6 +15,7 @@ private:
     SDL2pp::Rect rect_inicio;
     SDL2pp::Rect rect_dibujado;
     SDL2pp::Renderer& renderer;
+    SDL_Color color;
 
     void frames_salto(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet);
     void frames_caida(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet);
@@ -27,7 +28,7 @@ private:
                     int num_frames, int offset_x, int pixeles_x, int pixeles_y);
 
 public:
-    MovimientoSalto(SDL2pp::Renderer& renderer, const std::string& pato_path, int pos_x, int pos_y);
+    MovimientoSalto(SDL2pp::Renderer& renderer, const std::string& pato_path, int pos_x, int pos_y, SDL_Color color);
     void pato_salta(uint8_t& movimiento, int pos_x, int pos_y, int it, float zoom_factor, uint8_t direccion);
 };
 

@@ -4,19 +4,21 @@
 #define NUM_FRAMES_PATO_AGACHADO 5
 
 MovimientoAgachado::MovimientoAgachado(SDL2pp::Renderer& renderer, const std::string& pato_path, 
-int pos_x, int pos_y):
+int pos_x, int pos_y, SDL_Color color):
     movimiento_pato_agachado(),
     puntero_agachado_derecha(0),
     puntero_agachado_izquierda(0),
     rect_inicio(1, 8, PIXEL_PATO, PIXEL_PATO),
     rect_dibujado(pos_x, pos_y, PIXEL_PATO, PIXEL_PATO),
-    renderer(renderer)
+    renderer(renderer),
+    color(color)
 {
     SDL2pp::Surface sprite_pato(IMG_Load(pato_path.c_str()));
     frames_agachado(renderer, sprite_pato);
 }
 
 void MovimientoAgachado::frames_agachado(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet) {
+    aplicar_color(sprite_sheet, color);
     cargar_frames(renderer, sprite_sheet, 70, movimiento_pato_agachado, NUM_FRAMES_PATO_AGACHADO);
 }
 
@@ -46,6 +48,7 @@ void MovimientoAgachado::mostrar_frames_levantarse(int it) {
 
 void MovimientoAgachado::mostrar_muerte(int pos_x, int pos_y, float zoom_factor, uint8_t direccion_pato) {
     set_zoom_in(zoom_factor, rect_dibujado, pos_x, pos_y);
+    renderer.SetDrawColor(color.r, color.g, color.b, color.a);
     
     if (direccion_pato == DIRECCION_DERECHA){
         renderer.Copy(movimiento_pato_agachado[1], rect_inicio, rect_dibujado);
@@ -59,6 +62,7 @@ void MovimientoAgachado::mostrar_muerte(int pos_x, int pos_y, float zoom_factor,
 void MovimientoAgachado::pato_agachado(uint8_t& esta_agachado, int& pos_x, int& pos_y, float zoom_factor,
 uint8_t direccion_pato) {
     set_zoom_in(zoom_factor, rect_dibujado, pos_x, pos_y);
+    renderer.SetDrawColor(color.r, color.g, color.b, color.a);
     if (esta_agachado == TIRAR_PISO) {
         mostrar_frames_agachado(direccion_pato);
         //std::cout << "me agacho" << std::endl;

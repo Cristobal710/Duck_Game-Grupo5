@@ -4,7 +4,7 @@
 #include <SDL2/SDL_image.h>
 
 PatoInterfaz::PatoInterfaz(SDL2pp::Renderer& renderer, const std::string& pato_path, int pos_inicial_x, int pos_inicial_y,
-uint16_t pato_id):
+uint16_t pato_id, SDL_Color color):
     vivo(true),
     estado_pato_movimiento(BYTE_NULO),
     estado_pato_salto(BYTE_NULO),
@@ -14,12 +14,13 @@ uint16_t pato_id):
     estado_balas(BYTE_NULO),
     renderer(renderer),
     rect_dibujado(pos_inicial_x, pos_inicial_y, PIXEL_PATO, PIXEL_PATO),
-    movimiento_pato_lateral(renderer, pato_path, 150, 150),
-    movimiento_pato_salto(renderer, pato_path, 150, 150),
-    movimiento_pato_agachado(renderer, pato_path, 150, 150),
+    movimiento_pato_lateral(renderer, pato_path, 150, 150, color),
+    movimiento_pato_salto(renderer, pato_path, 150, 150, color),
+    movimiento_pato_agachado(renderer, pato_path, 150, 150, color),
     municion_disponible(0),
     tipo_arma(TipoArma::Granada),
-    id_jugador(pato_id)
+    id_jugador(pato_id),
+    color(color)
 {}
 
 
@@ -38,7 +39,8 @@ PatoInterfaz::PatoInterfaz(PatoInterfaz&& other) noexcept
     movimiento_pato_agachado(std::move(other.movimiento_pato_agachado)),
     municion_disponible(other.municion_disponible),
     tipo_arma(other.tipo_arma),
-    id_jugador(other.id_jugador)
+    id_jugador(other.id_jugador),
+    color(other.color)
 {}
 
 

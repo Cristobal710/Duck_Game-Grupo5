@@ -5,13 +5,14 @@
 #define NUM_FRAMES_CAE_PATO 2
 
 MovimientoSalto::MovimientoSalto(SDL2pp::Renderer& renderer, const std::string& pato_path,
-                                 int pos_x, int pos_y):
+                                 int pos_x, int pos_y, SDL_Color color):
     salto_frames(),
     caida_frames(),
     puntero_salto(0),
     rect_inicio(0, 0, PIXEL_PATO, PIXEL_PATO),
     rect_dibujado(pos_x, pos_y, PIXEL_PATO, PIXEL_PATO),
-    renderer(renderer) 
+    renderer(renderer),
+    color(color)
 {
     SDL2pp::Surface sprite_pato(IMG_Load(pato_path.c_str()));
     frames_salto(renderer, sprite_pato);
@@ -19,10 +20,12 @@ MovimientoSalto::MovimientoSalto(SDL2pp::Renderer& renderer, const std::string& 
 }
 
 void MovimientoSalto::frames_salto(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet) {
+    aplicar_color(sprite_sheet, color);
     cargar_frames(renderer, sprite_sheet, 38, salto_frames, NUM_FRAMES_SALTA_PATO, 1, PIXEL_PATO, PIXEL_PATO);
 }
 
 void MovimientoSalto::frames_caida(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet) {
+    aplicar_color(sprite_sheet, color);
     cargar_frames(renderer, sprite_sheet, 38, caida_frames, NUM_FRAMES_CAE_PATO, 97, PIXEL_PATO, PIXEL_PATO);
 }
 
@@ -46,6 +49,7 @@ void MovimientoSalto::mostrar_frame_caida(int it, uint8_t direccion) {
 
 void MovimientoSalto::pato_salta(uint8_t& movimiento, int pos_x, int pos_y, int it, float zoom_factor, uint8_t direccion) {
     set_zoom_in(zoom_factor, rect_dibujado, pos_x, pos_y);
+    renderer.SetDrawColor(color.r, color.g, color.b, color.a);
 
     if (movimiento == SALTAR_ALETEAR) {
         mostrar_frame_salto(it, direccion);

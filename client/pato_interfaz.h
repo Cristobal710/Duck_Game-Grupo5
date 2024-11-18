@@ -41,11 +41,12 @@ private:
     uint8_t municion_disponible;
     TipoArma tipo_arma;
     uint16_t id_jugador;
+    SDL_Color color;
 
     ArmaInterfaz tomar_arma();
 
 public:
-    PatoInterfaz(SDL2pp::Renderer& renderer, const std::string& pato_path, int pos_x, int pos_y, uint16_t pato_id);
+    PatoInterfaz(SDL2pp::Renderer& renderer, const std::string& pato_path, int pos_x, int pos_y, uint16_t pato_id, SDL_Color color);
     ~PatoInterfaz() override = default;
     
      // Move constructor

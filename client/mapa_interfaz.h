@@ -23,6 +23,8 @@ class MapaInterfaz {
     bool mapa_procesado;
     Camara camara;
 
+    SDL_Color generar_color(int index);
+
     public:
     MapaInterfaz(SDL2pp::Renderer& renderer);
     int dibujar(int it);

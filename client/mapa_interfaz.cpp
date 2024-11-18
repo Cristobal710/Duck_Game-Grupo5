@@ -18,10 +18,16 @@ void MapaInterfaz::agregar_tile(std::string tile_path, int x, int y){
     tiles.emplace_back(std::move(tile));
 }
 
-void MapaInterfaz::agregar_spawn(uint16_t id_jugador, int x, int y) {
-    //id_jugador.clear();
+SDL_Color MapaInterfaz::generar_color(int index) {
+    uint8_t r = (index * 50) % 256;
+    uint8_t g = ((index + 1) * 70) % 256;
+    uint8_t b = ((index + 2) * 90) % 256;
+    return {r, g, b, 255};
+}
 
-    PatoInterfaz pato(renderer, "../resources/Grey-Duck.png", x, y, id_jugador);
+void MapaInterfaz::agregar_spawn(uint16_t id_jugador, int x, int y) {
+    SDL_Color color = generar_color(id_jugador);
+    PatoInterfaz pato(renderer, "../resources/Grey-Duck.png", x, y, id_jugador, color);
     patos.emplace_back(std::move(pato));
 }
 

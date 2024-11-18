@@ -14,7 +14,13 @@ private:
     SDL_Texture* fondo_texture;
     SDL_Texture* boton_texture;
     SDL_Rect partida_nueva_rect;
+    SDL_Rect partida_existente_rect;
+    SDL_Rect un_jugador_rect;
+    SDL_Rect dos_jugadores_rect;
+    bool seleccion_cant_jugadores;
     bool empezo_partida;
+    int cant_jugadores;
+
 
     void cargar_fondo();
     void cargar_boton(std::string& texto, SDL_Rect& boton_rect);
@@ -24,8 +30,9 @@ private:
 public:
     Lobby(SDL_Renderer* renderer);
     void dibujar();
-    bool manejar_eventos();
+    void manejar_eventos();
     bool empezo() const;
+    int cantidad_jugadores() const;
 };
 
 #endif //LOBBY_H

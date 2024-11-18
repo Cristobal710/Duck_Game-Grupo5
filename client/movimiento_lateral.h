@@ -14,6 +14,7 @@ class MovimientoLateral : public Movimiento {
     SDL2pp::Rect rect_inicio;
     SDL2pp::Rect rect_dibujado;
     SDL2pp::Renderer& renderer;
+    SDL_Color color;
 
     void frames_movimientos(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet);
    
@@ -22,7 +23,7 @@ class MovimientoLateral : public Movimiento {
     void mostrar_frame(uint8_t& direccion_pato);
 
     public:
-    MovimientoLateral(SDL2pp::Renderer& renderer, const std::string& pato_path, int pos_x, int pos_y);
+    MovimientoLateral(SDL2pp::Renderer& renderer, const std::string& pato_path, int pos_x, int pos_y, SDL_Color color);
     void pato_movimiento(uint8_t& movimiento, uint8_t& direccion_pato, int& pos_x, int& pos_y, int it, float zoom_factor);
 };
 
