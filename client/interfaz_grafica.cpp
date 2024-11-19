@@ -231,7 +231,7 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
             int pos_y = static_cast<int>(pato.get_pos_y());
             mapa.agregar_spawn(pato.get_id(), pos_x, pos_y);
         }
-        mapa.agregar_spawn(8, 736, 352);
+        mapa.agregar_spawn(8, 1100, 600);
 
         // procesar cajas 
         std::map<std::string, std::vector<SDL_Point>> cajas = mapa_a_jugar.getCajas();
