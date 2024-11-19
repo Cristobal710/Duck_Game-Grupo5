@@ -184,6 +184,7 @@ void ServerProtocolo::enviar_bala(Bala& bala) {
     enviar_dos_bytes(bala.get_pos_x());
     enviar_dos_bytes(bala.get_pos_y());
     enviar_byte(bala.get_direccion());
+    enviar_byte(bala.get_tipo_arma());
 }
 
 void ServerProtocolo::enviar_granada(Granada& granada) {
