@@ -87,6 +87,7 @@ cd build/
 
 ```
 
+<<<<<<<< HEAD:Entregables/Manual de usuario.md
 3. Una vez dentro, el editor tiene una serie de botones que despliegan opciones para personalizar su propio mapa: 
 
 ```
