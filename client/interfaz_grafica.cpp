@@ -257,28 +257,38 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
             pato_prueba.actualizar_estado(pato_juego.estado.get_estado_movimiento(), ESTADO_MOVIMIENTO);
             pato_prueba.actualizar_estado(pato_juego.estado.get_estado_salto(), ESTADO_SALTO);
             pato_prueba.actualizar_estado(pato_juego.get_direccion(), ESTADO_DIRECCION);
+            if (pato_juego.get_direccion() == BYTE_NULO){
+                pato_prueba.actualizar_estado(DIRECCION_DERECHA, ESTADO_DIRECCION);
+            }
             pato_prueba.actualizar_estado(pato_juego.estado.get_estado_agachado(), ESTADO_PISO);
             pato_prueba.actualizar_equipamiento(pato_juego.tiene_arma(), ESTADO_ARMA);
             pato_prueba.actualizar_equipamiento(pato_juego.estado.get_estado_disparo(), ESTADO_BALAS);
             if (pato_juego.tiene_arma() == TOMAR_ARMA) {
+                pato_prueba.actualizar_arma(pato_juego.get_arma()->get_tipo_arma());
                 pato_prueba.actualizar_equipamiento(pato_juego.get_arma()->get_municion_disponible(), ESTADO_MUNICION);
             }
             // pato_prueba.actualizar_equipamiento(pato_juego.get_arma()->get_municion_disponible(), ESTADO_MUNICION);
             pato_prueba.actualizar_equipamiento(pato_juego.get_armadura_equipada(), ESTADO_ARMADURA);
             pato_prueba.actualizar_equipamiento(pato_juego.get_casco_equipado(), ESTADO_CASCO);
             //pato_prueba.get_arma().set_tipo_arma(pato_juego.get_arma().get_tipo_arma());
-        
-            for (Bala balas_juego: ultimo_estado.balas) {
+    
+            //std::cout << "municion:" << static_cast<int>(pato_juego.get_arma()->get_municion_disponible()) << std::endl;
+            if (pato_juego.get_id() == 4){
+                std::cout << "pos x: " << static_cast<int>(pato_juego.get_pos_x()) << std::endl;
+                std::cout << "pos y: " << static_cast<int>(pato_juego.get_pos_y()) << std::endl;
+                std::cout << "direccion: " << static_cast<int>(pato_juego.get_direccion()) << std::endl;
+                std::cout << "estado movimiento: " << static_cast<int>(pato_juego.estado.get_estado_movimiento()) << std::endl;
+            }
+        }
+        hubo_estado_nuevo = true;
+        //mostrar balas
+        for (Bala balas_juego: ultimo_estado.balas) {
                 mapa.agregar_bala("../resources/weapons/grenadePin.png", balas_juego.get_pos_x(),
                 balas_juego.get_pos_y(), balas_juego.get_direccion());
                 // pato_prueba.actualizar_posicion_bala(balas_juego.get_pos_x(), balas_juego.get_pos_y());
                 // std::cout << "pos x bala:" << static_cast<int>(balas_juego.get_pos_x()) << std::endl;
                 // std::cout << "pos y bala:" << static_cast<int>(balas_juego.get_pos_y()) << std::endl;
             }
-            //std::cout << "municion:" << static_cast<int>(pato_juego.get_arma()->get_municion_disponible()) << std::endl;
-        }
-        hubo_estado_nuevo = true;
-        //mostrar balas
     } 
     if (!hubo_estado_nuevo) {
         for (Pato pato_juego: ultimo_estado.patos) {

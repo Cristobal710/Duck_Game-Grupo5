@@ -38,7 +38,8 @@ void ClienteProtocolo::recibir_pato(std::list<Pato>& patos) {
     if (tiene_arma == TOMAR_ARMA) {
         uint16_t arma_id = recibir_dos_bytes(cerrado);
         uint8_t municion_disponible = recibir_byte(cerrado);
-        Arma* arma = new Arma(arma_id, pos_x, pos_y, municion_disponible, 30);
+        uint8_t tipo_arma = recibir_byte(cerrado);
+        Arma* arma = new Arma(arma_id, pos_x, pos_y, municion_disponible, 30, tipo_arma);
         pato.tomar_arma(arma);
     }
     if (static_cast<bool>(apunta_arriba)) {
@@ -107,7 +108,8 @@ void ClienteProtocolo::recibir_arma(std::list<Arma>& armas) {
     uint8_t pos_y = recibir_byte(cerrado);
     uint8_t alcance = recibir_byte(cerrado);
     uint8_t municion_disponible = recibir_byte(cerrado);
-    Arma arma(id, pos_x, pos_y, alcance, municion_disponible);
+    uint8_t tipo_arma = recibir_byte(cerrado);
+    Arma arma(id, pos_x, pos_y, alcance, municion_disponible, tipo_arma);
     armas.push_back(arma);
 }
 
@@ -131,8 +133,8 @@ void ClienteProtocolo::recibir_bala(std::list<Bala>& balas) {
     uint16_t pos_x = recibir_dos_bytes(cerrado);
     uint16_t pos_y = recibir_dos_bytes(cerrado);
     uint8_t direccion = recibir_byte(cerrado);
-
-    Bala bala(id, pos_x, pos_y, 0, 0, direccion);
+    uint8_t tipo_arma = recibir_byte(cerrado);
+    Bala bala(id, pos_x, pos_y, 0, 0, direccion, tipo_arma);
     balas.push_back(bala);
 }
 

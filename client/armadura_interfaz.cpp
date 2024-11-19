@@ -6,7 +6,7 @@ ArmaduraInterfaz::ArmaduraInterfaz(SDL2pp::Renderer& renderer, int pos_x, int po
         renderer(renderer),
         armadura(),
         rect_inicio_armadura(0, 0, PIXEL_ARMADURA, PIXEL_ARMADURA),
-        rect_dibujado_armadura(pos_x, (pos_y+13), PIXEL_ARMADURA, PIXEL_ARMADURA)
+        rect_dibujado_armadura((pos_x+10), (pos_y+15), PIXEL_ARMADURA, PIXEL_ARMADURA)
 {
     SDL2pp::Surface sprite_armadura(IMG_Load("../resources/armors/chestPlatePickup.png"));
     cargar_frames(renderer, sprite_armadura, 0, armadura, 1, 0, PIXEL_ARMADURA, PIXEL_ARMADURA);

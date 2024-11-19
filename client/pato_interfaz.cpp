@@ -115,6 +115,30 @@ void PatoInterfaz::actualizar_equipamiento(uint8_t estado_nuevo, std::string tip
     tipo_estado.clear();
 }
 
+void PatoInterfaz::actualizar_arma(uint8_t arma) {
+    if (arma == GRANADA){
+        tipo_arma = TipoArma::Granada;
+    } else if (arma == BANANA){
+        tipo_arma = TipoArma::Banana;
+    } else if (arma == PEW_PEW_LASER){
+        tipo_arma = TipoArma::Pew_Pew_Laser;
+    } else if (arma == LASER_RIFLE){
+        tipo_arma = TipoArma::Laser_Rifle;
+    } else if (arma == AK_47){
+        tipo_arma = TipoArma::AK47;
+    } else if (arma == PISTOLA_DE_DUELOS){
+        tipo_arma = TipoArma::Pistola_Duelos;
+    } else if (arma == PISTOLA_COWBOY){
+        tipo_arma = TipoArma::Pistola_Cowboy;
+    } else if (arma == MAGNUM){
+        tipo_arma = TipoArma::Magnum;
+    } else if (arma == ESCOPETA){
+        tipo_arma = TipoArma::Escopeta;
+    } else if (arma == SNIPER){
+        tipo_arma = TipoArma::Sniper;
+    }
+}
+
 ArmaInterfaz PatoInterfaz::tomar_arma() {
     std::string arma_path; 
     if(tipo_arma == TipoArma::Granada){

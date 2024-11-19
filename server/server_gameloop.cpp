@@ -9,7 +9,7 @@
 #define DEATH_RAY "Death ray"
 #define SHOTGUN "Shotgun"
 
-#define ALTO_TILE 14
+#define ALTO_TILE 16
 #define ANCHO_TILE 16
 
 GameLoop::GameLoop(Queue<EstadoJuego>& cola_estados_juego,
@@ -145,14 +145,14 @@ void GameLoop::aplicar_estados(){
 void GameLoop::crear_bala(Pato& pato){  
     if (!pato.esta_apuntando_arriba()){
         if (pato.get_direccion() == DIRECCION_DERECHA) {
-            Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x() + pato.get_arma()->get_alcance(), pato.get_pos_y(), pato.get_direccion(), pato.get_id());
+            Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x() + pato.get_arma()->get_alcance(), pato.get_pos_y(), pato.get_direccion(), pato.get_arma()->get_tipo_arma(), pato.get_id());
             ultimo_estado.balas.push_back(bala);
         } else {
-            Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x() - pato.get_arma()->get_alcance(), pato.get_pos_y(), pato.get_direccion(), pato.get_id());
+            Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x() - pato.get_arma()->get_alcance(), pato.get_pos_y(), pato.get_direccion(), pato.get_arma()->get_tipo_arma(), pato.get_id());
             ultimo_estado.balas.push_back(bala);
         }
     } else {
-        Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x(), pato.get_pos_y() - pato.get_arma()->get_alcance(), pato.get_direccion(), pato.get_id());
+        Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x(), pato.get_pos_y() - pato.get_arma()->get_alcance(), pato.get_direccion(), pato.get_arma()->get_tipo_arma(), pato.get_id());
         ultimo_estado.balas.push_back(bala);
     }
 }
@@ -357,12 +357,12 @@ void GameLoop::run() {
     //     }
     // }
     Pato pato(3, pos_x, pos_y, 0);
-    Arma* arma = new Arma(1, pos_x, pos_y, 15, 300);
+    Arma* arma = new Arma(1, pos_x, pos_y, 15, 200, PEW_PEW_LASER);
     pato.tomar_arma(arma);
     ultimo_estado.patos.emplace_back(pato);
 
     Pato pato_dos(4, pos_x+20, pos_y, 0);
-    Arma* arma_dos = new Arma(1, pos_x, pos_y, 15, 300);
+    Arma* arma_dos = new Arma(2, pos_x, pos_y, 15, 400, SNIPER);
     pato_dos.tomar_armadura();
     pato_dos.equipar_armadura();
     pato_dos.tomar_casco();
@@ -371,9 +371,9 @@ void GameLoop::run() {
     ultimo_estado.patos.emplace_back(pato_dos);
 
     cola_estados_juego.push(ultimo_estado);
-    float tiempo_ultimo_frame = SDL_GetTicks();
     calcular_colisiones_tiles(mapa);
 
+    float tiempo_ultimo_frame = SDL_GetTicks();
     while (!(*esta_cerrado)) {
         //eliminar_clientes_cerrados();
         // ultimo_estado.mapa = Mapa();

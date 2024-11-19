@@ -137,10 +137,12 @@ void Pato::recibir_danio() {
     // sino tiene armadura o casco
     if (casco_equipado) {
         casco_equipado = false;
+        tomo_casco = false;
         return;
     }
     if (armadura_equipada) {
         armadura_equipada = false;
+        tomo_armadura = false;
         return;
     }
     morir();
