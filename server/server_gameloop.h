@@ -47,6 +47,7 @@ private:
     void calcular_colisiones_balas();
     void eliminar_patos_muertos();
     bool validar_movimiento(Pato& pato, TipoColision tipo_colision);
+    void eliminar_balas_si_colisionan(std::__cxx11::list<Bala>::iterator& it);
 
 public:
     GameLoop(Queue<EstadoJuego>& cola_estados_juego,

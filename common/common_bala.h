@@ -2,6 +2,7 @@
 #define BALA_H
 
 #include "common_entidad.h"
+#include "common_tipo_colision.h"
 
 class Bala: public Entidad {
 protected:
@@ -26,6 +27,7 @@ public:
     uint8_t get_direccion();
     uint16_t get_id_origen();
     uint8_t get_tipo_arma();
+    TipoColision colisiona_con_tile(SDL2pp::Rect hitbox_tile);
 };
 
 #endif

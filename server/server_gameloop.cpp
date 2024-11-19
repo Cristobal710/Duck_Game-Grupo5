@@ -8,6 +8,7 @@
 #define CHAINSAW "Chainsaw"
 #define DEATH_RAY "Death ray"
 #define SHOTGUN "Shotgun"
+#define DISTANCIA_ARMA 4
 
 #define ALTO_TILE 16
 #define ANCHO_TILE 16
@@ -145,10 +146,10 @@ void GameLoop::aplicar_estados(){
 void GameLoop::crear_bala(Pato& pato){  
     if (!pato.esta_apuntando_arriba()){
         if (pato.get_direccion() == DIRECCION_DERECHA) {
-            Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x() + pato.get_arma()->get_alcance(), pato.get_pos_y(), pato.get_direccion(), pato.get_arma()->get_tipo_arma(), pato.get_id());
+            Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y() + DISTANCIA_ARMA, pato.get_pos_x() + pato.get_arma()->get_alcance(), pato.get_pos_y() + DISTANCIA_ARMA, pato.get_direccion(), pato.get_arma()->get_tipo_arma(), pato.get_id());
             ultimo_estado.balas.push_back(bala);
         } else {
-            Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x() - pato.get_arma()->get_alcance(), pato.get_pos_y(), pato.get_direccion(), pato.get_arma()->get_tipo_arma(), pato.get_id());
+            Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y() + DISTANCIA_ARMA, pato.get_pos_x() - pato.get_arma()->get_alcance(), pato.get_pos_y() + DISTANCIA_ARMA, pato.get_direccion(), pato.get_arma()->get_tipo_arma(), pato.get_id());
             ultimo_estado.balas.push_back(bala);
         }
     } else {
@@ -200,10 +201,10 @@ void GameLoop::avanzar_balas_direccion_arriba(std::__cxx11::list<Bala>::iterator
 }
 
 void GameLoop::eliminar_balas_fuera_de_alcance(std::__cxx11::list<Bala>::iterator& it){
-    if (it->get_pos_x() >= it->get_pos_x_final() && it->get_pos_y() >= it->get_pos_y_final() && it->get_direccion() == DIRECCION_DERECHA) {
+    if ((it->get_pos_x() >= it->get_pos_x_final() && it->get_direccion() == DIRECCION_DERECHA) || (it->get_pos_x() == 1280 && it->get_direccion() == DIRECCION_IZQUIERDA)) {
         //std::cout << "se elimina la bala que va a la derecha" << std::endl;
         it = ultimo_estado.balas.erase(it);
-    } else if (it->get_pos_x() <= it->get_pos_x_final() && it->get_pos_y() <= it->get_pos_y_final() && it->get_direccion() == DIRECCION_IZQUIERDA) {
+    } else if ((it->get_pos_x() <= it->get_pos_x_final() && it->get_direccion() == DIRECCION_IZQUIERDA) || (it->get_pos_x() == 0 && it->get_direccion() == DIRECCION_IZQUIERDA)) {
         //std::cout << "se elimina la bala que va a la izquierda" << std::endl;
         it = ultimo_estado.balas.erase(it);
     } else if (it->get_pos_y() <= it->get_pos_y_final() && it->get_direccion() == DIRECCION_ARRIBA) {
@@ -214,8 +215,18 @@ void GameLoop::eliminar_balas_fuera_de_alcance(std::__cxx11::list<Bala>::iterato
     }
 }
 
+void GameLoop::eliminar_balas_si_colisionan(std::__cxx11::list<Bala>::iterator& it){
+    for (Tile& tile: colisiones) {
+        if (it->colisiona_con_tile(tile.get_hitbox()) != Nada) {
+            it = ultimo_estado.balas.erase(it);
+            break;
+        }
+    }
+}
+
 void GameLoop::avanzar_balas(){
     for (auto it = ultimo_estado.balas.begin(); it != ultimo_estado.balas.end(); ) {
+        eliminar_balas_si_colisionan(it);
         avanzar_balas_direccion_izquierda(it);
         avanzar_balas_direccion_derecha(it);    
         avanzar_balas_direccion_arriba(it);
@@ -361,7 +372,7 @@ void GameLoop::run() {
     pato.tomar_arma(arma);
     ultimo_estado.patos.emplace_back(pato);
 
-    Pato pato_dos(4, pos_x+20, pos_y, 0);
+    Pato pato_dos(4, pos_x+100, pos_y, 0);
     Arma* arma_dos = new Arma(2, pos_x, pos_y, 15, 400, SNIPER);
     pato_dos.tomar_armadura();
     pato_dos.equipar_armadura();

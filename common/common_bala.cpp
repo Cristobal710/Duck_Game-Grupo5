@@ -43,3 +43,26 @@ uint16_t Bala::get_id_origen(){return id_origen;}
 uint8_t Bala::get_direccion() { return direccion; }
 
 uint8_t Bala::get_tipo_arma() { return tipo_arma; }
+
+TipoColision Bala::colisiona_con_tile(SDL2pp::Rect hitbox_tile) {
+    if (hitbox.no_colisiona(hitbox_tile)) {
+        return Nada;
+    }
+    if (hitbox.colisiona_arriba_con(hitbox_tile)) {
+        std::cout<<"colisiona arriba"<<std::endl;
+        return Piso;
+    }
+    if (hitbox.colisiona_abajo_con(hitbox_tile)) {
+        std::cout<<"colisiona abajo"<<std::endl;
+        return Techo;
+    }
+    if (hitbox.colisiona_izquierda_con(hitbox_tile)) {
+        std::cout<<"colisiona izq"<<std::endl;
+        return ParedIzquierda;
+    }
+    if (hitbox.colisiona_derecha_con(hitbox_tile)) {
+        std::cout<<"colisiona der"<<std::endl;
+        return ParedDerecha;
+    }
+    return Nada;
+}
