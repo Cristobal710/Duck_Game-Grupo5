@@ -86,10 +86,8 @@ cd build/
 ./taller_editor
 
 ```
-3. Una vez dentro, el editor tiene una serie de botones que despliegan opciones para personalizar su propio mapa: 
 
 
-![Editor main](Entregables/imagenes/Interfaz-Editor.png)
 
 
 
