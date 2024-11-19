@@ -55,13 +55,16 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
             pato.estado.set_moviendo_derecha();
             break;
         case TIRAR_PISO:
-            pato.estado.set_agacharse();
+            if (pato.estado.get_estado_salto() == BYTE_NULO) {
+                pato.estado.set_agacharse();
+            }
             break;
         case APUNTAR_ARRIBA:
             pato.apuntar_arriba();
             break;
         case SALTAR_ALETEAR:
             if (pato.estado.get_estado_salto() == BYTE_NULO) {
+                pato.levantarse_del_piso();
                 pato.saltar();
             }
             break;
@@ -91,6 +94,9 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
             // pato.tomar_arma();
             break;
         case DISPARAR:
+            if (pato.estado.get_estado_agachado() == TIRAR_PISO) {
+                pato.estado.set_dejar_de_agacharse();
+            }
             pato.disparar();
             crear_bala(pato);
             break;
@@ -118,11 +124,13 @@ void GameLoop::aplicar_estados(){
             bool colisiona = validar_movimiento(pato, ParedIzquierda);
             if (!colisiona) {
                 pato.moverse_derecha();
+                pato.levantarse_del_piso();
             }
         }else if(pato.estado.get_estado_movimiento() == MOVER_IZQUIERDA){
             bool colisiona = validar_movimiento(pato, ParedDerecha);
             if (!colisiona) {
                 pato.moverse_izquierda();
+                pato.levantarse_del_piso();
             }
         }
         if(pato.estado.get_estado_agachado() == TIRAR_PISO ){
