@@ -87,4 +87,11 @@ cd build/
 
 ```
 
+3. Una vez dentro, el editor tiene una serie de botones que despliegan opciones para personalizar su propio mapa: 
+
+```
+![Editor Main Screen](Entregables/imagenes/Interfaz-Editor.png)
+
+```
+
 *Una vez terminado el mapa que se desea crear, escribir en consola el nombre con el que sera guardado, e inmediatamente ingresara a la pool de mapas disponibles*
