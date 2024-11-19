@@ -119,14 +119,12 @@ void Pato::tomar_casco() { tomo_casco = true; }
 void Pato::equipar_armadura() {
     if (tomo_armadura) {
         armadura_equipada = true;
-        tomo_armadura = false;
     }
 }
 
 void Pato::equipar_casco() {
     if (tomo_casco) {
         casco_equipado = true;
-        tomo_casco = false;
     }
 }
 
@@ -156,7 +154,7 @@ bool Pato::esta_vivo() const { return vivo; }
 
 void Pato::morir() { vivo = false; }
 
-bool Pato::armadura_en_inventario() { return armadura_equipada; }
+bool Pato::armadura_en_inventario() { return tomo_armadura; }
 
 bool Pato::casco_en_inventario() { return tomo_casco; }
 

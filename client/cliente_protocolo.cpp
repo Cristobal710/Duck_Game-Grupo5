@@ -27,11 +27,11 @@ void ClienteProtocolo::recibir_pato(std::list<Pato>& patos) {
     uint8_t estado_agachado = recibir_byte(cerrado);
     uint8_t estado_disparo = recibir_byte(cerrado);
     uint8_t esta_vivo = recibir_byte(cerrado);
-    uint16_t casco_inventario = recibir_dos_bytes(cerrado);
-    uint16_t armadura_inventario = recibir_dos_bytes(cerrado);
-    uint16_t casco_equipado = recibir_dos_bytes(cerrado);
-    uint16_t armadura_equipada = recibir_dos_bytes(cerrado);
-    uint16_t arma_id = recibir_dos_bytes(cerrado);
+    uint8_t casco_inventario = recibir_byte(cerrado);
+    uint8_t armadura_inventario = recibir_byte(cerrado);
+    uint8_t casco_equipado = recibir_byte(cerrado);
+    uint8_t armadura_equipada = recibir_byte(cerrado);
+    uint8_t arma_id = recibir_dos_bytes(cerrado);
     uint8_t municion_disponible = recibir_byte(cerrado);
 
     Pato pato(id, pos_x, pos_y, direccion);
