@@ -31,6 +31,13 @@ void MapaInterfaz::agregar_spawn(uint16_t id_jugador, int x, int y) {
     patos.emplace_back(std::move(pato));
 }
 
+void MapaInterfaz::agregar_caja(uint16_t id, int x, int y, std::string path) {
+    //std::string path = "../resources/TileSets/itemBox.png";
+    id = cajas.size();
+    CajaInterfaz caja(renderer, id, path, x, y);
+    cajas.emplace_back(std::move(caja));
+}
+
 void MapaInterfaz::agregar_bala(std::string path_bala, int x, int y, uint8_t direccion) {
     BalaInterfaz bala(renderer, path_bala, x, y, direccion);
     balas.emplace_back(std::move(bala));
@@ -63,6 +70,11 @@ int MapaInterfaz::dibujar(int it){
     SDL2pp::Rect posicion_camara = camara.obtener_rect_camara();
 
     fondo.dibujar(zoom_factor, posicion_camara.x, posicion_camara.y);
+
+    //std::cout << cajas.size() << std::endl;
+    for (CajaInterfaz& caja : cajas){
+        caja.dibujar();
+    }
 
     for (auto& tile : tiles) {
         tile.dibujar(zoom_factor, posicion_camara.x, posicion_camara.y);

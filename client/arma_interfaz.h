@@ -22,7 +22,7 @@ private:
 public:
 
     ArmaInterfaz(SDL2pp::Renderer& renderer, const std::string& arma_path, int pos_x, int pos_y);
-    void dibujar(uint8_t& direccion_pato);
+    void dibujar(uint8_t& direccion_pato, float& zoom_factor);
     
     void set_municion(uint8_t municion);
     uint8_t get_municion_disponible();

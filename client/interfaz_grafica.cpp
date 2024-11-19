@@ -230,6 +230,20 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
             mapa.agregar_spawn(pato.get_id(), pos_x, pos_y);
         }
         mapa.agregar_spawn(8, 736, 352);
+
+        // procesar cajas 
+        std::map<std::string, std::vector<SDL_Point>> cajas = mapa_a_jugar.getCajas();
+
+        for (const auto& caja : cajas) {
+            std::string path = caja.first;
+            std::vector<SDL_Point> puntos = caja.second;
+            for (const auto& punto : puntos) {
+                mapa.agregar_caja(0, punto.x, punto.y, path);
+                std::cout << "agrego una caja" << std::endl;
+            }
+            
+        }
+
         mapa.procesado();
     }
     
@@ -247,8 +261,8 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
             pato_prueba.actualizar_equipamiento(pato_juego.tiene_arma(), ESTADO_ARMA);
             pato_prueba.actualizar_equipamiento(pato_juego.estado.get_estado_disparo(), ESTADO_BALAS);
             pato_prueba.actualizar_equipamiento(pato_juego.get_arma()->get_municion_disponible(), ESTADO_MUNICION);
-            //pato.actualizar_equipamiento(pato_juego.estado.get_estado_movimiento(), ESTADO_ARMADURA);
-            //pato.actualizar_equipamiento(pato_juego.estado.get_estado_movimiento(), ESTADO_CASCO);
+            pato_prueba.actualizar_equipamiento(pato_juego.get_armadura_equipada(), ESTADO_ARMADURA);
+            pato_prueba.actualizar_equipamiento(pato_juego.get_casco_equipado(), ESTADO_CASCO);
             //pato_prueba.get_arma().set_tipo_arma(pato_juego.get_arma().get_tipo_arma());
         
             for (Bala balas_juego: ultimo_estado.balas) {
@@ -259,12 +273,11 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
                 // std::cout << "pos y bala:" << static_cast<int>(balas_juego.get_pos_y()) << std::endl;
             }
             //std::cout << "municion:" << static_cast<int>(pato_juego.get_arma()->get_municion_disponible()) << std::endl;
-       
         }
         hubo_estado_nuevo = true;
         //mostrar balas
     } 
-    if (!hubo_estado_nuevo){
+    if (!hubo_estado_nuevo) {
         for (Pato pato_juego: ultimo_estado.patos) {
             PatoInterfaz& pato_prueba = mapa.get_pato_con_id(pato_juego.get_id());
             pato_prueba.actualizar_estado(BYTE_NULO, ESTADO_MOVIMIENTO);

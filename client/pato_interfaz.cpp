@@ -12,6 +12,8 @@ uint16_t pato_id, SDL_Color color):
     se_tira_al_piso(BYTE_NULO),
     estado_arma(BYTE_NULO),
     estado_balas(BYTE_NULO),
+    armadura_equipada(false),
+    casco_equipado(false),
     renderer(renderer),
     rect_dibujado(pos_inicial_x, pos_inicial_y, PIXEL_PATO, PIXEL_PATO),
     movimiento_pato_lateral(renderer, pato_path, 150, 150, color),
@@ -20,8 +22,7 @@ uint16_t pato_id, SDL_Color color):
     municion_disponible(0),
     tipo_arma(TipoArma::Granada),
     id_jugador(pato_id),
-    color(color),
-    ya_dibujado_muerto(false)
+    color(color)
 {}
 
 
@@ -33,6 +34,8 @@ PatoInterfaz::PatoInterfaz(PatoInterfaz&& other) noexcept
     se_tira_al_piso(other.se_tira_al_piso),
     estado_arma(other.estado_arma),
     estado_balas(other.estado_balas),
+    armadura_equipada(other.armadura_equipada),
+    casco_equipado(other.casco_equipado),
     renderer(other.renderer),
     rect_dibujado(std::move(other.rect_dibujado)),
     movimiento_pato_lateral(std::move(other.movimiento_pato_lateral)),
@@ -57,10 +60,23 @@ void PatoInterfaz::dibujar(int it, float zoom_factor) {
         movimiento_pato_salto.pato_salta(estado_pato_salto, pos_x, pos_y, it, zoom_factor, direccion_pato);
         return;
     }
+
     movimiento_pato_lateral.pato_movimiento(estado_pato_movimiento, direccion_pato, pos_x, pos_y, it, zoom_factor);
+
     if(estado_arma == TOMAR_ARMA){
         ArmaInterfaz arma = tomar_arma();
-        arma.dibujar(direccion_pato);
+        arma.dibujar(direccion_pato, zoom_factor);
+    }
+    
+    if(armadura_equipada){
+        ArmaduraInterfaz armadura(renderer, pos_x, pos_y);
+        armadura.dibujar(direccion_pato, zoom_factor);
+    }
+
+    if(casco_equipado){
+        std::cout << "casco equipado" << std::endl;
+        CascoInterfaz casco(renderer, pos_x, pos_y);
+        casco.dibujar(direccion_pato, zoom_factor);
     }
 }
 
@@ -91,6 +107,10 @@ void PatoInterfaz::actualizar_equipamiento(uint8_t estado_nuevo, std::string tip
         estado_balas = estado_nuevo;
     } else if(tipo_estado == ESTADO_MUNICION){
         municion_disponible = estado_nuevo;
+    } else if (tipo_estado == ESTADO_ARMADURA){
+        armadura_equipada = estado_nuevo;
+    } else if (tipo_estado == ESTADO_CASCO){
+        casco_equipado = estado_nuevo;
     }
     tipo_estado.clear();
 }
@@ -147,13 +167,9 @@ void PatoInterfaz::set_esta_vivo(bool estado) { vivo = estado; }
 bool PatoInterfaz::esta_vivo() { return vivo; }
 
 void PatoInterfaz::dibujar_muerto(float zoom_factor) {
-    if(ya_dibujado_muerto){
-        return;
-    }
     int pos_x = rect_dibujado.GetX();
     int pos_y = rect_dibujado.GetY();
     movimiento_pato_agachado.mostrar_muerte(pos_x, pos_y, zoom_factor, direccion_pato);
-    ya_dibujado_muerto = true;
 }
 
 int PatoInterfaz::pos_x() { return rect_dibujado.GetX(); }

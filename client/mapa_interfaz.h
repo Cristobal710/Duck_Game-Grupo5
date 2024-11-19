@@ -9,6 +9,7 @@
 #include <SDL2pp/SDL2pp.hh>
 #include "camara.h"
 #include <unordered_map>
+#include "caja_interfaz.h"
 
 class MapaInterfaz {
 
@@ -20,6 +21,7 @@ class MapaInterfaz {
     std::vector<TileInterfaz> tiles;
     std::vector<PatoInterfaz> patos;
     std::vector<BalaInterfaz> balas;
+    std::vector<CajaInterfaz> cajas;
     bool mapa_procesado;
     Camara camara;
 
@@ -31,6 +33,7 @@ class MapaInterfaz {
     void set_fondo(std::string fondo_path);
     void agregar_tile(std::string fondo_path, int x, int y);
     void agregar_spawn(uint16_t id_jugador, int x, int y);
+    void agregar_caja(uint16_t id, int x, int y, std::string path);
     void agregar_bala(std::string path_bala, int x, int y, uint8_t direccion);
     PatoInterfaz& get_pato_con_id(uint16_t id);
     void procesado();

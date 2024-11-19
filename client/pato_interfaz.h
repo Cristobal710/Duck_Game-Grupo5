@@ -10,6 +10,8 @@
 #include <SDL2pp/SDL2pp.hh>
 #include <cstdint>
 #include "arma_interfaz.h"
+#include "armadura_interfaz.h"
+#include "casco_interfaz.h"
 
 enum class TipoArma {
     Granada,
@@ -33,6 +35,8 @@ private:
     uint8_t se_tira_al_piso;
     uint8_t estado_arma;
     uint8_t estado_balas;
+    bool armadura_equipada;
+    bool casco_equipado;
     SDL2pp::Renderer& renderer;
     SDL2pp::Rect rect_dibujado;
     MovimientoLateral movimiento_pato_lateral;
@@ -42,7 +46,6 @@ private:
     TipoArma tipo_arma;
     uint16_t id_jugador;
     SDL_Color color;
-    bool ya_dibujado_muerto;
 
     ArmaInterfaz tomar_arma();
 
