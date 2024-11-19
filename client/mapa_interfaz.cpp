@@ -40,7 +40,7 @@ void MapaInterfaz::agregar_caja(uint16_t id, int x, int y, std::string path) {
 
 void MapaInterfaz::obtener_tipo_bala(uint8_t tipo_arma, std::string& path_bala){
     if(tipo_arma == GRANADA){
-        path_bala = "../resources/weapons/grenadePin.png";
+        path_bala = "../resources/Random/explode.png";
     } else if (tipo_arma == BANANA){
         path_bala = "../resources/weapons/bananaPiso.png";
     } else if (tipo_arma == PEW_PEW_LASER){

@@ -66,7 +66,7 @@
 
 // PIXELES
 #define PIXEL_PATO 32
-#define PIXEL_BALA 32
+#define PIXEL_BALA 64
 #define PIXEL_ARMA 32
 
 

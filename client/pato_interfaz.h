@@ -17,10 +17,10 @@ enum class TipoArma {
     Granada,
     Banana,
     Pew_Pew_Laser,
-    Laser_Rifle, //balas raras
+    Laser_Rifle,
     AK47,
     Pistola_Duelos,
-    Pistola_Cowboy, //esta muy arriba ver px
+    Pistola_Cowboy,
     Magnum,
     Escopeta,
     Sniper
