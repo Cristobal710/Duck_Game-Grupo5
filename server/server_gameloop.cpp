@@ -9,7 +9,7 @@
 #define DEATH_RAY "Death ray"
 #define SHOTGUN "Shotgun"
 
-#define ALTO_TILE 16
+#define ALTO_TILE 14
 #define ANCHO_TILE 16
 
 GameLoop::GameLoop(Queue<EstadoJuego>& cola_estados_juego,
@@ -61,7 +61,6 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
             pato.apuntar_arriba();
             break;
         case SALTAR_ALETEAR:
-            // std::cout << "entre al case de saltar" << std::endl;
             if (pato.estado.get_estado_salto() == BYTE_NULO) {
                 pato.saltar();
             }
@@ -101,12 +100,30 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
     }
 }
 
+bool GameLoop::validar_movimiento(Pato& pato, TipoColision colision){
+    bool colisiona = false;
+    for (Tile& tile: colisiones) {
+        if (pato.colisiona_con_tile(tile.get_hitbox()) == colision) {
+            std::cout<<"entre a frenar pato pared"<<std::endl;
+            colisiona = true;
+            break;
+        }
+    }
+    return colisiona;
+}
+
 void GameLoop::aplicar_estados(){
     for(Pato& pato : ultimo_estado.patos){
         if(pato.estado.get_estado_movimiento() == MOVER_DERECHA){
-            pato.moverse_derecha();
+            bool colisiona = validar_movimiento(pato, ParedIzquierda);
+            if (!colisiona) {
+                pato.moverse_derecha();
+            }
         }else if(pato.estado.get_estado_movimiento() == MOVER_IZQUIERDA){
-            pato.moverse_izquierda();
+            bool colisiona = validar_movimiento(pato, ParedDerecha);
+            if (!colisiona) {
+                pato.moverse_izquierda();
+            }
         }
         if(pato.estado.get_estado_agachado() == TIRAR_PISO ){
             pato.tirarse_al_piso();
@@ -213,14 +230,8 @@ void GameLoop::frenar_saltos_patos_si_colisionan(){
             if (pato.colisiona_con_tile(tile.get_hitbox()) == Techo) {
                 pato.estado.set_dejar_de_saltar();
                 pato.contador_salto = 0;
-                // std::cout << "frene el salto" << std::endl;
                 break;
             }
-            // if (pato.colisiona_con_tile(tile.get_hitbox()) == Pared){
-            //     pato.estado.set_dejar_de_moverse();
-            //     std::cout<<"entre a frenar pato pared"<<std::endl;
-            //     break;
-            // }
         }
     }
 }
@@ -300,6 +311,16 @@ void GameLoop::actualizar_hitbox_entidades(){
     }
 }
 
+void GameLoop::eliminar_patos_muertos(){
+    for (auto it=ultimo_estado.patos.begin(); it!=ultimo_estado.patos.end();){
+        if(!it->esta_vivo()){
+            it = ultimo_estado.patos.erase(it);
+        }else{
+            it++;
+        }
+    }
+}
+
 void GameLoop::run() {
     int pos_x = 0;
     int pos_y = 0;
@@ -355,13 +376,7 @@ void GameLoop::run() {
                 procesar_evento(evento, ultimo_estado);
                 cola_estados_juego.push(ultimo_estado);
             }
-            for (auto it=ultimo_estado.patos.begin(); it!=ultimo_estado.patos.end();){
-                if(!it->esta_vivo()){
-                    it = ultimo_estado.patos.erase(it);
-                }else{
-                    it++;
-                }
-            }
+            eliminar_patos_muertos();
             actualizar_hitbox_entidades();
             aplicar_logica();
             calcular_colisiones_balas();
