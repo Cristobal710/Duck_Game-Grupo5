@@ -68,14 +68,6 @@ if(TALLER_CLIENT OR TALLER_EDITOR)
 
     FetchContent_MakeAvailable(libSDL2pp)
 
-    # Fetch SDL2_image
-    FetchContent_Declare(
-        libSDL2_image
-        URL https://github.com/libsdl-org/SDL_image/archive/refs/tags/release-2.8.2.zip
-    )
-
-    FetchContent_MakeAvailable(libSDL2_image)
-
     # Fetch nlohmann/json library
     FetchContent_Declare(
         nlohmann_json
