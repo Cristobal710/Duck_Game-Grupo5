@@ -4,4 +4,4 @@ se usan las librerias "threads.h", "queue.h", las librerias correspondientes al 
 
 ## Next Steps
 
-Para instrucciones de como instalarlo, visitar el link: [Installation Guide](Entregables/installation.md).
+Para instrucciones de como instalarlo, visitar el link: [Installation Guide](Entregables/Manual-de-usuario.md).
