@@ -26,6 +26,7 @@ class MapaInterfaz {
     Camara camara;
 
     SDL_Color generar_color(int index);
+    void obtener_tipo_bala(uint8_t tipo_arma, std::string& path_bala);
 
     public:
     MapaInterfaz(SDL2pp::Renderer& renderer);
@@ -34,7 +35,7 @@ class MapaInterfaz {
     void agregar_tile(std::string fondo_path, int x, int y);
     void agregar_spawn(uint16_t id_jugador, int x, int y);
     void agregar_caja(uint16_t id, int x, int y, std::string path);
-    void agregar_bala(std::string path_bala, int x, int y, uint8_t direccion);
+    void agregar_bala(uint8_t tipo_arma, int x, int y, uint8_t direccion);
     PatoInterfaz& get_pato_con_id(uint16_t id);
     void procesado();
     bool esta_procesado() {return mapa_procesado;};

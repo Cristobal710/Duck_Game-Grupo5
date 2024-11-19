@@ -23,7 +23,7 @@ enum class TipoArma {
     Pistola_Cowboy, //esta muy arriba ver px
     Magnum,
     Escopeta,
-    Sniper //esta muy arriba ver px
+    Sniper
 };
 
 class PatoInterfaz : public EntidadInterfaz{

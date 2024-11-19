@@ -38,7 +38,33 @@ void MapaInterfaz::agregar_caja(uint16_t id, int x, int y, std::string path) {
     cajas.emplace_back(std::move(caja));
 }
 
-void MapaInterfaz::agregar_bala(std::string path_bala, int x, int y, uint8_t direccion) {
+void MapaInterfaz::obtener_tipo_bala(uint8_t tipo_arma, std::string& path_bala){
+    if(tipo_arma == GRANADA){
+        path_bala = "../resources/weapons/grenadePin.png";
+    } else if (tipo_arma == BANANA){
+        path_bala = "../resources/weapons/bananaPiso.png";
+    } else if (tipo_arma == PEW_PEW_LASER){
+        path_bala = "../resources/weapons/rafaga.png";
+    } else if (tipo_arma == LASER_RIFLE){
+        path_bala = "../resources/weapons/rayos.png";
+    } else if (tipo_arma == AK_47){
+        path_bala = "../resources/weapons/dart.png";
+    } else if(tipo_arma == PISTOLA_DE_DUELOS){
+        path_bala = "../resources/weapons/dart.png";
+    } else if (tipo_arma == PISTOLA_COWBOY){
+        path_bala = "../resources/weapons/dart.png";
+    } else if (tipo_arma == MAGNUM){
+        path_bala = "../resources/weapons/dart.png";
+    } else if (tipo_arma == ESCOPETA){
+        path_bala = "../resources/weapons/dart.png";
+    } else if (tipo_arma == SNIPER){
+        path_bala = "../resources/weapons/dart.png";
+    }
+}
+
+void MapaInterfaz::agregar_bala(uint8_t tipo_arma, int x, int y, uint8_t direccion) {
+    std::string path_bala;
+    obtener_tipo_bala(tipo_arma, path_bala);
     BalaInterfaz bala(renderer, path_bala, x, y, direccion);
     balas.emplace_back(std::move(bala));
 }

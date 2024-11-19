@@ -143,34 +143,24 @@ ArmaInterfaz PatoInterfaz::tomar_arma() {
     std::string arma_path; 
     if(tipo_arma == TipoArma::Granada){
         arma_path = "../resources/weapons/grenadeLauncher.png";
-        //bala_path = "../resources/weapons/grenade.png";
     } else if (tipo_arma == TipoArma::Banana){
         arma_path = "../resources/weapons/bananaMano.png";
-        //bala_path = "../resources/weapons/bananaPiso.png";
     } else if (tipo_arma == TipoArma::Pew_Pew_Laser){
         arma_path = "../resources/weapons/pewpewLaser.png";
-        //bala_path = "../resources/weapons/rafaga.png";
     } else if (tipo_arma == TipoArma::Laser_Rifle){
         arma_path = "../resources/weapons/laserRifle.png";
-        //bala_path = "../resources/weapons/rayos.png";
     } else if (tipo_arma == TipoArma::AK47){
         arma_path = "../resources/weapons/ak47.png";
-        //bala_path = "../resources/weapons/dart.png";
     } else if(tipo_arma == TipoArma::Pistola_Duelos){
         arma_path = "../resources/weapons/combatShotgun.png";
-        //bala_path = "../resources/weapons/dart.png";
     } else if (tipo_arma == TipoArma::Pistola_Cowboy){
         arma_path = "../resources/weapons/cowboyPistol.png";
-        //bala_path = "../resources/weapons/dart.png";
     } else if (tipo_arma == TipoArma::Magnum){
         arma_path = "../resources/weapons/magnum.png";
-        //bala_path = "../resources/weapons/dart.png";
     } else if (tipo_arma == TipoArma::Escopeta){
         arma_path = "../resources/weapons/shotgun.png";
-        //bala_path = "../resources/weapons/dart.png";
     } else if (tipo_arma == TipoArma::Sniper){
         arma_path = "../resources/weapons/sniper.png";
-        //bala_path = "../resources/weapons/dart.png";
     }
     return ArmaInterfaz(renderer, arma_path, rect_dibujado.GetX(), rect_dibujado.GetY());
 }

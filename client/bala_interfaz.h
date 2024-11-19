@@ -6,19 +6,6 @@
 #include <vector>
 #include "../common/common_constantes.h"
 
-/*enum class TipoArma {
-    Granada,
-    Banana,
-    Pew_Pew_Laser,
-    Laser_Rifle, //balas raras
-    AK47,
-    Pistola_Duelos,
-    Pistola_Cowboy, //esta muy arriba ver px
-    Magnum,
-    Escopeta,
-    Sniper //esta muy arriba ver px
-};*/
-
 class BalaInterfaz {
 private:
     std::vector<SDL2pp::Texture> bala;
@@ -26,7 +13,6 @@ private:
     SDL2pp::Rect rect_dibujado_bala;
     SDL2pp::Renderer& renderer;
     uint8_t direccion;
-    //TipoArma tipo_arma;
 
     void cargar_frames(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet,
                    int offset_y, std::vector<SDL2pp::Texture>& texturas,

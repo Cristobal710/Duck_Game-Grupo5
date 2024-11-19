@@ -273,17 +273,11 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
             //pato_prueba.get_arma().set_tipo_arma(pato_juego.get_arma().get_tipo_arma());
     
             //std::cout << "municion:" << static_cast<int>(pato_juego.get_arma()->get_municion_disponible()) << std::endl;
-            if (pato_juego.get_id() == 4){
-                std::cout << "pos x: " << static_cast<int>(pato_juego.get_pos_x()) << std::endl;
-                std::cout << "pos y: " << static_cast<int>(pato_juego.get_pos_y()) << std::endl;
-                std::cout << "direccion: " << static_cast<int>(pato_juego.get_direccion()) << std::endl;
-                std::cout << "estado movimiento: " << static_cast<int>(pato_juego.estado.get_estado_movimiento()) << std::endl;
-            }
         }
         hubo_estado_nuevo = true;
         //mostrar balas
         for (Bala balas_juego: ultimo_estado.balas) {
-                mapa.agregar_bala("../resources/weapons/grenadePin.png", balas_juego.get_pos_x(),
+                mapa.agregar_bala(balas_juego.get_tipo_arma(), balas_juego.get_pos_x(),
                 balas_juego.get_pos_y(), balas_juego.get_direccion());
                 // pato_prueba.actualizar_posicion_bala(balas_juego.get_pos_x(), balas_juego.get_pos_y());
                 // std::cout << "pos x bala:" << static_cast<int>(balas_juego.get_pos_x()) << std::endl;

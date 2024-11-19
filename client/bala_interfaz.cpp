@@ -1,6 +1,6 @@
 #include "bala_interfaz.h"
 
-#define CANT_MAX_FRAMES_BALA 3
+#define CANT_MAX_FRAMES_BALA 8
 
 BalaInterfaz::BalaInterfaz(SDL2pp::Renderer& renderer, const std::string& bala_path, 
                                 int pos_x, int pos_y, uint8_t direccion) :
