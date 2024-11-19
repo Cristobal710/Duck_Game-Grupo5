@@ -261,6 +261,7 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
             pato_prueba.actualizar_equipamiento(pato_juego.tiene_arma(), ESTADO_ARMA);
             pato_prueba.actualizar_equipamiento(pato_juego.estado.get_estado_disparo(), ESTADO_BALAS);
             if (pato_juego.tiene_arma() == TOMAR_ARMA) {
+                pato_prueba.actualizar_arma(pato_juego.get_arma()->get_tipo_arma());
                 pato_prueba.actualizar_equipamiento(pato_juego.get_arma()->get_municion_disponible(), ESTADO_MUNICION);
             }
             // pato_prueba.actualizar_equipamiento(pato_juego.get_arma()->get_municion_disponible(), ESTADO_MUNICION);

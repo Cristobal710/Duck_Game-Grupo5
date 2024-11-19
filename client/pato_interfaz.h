@@ -62,6 +62,7 @@ public:
     void actualizar_estado(uint8_t estado_nuevo, std::string tipo_estado);
     void actualizar_posicion(int pos_x, int pos_y);
     void actualizar_equipamiento(uint8_t estado_nuevo, std::string tipo_estado);
+    void actualizar_arma(uint8_t arma);
     void set_tipo_arma(TipoArma tipo_arma);
     bool mismo_id(uint16_t id);
     void set_esta_vivo(bool estado);
