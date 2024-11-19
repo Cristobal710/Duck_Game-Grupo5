@@ -114,7 +114,6 @@ bool GameLoop::validar_movimiento(Pato& pato, TipoColision colision){
     bool colisiona = false;
     for (Tile& tile: colisiones) {
         if (pato.colisiona_con_tile(tile.get_hitbox()) == colision) {
-            std::cout<<"entre a frenar pato pared"<<std::endl;
             colisiona = true;
             break;
         }
