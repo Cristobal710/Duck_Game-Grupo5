@@ -68,6 +68,6 @@ uint8_t direccion_pato) {
         //std::cout << "me agacho" << std::endl;
     } else if (esta_agachado == DEJAR_TIRAR_PISO) {
         mostrar_frames_levantarse(direccion_pato);
-        std::cout << "me levanto" << std::endl;
+        //std::cout << "me levanto" << std::endl;
     } 
 }

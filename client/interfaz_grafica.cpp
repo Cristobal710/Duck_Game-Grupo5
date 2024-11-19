@@ -37,10 +37,13 @@ void InterfazGrafica::iniciar() {
     IMG_Init(IMG_INIT_PNG);
 
     // Create lobby instance
+    int it = 0;
+    float tiempo_ultimo_frame = SDL_GetTicks();
     Lobby lobby(renderer.Get());
     while (!lobby.empezo()) {
         lobby.dibujar();
         lobby.manejar_eventos();
+        drop_rest(tiempo_ultimo_frame, it);
     }
 
     // aca hay q mandar cuantos jugadores selecciono y si creo una partida nueva
@@ -57,10 +60,9 @@ void InterfazGrafica::iniciar() {
     obtener_estado_juego(mapa_a_jugar);
     
     std::set<SDL_Keycode> keysHeld;
-    int it = 0;
+    it = 0;
+    tiempo_ultimo_frame = SDL_GetTicks();
     while (correr_programa) {
-        float tiempo_ultimo_frame = SDL_GetTicks();
-        
         renderer.Clear();
         manejar_eventos(keysHeld);
         obtener_estado_juego(mapa_a_jugar);
@@ -93,7 +95,7 @@ void InterfazGrafica::drop_rest(float& tiempo_ultimo_frame, int& it) {
         if (tiempo_perdido % DURACION_FRAME != 0 && (tiempo_perdido < 0) != (DURACION_FRAME < 0)) {
             it--;
         }
-        std::cout << "pierdo un frame" << std::endl;
+        //std::cout << "pierdo un frame" << std::endl;
     }
     SDL_Delay(descansar);
     it += 1;
@@ -239,7 +241,7 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
             std::vector<SDL_Point> puntos = caja.second;
             for (const auto& punto : puntos) {
                 mapa.agregar_caja(0, punto.x, punto.y, path);
-                std::cout << "agrego una caja" << std::endl;
+                //std::cout << "agrego una caja" << std::endl;
             }
             
         }

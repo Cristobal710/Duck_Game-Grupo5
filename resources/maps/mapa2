@@ -20,7 +20,7 @@
     "spawns": [
         {
             "x": 384,
-            "y": 100
+            "y": 300
         },
         {
             "x": 736,
@@ -205,9 +205,14 @@
         {
             "texture": "../resources/TileSets/greyBlock.png",
             "x": 416,
-            "y": 358
+            "y": 368
         },
         
+        {
+            "texture": "../resources/TileSets/greyBlock.png",
+            "x": 416,
+            "y": 352
+        },
         
         {
             "texture": "../resources/TileSets/greyBlock.png",

@@ -74,7 +74,6 @@ void PatoInterfaz::dibujar(int it, float zoom_factor) {
     }
 
     if(casco_equipado){
-        std::cout << "casco equipado" << std::endl;
         CascoInterfaz casco(renderer, pos_x, pos_y);
         casco.dibujar(direccion_pato, zoom_factor);
     }

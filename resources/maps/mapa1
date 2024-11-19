@@ -205,7 +205,12 @@
         {
             "texture": "../resources/TileSets/greyBlock.png",
             "x": 416,
-            "y": 358
+            "y": 352
+        },
+        {
+            "texture": "../resources/TileSets/greyBlock.png",
+            "x": 416,
+            "y": 368
         }
     ]
 }
