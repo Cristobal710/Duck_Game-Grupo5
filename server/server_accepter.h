@@ -17,6 +17,7 @@ private:
     Socket& socket_aceptador;
     bool* esta_cerrado;
     Queue<EstadoJuego> recibidos;
+    uint16_t ultimo_id;
 
 public:
     Accepter(Socket& socket, bool* conexion);

@@ -1,6 +1,7 @@
 #include "server_client.h"
 
-ServerClient::ServerClient(Socket skt, Queue<EstadoJuego>& recibidos, Queue<EventoServer>& enviados):
+ServerClient::ServerClient(uint16_t id, Socket skt, Queue<EstadoJuego>& recibidos, Queue<EventoServer>& enviados):
+        id(id),
         conexion_socket(std::move(skt)),
         esta_cerrado(false),
         estados_juego(recibidos),

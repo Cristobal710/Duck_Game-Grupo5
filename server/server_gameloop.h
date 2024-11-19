@@ -28,8 +28,15 @@ private:
 
     // void eliminar_clientes_cerrados();
     // void cerrar_gameloop();
+    void inicializar_juego();
+    void inicializar_cajas();
+    void inicializar_patos();
+    void inicializar_armas();
+
+
+
     void ejecutar_accion(uint8_t accion, Pato& pato);
-    void enviar_estado_juego_si_cambio(Pato& pato, EstadoJuego& estado_juego);
+    void enviar_estado_juego_si_cambio( EstadoJuego& estado_juego);
     void avanzar_balas();
     void continuar_saltando_patos();
     void frenar_saltos_patos_si_colisionan();

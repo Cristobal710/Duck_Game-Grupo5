@@ -157,16 +157,15 @@ void GameLoop::crear_bala(Pato& pato){
     }
 }
 
-void GameLoop::enviar_estado_juego_si_cambio(Pato& pato, EstadoJuego& estado_anterior) {
-    //pato = pato;
-    //for(Pato& pato :ultimo_estado.patos){
-    if (pato.estado.get_estado_agachado() != estado_anterior.patos.front().estado.get_estado_agachado() || pato.estado.get_estado_movimiento() != estado_anterior.patos.front().estado.get_estado_movimiento() || pato.estado.get_estado_salto() != estado_anterior.patos.front().estado.get_estado_salto() || pato.estado.get_estado_disparo() != estado_anterior.patos.front().estado.get_estado_disparo()) {
-        cola_estados_juego.push(ultimo_estado);
+void GameLoop::enviar_estado_juego_si_cambio( EstadoJuego& estado_anterior) {
+    for(Pato& pato :ultimo_estado.patos){
+        if (pato.estado.get_estado_agachado() != estado_anterior.patos.front().estado.get_estado_agachado() || pato.estado.get_estado_movimiento() != estado_anterior.patos.front().estado.get_estado_movimiento() || pato.estado.get_estado_salto() != estado_anterior.patos.front().estado.get_estado_salto() || pato.estado.get_estado_disparo() != estado_anterior.patos.front().estado.get_estado_disparo()) {
+            cola_estados_juego.push(ultimo_estado);
+        }
+        if (pato.get_pos_x() != estado_anterior.patos.front().get_pos_x() || pato.get_pos_y() != estado_anterior.patos.front().get_pos_y()) {            
+            cola_estados_juego.push(ultimo_estado);
+        }
     }
-    if (pato.get_pos_x() != estado_anterior.patos.front().get_pos_x() || pato.get_pos_y() != estado_anterior.patos.front().get_pos_y()) {            
-        cola_estados_juego.push(ultimo_estado);
-    }
-    //}
     bool cambio = false;
     for (Bala& bala: ultimo_estado.balas) {
         if (bala.get_pos_x() != estado_anterior.balas.front().get_pos_x() || bala.get_pos_y() != estado_anterior.balas.front().get_pos_y()) {
@@ -329,48 +328,62 @@ void GameLoop::eliminar_patos_muertos(){
     }
 }
 
-void GameLoop::run() {
+void GameLoop::inicializar_patos(){
     int pos_x = 0;
     int pos_y = 0;
-    LectorJson lector_mapa = LectorJson();
-    Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa1");
-    ultimo_estado.mapa = mapa;
-    //cola_estados_juego.push(ultimo_estado);
-
+    int id = 3;
     std::map<std::string, std::vector<SDL_Point>> spawns = ultimo_estado.mapa.getSpawns();
     for (const auto& id_posicion : spawns) {        
         std::string id_jugador = id_posicion.first;
         std::vector<SDL_Point> posicion = id_posicion.second;
-        pos_x = posicion.front().x;
-        pos_y = posicion.front().y;
+        for(SDL_Point coord : posicion){
+            pos_x = coord.x;
+            pos_y = coord.y;
+            Pato pato(id, pos_x, pos_y, 0);
+            id++;
+            Arma* arma = new Arma(1, pos_x, pos_y, 15, 200, PEW_PEW_LASER);
+            pato.tomar_arma(arma);
+            pato.tomar_armadura();
+            pato.equipar_armadura();
+            pato.tomar_casco();
+            pato.equipar_casco();
+            ultimo_estado.patos.emplace_back(pato);
+        }
     }
+
+}
+
+void GameLoop::inicializar_cajas(){
     for (const auto& cajas : ultimo_estado.mapa.getCajas()) {
         for (SDL_Point posicion_caja : cajas.second) {
             Caja caja(ultimo_estado.cajas.size() + 1, posicion_caja.x, posicion_caja.y, 0x05);
             ultimo_estado.cajas.push_back(caja);
         }
     }
-    // for (const auto& armas : ultimo_estado.mapa.getEquipamiento()) {
-    //     for (SDL_Point posicion_arma : armas.second) {
-    //         Arma* arma = new Arma(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, 15, 300);
-    //         ultimo_estado.armas.push_back(*arma);
-    //     }
-    // }
-    Pato pato(3, pos_x, pos_y, 0);
-    Arma* arma = new Arma(1, pos_x, pos_y, 15, 200, PEW_PEW_LASER);
-    pato.tomar_arma(arma);
-    ultimo_estado.patos.emplace_back(pato);
 
-    Pato pato_dos(4, pos_x+20, pos_y, 0);
-    Arma* arma_dos = new Arma(2, pos_x, pos_y, 15, 400, SNIPER);
-    pato_dos.tomar_armadura();
-    pato_dos.equipar_armadura();
-    pato_dos.tomar_casco();
-    pato_dos.equipar_casco();
-    pato_dos.tomar_arma(arma_dos);
-    ultimo_estado.patos.emplace_back(pato_dos);
+}
+void GameLoop::inicializar_armas(){
+    for (const auto& armas : ultimo_estado.mapa.getEquipamiento()) {
+        for (SDL_Point posicion_arma : armas.second) {
+            Arma* arma = new Arma(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, 15, 300, AK_47);
+            ultimo_estado.armas.push_back(*arma);
+        }
+    }
+}
 
+void GameLoop::inicializar_juego(){
+    inicializar_patos();
+    inicializar_cajas();
+    //inicializar_armas();
     cola_estados_juego.push(ultimo_estado);
+}
+
+
+void GameLoop::run() {
+    LectorJson lector_mapa = LectorJson();
+    Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa1");
+    ultimo_estado.mapa = mapa;
+    inicializar_juego();
     calcular_colisiones_tiles(mapa);
 
     float tiempo_ultimo_frame = SDL_GetTicks();
@@ -388,7 +401,7 @@ void GameLoop::run() {
             actualizar_hitbox_entidades();
             aplicar_logica();
             calcular_colisiones_balas();
-            enviar_estado_juego_si_cambio(pato, estado_anterior);
+            enviar_estado_juego_si_cambio(estado_anterior);
             drop_and_rest(tiempo_ultimo_frame);
         }
     }

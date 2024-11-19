@@ -15,6 +15,7 @@
 
 class ServerClient: public Thread {
 private:
+    uint16_t id;
     Socket conexion_socket;
     bool esta_cerrado;
     Queue<EstadoJuego>& estados_juego;
@@ -23,7 +24,7 @@ private:
     void cerrar(ServerEnviar& enviar);
 
 public:
-    ServerClient(Socket skt, Queue<EstadoJuego>& recibidos, Queue<EventoServer>& enviados);
+    ServerClient(uint16_t id, Socket skt, Queue<EstadoJuego>& recibidos, Queue<EventoServer>& enviados);
     void run() override;
 };
 
