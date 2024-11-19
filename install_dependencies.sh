@@ -1,24 +1,5 @@
 #!/bin/bash
 
-# Install the necessary packages
-sudo apt-get install -y \
-    make \
-    git \
-    gcc \
-    g++ \
-    python3 \
-    python3-pip \
-    python3-dev \
-    valgrind \
-    gdb \
-    bsdmainutils \
-    diffutils \
-    manpages-dev \
-    build-essential \
-    strace \
-    unzip \
-    cppcheck
-    
 # Install essential build tools (CMake, make)
 sudo apt install -y build-essential cmake pkg-config
 
