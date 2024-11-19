@@ -7,7 +7,7 @@ Ubuntu 20.04 Focal Fossa (o en su versión más ligera Xubuntu 20.04)
 ##### Instalaciones y dependencias necesarias
 
 ```
-sudo apt-get install -y make git gcc g++ python3 python3-pip python3-dev valgrind gdb bsdmainutils diffutils manpages-dev build-essential strace unzip cppcheck
+sudo apt install git 
 
 ```
 
