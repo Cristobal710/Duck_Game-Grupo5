@@ -6,7 +6,7 @@ CascoInterfaz::CascoInterfaz(SDL2pp::Renderer& renderer, int pos_x, int pos_y)
     : renderer(renderer),
     casco_texture(),
     rect_inicio_casco(0, 0, PIXEL_CASCO, PIXEL_CASCO),
-    rect_dibujado_casco(pos_x, (pos_y-20), PIXEL_CASCO, PIXEL_CASCO)
+    rect_dibujado_casco((pos_x+10), (pos_y-5), PIXEL_CASCO, PIXEL_CASCO)
 {
     SDL2pp::Surface sprite_casco(IMG_Load("../resources/armors/knightHelmet.png"));
     cargar_frames(renderer, sprite_casco, 0, casco_texture, 1, 0, PIXEL_CASCO, PIXEL_CASCO);
