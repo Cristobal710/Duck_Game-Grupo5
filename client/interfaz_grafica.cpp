@@ -260,7 +260,10 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
             pato_prueba.actualizar_estado(pato_juego.estado.get_estado_agachado(), ESTADO_PISO);
             pato_prueba.actualizar_equipamiento(pato_juego.tiene_arma(), ESTADO_ARMA);
             pato_prueba.actualizar_equipamiento(pato_juego.estado.get_estado_disparo(), ESTADO_BALAS);
-            pato_prueba.actualizar_equipamiento(pato_juego.get_arma()->get_municion_disponible(), ESTADO_MUNICION);
+            if (pato_juego.tiene_arma() == TOMAR_ARMA) {
+                pato_prueba.actualizar_equipamiento(pato_juego.get_arma()->get_municion_disponible(), ESTADO_MUNICION);
+            }
+            // pato_prueba.actualizar_equipamiento(pato_juego.get_arma()->get_municion_disponible(), ESTADO_MUNICION);
             pato_prueba.actualizar_equipamiento(pato_juego.get_armadura_equipada(), ESTADO_ARMADURA);
             pato_prueba.actualizar_equipamiento(pato_juego.get_casco_equipado(), ESTADO_CASCO);
             //pato_prueba.get_arma().set_tipo_arma(pato_juego.get_arma().get_tipo_arma());

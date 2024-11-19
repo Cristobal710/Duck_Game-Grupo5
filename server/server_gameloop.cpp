@@ -94,6 +94,9 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
             // pato.tomar_arma();
             break;
         case DISPARAR:
+            if (!pato.tiene_arma()) { 
+                break;
+            } 
             if (pato.estado.get_estado_agachado() == TIRAR_PISO) {
                 pato.estado.set_dejar_de_agacharse();
             }
@@ -136,24 +139,21 @@ void GameLoop::aplicar_estados(){
         if(pato.estado.get_estado_agachado() == TIRAR_PISO ){
             pato.tirarse_al_piso();
         }
-       
     }
 }
 
-void GameLoop::crear_bala(Pato& pato){
-    if (pato.tiene_arma()) {    
-        if (!pato.esta_apuntando_arriba()){
-            if (pato.get_direccion() == DIRECCION_DERECHA) {
-                Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x() + pato.get_arma()->get_alcance(), pato.get_pos_y(), pato.get_direccion(), pato.get_id());
-                ultimo_estado.balas.push_back(bala);
-            } else {
-                Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x() - pato.get_arma()->get_alcance(), pato.get_pos_y(), pato.get_direccion(), pato.get_id());
-                ultimo_estado.balas.push_back(bala);
-            }
+void GameLoop::crear_bala(Pato& pato){  
+    if (!pato.esta_apuntando_arriba()){
+        if (pato.get_direccion() == DIRECCION_DERECHA) {
+            Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x() + pato.get_arma()->get_alcance(), pato.get_pos_y(), pato.get_direccion(), pato.get_id());
+            ultimo_estado.balas.push_back(bala);
         } else {
-            Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x(), pato.get_pos_y() - pato.get_arma()->get_alcance(), pato.get_direccion(), pato.get_id());
+            Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x() - pato.get_arma()->get_alcance(), pato.get_pos_y(), pato.get_direccion(), pato.get_id());
             ultimo_estado.balas.push_back(bala);
         }
+    } else {
+        Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x(), pato.get_pos_y() - pato.get_arma()->get_alcance(), pato.get_direccion(), pato.get_id());
+        ultimo_estado.balas.push_back(bala);
     }
 }
 
