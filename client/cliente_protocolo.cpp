@@ -133,8 +133,8 @@ void ClienteProtocolo::recibir_bala(std::list<Bala>& balas) {
     uint16_t pos_x = recibir_dos_bytes(cerrado);
     uint16_t pos_y = recibir_dos_bytes(cerrado);
     uint8_t direccion = recibir_byte(cerrado);
-
-    Bala bala(id, pos_x, pos_y, 0, 0, direccion);
+    uint8_t tipo_arma = recibir_byte(cerrado);
+    Bala bala(id, pos_x, pos_y, 0, 0, direccion, tipo_arma);
     balas.push_back(bala);
 }
 
