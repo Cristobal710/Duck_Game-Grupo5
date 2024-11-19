@@ -169,7 +169,7 @@ ArmaInterfaz PatoInterfaz::tomar_arma() {
         arma_path = "../resources/weapons/shotgun.png";
         //bala_path = "../resources/weapons/dart.png";
     } else if (tipo_arma == TipoArma::Sniper){
-        arma_path = "../resources/sniper.png";
+        arma_path = "../resources/weapons/sniper.png";
         //bala_path = "../resources/weapons/dart.png";
     }
     return ArmaInterfaz(renderer, arma_path, rect_dibujado.GetX(), rect_dibujado.GetY());
