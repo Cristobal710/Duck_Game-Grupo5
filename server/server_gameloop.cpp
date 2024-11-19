@@ -357,12 +357,12 @@ void GameLoop::run() {
     //     }
     // }
     Pato pato(3, pos_x, pos_y, 0);
-    Arma* arma = new Arma(1, pos_x, pos_y, 15, 300);
+    Arma* arma = new Arma(1, pos_x, pos_y, 15, 200, AK_47);
     pato.tomar_arma(arma);
     ultimo_estado.patos.emplace_back(pato);
 
     Pato pato_dos(4, pos_x+20, pos_y, 0);
-    Arma* arma_dos = new Arma(1, pos_x, pos_y, 15, 300);
+    Arma* arma_dos = new Arma(1, pos_x, pos_y, 15, 400, SNIPER);
     pato_dos.tomar_armadura();
     pato_dos.equipar_armadura();
     pato_dos.tomar_casco();
@@ -371,9 +371,9 @@ void GameLoop::run() {
     ultimo_estado.patos.emplace_back(pato_dos);
 
     cola_estados_juego.push(ultimo_estado);
-    float tiempo_ultimo_frame = SDL_GetTicks();
     calcular_colisiones_tiles(mapa);
 
+    float tiempo_ultimo_frame = SDL_GetTicks();
     while (!(*esta_cerrado)) {
         //eliminar_clientes_cerrados();
         // ultimo_estado.mapa = Mapa();
