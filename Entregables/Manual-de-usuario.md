@@ -16,7 +16,7 @@ Clonar el repositorio con el comando
 ```
 git clone https://github.com/Cristobal710/Duck_Game-Grupo5.git
 ```
-
+Una vez terminado de clonar, dentro de la carpeta clonada realizar lo siguiente
 
 ##### Instalacion de dependencias y librerias restantes y compilacion del programa 
 Luego de deberan instalar las dependencias y librerias restantes corriendo el script de la siguiente forma:
