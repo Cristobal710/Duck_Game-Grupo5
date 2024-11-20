@@ -15,6 +15,7 @@ class MapaInterfaz {
 
     private:
     SDL2pp::Renderer& renderer;
+    SDL2pp::Surface superficie;
     FondoInterfaz fondo;
     //std::unordered_map<int, std::vector<TileInterfaz>> horizontalGroups;
     //std::unordered_map<int, std::vector<TileInterfaz>> verticalGroups;
@@ -23,7 +24,7 @@ class MapaInterfaz {
     std::vector<BalaInterfaz> balas;
     std::vector<CajaInterfaz> cajas;
     bool mapa_procesado;
-    Camara camara;
+    //Camara camara;
 
     SDL_Color generar_color(int index);
     void obtener_tipo_bala(uint8_t tipo_arma, std::string& path_bala);

@@ -6,28 +6,25 @@
 
 class TileInterfaz {
     private:
-    SDL2pp::Renderer& renderer;  
-    SDL2pp::Texture tile_texture;
-    SDL2pp::Rect rectangulo; 
+    //SDL2pp::Renderer& renderer;  
+    SDL2pp::Surface tile_surface;
+    SDL2pp::Surface& superficie;
+    SDL2pp::Rect rectangulo;
 
     public:
-    TileInterfaz(SDL2pp::Renderer& renderer, std::string path, int x, int y);
+    TileInterfaz(SDL2pp::Surface& superficie, std::string path, int x, int y);
    
     TileInterfaz(TileInterfaz&& other) noexcept;
 
-    
     TileInterfaz& operator=(TileInterfaz&& other) noexcept;
-
     
     TileInterfaz(const TileInterfaz& other) = delete;
     TileInterfaz& operator=(const TileInterfaz& other) = delete;
 
-    void dibujar(float zoom_factor, int pos_x, int pos_y);
-    void set_zoom_in(float& zoom_factor, SDL2pp::Rect& source_rect, int& pos_x, int& pos_y);
+    void dibujar();
+
     int get_pos_x();
     int get_pos_y();
 };
-
-
 
 #endif

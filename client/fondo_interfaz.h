@@ -7,22 +7,25 @@
 
 class FondoInterfaz {
 private:
-    SDL2pp::Renderer& renderer;  
-    SDL2pp::Texture fondo_texture; 
+    //SDL2pp::Renderer& renderer;  
+    SDL2pp::Surface& superficie;
+    SDL2pp::Surface fondo_surface;
+    SDL2pp::Rect rectangulo;
+    //SDL2pp::Texture fondo_texture; 
 
 public:
     
-    FondoInterfaz(SDL2pp::Renderer& renderer, const std::string& fondo_path);
+    FondoInterfaz(SDL2pp::Surface& superficie, std::string path_fondo);
 
-   
     FondoInterfaz(FondoInterfaz&& other) noexcept;
 
-    
     FondoInterfaz& operator=(FondoInterfaz&& other) noexcept;
 
+    FondoInterfaz(const FondoInterfaz& other) = delete;
+    FondoInterfaz& operator=(const FondoInterfaz& other) = delete;
 
-    void dibujar(float& zoom_factor, 
-                 int duck1_x, int duck1_y);
+    void set_fondo(std::string path_fondo);
+    void dibujar();
 };
 
 #endif  // FONDO_INTERFAZ_H

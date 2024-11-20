@@ -234,7 +234,7 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
         mapa.agregar_spawn(8, 1100, 600);
 
         // procesar cajas 
-        std::map<std::string, std::vector<SDL_Point>> cajas = mapa_a_jugar.getCajas();
+        /*std::map<std::string, std::vector<SDL_Point>> cajas = mapa_a_jugar.getCajas();
 
         for (const auto& caja : cajas) {
             std::string path = caja.first;
@@ -244,7 +244,7 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
                 //std::cout << "agrego una caja" << std::endl;
             }
             
-        }
+        }*/
 
         mapa.procesado();
     }

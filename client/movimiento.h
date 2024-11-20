@@ -10,37 +10,20 @@
 class Movimiento {
 
 public:
-    void cargar_frames(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet,
-                                 int offset_y, std::vector<SDL2pp::Texture>& texturas,
-                                 int num_frames) {
+    void cargar_frames(SDL2pp::Surface& sprite_sheet, int num_frames, 
+        std::vector<SDL2pp::Surface>& texturas, int offset_y, int offset_x, int pixeles_x, int pixeles_y) {
+    
     for (int i = 0; i < num_frames; ++i) {
+        SDL_Rect rect_inicial = {i * pixeles_x + offset_x, offset_y, pixeles_x, pixeles_y};
+        
+        SDL2pp::Surface sprite_surface(SDL_CreateRGBSurface(0, pixeles_x, pixeles_y, 32, 0, 0, 0, 0));
+        SDL_BlitSurface(sprite_sheet.Get(), &rect_inicial, sprite_surface.Get(), nullptr);
 
-        SDL_Rect rect_inicial = {i * PIXEL_PATO, offset_y, PIXEL_PATO, PIXEL_PATO};
+        Uint32 color_key = SDL_MapRGB(sprite_surface.Get()->format, 0, 0, 0);
+        SDL_SetColorKey(sprite_surface.Get(), SDL_TRUE, color_key);
 
-        SDL2pp::Surface sprite_superficie(
-                SDL_CreateRGBSurface(0, PIXEL_PATO, PIXEL_PATO, 32, 0, 0, 0, 0));
-
-        SDL_BlitSurface(sprite_sheet.Get(), &rect_inicial, sprite_superficie.Get(), nullptr);
-
-        Uint32 color_key = SDL_MapRGB(sprite_superficie.Get()->format, 0, 0, 0);
-
-        SDL_SetColorKey(sprite_superficie.Get(), SDL_TRUE, color_key);
-
-        SDL2pp::Texture sprite_textura(renderer, sprite_superficie);
-
-        texturas.emplace_back(std::move(sprite_textura));
+        texturas.push_back(std::move(sprite_surface));
     }
-}
-
-void set_zoom_in(float& zoom_factor, SDL2pp::Rect& rect_dibujado, int& pos_x, int& pos_y) {
-    int original_width = PIXEL_PATO;
-    int original_height = PIXEL_PATO;
-    rect_dibujado.SetW(static_cast<int>(original_width * zoom_factor));
-    rect_dibujado.SetH(static_cast<int>(original_height * zoom_factor));
-    pos_x = pos_x;
-    pos_y = pos_y;
-    rect_dibujado.SetX(pos_x - (rect_dibujado.GetW() - original_width) / 2);
-    rect_dibujado.SetY(pos_y - (rect_dibujado.GetH() - original_height) / 2);
 }
 
 bool is_grey(SDL_Color pixel) {
@@ -71,6 +54,52 @@ void aplicar_color(SDL2pp::Surface& sprite_sheet, SDL_Color color) {
     }
 
     SDL_UnlockSurface(sprite_sheet.Get());
+}
+
+void FlipSurfaceHorizontally(SDL2pp::Surface& surface) {
+    int width = surface.GetWidth();
+    int height = surface.GetHeight();
+
+    Uint32* pixels = static_cast<Uint32*>(surface.Get()->pixels);
+
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width / 2; ++x) {
+            std::swap(pixels[y * width + x], pixels[y * width + (width - x - 1)]);
+        }
+    }
+
+}
+
+void RotateSurface90Degrees(SDL2pp::Surface& surface) {
+    // Get the raw SDL_Surface from the SDL2pp::Surface
+    SDL_Surface* sdlSurface = surface.Get();
+
+    int width = surface.GetWidth();
+    int height = surface.GetHeight();
+
+    // Create a temporary buffer to hold the rotated pixels
+    Uint32* rotatedPixels = new Uint32[width * height];
+
+    // Get the raw pixel data
+    Uint32* pixels = static_cast<Uint32*>(sdlSurface->pixels);
+
+    // Perform the 90-degree clockwise rotation
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            // Calculate the new position for the rotated image
+            rotatedPixels[(width - x - 1) * height + y] = pixels[y * width + x];
+        }
+    }
+
+    // Copy the rotated data back to the surface
+    std::copy(rotatedPixels, rotatedPixels + (width * height), pixels);
+
+    // Clean up the temporary rotated pixels buffer
+    delete[] rotatedPixels;
+
+    // Update surface width and height (after rotation, these will swap)
+    std::swap(sdlSurface->w, sdlSurface->h);
+
 }
 
 
