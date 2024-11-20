@@ -17,9 +17,9 @@ int pos_x, int pos_y, SDL_Color color):
 
 void MovimientoAgachado::frames_agachado(SDL2pp::Surface& sprite_sheet) {
     aplicar_color(sprite_sheet, color);
-    cargar_frames(sprite_sheet, NUM_FRAMES_PATO_AGACHADO, movimiento_pato_agachado_derecha, 70, 0, PIXEL_PATO, PIXEL_PATO);
+    cargar_frames(sprite_sheet, NUM_FRAMES_PATO_AGACHADO, movimiento_pato_agachado_derecha, 71, 0, PIXEL_PATO, PIXEL_PATO);
     flip_horizontal(sprite_sheet);
-    cargar_frames(sprite_sheet, NUM_FRAMES_PATO_AGACHADO, movimiento_pato_agachado_izquierda, 70, 0, PIXEL_PATO, PIXEL_PATO);
+    cargar_frames(sprite_sheet, NUM_FRAMES_PATO_AGACHADO, movimiento_pato_agachado_izquierda, 71, 0, PIXEL_PATO, PIXEL_PATO);
 }
 
 void MovimientoAgachado::mostrar_frames_agachado(uint8_t direccion_pato) {

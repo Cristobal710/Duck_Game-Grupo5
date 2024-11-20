@@ -234,17 +234,28 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
         mapa.agregar_spawn(8, 1100, 600);
 
         // procesar cajas 
-        /*std::map<std::string, std::vector<SDL_Point>> cajas = mapa_a_jugar.getCajas();
+        std::map<std::string, std::vector<SDL_Point>> cajas = mapa_a_jugar.getCajas();
 
-        for (const auto& caja : cajas) {
-            std::string path = caja.first;
-            std::vector<SDL_Point> puntos = caja.second;
+        for (const auto& textura_punto : cajas) {
+            std::string path_textura = textura_punto.first;
+            std::vector<SDL_Point> puntos = textura_punto.second;
             for (const auto& punto : puntos) {
-                mapa.agregar_caja(0, punto.x, punto.y, path);
-                //std::cout << "agrego una caja" << std::endl;
+                mapa.agregar_caja(path_textura, punto.x, punto.y);
+                std::cout << "agrego una caja" << std::endl;
             }
             
-        }*/
+        }
+
+        // procesar armas
+        std::map<std::string, std::vector<SDL_Point>> armas = mapa_a_jugar.getEquipamiento();
+
+        for(const auto& textura_punto : armas){
+            std::string path_textura = textura_punto.first;
+            std::vector<SDL_Point> puntos = textura_punto.second;
+            for (const auto& punto : puntos){
+                mapa.agregar_arma(path_textura, punto.x, punto.y);
+            }
+        }
 
         mapa.procesado();
     }

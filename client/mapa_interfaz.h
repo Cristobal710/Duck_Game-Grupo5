@@ -7,10 +7,9 @@
 #include "pato_interfaz.h"
 #include "bala_interfaz.h"
 #include <SDL2pp/SDL2pp.hh>
-#include "camara.h"
-#include <unordered_map>
 #include <utility>
 #include "caja_interfaz.h"
+#include "arma_interfaz.h"
 
 class MapaInterfaz {
 private:
@@ -21,6 +20,7 @@ private:
     std::vector<PatoInterfaz> patos;
     std::vector<BalaInterfaz> balas;
     std::vector<CajaInterfaz> cajas;
+    std::vector<ArmaInterfaz> armas;
     bool mapa_procesado;
 
     SDL_Color generar_color(int index);
@@ -33,7 +33,8 @@ public:
     void set_fondo(std::string fondo_path);
     void agregar_tile(std::string fondo_path, int x, int y);
     void agregar_spawn(uint16_t id_jugador, int x, int y);
-    void agregar_caja(uint16_t id, int x, int y, std::string path);
+    void agregar_caja(std::string& caja_path, int x, int y);
+    void agregar_arma(std::string& arma_path, int x, int y);
     void agregar_bala(uint8_t tipo_arma, int x, int y, uint8_t direccion);
     
     PatoInterfaz& get_pato_con_id(uint16_t id);

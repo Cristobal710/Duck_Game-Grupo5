@@ -7,6 +7,8 @@ MapaInterfaz::MapaInterfaz(SDL2pp::Renderer& renderer)
     tiles(),
     patos(), 
     balas(), 
+    cajas(),
+    armas(),
     mapa_procesado(false)
 {}
 
@@ -32,12 +34,17 @@ void MapaInterfaz::agregar_spawn(uint16_t id_jugador, int x, int y) {
     patos.emplace_back(std::move(pato));
 }
 
-/*void MapaInterfaz::agregar_caja(uint16_t id, int x, int y, std::string path) {
-    //std::string path = "../resources/TileSets/itemBox.png";
-    id = cajas.size();
-    CajaInterfaz caja(renderer, id, path, x, y);
+void MapaInterfaz::agregar_caja(std::string& caja_path, int x, int y) {
+    //caja_path = "../resources/TileSets/itemBox.png";
+    CajaInterfaz caja(superficie, caja_path, x, y);
     cajas.emplace_back(std::move(caja));
-}*/
+}
+
+void MapaInterfaz::agregar_arma(std::string& arma_path, int x, int y) {
+    arma_path = "../resources/weapons/ak47.png"; //no llega bien el path
+    ArmaInterfaz arma(superficie, arma_path, x, y);
+    armas.emplace_back(std::move(arma));
+}
 
 void MapaInterfaz::obtener_tipo_bala(uint8_t tipo_arma, std::string& path_bala){
     if(tipo_arma == GRANADA){
@@ -96,9 +103,14 @@ void MapaInterfaz::dibujar(int it){
         tile.dibujar();
     }
 
-    //for (CajaInterfaz& caja : cajas){
-    //    caja.dibujar();
-    //}
+    for (CajaInterfaz& caja : cajas){
+        caja.dibujar();
+    }
+
+    uint8_t direccion = DIRECCION_DERECHA;
+    for (ArmaInterfaz& arma : armas){
+        arma.dibujar(direccion);
+    }
 
     for (PatoInterfaz& pato : patos){
         if(pato.esta_vivo()){
