@@ -1,8 +1,4 @@
 #include "mapa_interfaz.h"
-#include <utility>
-
-#define ERROR 1
-#define EXITO 0
 
 MapaInterfaz::MapaInterfaz(SDL2pp::Renderer& renderer)
     : renderer(renderer), 
@@ -89,29 +85,20 @@ void MapaInterfaz::procesado() {
     mapa_procesado = true;
 }
 
-int MapaInterfaz::dibujar(int it){
+void MapaInterfaz::dibujar(int it){
 
-    /*if (!patos.empty()){
-        PatoInterfaz& pato_cliente = patos.front();
-        
-        camara.actualizar(pato_cliente, patos);
-    }
-    float zoom_factor = camara.obtener_zoom();
+    //if (!patos.empty()){
+    //    PatoInterfaz& pato_cliente = patos.front();
 
-    SDL2pp::Rect posicion_camara = camara.obtener_rect_camara();
-
-    fondo.dibujar(zoom_factor, posicion_camara.x, posicion_camara.y);
-
-    //std::cout << cajas.size() << std::endl;
-    for (CajaInterfaz& caja : cajas){
-        caja.dibujar();
-    }*/
-    
     fondo.dibujar();
 
     for (auto& tile : tiles) {
         tile.dibujar();
     }
+
+    //for (CajaInterfaz& caja : cajas){
+    //    caja.dibujar();
+    //}
 
     for (PatoInterfaz& pato : patos){
         if(pato.esta_vivo()){
@@ -126,9 +113,9 @@ int MapaInterfaz::dibujar(int it){
     }
     balas.clear();
 
+    //calcular que parte de superficie dibujar
+
     SDL2pp::Texture texture(renderer, superficie);
     renderer.Copy(texture, SDL2pp::Rect(0, 0, superficie.GetWidth(), superficie.GetHeight()));
-
-    return EXITO;
 }
 

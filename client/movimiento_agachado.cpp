@@ -1,5 +1,4 @@
 #include "movimiento_agachado.h"
-#include "../common/common_constantes.h"
 
 #define NUM_FRAMES_PATO_AGACHADO 5
 
@@ -19,7 +18,7 @@ int pos_x, int pos_y, SDL_Color color):
 void MovimientoAgachado::frames_agachado(SDL2pp::Surface& sprite_sheet) {
     aplicar_color(sprite_sheet, color);
     cargar_frames(sprite_sheet, NUM_FRAMES_PATO_AGACHADO, movimiento_pato_agachado_derecha, 70, 0, PIXEL_PATO, PIXEL_PATO);
-    FlipSurfaceHorizontally(sprite_sheet);
+    flip_horizontal(sprite_sheet);
     cargar_frames(sprite_sheet, NUM_FRAMES_PATO_AGACHADO, movimiento_pato_agachado_izquierda, 70, 0, PIXEL_PATO, PIXEL_PATO);
 }
 

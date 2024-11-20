@@ -11,7 +11,7 @@ CascoInterfaz::CascoInterfaz(SDL2pp::Surface& superficie, int pos_x, int pos_y)
     rect_dibujado_casco((pos_x+10), (pos_y), PIXEL_CASCO, PIXEL_CASCO)
 {
     cargar_frames(casco_surface, 1, casco_derecha, 0, 0, PIXEL_CASCO, PIXEL_CASCO);
-    FlipSurfaceHorizontally(casco_surface);
+    flip_horizontal(casco_surface);
     cargar_frames(casco_surface, 1, casco_izquierda, 0, 0, PIXEL_CASCO, PIXEL_CASCO);
 }
 

@@ -5,9 +5,9 @@
 #include <SDL2/SDL_image.h>
 #include "../common/common_constantes.h"
 #include <vector>
-#include "movimiento.h"
+#include "procesador_sprites.h"
 
-class ArmaduraInterfaz : public Movimiento{
+class ArmaduraInterfaz : public ProcesadorSprites{
 private:
     SDL2pp::Surface& superficie;
     SDL2pp::Surface armadura_surface;

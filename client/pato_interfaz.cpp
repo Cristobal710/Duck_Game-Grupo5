@@ -1,8 +1,5 @@
 #include "pato_interfaz.h"
 
-#include "../common/common_constantes.h"
-#include <SDL2/SDL_image.h>
-
 PatoInterfaz::PatoInterfaz(SDL2pp::Surface& superficie, const std::string& pato_path, int pos_inicial_x, int pos_inicial_y,
 uint16_t pato_id, SDL_Color color):
     vivo(true),

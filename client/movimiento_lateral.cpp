@@ -1,10 +1,6 @@
 #include "movimiento_lateral.h"
-#include "../common/common_constantes.h"
-#include <cmath>
-#include <iostream>
 
 #define NUM_FRAMES_MOVIMIENTO_PATO 6
-
 
 MovimientoLateral::MovimientoLateral(SDL2pp::Surface& superficie, const std::string& pato_path, 
 int pos_x, int pos_y, SDL_Color color)
@@ -21,11 +17,10 @@ int pos_x, int pos_y, SDL_Color color)
 
 void MovimientoLateral::frames_movimientos(SDL2pp::Surface& sprite_sheet) {
     aplicar_color(sprite_sheet, color);
-    cargar_frames(sprite_sheet, NUM_FRAMES_MOVIMIENTO_PATO, movimiento_pato_derecha, 6, 0, PIXEL_PATO, PIXEL_PATO);
-    FlipSurfaceHorizontally(sprite_sheet);
-    cargar_frames(sprite_sheet, NUM_FRAMES_MOVIMIENTO_PATO, movimiento_pato_izquierda, 6, 0, PIXEL_PATO, PIXEL_PATO);    
+    cargar_frames(sprite_sheet, NUM_FRAMES_MOVIMIENTO_PATO, movimiento_pato_derecha, 7, 1, PIXEL_PATO, PIXEL_PATO);
+    flip_horizontal(sprite_sheet);
+    cargar_frames(sprite_sheet, NUM_FRAMES_MOVIMIENTO_PATO, movimiento_pato_izquierda, 7, 1, PIXEL_PATO, PIXEL_PATO);    
 }
-
 
 void MovimientoLateral::mostrar_frame_derecha(int it) {
     SDL_BlitScaled(movimiento_pato_derecha[it % NUM_FRAMES_MOVIMIENTO_PATO].Get(), nullptr, superficie.Get(), &rect_dibujado);

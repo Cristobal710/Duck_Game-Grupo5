@@ -4,9 +4,9 @@
 #include <vector>
 #include <SDL2/SDL_image.h>
 #include <SDL2pp/SDL2pp.hh>
-#include "movimiento.h"
+#include "procesador_sprites.h"
 
-class MovimientoSalto : public Movimiento {
+class MovimientoSalto : public ProcesadorSprites {
 private:
     std::vector<SDL2pp::Surface> salto_frames_derecha;
     std::vector<SDL2pp::Surface> salto_frames_izquierda;

@@ -1,5 +1,5 @@
-#ifndef MOVIMIENTO_H
-#define MOVIMIENTO_H
+#ifndef PROCESADOR_SPRITES_H
+#define PROCESADOR_SPRITES_H
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -7,7 +7,7 @@
 
 #define PIXEL_PATO 32
 
-class Movimiento {
+class ProcesadorSprites {
 
 public:
     void cargar_frames(SDL2pp::Surface& sprite_sheet, int num_frames, 
@@ -26,7 +26,7 @@ public:
     }
 }
 
-bool is_grey(SDL_Color pixel) {
+bool es_gris(SDL_Color pixel) {
     const uint8_t tolerance = 30;
     return (abs(pixel.r - pixel.g) < tolerance && abs(pixel.g - pixel.b) < tolerance);
 }
@@ -46,7 +46,7 @@ void aplicar_color(SDL2pp::Surface& sprite_sheet, SDL_Color color) {
             SDL_Color original_color;
             SDL_GetRGBA(pixel, format, &original_color.r, &original_color.g, &original_color.b, &original_color.a);
 
-            if (is_grey(original_color)) {
+            if (es_gris(original_color)) {
                 uint32_t new_pixel = SDL_MapRGBA(format, color.r, color.g, color.b, original_color.a);
                 *pixel_addr = new_pixel;
             }
@@ -56,11 +56,11 @@ void aplicar_color(SDL2pp::Surface& sprite_sheet, SDL_Color color) {
     SDL_UnlockSurface(sprite_sheet.Get());
 }
 
-void FlipSurfaceHorizontally(SDL2pp::Surface& surface) {
-    int width = surface.GetWidth();
-    int height = surface.GetHeight();
+void flip_horizontal(SDL2pp::Surface& sprite_sheet) {
+    int width = sprite_sheet.GetWidth();
+    int height = sprite_sheet.GetHeight();
 
-    Uint32* pixels = static_cast<Uint32*>(surface.Get()->pixels);
+    Uint32* pixels = static_cast<Uint32*>(sprite_sheet.Get()->pixels);
 
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width / 2; ++x) {
@@ -70,39 +70,30 @@ void FlipSurfaceHorizontally(SDL2pp::Surface& surface) {
 
 }
 
-void RotateSurface90Degrees(SDL2pp::Surface& surface) {
-    // Get the raw SDL_Surface from the SDL2pp::Surface
-    SDL_Surface* sdlSurface = surface.Get();
+void rotacion_90_grados(SDL2pp::Surface& sprite_sheet) {
+    SDL_Surface* sdl_surface = sprite_sheet.Get();
 
-    int width = surface.GetWidth();
-    int height = surface.GetHeight();
+    int width = sprite_sheet.GetWidth();
+    int height = sprite_sheet.GetHeight();
 
-    // Create a temporary buffer to hold the rotated pixels
-    Uint32* rotatedPixels = new Uint32[width * height];
+    Uint32* rotated_pixels = new Uint32[width * height];
 
-    // Get the raw pixel data
-    Uint32* pixels = static_cast<Uint32*>(sdlSurface->pixels);
+    Uint32* pixels = static_cast<Uint32*>(sdl_surface->pixels);
 
-    // Perform the 90-degree clockwise rotation
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
-            // Calculate the new position for the rotated image
-            rotatedPixels[(width - x - 1) * height + y] = pixels[y * width + x];
+            rotated_pixels[(width - x - 1) * height + y] = pixels[y * width + x];
         }
     }
 
-    // Copy the rotated data back to the surface
-    std::copy(rotatedPixels, rotatedPixels + (width * height), pixels);
+    std::copy(rotated_pixels, rotated_pixels + (width * height), pixels);
 
-    // Clean up the temporary rotated pixels buffer
-    delete[] rotatedPixels;
+    delete[] rotated_pixels;
 
-    // Update surface width and height (after rotation, these will swap)
-    std::swap(sdlSurface->w, sdlSurface->h);
+    std::swap(sdl_surface->w, sdl_surface->h);
 
 }
 
-
 };
 
-#endif // MOVIMIENTO_H
+#endif

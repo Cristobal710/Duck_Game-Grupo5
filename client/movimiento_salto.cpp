@@ -24,14 +24,14 @@ MovimientoSalto::MovimientoSalto(SDL2pp::Surface& superficie, const std::string&
 void MovimientoSalto::frames_salto(SDL2pp::Surface& sprite_sheet) {
     aplicar_color(sprite_sheet, color);
     cargar_frames(sprite_sheet, NUM_FRAMES_SALTA_PATO, salto_frames_derecha, 38, 1, PIXEL_PATO, PIXEL_PATO);
-    FlipSurfaceHorizontally(sprite_sheet);
+    flip_horizontal(sprite_sheet);
     cargar_frames(sprite_sheet, NUM_FRAMES_SALTA_PATO, salto_frames_izquierda, 38, 1, PIXEL_PATO, PIXEL_PATO);
 }
 
 void MovimientoSalto::frames_caida(SDL2pp::Surface& sprite_sheet) {
     aplicar_color(sprite_sheet, color);
     cargar_frames(sprite_sheet, NUM_FRAMES_CAE_PATO, caida_frames_derecha, 38, 97, PIXEL_PATO, PIXEL_PATO);
-    FlipSurfaceHorizontally(sprite_sheet);
+    flip_horizontal(sprite_sheet);
     cargar_frames(sprite_sheet, NUM_FRAMES_CAE_PATO, caida_frames_izquierda, 38, 97, PIXEL_PATO, PIXEL_PATO);
 }
 

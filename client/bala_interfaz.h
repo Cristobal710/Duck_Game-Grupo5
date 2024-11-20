@@ -5,9 +5,9 @@
 #include <SDL2/SDL_image.h>
 #include <vector>
 #include "../common/common_constantes.h"
-#include "movimiento.h"
+#include "procesador_sprites.h"
 
-class BalaInterfaz : public Movimiento{
+class BalaInterfaz : public ProcesadorSprites {
 private:
     std::vector<SDL2pp::Surface> bala_derecha;
     std::vector<SDL2pp::Surface> bala_izquierda;

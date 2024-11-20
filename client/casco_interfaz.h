@@ -4,9 +4,9 @@
 #include <SDL2pp/SDL2pp.hh>
 #include <SDL2/SDL_image.h>
 #include "../common/common_constantes.h"
-#include "movimiento.h"
+#include "procesador_sprites.h"
 
-class CascoInterfaz : public Movimiento{
+class CascoInterfaz : public ProcesadorSprites {
 private:
     SDL2pp::Surface& superficie;
     SDL2pp::Surface casco_surface;

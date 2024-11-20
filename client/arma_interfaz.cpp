@@ -13,9 +13,9 @@ ArmaInterfaz::ArmaInterfaz(SDL2pp::Surface& superficie, const std::string& arma_
         municion_disponible(0)
 {   
     cargar_frames(arma_surface, 1, arma_derecha, 0, 0, PIXEL_ARMA, PIXEL_ARMA);
-    FlipSurfaceHorizontally(arma_surface);
+    flip_horizontal(arma_surface);
     cargar_frames(arma_surface, 1, arma_izquierda, 0, 0, PIXEL_ARMA, PIXEL_ARMA);
-    RotateSurface90Degrees(arma_surface_arriba);
+    rotacion_90_grados(arma_surface_arriba);
     cargar_frames(arma_surface_arriba, 1, arma_arriba, 0, 0, PIXEL_ARMA, PIXEL_ARMA);
 }
 

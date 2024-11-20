@@ -12,6 +12,7 @@
 #include "arma_interfaz.h"
 #include "armadura_interfaz.h"
 #include "casco_interfaz.h"
+#include "../common/common_constantes.h"
 
 enum class TipoArma {
     Granada,
@@ -51,8 +52,7 @@ private:
 
 public:
     PatoInterfaz(SDL2pp::Surface& superficie, const std::string& pato_path, int pos_x, int pos_y, uint16_t pato_id, SDL_Color color);
-    
-     // Move constructor
+
     PatoInterfaz(PatoInterfaz&& other) noexcept;
 
     
@@ -62,15 +62,18 @@ public:
     void actualizar_posicion(int pos_x, int pos_y);
     void actualizar_equipamiento(uint8_t estado_nuevo, std::string tipo_estado);
     void actualizar_arma(uint8_t arma);
+    
     void set_tipo_arma(TipoArma tipo_arma);
     bool mismo_id(uint16_t id);
+    
     void set_esta_vivo(bool estado);
     bool esta_vivo();
     void dibujar_muerto();
+
     int pos_x();
     int pos_y();
     int get_w();
     int get_h();
 };
 
-#endif  // PATO_INTERFAZ_H
+#endif

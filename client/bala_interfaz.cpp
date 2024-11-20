@@ -15,9 +15,9 @@ BalaInterfaz::BalaInterfaz(SDL2pp::Surface& superficie, const std::string& bala_
         direccion(direccion) 
 {
     cargar_frames(bala_surface, CANT_MAX_FRAMES_BALA, bala_derecha, 0, 0, PIXEL_BALA, PIXEL_BALA);
-    FlipSurfaceHorizontally(bala_surface);
+    flip_horizontal(bala_surface);
     cargar_frames(bala_surface, CANT_MAX_FRAMES_BALA, bala_izquierda, 0, 0, PIXEL_BALA, PIXEL_BALA);
-    RotateSurface90Degrees(bala_surface_arriba);
+    rotacion_90_grados(bala_surface_arriba);
     cargar_frames(bala_surface_arriba, CANT_MAX_FRAMES_BALA, bala_arriba, 0, 0, PIXEL_BALA, PIXEL_BALA);
 }
 

@@ -11,7 +11,7 @@ ArmaduraInterfaz::ArmaduraInterfaz(SDL2pp::Surface& superficie, int pos_x, int p
         rect_dibujado_armadura((pos_x+10), (pos_y+15), PIXEL_ARMADURA, PIXEL_ARMADURA)
 {
     cargar_frames(armadura_surface, 1, armadura_derecha, 0, 0, PIXEL_ARMADURA, PIXEL_ARMADURA);
-    FlipSurfaceHorizontally(armadura_surface);
+    flip_horizontal(armadura_surface);
     cargar_frames(armadura_surface, 1, armadura_izquierda, 0, 0, PIXEL_ARMADURA, PIXEL_ARMADURA);
 }
 

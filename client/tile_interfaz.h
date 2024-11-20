@@ -5,17 +5,15 @@
 #include <SDL2/SDL_image.h>
 
 class TileInterfaz {
-    private:
-    //SDL2pp::Renderer& renderer;  
+private: 
     SDL2pp::Surface tile_surface;
     SDL2pp::Surface& superficie;
     SDL2pp::Rect rectangulo;
 
-    public:
+public:
     TileInterfaz(SDL2pp::Surface& superficie, std::string path, int x, int y);
    
     TileInterfaz(TileInterfaz&& other) noexcept;
-
     TileInterfaz& operator=(TileInterfaz&& other) noexcept;
     
     TileInterfaz(const TileInterfaz& other) = delete;

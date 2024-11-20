@@ -5,9 +5,9 @@
 #include <SDL2/SDL_image.h>
 #include <vector>
 #include "../common/common_constantes.h"
-#include "movimiento.h"
+#include "procesador_sprites.h"
 
-class ArmaInterfaz : public Movimiento {
+class ArmaInterfaz : public ProcesadorSprites {
 private:
     SDL2pp::Surface& superficie;
     SDL2pp::Surface arma_surface;
@@ -26,6 +26,7 @@ public:
     
     void set_municion(uint8_t municion);
     uint8_t get_municion_disponible();
+    
     void set_posicion(int pos_x, int pos_y);
 
 };
