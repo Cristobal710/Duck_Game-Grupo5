@@ -26,6 +26,9 @@ private:
     SDL_Color generar_color(int index);
     void obtener_tipo_bala(uint8_t tipo_arma, std::string& path_bala);
 
+    float calcular_distancia(PatoInterfaz& pato_princiapl, PatoInterfaz& otro_pato);
+    SDL2pp::Rect obtener_rect_dibujar();
+
 public:
     MapaInterfaz(SDL2pp::Renderer& renderer);
     void dibujar(int it);

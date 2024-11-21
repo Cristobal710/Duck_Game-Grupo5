@@ -70,6 +70,8 @@ void MapaInterfaz::obtener_tipo_bala(uint8_t tipo_arma, std::string& path_bala){
     }
 }
 
+
+
 void MapaInterfaz::agregar_bala(uint8_t tipo_arma, int x, int y, uint8_t direccion) {
     std::string path_bala;
     obtener_tipo_bala(tipo_arma, path_bala);
@@ -90,6 +92,42 @@ PatoInterfaz& MapaInterfaz::get_pato_con_id(uint16_t id) {
 
 void MapaInterfaz::procesado() {
     mapa_procesado = true;
+}
+
+float MapaInterfaz::calcular_distancia( PatoInterfaz& pato_princiapl,  PatoInterfaz& otro_pato)  {
+    // Usamos el centro de los rectángulos para calcular la distancia
+
+    float x1 = pato_princiapl.pos_x() + pato_princiapl.get_w() / 2;
+    float y1 = pato_princiapl.pos_y() + pato_princiapl.get_h() / 2;
+    float x2 = otro_pato.pos_x() + otro_pato.get_w() / 2;
+    float y2 = otro_pato.pos_y() + otro_pato.get_h() / 2;
+
+    return std::sqrt(std::pow(x2 - x1, 2) + std::pow(y2 - y1, 2));
+}
+
+SDL2pp::Rect MapaInterfaz::obtener_rect_dibujar() { 
+    SDL2pp::Rect rect_dibujar;
+    PatoInterfaz& pato_principal = patos.front();
+    float zoom = 1.0f;
+    float distancia_maxima = 1.0f;
+
+    if (patos.size() > 1){
+        for (auto& pato : patos) {
+        // Compara la distancia entre el jugador principal y el resto
+        float distancia = calcular_distancia(pato_principal, pato);
+        distancia_maxima = std::max(distancia_maxima, distancia);
+        }
+    }
+    
+    zoom = 1.0f / (distancia_maxima / 500.0f);  
+    zoom = std::max(1.0f, std::min(zoom, 2.4f));  
+
+    rect_dibujar.x = pato_principal.pos_x() - 1280 / 2 / zoom;
+    rect_dibujar.w = pato_principal.get_w();
+    rect_dibujar.y = pato_principal.pos_y() - 720 / 2 / zoom;
+    rect_dibujar.h = pato_principal.get_h();
+    
+    return rect_dibujar; 
 }
 
 void MapaInterfaz::dibujar(int it){
@@ -126,8 +164,14 @@ void MapaInterfaz::dibujar(int it){
     balas.clear();
 
     //calcular que parte de superficie dibujar
-
+    //SDL2pp::Rect rect_dibujar = obtener_rect_dibujar();
+    //SDL2pp::Rect rect_superficie(0, 0, 1280, 720);
+    //rect_dibujar = rect_dibujar;
     SDL2pp::Texture texture(renderer, superficie);
-    renderer.Copy(texture, SDL2pp::Rect(0, 0, superficie.GetWidth(), superficie.GetHeight()));
+    renderer.Copy(texture, SDL2pp::Rect(0, 0, 1280, 720));
+    /*renderer.Copy(texture,
+        SDL2pp::Optional<SDL2pp::Rect>(rect_dibujar), // Wrap the source rectangle in Optional
+        SDL2pp::Optional<SDL2pp::Rect>(rect_superficie) 
+    );*/
 }
 
