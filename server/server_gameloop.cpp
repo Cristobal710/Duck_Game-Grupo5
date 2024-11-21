@@ -353,7 +353,7 @@ void GameLoop::run() {
     int pos_x = 0;
     int pos_y = 0;
     LectorJson lector_mapa = LectorJson();
-    Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa2");
+    Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa3");
     ultimo_estado.mapa = mapa;
     //cola_estados_juego.push(ultimo_estado);
 

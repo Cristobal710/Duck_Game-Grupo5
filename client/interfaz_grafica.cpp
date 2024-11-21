@@ -36,7 +36,6 @@ void InterfazGrafica::iniciar() {
     SDL_Init(SDL_INIT_VIDEO);
     IMG_Init(IMG_INIT_PNG);
 
-    // Create lobby instance
     int it = 0;
     float tiempo_ultimo_frame = SDL_GetTicks();
     Lobby lobby(renderer.Get());
@@ -51,7 +50,7 @@ void InterfazGrafica::iniciar() {
     //por ahora:
     int cant_jugadores = lobby.cantidad_jugadores();
     while(cant_jugadores != 1){
-        //loop
+       
     }
     
     std::string audio_fondo_path = "../resources/sounds/background_music.mp3";
@@ -95,7 +94,6 @@ void InterfazGrafica::drop_rest(float& tiempo_ultimo_frame, int& it) {
         if (tiempo_perdido % DURACION_FRAME != 0 && (tiempo_perdido < 0) != (DURACION_FRAME < 0)) {
             it--;
         }
-        //std::cout << "pierdo un frame" << std::endl;
     }
     SDL_Delay(descansar);
     it += 1;
@@ -240,8 +238,7 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
             std::string path_textura = textura_punto.first;
             std::vector<SDL_Point> puntos = textura_punto.second;
             for (const auto& punto : puntos) {
-                mapa.agregar_caja(path_textura, punto.x, punto.y);
-                std::cout << "agrego una caja" << std::endl;
+                mapa.agregar_caja(PATH_CAJA_RANDOM, punto.x, punto.y);
             }
             
         }

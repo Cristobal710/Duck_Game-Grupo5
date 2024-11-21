@@ -49,8 +49,8 @@ void Editor::iniciar_editor() {
                 
                 if (!tile_actual.empty()) {
                     // tamano de los tiles, 32x32 por ahora
-                    int tile_x = x / 16; 
-                    int tile_y = y / 16;
+                    int tile_x = x / 32; 
+                    int tile_y = y / 32;
 
                     
                     if (tiles_seleccionados.count(tile_actual) > 0){ //nos permite buscar si ya pusimos tiles
@@ -84,15 +84,15 @@ void Editor::iniciar_editor() {
                 }
 
                 if (!equipamiento_actual.empty()) {
-                    int tile_x; 
-                    int tile_y;
-                    if (equipamiento_actual == ARMA){
-                        tile_x = x / 32; 
-                        tile_y = y / 32;
-                    } else {
-                        tile_x = x / 16; 
-                        tile_y = y / 16;
-                    }
+                    int tile_x = x /32; 
+                    int tile_y = y /32;
+                    // if (equipamiento_actual == ARMA){
+                    //     tile_x = x / 32; 
+                    //     tile_y = y / 32;
+                    // } else {
+                    //     tile_x = x / 32; 
+                    //     tile_y = y / 32;
+                    // }
 
                     
                     if (equipamiento_seleccionados.count(equipamiento_actual) > 0){ //nos permite buscar si ya pusimos tiles
@@ -382,7 +382,7 @@ void Editor::renderizar_tiles() {
 
         for (const auto& punto : puntos){
             renderer.Copy(textura, SDL2pp::Optional<SDL2pp::Rect>(),
-                      SDL2pp::Rect(punto.x * 16, punto.y * 16, 16, 16));
+                      SDL2pp::Rect(punto.x * 32, punto.y * 32, 32, 32));
         }
     }
 }
@@ -435,12 +435,12 @@ void Editor::renderizar_equipamiento() {
     
     for (const auto& textura_punto : equipamiento_seleccionados) {
 
-        int tile_size; 
-        if (textura_punto.first == ARMA){
-            tile_size = SIZE_ARMA; 
-        } else {
-            tile_size = SIZE_ARMADURAS; 
-        }
+        int tile_size = 32; 
+        // if (textura_punto.first == ARMA){
+        //     tile_size = SIZE_ARMA; 
+        // } else {
+        //     tile_size = SIZE_ARMADURAS; 
+        // }
         // Recordar que estamos cargando la imagen constantemente, no tiene sentido!.
         SDL2pp::Surface surface(IMG_Load(textura_punto.first.c_str()));
 
@@ -514,8 +514,8 @@ void Editor::guardar_mapa(std::string& nombre_archivo) {
         for (const auto& punto : puntos){
                 json json_tiles;
                 json_tiles["texture"] = tiles.first;
-                json_tiles["x"] = (punto.x) * 16;
-                json_tiles["y"] = (punto.y) * 16;
+                json_tiles["x"] = (punto.x) * 32;
+                json_tiles["y"] = (punto.y) * 32;
                 json_mapa["tiles"].push_back(json_tiles);
             }
         }
@@ -542,8 +542,8 @@ void Editor::guardar_mapa(std::string& nombre_archivo) {
                 json json_equipment;
                 if (equipamiento.first == ARMADURA){
                     json_equipment["armadura"] = equipamiento.first;
-                    json_equipment["x"] = (punto.x) * 16;
-                    json_equipment["y"] = (punto.y) * 16;
+                    json_equipment["x"] = (punto.x) * 32;
+                    json_equipment["y"] = (punto.y) * 32;
                     json_mapa["equipamiento"].push_back(json_equipment);
                 } else if (equipamiento.first == ARMA){
                     json_equipment["arma"] = equipamiento.first;
@@ -552,8 +552,8 @@ void Editor::guardar_mapa(std::string& nombre_archivo) {
                     json_mapa["equipamiento"].push_back(json_equipment);
                 } else {
                     json_equipment["casco"] = equipamiento.first;
-                    json_equipment["x"] = (punto.x) * 16;
-                    json_equipment["y"] = (punto.y) * 16;
+                    json_equipment["x"] = (punto.x) * 32;
+                    json_equipment["y"] = (punto.y) * 32;
                     json_mapa["equipamiento"].push_back(json_equipment);
                 }
 
@@ -563,6 +563,7 @@ void Editor::guardar_mapa(std::string& nombre_archivo) {
     }
 
     if (!cajas_seleccionados.empty()){
+        std::cout << "hay cajas a guardar" << std::endl;
         for (const auto& cajas : cajas_seleccionados) {
         std::vector<SDL_Point> puntos = cajas.second;
 
@@ -570,7 +571,7 @@ void Editor::guardar_mapa(std::string& nombre_archivo) {
                 json json_cajas;
                 json_cajas["x"] = (punto.x) * 32;
                 json_cajas["y"] = (punto.y) * 32;
-                json_mapa["spawns"].push_back(json_cajas);
+                json_mapa["cajas"].push_back(json_cajas);
             }
         }
     }

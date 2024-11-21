@@ -1,5 +1,5 @@
 #include "tile_interfaz.h"
-#define PIXEL_TILE 16
+#define PIXEL_TILE 32
 
 TileInterfaz::TileInterfaz(SDL2pp::Surface& superficie, std::string path, int x, int y)
     : tile_surface(IMG_Load(path.c_str())), 

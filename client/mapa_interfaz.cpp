@@ -36,7 +36,7 @@ void MapaInterfaz::agregar_spawn(uint16_t id_jugador, int x, int y) {
     patos.emplace_back(std::move(pato));
 }
 
-void MapaInterfaz::agregar_caja(std::string& caja_path, int x, int y) {
+void MapaInterfaz::agregar_caja(std::string caja_path, int x, int y) {
     //caja_path = "../resources/TileSets/itemBox.png";
     CajaInterfaz caja(superficie, caja_path, x, y);
     cajas.emplace_back(std::move(caja));

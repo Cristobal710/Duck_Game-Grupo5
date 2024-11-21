@@ -36,7 +36,7 @@ public:
     void set_fondo(std::string fondo_path);
     void agregar_tile(std::string fondo_path, int x, int y);
     void agregar_spawn(uint16_t id_jugador, int x, int y);
-    void agregar_caja(std::string& caja_path, int x, int y);
+    void agregar_caja(std::string caja_path, int x, int y);
     void agregar_arma(std::string& arma_path, int x, int y);
     void agregar_bala(uint8_t tipo_arma, int x, int y, uint8_t direccion);
     
