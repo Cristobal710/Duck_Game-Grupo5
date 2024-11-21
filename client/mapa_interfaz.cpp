@@ -1,4 +1,6 @@
 #include "mapa_interfaz.h"
+#define WIDTH_SCREEN 1280
+#define HEIGHT_SCREEN 720
 
 MapaInterfaz::MapaInterfaz(SDL2pp::Renderer& renderer)
     : renderer(renderer), 
@@ -107,33 +109,39 @@ float MapaInterfaz::calcular_distancia( PatoInterfaz& pato_princiapl,  PatoInter
 
 SDL2pp::Rect MapaInterfaz::obtener_rect_dibujar() { 
     SDL2pp::Rect rect_dibujar;
-    PatoInterfaz& pato_principal = patos.front();
+    PatoInterfaz& pato_principal = patos.front(); 
     float zoom = 1.0f;
     float distancia_maxima = 1.0f;
 
     if (patos.size() > 1){
         for (auto& pato : patos) {
-        // Compara la distancia entre el jugador principal y el resto
         float distancia = calcular_distancia(pato_principal, pato);
         distancia_maxima = std::max(distancia_maxima, distancia);
         }
     }
-    
-    zoom = 1.0f / (distancia_maxima / 500.0f);  
-    zoom = std::max(1.0f, std::min(zoom, 2.4f));  
 
-    rect_dibujar.x = pato_principal.pos_x() - 1280 / 2 / zoom;
-    rect_dibujar.w = pato_principal.get_w();
-    rect_dibujar.y = pato_principal.pos_y() - 720 / 2 / zoom;
-    rect_dibujar.h = pato_principal.get_h();
-    
+    zoom = 1.0f / (distancia_maxima / 500.0f);  
+    zoom = std::max(1.0f, std::min(zoom, 2.0f));  
+
+    int render_width = static_cast<int>(WIDTH_SCREEN / zoom);
+    int render_height = static_cast<int>(HEIGHT_SCREEN / zoom);
+
+    int center_x = pato_principal.pos_x() + pato_principal.get_w() / 2;
+    int center_y = pato_principal.pos_y() + pato_principal.get_h() / 2;
+
+    rect_dibujar.x = center_x - render_width / 2;  
+    rect_dibujar.y = center_y - render_height / 2;
+
+    rect_dibujar.x = std::max(0, std::min(rect_dibujar.x, WIDTH_SCREEN - render_width));
+    rect_dibujar.y = std::max(0, std::min(rect_dibujar.y, HEIGHT_SCREEN - render_height));
+
+    rect_dibujar.w = render_width;
+    rect_dibujar.h = render_height;
+
     return rect_dibujar; 
 }
 
 void MapaInterfaz::dibujar(int it){
-
-    //if (!patos.empty()){
-    //    PatoInterfaz& pato_cliente = patos.front();
 
     fondo.dibujar();
 
@@ -163,15 +171,12 @@ void MapaInterfaz::dibujar(int it){
     }
     balas.clear();
 
-    //calcular que parte de superficie dibujar
-    //SDL2pp::Rect rect_dibujar = obtener_rect_dibujar();
-    //SDL2pp::Rect rect_superficie(0, 0, 1280, 720);
-    //rect_dibujar = rect_dibujar;
+    SDL2pp::Rect rect_dibujar = obtener_rect_dibujar();
+    SDL2pp::Rect rect_superficie(0, 0, 1280, 720);
     SDL2pp::Texture texture(renderer, superficie);
-    renderer.Copy(texture, SDL2pp::Rect(0, 0, 1280, 720));
-    /*renderer.Copy(texture,
-        SDL2pp::Optional<SDL2pp::Rect>(rect_dibujar), // Wrap the source rectangle in Optional
+    renderer.Copy(texture,
+        SDL2pp::Optional<SDL2pp::Rect>(rect_dibujar), 
         SDL2pp::Optional<SDL2pp::Rect>(rect_superficie) 
-    );*/
+    );
 }
 

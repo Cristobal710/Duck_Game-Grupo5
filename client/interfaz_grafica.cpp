@@ -154,7 +154,7 @@ void InterfazGrafica::manejar_eventos(std::set<SDL_Keycode>& keysHeld) {
             }
             keysHeld.insert(evento.key.keysym.sym);
         } else if (evento.type == SDL_KEYUP) {
-            // When the key is released, stop the movement
+            
             if (evento.key.keysym.sym == SDLK_d) {
                 comando_cliente.tecla = NO_DERECHA;
                 comando_cliente.jugador_id = 3;
@@ -231,7 +231,7 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
             int pos_y = static_cast<int>(pato.get_pos_y());
             mapa.agregar_spawn(pato.get_id(), pos_x, pos_y);
         }
-        mapa.agregar_spawn(8, 1100, 600);
+       
 
         // procesar cajas 
         std::map<std::string, std::vector<SDL_Point>> cajas = mapa_a_jugar.getCajas();
