@@ -401,7 +401,7 @@ void GameLoop::inicializar_juego(){
 
 void GameLoop::run() {
     LectorJson lector_mapa = LectorJson();
-    Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa1");
+    Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa3");
     ultimo_estado.mapa = mapa;
     inicializar_juego();
     calcular_colisiones_tiles(mapa);

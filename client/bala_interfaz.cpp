@@ -1,4 +1,5 @@
 #include "bala_interfaz.h"
+#include <SDL2/SDL_mixer.h>
 
 #define CANT_MAX_FRAMES_BALA 8
 
@@ -27,6 +28,9 @@ void BalaInterfaz::set_posicion_bala(uint16_t pos_x_final, uint16_t pos_y_final)
 }
 
 void BalaInterfaz::dibujar(int it) {
+    Mix_Chunk* disparo = Mix_LoadWAV("../resources/sounds/shoot_sound3.mp3");
+    Mix_PlayChannel(-1, disparo, 0);
+
     if(direccion == DIRECCION_DERECHA) {
         SDL_BlitScaled(bala_derecha[it % CANT_MAX_FRAMES_BALA].Get(), nullptr, superficie.Get(), &rect_dibujado_bala);
     } else if (direccion == DIRECCION_IZQUIERDA) {
