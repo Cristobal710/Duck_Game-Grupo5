@@ -12,14 +12,7 @@ int pos_x, int pos_y, SDL_Color color)
     superficie(superficie),
     color(color)
 {
-    frames_movimientos(pato_surface);
-}
-
-void MovimientoLateral::frames_movimientos(SDL2pp::Surface& sprite_sheet) {
-    aplicar_color(sprite_sheet, color);
-    cargar_frames(sprite_sheet, NUM_FRAMES_MOVIMIENTO_PATO, movimiento_pato_derecha, 7, 1, PIXEL_PATO, PIXEL_PATO);
-    flip_horizontal(sprite_sheet);
-    cargar_frames(sprite_sheet, NUM_FRAMES_MOVIMIENTO_PATO, movimiento_pato_izquierda, 7, 1, PIXEL_PATO, PIXEL_PATO);    
+    guardar_frames(pato_surface, NUM_FRAMES_MOVIMIENTO_PATO, movimiento_pato_derecha, movimiento_pato_izquierda, 1, 7, color);
 }
 
 void MovimientoLateral::mostrar_frame_derecha(int it) {

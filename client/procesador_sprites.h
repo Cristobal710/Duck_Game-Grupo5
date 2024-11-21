@@ -94,6 +94,13 @@ void rotacion_90_grados(SDL2pp::Surface& sprite_sheet) {
 
 }
 
+void guardar_frames(SDL2pp::Surface& sprite_sheet, int num_frames, std::vector<SDL2pp::Surface>& frames_derecha, std::vector<SDL2pp::Surface>& frames_izquierda, int offset_x, int offset_y, const SDL_Color& color) {
+    aplicar_color(sprite_sheet, color);
+    cargar_frames(sprite_sheet, num_frames, frames_derecha, offset_y, offset_x, PIXEL_PATO, PIXEL_PATO);
+    flip_horizontal(sprite_sheet);
+    cargar_frames(sprite_sheet, num_frames, frames_izquierda, offset_y, offset_x, PIXEL_PATO, PIXEL_PATO);
+}
+
 };
 
 #endif

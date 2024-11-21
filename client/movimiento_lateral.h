@@ -18,8 +18,6 @@ private:
     SDL2pp::Surface pato_surface;
     SDL2pp::Surface& superficie;
     SDL_Color color;
-
-    void frames_movimientos(SDL2pp::Surface& sprite_sheet);
    
     void mostrar_frame_derecha(int it);
     void mostrar_frame_izquierda(int it);
