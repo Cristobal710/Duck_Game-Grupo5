@@ -4,53 +4,57 @@
 #define NUM_FRAMES_SALTA_PATO 3
 #define NUM_FRAMES_CAE_PATO 2
 
-MovimientoSalto::MovimientoSalto(SDL2pp::Renderer& renderer, const std::string& pato_path,
+MovimientoSalto::MovimientoSalto(SDL2pp::Surface& superficie, const std::string& pato_path,
                                  int pos_x, int pos_y, SDL_Color color):
-    salto_frames(),
-    caida_frames(),
-    puntero_salto(0),
+    salto_frames_derecha(),
+    salto_frames_izquierda(),
+    caida_frames_derecha(),
+    caida_frames_izquierda(),
     rect_inicio(0, 0, PIXEL_PATO, PIXEL_PATO),
     rect_dibujado(pos_x, pos_y, PIXEL_PATO, PIXEL_PATO),
-    renderer(renderer),
+    superficie(superficie),
+    pato_surface_salto(IMG_Load(pato_path.c_str())),
+    pato_surface_caida(IMG_Load(pato_path.c_str())),
     color(color)
-{
-    SDL2pp::Surface sprite_pato(IMG_Load(pato_path.c_str()));
-    frames_salto(renderer, sprite_pato);
-    frames_caida(renderer, sprite_pato);
+{  
+    frames_salto(pato_surface_salto);
+    frames_caida(pato_surface_caida);
 }
 
-void MovimientoSalto::frames_salto(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet) {
+void MovimientoSalto::frames_salto(SDL2pp::Surface& sprite_sheet) {
     aplicar_color(sprite_sheet, color);
-    cargar_frames(renderer, sprite_sheet, 38, salto_frames, NUM_FRAMES_SALTA_PATO, 1, PIXEL_PATO, PIXEL_PATO);
+    cargar_frames(sprite_sheet, NUM_FRAMES_SALTA_PATO, salto_frames_derecha, 40, 1, PIXEL_PATO, PIXEL_PATO);
+    flip_horizontal(sprite_sheet);
+    cargar_frames(sprite_sheet, NUM_FRAMES_SALTA_PATO, salto_frames_izquierda, 40, 1, PIXEL_PATO, PIXEL_PATO);
 }
 
-void MovimientoSalto::frames_caida(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet) {
+void MovimientoSalto::frames_caida(SDL2pp::Surface& sprite_sheet) {
     aplicar_color(sprite_sheet, color);
-    cargar_frames(renderer, sprite_sheet, 38, caida_frames, NUM_FRAMES_CAE_PATO, 97, PIXEL_PATO, PIXEL_PATO);
+    cargar_frames(sprite_sheet, NUM_FRAMES_CAE_PATO, caida_frames_derecha, 40, 97, PIXEL_PATO, PIXEL_PATO);
+    flip_horizontal(sprite_sheet);
+    cargar_frames(sprite_sheet, NUM_FRAMES_CAE_PATO, caida_frames_izquierda, 40, 97, PIXEL_PATO, PIXEL_PATO);
 }
 
 void MovimientoSalto::mostrar_frame_salto(int it, uint8_t direccion) {
     if(direccion == DIRECCION_DERECHA) {
-        renderer.Copy(salto_frames[(it % NUM_FRAMES_SALTA_PATO)], rect_inicio, rect_dibujado);
+        SDL_BlitScaled(salto_frames_derecha[(it % NUM_FRAMES_SALTA_PATO)].Get(), nullptr, superficie.Get(), &rect_dibujado);
     } else {
-        SDL_RenderCopyEx(renderer.Get(), salto_frames[it % NUM_FRAMES_SALTA_PATO].Get(), &rect_inicio, &rect_dibujado, 0,
-                         nullptr, SDL_FLIP_HORIZONTAL);
+        SDL_BlitScaled(salto_frames_izquierda[(it % NUM_FRAMES_SALTA_PATO)].Get(), nullptr, superficie.Get(), &rect_dibujado);    
     }
 }
 
 void MovimientoSalto::mostrar_frame_caida(int it, uint8_t direccion) {
     if(direccion == DIRECCION_DERECHA) {
-        renderer.Copy(caida_frames[(it % NUM_FRAMES_CAE_PATO)], rect_inicio, rect_dibujado);
+        SDL_BlitScaled(caida_frames_derecha[it % NUM_FRAMES_CAE_PATO].Get(), nullptr, superficie.Get(), &rect_dibujado);
     } else {
-        SDL_RenderCopyEx(renderer.Get(), caida_frames[it % NUM_FRAMES_CAE_PATO].Get(), &rect_inicio, &rect_dibujado, 0,
-                         nullptr, SDL_FLIP_HORIZONTAL);
+        SDL_BlitScaled(caida_frames_izquierda[it % NUM_FRAMES_CAE_PATO].Get(), nullptr, superficie.Get(), &rect_dibujado);
     }
 }
 
-void MovimientoSalto::pato_salta(uint8_t& movimiento, int pos_x, int pos_y, int it, float zoom_factor, uint8_t direccion) {
-    set_zoom_in(zoom_factor, rect_dibujado, pos_x, pos_y);
-    renderer.SetDrawColor(color.r, color.g, color.b, color.a);
-
+void MovimientoSalto::pato_salta(uint8_t& movimiento, int pos_x, int pos_y, int it, uint8_t direccion) {
+    rect_dibujado.SetX(pos_x);
+    rect_dibujado.SetY(pos_y);
+    
     if (movimiento == SALTAR) {
         mostrar_frame_salto(it, direccion);
     } else if (movimiento == CAER) {
@@ -58,23 +62,3 @@ void MovimientoSalto::pato_salta(uint8_t& movimiento, int pos_x, int pos_y, int 
     }
 }
 
-void MovimientoSalto::cargar_frames(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet,
-                   int offset_y, std::vector<SDL2pp::Texture>& texturas,
-                   int num_frames, int offset_x, int pixeles_x, int pixeles_y) {
-    for (int i = 0; i < num_frames; ++i) {
-
-        SDL_Rect rect_inicial = {i * pixeles_x + offset_x, offset_y, pixeles_x, pixeles_y};
-
-        SDL2pp::Surface sprite_superficie(
-                SDL_CreateRGBSurface(0, pixeles_x, pixeles_y, 32, 0, 0, 0, 0));
-
-        SDL_BlitSurface(sprite_sheet.Get(), &rect_inicial, sprite_superficie.Get(), nullptr);
-
-        Uint32 color_key = SDL_MapRGB(sprite_superficie.Get()->format, 0, 0, 0);
-        SDL_SetColorKey(sprite_superficie.Get(), SDL_TRUE, color_key);
-
-        SDL2pp::Texture sprite_textura(renderer, sprite_superficie);
-
-        texturas.emplace_back(std::move(sprite_textura));
-    }
-}

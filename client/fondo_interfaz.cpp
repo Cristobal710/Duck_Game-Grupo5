@@ -4,28 +4,46 @@
 #include <algorithm>  
 
 
-FondoInterfaz::FondoInterfaz(SDL2pp::Renderer& renderer, const std::string& fondo_path)
-    : renderer(renderer),
-    fondo_texture(renderer, SDL2pp::Surface(IMG_Load(fondo_path.c_str()))) {
-}
-
+FondoInterfaz::FondoInterfaz(SDL2pp::Surface& superficie, std::string path_fondo)
+    : superficie(superficie),
+    fondo_surface(IMG_Load(path_fondo.c_str())),
+    rectangulo(0, 0, 1280, 720) {}
 
 FondoInterfaz::FondoInterfaz(FondoInterfaz&& other) noexcept
-    : renderer(other.renderer), fondo_texture(std::move(other.fondo_texture)) {
-   
-}
-
+    : superficie(other.superficie),
+    fondo_surface(std::move(other.fondo_surface)),
+    rectangulo(std::move(other.rectangulo)) {}
 
 FondoInterfaz& FondoInterfaz::operator=(FondoInterfaz&& other) noexcept {
-    if (this != &other) {  
-        fondo_texture = std::move(other.fondo_texture);  
-        
+    if (this != &other) {
+        fondo_surface = std::move(other.fondo_surface);
+        rectangulo = std::move(other.rectangulo);
     }
     return *this;
 }
 
+void FondoInterfaz::set_fondo(std::string path_fondo) {
+    try {
+        // Load the image using IMG_Load (this returns a raw SDL_Surface*)
+        SDL_Surface* raw_surface = IMG_Load(path_fondo.c_str());
 
-void FondoInterfaz::dibujar(float& zoom_factor, int pato1_x, int pato1_y) {
+        // Now wrap the raw SDL_Surface* in a SDL2pp::Surface
+        SDL2pp::Surface nueva_superficie(raw_surface);
+
+        // Assign the new surface to fondo_surface
+        fondo_surface = std::move(nueva_superficie);
+    } catch (const SDL2pp::Exception& e) {
+        std::cerr << "Error al cargar el fondo: " << e.what() << " (" << e.GetSDLError() << ")" << std::endl;
+        throw;
+    }
+}
+
+void FondoInterfaz::dibujar(){
+    SDL_BlitScaled(fondo_surface.Get(), nullptr, superficie.Get(), &rectangulo);
+}
+
+
+/*void FondoInterfaz::dibujar(float& zoom_factor, int pato1_x, int pato1_y) {
     int window_width, window_height;
     
     SDL_GetRendererOutputSize(renderer.Get(), &window_width, &window_height);
@@ -55,7 +73,7 @@ void FondoInterfaz::dibujar(float& zoom_factor, int pato1_x, int pato1_y) {
     SDL2pp::Rect destination_rect(0, 0, window_width, window_height);
 
     renderer.Copy(fondo_texture, source_rect, destination_rect);
-}
+}*/
 
 
 

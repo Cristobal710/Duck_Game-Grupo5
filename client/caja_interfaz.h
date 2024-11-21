@@ -6,13 +6,18 @@
 
 class CajaInterfaz {
 private:
-    SDL2pp::Renderer& renderer;
-    SDL2pp::Texture caja_texture;
+    SDL2pp::Surface caja_surface;
+    SDL2pp::Surface& superficie;
     SDL2pp::Rect rectangulo;
-    uint16_t id;
 
 public:
-    CajaInterfaz(SDL2pp::Renderer& renderer, uint16_t id, std::string path, int x, int y);
+    CajaInterfaz(SDL2pp::Surface& superficie, std::string path, int x, int y);
+
+    CajaInterfaz(CajaInterfaz&& other) noexcept;
+    CajaInterfaz& operator=(CajaInterfaz&& other) noexcept;
+    
+    CajaInterfaz(const CajaInterfaz& other) = delete;
+    CajaInterfaz& operator=(const CajaInterfaz& other) = delete;
 
     void dibujar();
     
