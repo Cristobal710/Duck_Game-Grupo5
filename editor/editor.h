@@ -61,7 +61,8 @@ class Editor {
     };
     std::vector<std::string> tiles_img = {
         "../resources/TileSets/Tileset_Fantasy.png",
-        "../resources/TileSets/greyBlock.png"
+        "../resources/TileSets/greyBlock.png",
+        "../resources/TileSets/brownTile.png"
     };
 
     std::vector<std::string> spawn_img = {
@@ -75,7 +76,7 @@ class Editor {
     };
 
     std::vector<std::string> cajas_img = {
-        "../resources/TileSets/uiBox.png",
+        "../resources/boxes/Box_.png",
     };
 
     

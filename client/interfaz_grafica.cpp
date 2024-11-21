@@ -238,19 +238,20 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
             std::string path_textura = textura_punto.first;
             std::vector<SDL_Point> puntos = textura_punto.second;
             for (const auto& punto : puntos) {
-                mapa.agregar_caja(PATH_CAJA_RANDOM, punto.x, punto.y);
+                mapa.agregar_caja(punto.x, punto.y);
             }
             
         }
 
-        // procesar armas
-        std::map<std::string, std::vector<SDL_Point>> armas = mapa_a_jugar.getEquipamiento();
+        // procesar equipamiento
+        std::map<std::string, std::vector<SDL_Point>> equipamientos = mapa_a_jugar.getEquipamiento();
 
-        for(const auto& textura_punto : armas){
-            std::string path_textura = textura_punto.first;
-            std::vector<SDL_Point> puntos = textura_punto.second;
+        for(const auto& equipamiento : equipamientos){
+            std::string tipo_equipamiento = equipamiento.first;
+            std::cout << "tipo_equipamiento:" << tipo_equipamiento << std::endl;
+            std::vector<SDL_Point> puntos = equipamiento.second;
             for (const auto& punto : puntos){
-                mapa.agregar_arma(path_textura, punto.x, punto.y);
+                mapa.agregar_equipamiento(tipo_equipamiento, punto.x, punto.y);
             }
         }
 

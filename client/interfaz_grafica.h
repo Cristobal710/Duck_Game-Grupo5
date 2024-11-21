@@ -14,7 +14,6 @@
 #include "../common/common_estado_juego.h"
 #include "mapa_interfaz.h"
 #include <set>
-#define PATH_CAJA_RANDOM "../resources/TileSets/itemBox.png"
 
 class InterfazGrafica {
     private:

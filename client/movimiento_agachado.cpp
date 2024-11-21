@@ -40,6 +40,9 @@ void MovimientoAgachado::mostrar_frames_levantarse(int it) {
 void MovimientoAgachado::mostrar_muerte(int pos_x, int pos_y, uint8_t direccion_pato) {
     rect_dibujado.SetX(pos_x);
     rect_dibujado.SetY(pos_y);
+
+    SDL2pp::Surface tumba(IMG_Load("../resources/grave.png"));
+    SDL_BlitScaled(tumba.Get(), nullptr, superficie.Get(), &rect_dibujado);
     
     if (direccion_pato == DIRECCION_DERECHA){
         SDL_BlitScaled(movimiento_pato_agachado_derecha[1].Get(), nullptr, superficie.Get(), &rect_dibujado);

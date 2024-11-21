@@ -10,7 +10,7 @@ MapaInterfaz::MapaInterfaz(SDL2pp::Renderer& renderer)
     patos(), 
     balas(), 
     cajas(),
-    armas(),
+    equipamientos(),
     mapa_procesado(false)
 {}
 
@@ -36,16 +36,23 @@ void MapaInterfaz::agregar_spawn(uint16_t id_jugador, int x, int y) {
     patos.emplace_back(std::move(pato));
 }
 
-void MapaInterfaz::agregar_caja(std::string caja_path, int x, int y) {
-    //caja_path = "../resources/TileSets/itemBox.png";
-    CajaInterfaz caja(superficie, caja_path, x, y);
+void MapaInterfaz::agregar_caja(int x, int y) {
+    CajaInterfaz caja(superficie, "../resources/boxes/Box_.png", x, y);
     cajas.emplace_back(std::move(caja));
 }
 
-void MapaInterfaz::agregar_arma(std::string& arma_path, int x, int y) {
-    arma_path = "../resources/weapons/ak47.png"; //no llega bien el path
-    ArmaInterfaz arma(superficie, arma_path, x, y);
-    armas.emplace_back(std::move(arma));
+void MapaInterfaz::agregar_equipamiento(std::string& tipo_equipamiento, int x, int y) {
+    std::string equipamiento_path = "../resources/weapons/ak47.png"; 
+    if (tipo_equipamiento == "arma") {
+        std::cout << "equip:" << tipo_equipamiento << std::endl;
+        std::string equipamiento_path = "../resources/weapons/ak47.png";        
+    } else if (tipo_equipamiento == "armadura"){
+        std::string equipamiento_path = "../resources/armors/chestPlatePickup.png";
+    } else if (tipo_equipamiento == "casco"){
+        std::string equipamiento_path = "../resources/armors/knightHelmet.png";
+    }
+    EquipamientoInterfaz equipamiento(superficie, equipamiento_path, x, y);
+    equipamientos.emplace_back(std::move(equipamiento));
 }
 
 void MapaInterfaz::obtener_tipo_bala(uint8_t tipo_arma, std::string& path_bala){
@@ -71,8 +78,6 @@ void MapaInterfaz::obtener_tipo_bala(uint8_t tipo_arma, std::string& path_bala){
         path_bala = "../resources/weapons/dart.png";
     }
 }
-
-
 
 void MapaInterfaz::agregar_bala(uint8_t tipo_arma, int x, int y, uint8_t direccion) {
     std::string path_bala;
@@ -153,9 +158,8 @@ void MapaInterfaz::dibujar(int it){
         caja.dibujar();
     }
 
-    uint8_t direccion = DIRECCION_DERECHA;
-    for (ArmaInterfaz& arma : armas){
-        arma.dibujar(direccion);
+    for (EquipamientoInterfaz& equip : equipamientos){
+        equip.dibujar();
     }
 
     for (PatoInterfaz& pato : patos){
