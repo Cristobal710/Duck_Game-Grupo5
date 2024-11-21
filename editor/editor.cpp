@@ -14,14 +14,14 @@ Editor::Editor(): window("Editor", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFI
 
 mostrar_fondos_disponibles(false), mostrar_tiles_disponibles(false),
 mostrar_spawns_disponibles(false),
-mostrar_equipamiento_disponibles(false), mostrar_cajas_disponibles(false),
+mostrar_equipamiento_disponibles(false), mostrar_cajas_disponibles(false), mostrar_mapas_disponibles(false),
 font(TTF_OpenFont("../resources/fonts/Open_Sans/static/OpenSans-Italic.ttf", 12)),
 boton_fondo(10, 10, 180, 50, "Elegir Fondo", font),
 boton_tiles(200, 10, 180, 50, "Elegir Tiles", font),
 boton_spawn(390, 10, 180, 50, "Spawns de patos", font),
 boton_equipamiento(580, 10, 180, 50, "Equipamiento", font),
-boton_cajas(770, 10, 180, 50, "cajas", font),
-tiles_seleccionados(), spawn_seleccionados(), equipamiento_seleccionados(), cajas_seleccionados() 
+boton_cajas(770, 10, 180, 50, "cajas", font), boton_mapas(960, 10, 180, 50, "mapas", font),
+tiles_seleccionados(), spawn_seleccionados(), equipamiento_seleccionados(), cajas_seleccionados(), mapas_disponibles_boton() 
     {}
 
 
@@ -164,6 +164,10 @@ void Editor::iniciar_editor() {
                 mostrar_opciones_cajas();
             });
 
+            boton_mapas.evento_click(event, [&](){
+                mostrar_opciones_mapas();
+            });
+
         if (mostrar_fondos_disponibles) {
             for (size_t i = 0; i < fondos_posibles_boton.size(); ++i) {
                 fondos_posibles_boton[i].evento_click(event, [this, i]() {
@@ -202,6 +206,13 @@ void Editor::iniciar_editor() {
                 });
             }
         }
+        if (mostrar_mapas_disponibles){
+            for (size_t i = 0; i < mapas_disponibles_boton.size(); ++i) {
+                mapas_disponibles_boton[i].evento_click(event, [this, i]() {
+                    elegir_mapa(i); 
+                });
+            }
+        }
 
         }
         limpiar_pantalla();
@@ -219,48 +230,70 @@ void Editor::iniciar_editor() {
         boton_spawn.render(renderer);
         boton_equipamiento.render(renderer);
         boton_cajas.render(renderer);
-
+        boton_mapas.render(renderer);
        
         if (mostrar_fondos_disponibles) {
             for (auto& boton_opcion : fondos_posibles_boton) {
                 boton_opcion.render(renderer);
             }
+            mostrar_tiles_disponibles = false;
+            mostrar_spawns_disponibles = false;
+            mostrar_equipamiento_disponibles = false;
+            mostrar_cajas_disponibles = false;
         }
 
         if (mostrar_tiles_disponibles) {
             for (auto& boton_opcion : tiles_posibles_boton) {
                 boton_opcion.render(renderer);
             }
+            mostrar_fondos_disponibles = false;
+            mostrar_spawns_disponibles = false;
+            mostrar_equipamiento_disponibles = false;
+            mostrar_cajas_disponibles = false;
         }
 
         if (mostrar_spawns_disponibles) {
             for (auto& boton_opcion : spawns_disponibles_boton) {
                 boton_opcion.render(renderer);
             }
+            mostrar_fondos_disponibles = false;
+            mostrar_tiles_disponibles = false;
+            mostrar_equipamiento_disponibles = false;
+            mostrar_cajas_disponibles = false;
         }
 
         if (mostrar_equipamiento_disponibles){
             for (auto& boton_opcion : equipamiento_disponibles_boton) {
                 boton_opcion.render(renderer);
             }
+            mostrar_fondos_disponibles = false;
+            mostrar_tiles_disponibles = false;
+            mostrar_spawns_disponibles = false;
+            mostrar_cajas_disponibles = false;
         }
 
         if (mostrar_cajas_disponibles){
             for (auto& boton_opcion : cajas_disponibles_boton) {
                 boton_opcion.render(renderer);
             }
+            mostrar_fondos_disponibles = false;
+            mostrar_tiles_disponibles = false;
+            mostrar_spawns_disponibles = false;
+            mostrar_equipamiento_disponibles = false;
+        }
+        if (mostrar_mapas_disponibles){
+            for (auto& boton_opcion : mapas_disponibles_boton) {
+                boton_opcion.render(renderer);
+            }
+            mostrar_fondos_disponibles = false;
+            mostrar_tiles_disponibles = false;
+            mostrar_spawns_disponibles = false;
+            mostrar_equipamiento_disponibles = false;
         }
         
         
         renderer.Present();
     }
-
-    // loadTiles();
-
-    // initEntities();
-
-    // initMap();
-    //cerrar_botones();
 
     SDL_Quit();
     IMG_Quit();
@@ -301,6 +334,9 @@ void Editor::inicializar_botones() {
     for (size_t i = 0; i < cajas_img.size(); ++i) {
         cajas_disponibles_boton.emplace_back(770, 70 + i * 60, 180, 50, nombre_entidad(cajas_img[i]), font);
     }
+    for (size_t i = 0; i < mapas.size(); ++i) {
+        mapas_disponibles_boton.emplace_back(960, 70 + i * 60, 180, 50, nombre_entidad(mapas[i]), font);
+    }
 }
 
 void Editor::mostrar_opciones_fondo() {
@@ -323,6 +359,9 @@ void Editor::mostrar_opciones_cajas() {
     mostrar_cajas_disponibles = !mostrar_cajas_disponibles;
 }
 
+void Editor::mostrar_opciones_mapas() {
+    mostrar_mapas_disponibles = !mostrar_mapas_disponibles;
+}
 
 void Editor::actualizar_fondo(int indice) {
     set_fondo(fondos_img[indice]);
@@ -350,6 +389,76 @@ void Editor::actualizar_cajas(int indice) {
     renderizar_caja();
 }
 
+void Editor::elegir_mapa(int indice) {
+    std::ifstream archivo(mapas[indice]);
+    json j;
+    archivo >> j;
+    procesar_mapa(j);
+}
+
+void Editor::procesar_mapa(json& j) {
+    std::string background = j.at("background").get<std::string>();
+    
+    fondo_actual = background;
+
+    tiles_seleccionados.clear();
+    if (j.contains("tiles")) {
+        for (const auto& tile : j["tiles"]) {
+            std::string texture = tile.at("texture").get<std::string>();
+            int x = tile.at("x").get<int>();
+            int y = tile.at("y").get<int>();
+            tiles_seleccionados[texture].emplace_back(SDL_Point{x / 32, y / 32});
+        }
+    }
+    
+
+    spawn_seleccionados.clear();
+    if (j.contains("spawns")) {
+        for (const auto& spawn : j["spawns"]) {
+            int x = spawn.at("x").get<int>();
+            int y = spawn.at("y").get<int>();
+            spawn_seleccionados[PATH_SPAWN].emplace_back(SDL_Point{x / 32, y / 32});
+        }
+    }
+  
+
+    equipamiento_seleccionados.clear();
+    for (const auto& item : j["equipamiento"]) {
+        std::string path;
+        int x, y;
+
+        if (item.contains("armadura")) {
+            path = item["armadura"];
+        }
+       
+        else if (item.contains("arma")) {
+            path = item["arma"];
+        }
+      
+        else if (item.contains("casco")) {
+            path = item["casco"];
+        } else {
+            continue; 
+        }
+        x = item["x"];
+        y = item["y"];
+
+        SDL_Point point = {x / 32 , y / 32};
+
+        equipamiento_seleccionados[path].push_back(point);
+    }
+
+    cajas_seleccionados.clear();
+    if (j.contains("cajas")) {
+        for (const auto& caja : j["cajas"]) {
+            int x = caja.at("x").get<int>();
+            int y = caja.at("y").get<int>();
+            cajas_seleccionados[PATH_CAJA].emplace_back(SDL_Point{x / 32, y / 32});
+        }
+    }
+   
+}
+
 void Editor::limpiar_pantalla() {
     renderer.SetDrawColor(0, 0, 0, 255);
     renderer.Clear();
@@ -373,6 +482,7 @@ void Editor::renderizar_tiles() {
     if (tiles_seleccionados.empty()){
         return;
     }
+
     for (const auto& textura_punto : tiles_seleccionados) {
         // Recordar que estamos cargando la imagen constantemente, no tiene sentido!.
         SDL2pp::Surface surface(IMG_Load(textura_punto.first.c_str()));
@@ -563,7 +673,6 @@ void Editor::guardar_mapa(std::string& nombre_archivo) {
     }
 
     if (!cajas_seleccionados.empty()){
-        std::cout << "hay cajas a guardar" << std::endl;
         for (const auto& cajas : cajas_seleccionados) {
         std::vector<SDL_Point> puntos = cajas.second;
 

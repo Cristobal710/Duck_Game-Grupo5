@@ -9,6 +9,8 @@
 #include <fstream>
 #include <SDL2pp/SDL2pp.hh>
 #include <nlohmann/json.hpp>
+#define PATH_SPAWN "../resources/Grey-Duck.png"
+#define PATH_CAJA  "../resources/TileSets/uiBox.png"
 
 using json = nlohmann::json;
 
@@ -22,6 +24,7 @@ class Editor {
     bool mostrar_spawns_disponibles;
     bool mostrar_equipamiento_disponibles;
     bool mostrar_cajas_disponibles;
+    bool mostrar_mapas_disponibles;
 
     TTF_Font* font;
 
@@ -30,6 +33,7 @@ class Editor {
     Button boton_spawn;
     Button boton_equipamiento;
     Button boton_cajas;
+    Button boton_mapas;
 
     std::map<std::string,std::vector<SDL_Point>>  tiles_seleccionados;  
     std::map<std::string,std::vector<SDL_Point>>  spawn_seleccionados;
@@ -41,6 +45,7 @@ class Editor {
     std::vector<Button> spawns_disponibles_boton;
     std::vector<Button> equipamiento_disponibles_boton;
     std::vector<Button> cajas_disponibles_boton;
+    std::vector<Button> mapas_disponibles_boton;
 
    
 
@@ -79,6 +84,9 @@ class Editor {
         "../resources/boxes/Box_.png",
     };
 
+    std::vector<std::string> mapas = {
+        "../resources/maps/mapa3",
+    };
     
 
     public:
@@ -102,14 +110,17 @@ class Editor {
     void mostrar_opciones_spawn();
     void mostrar_opciones_equipamiento();
     void mostrar_opciones_cajas();
-    
+    void mostrar_opciones_mapas();
 
     void actualizar_fondo(int indice);
     void actualizar_tiles(int indice);
     void actualizar_spawn(int indice);
     void actualizar_equipamiento(int indice);
     void actualizar_cajas(int indice);
+    void elegir_mapa(int indice);
     
+    void procesar_mapa(json& j);
+
     void limpiar_pantalla();
     void guardar_mapa(std::string& nombre_archivo);
 

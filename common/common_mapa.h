@@ -55,7 +55,6 @@ class Mapa {
             }
         }
 
-        // Cajas - Assuming you want to process this the same way (if exists in the JSON)
         if (j.contains("cajas")) {
             for (const auto& caja : j["cajas"]) {
                 int x = caja.at("x").get<int>();
