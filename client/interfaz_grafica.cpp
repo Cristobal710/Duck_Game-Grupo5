@@ -36,11 +36,13 @@ void InterfazGrafica::iniciar() {
     SDL_Init(SDL_INIT_VIDEO);
     IMG_Init(IMG_INIT_PNG);
 
-    // Create lobby instance
+    int it = 0;
+    float tiempo_ultimo_frame = SDL_GetTicks();
     Lobby lobby(renderer.Get());
     while (!lobby.empezo()) {
         lobby.dibujar();
         lobby.manejar_eventos();
+        drop_rest(tiempo_ultimo_frame, it);
     }
 
     // aca hay q mandar cuantos jugadores selecciono y si creo una partida nueva
@@ -48,7 +50,7 @@ void InterfazGrafica::iniciar() {
     //por ahora:
     int cant_jugadores = lobby.cantidad_jugadores();
     while(cant_jugadores != 1){
-        //loop
+       
     }
     
     std::string audio_fondo_path = "../resources/sounds/background_music.mp3";
@@ -57,10 +59,9 @@ void InterfazGrafica::iniciar() {
     obtener_estado_juego(mapa_a_jugar);
     
     std::set<SDL_Keycode> keysHeld;
-    int it = 0;
+    it = 0;
+    tiempo_ultimo_frame = SDL_GetTicks();
     while (correr_programa) {
-        float tiempo_ultimo_frame = SDL_GetTicks();
-        
         renderer.Clear();
         manejar_eventos(keysHeld);
         obtener_estado_juego(mapa_a_jugar);
@@ -93,7 +94,6 @@ void InterfazGrafica::drop_rest(float& tiempo_ultimo_frame, int& it) {
         if (tiempo_perdido % DURACION_FRAME != 0 && (tiempo_perdido < 0) != (DURACION_FRAME < 0)) {
             it--;
         }
-        std::cout << "pierdo un frame" << std::endl;
     }
     SDL_Delay(descansar);
     it += 1;
@@ -152,7 +152,7 @@ void InterfazGrafica::manejar_eventos(std::set<SDL_Keycode>& keysHeld) {
             }
             keysHeld.insert(evento.key.keysym.sym);
         } else if (evento.type == SDL_KEYUP) {
-            // When the key is released, stop the movement
+            
             if (evento.key.keysym.sym == SDLK_d) {
                 comando_cliente.tecla = NO_DERECHA;
                 comando_cliente.jugador_id = 3;
@@ -229,19 +229,29 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
             int pos_y = static_cast<int>(pato.get_pos_y());
             mapa.agregar_spawn(pato.get_id(), pos_x, pos_y);
         }
-        mapa.agregar_spawn(8, 736, 352);
+       
 
         // procesar cajas 
         std::map<std::string, std::vector<SDL_Point>> cajas = mapa_a_jugar.getCajas();
 
-        for (const auto& caja : cajas) {
-            std::string path = caja.first;
-            std::vector<SDL_Point> puntos = caja.second;
+        for (const auto& textura_punto : cajas) {
+            std::string path_textura = textura_punto.first;
+            std::vector<SDL_Point> puntos = textura_punto.second;
             for (const auto& punto : puntos) {
-                mapa.agregar_caja(0, punto.x, punto.y, path);
-                std::cout << "agrego una caja" << std::endl;
+                mapa.agregar_caja(PATH_CAJA_RANDOM, punto.x, punto.y);
             }
             
+        }
+
+        // procesar armas
+        std::map<std::string, std::vector<SDL_Point>> armas = mapa_a_jugar.getEquipamiento();
+
+        for(const auto& textura_punto : armas){
+            std::string path_textura = textura_punto.first;
+            std::vector<SDL_Point> puntos = textura_punto.second;
+            for (const auto& punto : puntos){
+                mapa.agregar_arma(path_textura, punto.x, punto.y);
+            }
         }
 
         mapa.procesado();

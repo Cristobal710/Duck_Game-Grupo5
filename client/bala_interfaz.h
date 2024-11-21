@@ -5,22 +5,23 @@
 #include <SDL2/SDL_image.h>
 #include <vector>
 #include "../common/common_constantes.h"
+#include "procesador_sprites.h"
 
-class BalaInterfaz {
+class BalaInterfaz : public ProcesadorSprites {
 private:
-    std::vector<SDL2pp::Texture> bala;
+    std::vector<SDL2pp::Surface> bala_derecha;
+    std::vector<SDL2pp::Surface> bala_izquierda;
+    std::vector<SDL2pp::Surface> bala_arriba;
     SDL2pp::Rect rect_inicio_bala;
     SDL2pp::Rect rect_dibujado_bala;
-    SDL2pp::Renderer& renderer;
+    SDL2pp::Surface& superficie;
+    SDL2pp::Surface bala_surface;
+    SDL2pp::Surface bala_surface_arriba;
     uint8_t direccion;
-
-    void cargar_frames(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet,
-                   int offset_y, std::vector<SDL2pp::Texture>& texturas,
-                   int num_frames, int offset_x, int pixeles_x, int pixeles_y);
 
 
 public:
-    BalaInterfaz(SDL2pp::Renderer& renderer, const std::string& bala_path, int pos_x, int pos_y, uint8_t direccion);
+    BalaInterfaz(SDL2pp::Surface& superficie, const std::string& bala_path, int pos_x, int pos_y, uint8_t direccion);
     void dibujar(int it);
 
     void set_posicion_bala(uint16_t pos_x_final, uint16_t pos_y_final);

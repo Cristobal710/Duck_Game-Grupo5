@@ -1,34 +1,25 @@
 #include "movimiento_agachado.h"
-#include "../common/common_constantes.h"
 
 #define NUM_FRAMES_PATO_AGACHADO 5
 
-MovimientoAgachado::MovimientoAgachado(SDL2pp::Renderer& renderer, const std::string& pato_path, 
+MovimientoAgachado::MovimientoAgachado(SDL2pp::Surface& superficie, const std::string& pato_path, 
 int pos_x, int pos_y, SDL_Color color):
-    movimiento_pato_agachado(),
-    puntero_agachado_derecha(0),
-    puntero_agachado_izquierda(0),
+    movimiento_pato_agachado_derecha(),
+    movimiento_pato_agachado_izquierda(),
     rect_inicio(1, 8, PIXEL_PATO, PIXEL_PATO),
     rect_dibujado(pos_x, pos_y, PIXEL_PATO, PIXEL_PATO),
-    renderer(renderer),
+    pato_surface(IMG_Load(pato_path.c_str())),
+    superficie(superficie),
     color(color)
 {
-    SDL2pp::Surface sprite_pato(IMG_Load(pato_path.c_str()));
-    frames_agachado(renderer, sprite_pato);
-}
-
-void MovimientoAgachado::frames_agachado(SDL2pp::Renderer& renderer, SDL2pp::Surface& sprite_sheet) {
-    aplicar_color(sprite_sheet, color);
-    cargar_frames(renderer, sprite_sheet, 70, movimiento_pato_agachado, NUM_FRAMES_PATO_AGACHADO);
+    guardar_frames(pato_surface, NUM_FRAMES_PATO_AGACHADO, movimiento_pato_agachado_derecha, movimiento_pato_agachado_izquierda, 0, 71, color);
 }
 
 void MovimientoAgachado::mostrar_frames_agachado(uint8_t direccion_pato) {
     if (direccion_pato == DIRECCION_DERECHA){
-        renderer.Copy(movimiento_pato_agachado[1], rect_inicio, rect_dibujado);
-        return;
+        SDL_BlitScaled(movimiento_pato_agachado_derecha[1].Get(), nullptr, superficie.Get(), &rect_dibujado);
     } else if (direccion_pato == DIRECCION_IZQUIERDA){
-    SDL_RenderCopyEx(renderer.Get(), movimiento_pato_agachado[1].Get(), &rect_inicio, &rect_dibujado, 0,
-                     nullptr, SDL_FLIP_HORIZONTAL);
+        SDL_BlitScaled(movimiento_pato_agachado_izquierda[4].Get(), nullptr, superficie.Get(), &rect_dibujado);
     }
 }
 
@@ -36,38 +27,35 @@ void MovimientoAgachado::mostrar_frames_levantarse(int it) {
     int frame = it % NUM_FRAMES_PATO_AGACHADO;
 
     if (frame == 0){
-        renderer.Copy(movimiento_pato_agachado[frame + 2], rect_inicio, rect_dibujado);
+        SDL_BlitScaled(movimiento_pato_agachado_derecha[frame + 2].Get(), nullptr, superficie.Get(), &rect_dibujado);
         return;
     }
     if (frame == 1){
-        renderer.Copy(movimiento_pato_agachado[frame + 1], rect_inicio, rect_dibujado);
+        SDL_BlitScaled(movimiento_pato_agachado_derecha[frame + 1].Get(), nullptr, superficie.Get(), &rect_dibujado);
         return;
     }
-    renderer.Copy(movimiento_pato_agachado[frame], rect_inicio, rect_dibujado);
+    SDL_BlitScaled(movimiento_pato_agachado_derecha[frame].Get(), nullptr, superficie.Get(), &rect_dibujado);
 }
 
-void MovimientoAgachado::mostrar_muerte(int pos_x, int pos_y, float zoom_factor, uint8_t direccion_pato) {
-    set_zoom_in(zoom_factor, rect_dibujado, pos_x, pos_y);
-    renderer.SetDrawColor(color.r, color.g, color.b, color.a);
+void MovimientoAgachado::mostrar_muerte(int pos_x, int pos_y, uint8_t direccion_pato) {
+    rect_dibujado.SetX(pos_x);
+    rect_dibujado.SetY(pos_y);
     
     if (direccion_pato == DIRECCION_DERECHA){
-        renderer.Copy(movimiento_pato_agachado[1], rect_inicio, rect_dibujado);
+        SDL_BlitScaled(movimiento_pato_agachado_derecha[1].Get(), nullptr, superficie.Get(), &rect_dibujado);
         return;
     } else {
-        SDL_RenderCopyEx(renderer.Get(), movimiento_pato_agachado[1].Get(), &rect_inicio, &rect_dibujado, 0,
-                     nullptr, SDL_FLIP_HORIZONTAL);
+        SDL_BlitScaled(movimiento_pato_agachado_izquierda[4].Get(), nullptr, superficie.Get(), &rect_dibujado);
     }
 }
 
-void MovimientoAgachado::pato_agachado(uint8_t& esta_agachado, int& pos_x, int& pos_y, float zoom_factor,
-uint8_t direccion_pato) {
-    set_zoom_in(zoom_factor, rect_dibujado, pos_x, pos_y);
-    renderer.SetDrawColor(color.r, color.g, color.b, color.a);
+void MovimientoAgachado::pato_agachado(uint8_t& esta_agachado, int pos_x, int pos_y, uint8_t direccion_pato) {
+    rect_dibujado.SetX(pos_x);
+    rect_dibujado.SetY(pos_y);
+
     if (esta_agachado == TIRAR_PISO) {
         mostrar_frames_agachado(direccion_pato);
-        //std::cout << "me agacho" << std::endl;
     } else if (esta_agachado == DEJAR_TIRAR_PISO) {
         mostrar_frames_levantarse(direccion_pato);
-        std::cout << "me levanto" << std::endl;
     } 
 }

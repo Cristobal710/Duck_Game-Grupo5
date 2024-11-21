@@ -4,33 +4,19 @@
 
 Ubuntu 20.04 Focal Fossa (o en su versión más ligera Xubuntu 20.04)
 
-
-##### Clonar repositorio
-
-Clonar el repositorio con el comando git clone https://github.com/Cristobal710/Duck_Game-Grupo5.git
-
 ##### Instalaciones y dependencias necesarias
 
 ```
-$ sudo apt-get update
-$ sudo apt-get install              \
-            make                    \
-            git                     \
-            gcc                     \
-            g++                     \
-            python3                 \
-            python3-pip             \
-            python3-dev             \
-            valgrind                \
-            gdb                     \
-            bsdmainutils            \
-            diffutils               \
-            manpages-dev            \
-            build-essential         \
-            strace                  \
-            unzip                   \
-            cppcheck
+sudo apt install git 
+
 ```
+
+##### Clonar repositorio
+Clonar el repositorio con el comando 
+```
+git clone https://github.com/Cristobal710/Duck_Game-Grupo5.git
+```
+*Una vez terminado de clonar, dentro de la carpeta clonada realizar lo siguiente:*
 
 ##### Instalacion de dependencias y librerias restantes y compilacion del programa 
 Luego de deberan instalar las dependencias y librerias restantes corriendo el script de la siguiente forma:

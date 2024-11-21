@@ -7,36 +7,41 @@
 #include "pato_interfaz.h"
 #include "bala_interfaz.h"
 #include <SDL2pp/SDL2pp.hh>
-#include "camara.h"
-#include <unordered_map>
+#include <utility>
 #include "caja_interfaz.h"
+#include "arma_interfaz.h"
 
 class MapaInterfaz {
-
-    private:
+private:
     SDL2pp::Renderer& renderer;
+    SDL2pp::Surface superficie;
     FondoInterfaz fondo;
-    //std::unordered_map<int, std::vector<TileInterfaz>> horizontalGroups;
-    //std::unordered_map<int, std::vector<TileInterfaz>> verticalGroups;
     std::vector<TileInterfaz> tiles;
     std::vector<PatoInterfaz> patos;
     std::vector<BalaInterfaz> balas;
     std::vector<CajaInterfaz> cajas;
+    std::vector<ArmaInterfaz> armas;
     bool mapa_procesado;
-    Camara camara;
 
     SDL_Color generar_color(int index);
     void obtener_tipo_bala(uint8_t tipo_arma, std::string& path_bala);
 
-    public:
+    float calcular_distancia(PatoInterfaz& pato_princiapl, PatoInterfaz& otro_pato);
+    SDL2pp::Rect obtener_rect_dibujar();
+
+public:
     MapaInterfaz(SDL2pp::Renderer& renderer);
-    int dibujar(int it);
+    void dibujar(int it);
+    
     void set_fondo(std::string fondo_path);
     void agregar_tile(std::string fondo_path, int x, int y);
     void agregar_spawn(uint16_t id_jugador, int x, int y);
-    void agregar_caja(uint16_t id, int x, int y, std::string path);
+    void agregar_caja(std::string caja_path, int x, int y);
+    void agregar_arma(std::string& arma_path, int x, int y);
     void agregar_bala(uint8_t tipo_arma, int x, int y, uint8_t direccion);
+    
     PatoInterfaz& get_pato_con_id(uint16_t id);
+    
     void procesado();
     bool esta_procesado() {return mapa_procesado;};
 };
