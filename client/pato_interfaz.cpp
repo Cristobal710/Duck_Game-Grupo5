@@ -56,7 +56,7 @@ void PatoInterfaz::dibujar(int it, float zoom_factor) {
         movimiento_pato_agachado.pato_agachado(se_tira_al_piso, pos_x, pos_y, zoom_factor, direccion_pato);
         return;
     }
-    if (estado_pato_salto == SALTAR_ALETEAR || estado_pato_salto == CAER) {
+    if (estado_pato_salto == SALTAR || estado_pato_salto == CAER) {
         movimiento_pato_salto.pato_salta(estado_pato_salto, pos_x, pos_y, it, zoom_factor, direccion_pato);
         return;
     }

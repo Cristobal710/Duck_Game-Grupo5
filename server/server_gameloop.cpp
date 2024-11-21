@@ -63,10 +63,13 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
         case APUNTAR_ARRIBA:
             pato.apuntar_arriba();
             break;
-        case SALTAR_ALETEAR:
+        case SALTAR:
             if (pato.estado.get_estado_salto() == BYTE_NULO) {
                 pato.levantarse_del_piso();
                 pato.saltar();
+            }
+            if (pato.estado.get_estado_salto() == CAER) {
+                pato.estado.set_aletear();
             }
             break;
         case DEJAR_MOVER_IZQUIERDA:
@@ -78,11 +81,15 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
         case DEJAR_APUNTAR_ARRIBA:
             pato.dejar_de_apuntar_arriba();
             break;
-        case DEJAR_SALTAR_ALETEAR:
+        case DEJAR_SALTAR:
             if (pato.contador_salto == 5) {
                 pato.estado.set_dejar_de_saltar();
                 pato.estado.set_caer();
                 pato.contador_salto = 0;
+            }
+            if (pato.estado.get_estado_salto() == ALETEAR) {
+                pato.estado.set_dejar_de_aletear();
+                pato.estado.set_caer();
             }
             // pato.estado.set_dejar_de_saltar();
             break;
@@ -138,6 +145,9 @@ void GameLoop::aplicar_estados(){
         }
         if(pato.estado.get_estado_agachado() == TIRAR_PISO ){
             pato.tirarse_al_piso();
+        }
+        if(pato.estado.get_estado_salto() == ALETEAR){
+            pato.aletear();
         }
     }
 }
@@ -235,7 +245,7 @@ void GameLoop::avanzar_balas(){
 
 void GameLoop::continuar_saltando_patos() {
     for (Pato& pato: ultimo_estado.patos) {
-        if (pato.estado.get_estado_salto() == SALTAR_ALETEAR) {
+        if (pato.estado.get_estado_salto() == SALTAR) {
             //std::cout << "entre al if de saltar y el contador es de " << static_cast<int>(pato.contador_salto) << std::endl;
             pato.saltar();
         }
@@ -261,7 +271,7 @@ void GameLoop::aplicar_gravedad(){
                     pato.estado.set_dejar_de_caer();
                 break;
             } else {
-                if (pato.estado.get_estado_salto() != SALTAR_ALETEAR) {
+                if (pato.estado.get_estado_salto() != SALTAR && pato.estado.get_estado_salto() != ALETEAR) {
                     pato.estado.set_caer();
                 }
             }

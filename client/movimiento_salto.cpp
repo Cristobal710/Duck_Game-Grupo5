@@ -51,7 +51,7 @@ void MovimientoSalto::pato_salta(uint8_t& movimiento, int pos_x, int pos_y, int 
     set_zoom_in(zoom_factor, rect_dibujado, pos_x, pos_y);
     renderer.SetDrawColor(color.r, color.g, color.b, color.a);
 
-    if (movimiento == SALTAR_ALETEAR) {
+    if (movimiento == SALTAR) {
         mostrar_frame_salto(it, direccion);
     } else if (movimiento == CAER) {
         mostrar_frame_caida(it, direccion);

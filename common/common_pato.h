@@ -34,7 +34,7 @@ public:
     void moverse_izquierda();
     void moverse_derecha();
     void saltar();
-    void planear();
+    void aletear();
     void caer();
     void tomar_arma(Arma* nuevaArma);
     void soltar_arma();

@@ -66,10 +66,13 @@ void Pato::saltar() {
     }
 }
 
-void Pato::planear() { pos_y--; }
+void Pato::aletear() { 
+    pos_y++;
+    estado.set_aletear(); 
+}
 
 void Pato::caer() { 
-    pos_y+=1; 
+    pos_y+=3; 
     estado.set_caer();
    
 }

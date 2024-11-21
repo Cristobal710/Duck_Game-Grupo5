@@ -26,6 +26,8 @@ class EstadoPato {
         void set_dejar_de_saltar();
         void set_caer();
         void set_dejar_de_caer();
+        void set_aletear();
+        void set_dejar_de_aletear();
         void set_agacharse();
         void set_dejar_de_agacharse();
         void set_disparando();

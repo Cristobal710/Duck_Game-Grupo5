@@ -30,9 +30,13 @@ void EstadoPato::set_moviendo_izquierda() { estado_movimiento = MOVER_IZQUIERDA;
 
 void EstadoPato::set_dejar_de_moverse() { estado_movimiento = BYTE_NULO; }
 
-void EstadoPato::set_saltar() { estado_salto = SALTAR_ALETEAR; }
+void EstadoPato::set_saltar() { estado_salto = SALTAR; }
 
 void EstadoPato::set_dejar_de_saltar() { estado_salto = BYTE_NULO; }
+
+void EstadoPato::set_aletear() { estado_salto = ALETEAR; }
+
+void EstadoPato::set_dejar_de_aletear() { estado_salto = BYTE_NULO; }
 
 void EstadoPato::set_caer() { estado_salto = CAER; }
 
