@@ -25,6 +25,7 @@ class InterfazGrafica {
 
     void iniciar_audio(std::string audio_path);
     void manejar_eventos(std::set<SDL_Keycode>& keysHeld);
+    void procesar_mapa(MapaInterfaz& mapa, EstadoJuego& ultimo_estado);
     void obtener_estado_juego(MapaInterfaz& mapa);
 
     public:

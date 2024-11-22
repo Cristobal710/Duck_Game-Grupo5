@@ -194,14 +194,7 @@ void InterfazGrafica::manejar_eventos(std::set<SDL_Keycode>& keysHeld) {
     }
 }
 
-void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
-    
-    EstadoJuego ultimo_estado;  
-    
-    if (!estado_juego.try_pop(ultimo_estado)){
-        return;
-    }
-
+void InterfazGrafica::procesar_mapa(MapaInterfaz& mapa, EstadoJuego& ultimo_estado) {
     Mapa mapa_a_jugar = ultimo_estado.mapa;
     if (!mapa.esta_procesado()){
         
@@ -213,12 +206,9 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
 
         //procesar tiles
         std::map<std::string, std::vector<SDL_Point>> tiles = mapa_a_jugar.getTiles();
-
         for (const auto& textura_punto : tiles) {
-            
             std::string path_textura = textura_punto.first;
             std::vector<SDL_Point> puntos = textura_punto.second;
-
             for (const auto& punto : puntos){
                 mapa.agregar_tile(path_textura, punto.x, punto.y);
             }
@@ -231,22 +221,18 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
             mapa.agregar_spawn(pato.get_id(), pos_x, pos_y);
         }
        
-
         // procesar cajas 
         std::map<std::string, std::vector<SDL_Point>> cajas = mapa_a_jugar.getCajas();
-
         for (const auto& textura_punto : cajas) {
             std::string path_textura = textura_punto.first;
             std::vector<SDL_Point> puntos = textura_punto.second;
             for (const auto& punto : puntos) {
                 mapa.agregar_caja(punto.x, punto.y);
             }
-            
         }
 
         // procesar equipamiento
         std::map<std::string, std::vector<SDL_Point>> equipamientos = mapa_a_jugar.getEquipamiento();
-        
         for (const auto& equipamiento : equipamientos) {
             std::string equipamiento_path = equipamiento.first;
             std::vector<SDL_Point> puntos = equipamiento.second;
@@ -257,51 +243,48 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
 
         mapa.procesado();
     }
+}
+
+void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
     
-    bool hubo_estado_nuevo = false;
+    EstadoJuego ultimo_estado;  
+    
+    if (!estado_juego.try_pop(ultimo_estado)){
+        return;
+    }
+
+    procesar_mapa(mapa, ultimo_estado);
 
     while (estado_juego.try_pop(ultimo_estado)) {
         for (Pato pato_juego: ultimo_estado.patos) {
             PatoInterfaz& pato_prueba = mapa.get_pato_con_id(pato_juego.get_id());
             pato_prueba.set_esta_vivo(pato_juego.esta_vivo());
             pato_prueba.actualizar_posicion(pato_juego.get_pos_x(), pato_juego.get_pos_y());
+            
             pato_prueba.actualizar_estado(pato_juego.estado.get_estado_movimiento(), ESTADO_MOVIMIENTO);
             pato_prueba.actualizar_estado(pato_juego.estado.get_estado_salto(), ESTADO_SALTO);
+            pato_prueba.actualizar_estado(pato_juego.estado.get_estado_agachado(), ESTADO_PISO);
+            
             pato_prueba.actualizar_estado(pato_juego.get_direccion(), ESTADO_DIRECCION);
             if (pato_juego.get_direccion() == BYTE_NULO){
                 pato_prueba.actualizar_estado(DIRECCION_DERECHA, ESTADO_DIRECCION);
             }
-            pato_prueba.actualizar_estado(pato_juego.estado.get_estado_agachado(), ESTADO_PISO);
+            
             pato_prueba.actualizar_equipamiento(pato_juego.tiene_arma(), ESTADO_ARMA);
             pato_prueba.actualizar_equipamiento(pato_juego.estado.get_estado_disparo(), ESTADO_BALAS);
             if (pato_juego.tiene_arma() == TOMAR_ARMA) {
                 pato_prueba.actualizar_arma(pato_juego.get_arma()->get_tipo_arma());
-                pato_prueba.actualizar_equipamiento(pato_juego.get_arma()->get_municion_disponible(), ESTADO_MUNICION);
             }
-            // pato_prueba.actualizar_equipamiento(pato_juego.get_arma()->get_municion_disponible(), ESTADO_MUNICION);
+
             pato_prueba.actualizar_equipamiento(pato_juego.get_armadura_equipada(), ESTADO_ARMADURA);
             pato_prueba.actualizar_equipamiento(pato_juego.get_casco_equipado(), ESTADO_CASCO);
-    
-            //std::cout << "municion:" << static_cast<int>(pato_juego.get_arma()->get_municion_disponible()) << std::endl;
         }
-        hubo_estado_nuevo = true;
+
         //mostrar balas
         for (Bala balas_juego: ultimo_estado.balas) {
-                mapa.agregar_bala(balas_juego.get_tipo_arma(), balas_juego.get_pos_x(),
-                balas_juego.get_pos_y(), balas_juego.get_direccion());
-                // pato_prueba.actualizar_posicion_bala(balas_juego.get_pos_x(), balas_juego.get_pos_y());
-                // std::cout << "pos x bala:" << static_cast<int>(balas_juego.get_pos_x()) << std::endl;
-                // std::cout << "pos y bala:" << static_cast<int>(balas_juego.get_pos_y()) << std::endl;
-            }
-    } 
-    if (!hubo_estado_nuevo) {
-        for (Pato pato_juego: ultimo_estado.patos) {
-            PatoInterfaz& pato_prueba = mapa.get_pato_con_id(pato_juego.get_id());
-            pato_prueba.actualizar_estado(BYTE_NULO, ESTADO_MOVIMIENTO);
-            pato_prueba.actualizar_estado(BYTE_NULO, ESTADO_SALTO);
-            //pato_prueba.actualizar_estado(BYTE_NULO, ESTADO_PISO);
+            mapa.agregar_bala(balas_juego.get_tipo_arma(), balas_juego.get_pos_x(),
+            balas_juego.get_pos_y(), balas_juego.get_direccion());
         }
-    }
-    
+    } 
 }
 
