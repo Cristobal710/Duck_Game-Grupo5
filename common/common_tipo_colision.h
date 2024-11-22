@@ -7,6 +7,7 @@ enum TipoColision {
     Piso,
     Techo,
     Balas,
+    Recompensas,
     Nada,
 };
 

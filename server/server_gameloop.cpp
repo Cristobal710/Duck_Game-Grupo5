@@ -72,6 +72,12 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
                 pato.estado.set_aletear();
             }
             break;
+        case AGARRAR_RECOMPENSA:
+            for(Pato& pato :ultimo_estado.patos){
+                agarrar_recompensa(pato);
+            }
+            break;
+
         case DEJAR_MOVER_IZQUIERDA:
             pato.estado.set_dejar_de_moverse();
             break;
@@ -116,6 +122,26 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
 
     }
 }
+
+
+void GameLoop::agarrar_recompensa(Pato& pato){
+    for(Caja& caja : ultimo_estado.cajas){
+           if(pato.colisiona_con_recompensa(caja.get_hitbox()) == Recompensas){
+               std::cout<<"AGARRANDO RECOMPENSA:  "<<static_cast<int>(caja.get_id())<<std::endl;
+                return;            
+           }
+        }
+    for(Arma& arma : ultimo_estado.armas){
+        if(pato.colisiona_con_recompensa(arma.get_hitbox()) == Recompensas){
+            std::cout<<"AGARRANDO ARMA:  "<<static_cast<int>(arma.get_id())<<std::endl;
+            return;
+        }
+        
+    }    
+
+}
+
+
 
 bool GameLoop::validar_movimiento(Pato& pato, TipoColision colision){
     bool colisiona = false;
@@ -329,6 +355,18 @@ void GameLoop::calcular_colisiones_balas(){
     }
 }
 
+// void GameLoop::calcular_colisiones_cajas(){
+//     for(Pato& pato : ultimo_estado.patos){
+//         for(Caja& caja : ultimo_estado.cajas){
+//             if(pato.colisiona_con_caja(caja.get_hitbox()) == Cajas){
+//                 //std::cout<<"ESTOY COLISIONANDO CON UNA CAJARDA"<<std::endl;
+//             }
+//         }
+//     }
+    
+// }
+
+
 void GameLoop::actualizar_hitbox_entidades(){
     for (Pato& pato: ultimo_estado.patos) {
         pato.calcular_hitbox();
@@ -336,6 +374,11 @@ void GameLoop::actualizar_hitbox_entidades(){
     for (Bala& bala: ultimo_estado.balas) {
         bala.calcular_hitbox();
     }
+    for (Arma& arma : ultimo_estado.armas){
+        arma.calcular_hitbox();
+    }
+    
+    
 }
 
 void GameLoop::eliminar_patos_muertos(){
@@ -394,7 +437,7 @@ void GameLoop::inicializar_armas(){
 void GameLoop::inicializar_juego(){
     inicializar_patos();
     inicializar_cajas();
-    //inicializar_armas();
+    inicializar_armas();
     cola_estados_juego.push(ultimo_estado);
 }
 

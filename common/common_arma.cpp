@@ -20,7 +20,9 @@ uint8_t Arma::get_municion_disponible() { return municion_disponible; }
 uint16_t Arma::get_alcance() { return alcance; }
 
 void Arma::calcular_hitbox() {
-    hitbox = HitBox(pos_x, pos_y, ALTO_ARMA, ANCHO_ARMA);
+    hitbox = HitBox(pos_x, pos_y, ANCHO_ARMA, ALTO_ARMA);
 }
 
 uint8_t Arma::get_tipo_arma() { return tipo_arma; }
+
+

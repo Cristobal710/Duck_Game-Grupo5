@@ -10,6 +10,7 @@ Protocolo::Protocolo(Socket& socket): socket(socket), acciones() {
     acciones[DISPARO] = DISPARAR;
     acciones[AGARRAR_ARMA] = TOMAR_ARMA;
     acciones[ABAJO] = TIRAR_PISO;
+    acciones[AGARRAR_ARMA] = AGARRAR_RECOMPENSA;
     acciones[NO_DERECHA] = DEJAR_MOVER_DERECHA;
     acciones[NO_IZQUIERDA] = DEJAR_MOVER_IZQUIERDA;
     acciones[NO_ARRIBA] = DEJAR_APUNTAR_ARRIBA;

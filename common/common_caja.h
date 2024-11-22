@@ -2,7 +2,7 @@
 #define COMMON_CAJA_H
 #include "common_arma.h"
 #include "common_entidad.h"
-
+#include "common_hitbox.h"
 class Caja: public Entidad {
 private:
     uint16_t tipo;
@@ -12,6 +12,8 @@ private:
 public:
     Caja(uint16_t id, uint16_t pos_x, uint16_t pos_y, uint8_t recompensa);
     uint8_t get_recompensa();
+    void calcular_hitbox() override;
+    HitBox get_hitbox();
 };
 
 #endif

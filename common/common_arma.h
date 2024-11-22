@@ -21,6 +21,7 @@ public:
     uint8_t get_municion_disponible();
     uint16_t get_alcance();
     uint8_t get_tipo_arma();
+
 };
 
 #endif

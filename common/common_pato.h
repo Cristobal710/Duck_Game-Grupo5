@@ -60,6 +60,8 @@ public:
     void morir();
     TipoColision colisiona_con_tile(SDL2pp::Rect hitbox_tile);
     TipoColision colisiona_con_bala(Bala& bala);
+    TipoColision colisiona_con_recompensa(HitBox hitbox_caja);
+
     
 };
 
