@@ -41,16 +41,7 @@ void MapaInterfaz::agregar_caja(int x, int y) {
     cajas.emplace_back(std::move(caja));
 }
 
-void MapaInterfaz::agregar_equipamiento(std::string& tipo_equipamiento, int x, int y) {
-    std::string equipamiento_path = "../resources/weapons/ak47.png"; 
-    if (tipo_equipamiento == "arma") {
-        std::cout << "equip:" << tipo_equipamiento << std::endl;
-        std::string equipamiento_path = "../resources/weapons/ak47.png";        
-    } else if (tipo_equipamiento == "armadura"){
-        std::string equipamiento_path = "../resources/armors/chestPlatePickup.png";
-    } else if (tipo_equipamiento == "casco"){
-        std::string equipamiento_path = "../resources/armors/knightHelmet.png";
-    }
+void MapaInterfaz::agregar_equipamiento(std::string& equipamiento_path, int x, int y) {
     EquipamientoInterfaz equipamiento(superficie, equipamiento_path, x, y);
     equipamientos.emplace_back(std::move(equipamiento));
 }
