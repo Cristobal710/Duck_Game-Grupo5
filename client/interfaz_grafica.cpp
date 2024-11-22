@@ -27,8 +27,8 @@ void InterfazGrafica::iniciar_audio(std::string audio_path){
     Mix_QuerySpec(nullptr, nullptr, nullptr);;
     Mix_Music* music = Mix_LoadMUS(audio_path.c_str());
     Mix_PlayMusic(music, -1);
-    int sdl_volume = static_cast<int>((5 / 10.0) * 128);
-    Mix_VolumeMusic(sdl_volume);
+    //int sdl_volume = static_cast<int>((5 / 10.0) * 128);
+    Mix_VolumeMusic(0);
 }
 
 void InterfazGrafica::iniciar() {
@@ -246,13 +246,12 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
 
         // procesar equipamiento
         std::map<std::string, std::vector<SDL_Point>> equipamientos = mapa_a_jugar.getEquipamiento();
-
-        for(const auto& equipamiento : equipamientos){
-            std::string tipo_equipamiento = equipamiento.first;
-            std::cout << "tipo_equipamiento:" << tipo_equipamiento << std::endl;
+        
+        for (const auto& equipamiento : equipamientos) {
+            std::string equipamiento_path = equipamiento.first;
             std::vector<SDL_Point> puntos = equipamiento.second;
-            for (const auto& punto : puntos){
-                mapa.agregar_equipamiento(tipo_equipamiento, punto.x, punto.y);
+            for (const auto& punto : puntos) {
+                mapa.agregar_equipamiento(equipamiento_path, punto.x, punto.y);
             }
         }
 

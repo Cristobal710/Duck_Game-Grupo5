@@ -38,7 +38,7 @@ public:
     void agregar_tile(std::string fondo_path, int x, int y);
     void agregar_spawn(uint16_t id_jugador, int x, int y);
     void agregar_caja(int x, int y);
-    void agregar_equipamiento(std::string& tipo_equipamiento, int x, int y);
+    void agregar_equipamiento(std::string& equipamiento_path, int x, int y);
     void agregar_bala(uint8_t tipo_arma, int x, int y, uint8_t direccion);
     
     PatoInterfaz& get_pato_con_id(uint16_t id);

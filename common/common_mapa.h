@@ -46,12 +46,23 @@ class Mapa {
         
         if (j.contains("equipamiento")) {
             for (const auto& item : j["equipamiento"]) {
-                for (auto& el : item.items()) {
-                    std::string key = el.key();
-                    int x = item.at("x").get<int>();
-                    int y = item.at("y").get<int>();
-                    mapa.equipamiento[key].emplace_back(SDL_Point{x, y});
+                std::string path;
+                int x = item.at("x").get<int>();
+                int y = item.at("y").get<int>();
+
+                // Extract the path based on the available keys
+                if (item.contains("armadura")) {
+                    path = item["armadura"];
+                } else if (item.contains("arma")) {
+                    path = item["arma"];
+                } else if (item.contains("casco")) {
+                    path = item["casco"];
+                } else {
+                    continue; // Skip unknown equipment types
                 }
+
+                // Store the extracted path and position
+                mapa.equipamiento[path].emplace_back(SDL_Point{x, y});
             }
         }
 
