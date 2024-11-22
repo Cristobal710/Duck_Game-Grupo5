@@ -14,6 +14,7 @@
 #include "../common/common_estado_juego.h"
 #include "mapa_interfaz.h"
 #include <set>
+#include <unordered_map>
 
 class InterfazGrafica {
     private:
@@ -24,7 +25,13 @@ class InterfazGrafica {
     SDL2pp::Renderer renderer;
 
     void iniciar_audio(std::string audio_path);
-    void manejar_eventos(std::set<SDL_Keycode>& keysHeld);
+    void primer_jugador_se_mueve(ComandoGrafica& comando_cliente, SDL_Event& evento);
+    void primer_jugador_deja_de_moverse(ComandoGrafica& comando_cliente, SDL_Event& evento);
+    void segundo_jugador_se_mueve(ComandoGrafica& comando_cliente, SDL_Event& evento);
+    void segundo_jugador_deja_de_moverse(ComandoGrafica& comando_cliente, SDL_Event& evento);
+    void manejar_eventos_por_jugador(ComandoGrafica& comando_cliente, SDL_Event& evento, 
+                        const std::unordered_map<SDL_Keycode, std::string>& key_map, int jugador_id, bool es_presionado);
+    void manejar_eventos(std::set<SDL_Keycode>& keysHeld, int cant_jugadores);
     void procesar_mapa(MapaInterfaz& mapa, EstadoJuego& ultimo_estado);
     void obtener_estado_juego(MapaInterfaz& mapa);
 

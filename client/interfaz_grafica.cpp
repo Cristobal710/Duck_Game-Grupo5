@@ -11,6 +11,7 @@
 #define DURACION_FRAME 1000 / 30 // 30 frames por segundo
 
 
+
 InterfazGrafica::InterfazGrafica(Queue<ComandoGrafica>& queue, Queue<EstadoJuego>& cola_estado_juego):
         comandos_cliente(queue),
         estado_juego(cola_estado_juego),
@@ -49,9 +50,7 @@ void InterfazGrafica::iniciar() {
     // o se unio a una existente al servidor
     //por ahora:
     int cant_jugadores = lobby.cantidad_jugadores();
-    while(cant_jugadores != 1){
-       
-    }
+    //se deberia recibir el/los id de los jugadores
     
     std::string audio_fondo_path = "../resources/sounds/background_music.mp3";
     iniciar_audio(audio_fondo_path);
@@ -63,7 +62,7 @@ void InterfazGrafica::iniciar() {
     tiempo_ultimo_frame = SDL_GetTicks();
     while (correr_programa) {
         renderer.Clear();
-        manejar_eventos(keysHeld);
+        manejar_eventos(keysHeld, cant_jugadores);
         obtener_estado_juego(mapa_a_jugar);
         
         mapa_a_jugar.dibujar(it);
@@ -101,9 +100,33 @@ void InterfazGrafica::drop_rest(float& tiempo_ultimo_frame, int& it) {
     tiempo_ultimo_frame = tiempo_actual;
 }
 
-void InterfazGrafica::manejar_eventos(std::set<SDL_Keycode>& keysHeld) {
+void InterfazGrafica::manejar_eventos_por_jugador(ComandoGrafica& comando_cliente, SDL_Event& evento, 
+        const std::unordered_map<SDL_Keycode, std::string>& key_map, int jugador_id, bool es_presionado) {
+    auto it = key_map.find(evento.key.keysym.sym);
+    if (it != key_map.end()) {
+        comando_cliente.tecla = es_presionado ? it->second : "!" + it->second;
+        comando_cliente.jugador_id = jugador_id;
+        comandos_cliente.push(comando_cliente);
+    }
+}
+
+void InterfazGrafica::manejar_eventos(std::set<SDL_Keycode>& keysHeld, int cant_jugadores) {
     SDL_Event evento;
-    
+
+    std::unordered_map<SDL_Keycode, std::string> key_map_jugador_1 = {
+        { SDLK_d, DERECHA }, { SDLK_a, IZQUIERDA },
+        { SDLK_w, ARRIBA }, { SDLK_s, ABAJO },
+        { SDLK_SPACE, SALTO }, { SDLK_f, DISPARO },
+        { SDLK_g, AGARRAR_ARMA }
+    };
+
+    std::unordered_map<SDL_Keycode, std::string>key_map_jugador_2 = {
+        { SDLK_RIGHT, DERECHA }, { SDLK_LEFT, IZQUIERDA },
+        { SDLK_UP, ARRIBA }, { SDLK_DOWN, ABAJO },
+        { SDLK_KP_0, SALTO }, { SDLK_KP_1, DISPARO },
+        { SDLK_KP_2, AGARRAR_ARMA }
+    };
+
     while (SDL_PollEvent(&evento)) {
         ComandoGrafica comando_cliente;
 
@@ -111,83 +134,20 @@ void InterfazGrafica::manejar_eventos(std::set<SDL_Keycode>& keysHeld) {
             correr_programa = false;
 
         } else if (evento.type == SDL_KEYDOWN) {
-            if(keysHeld.find(evento.key.keysym.sym) == keysHeld.end()) {
+            if (keysHeld.find(evento.key.keysym.sym) == keysHeld.end()) {
                 if (evento.key.keysym.sym == SDLK_ESCAPE) {
                     correr_programa = false;
                 }
-                if (evento.key.keysym.sym == SDLK_d) {
-                    comando_cliente.tecla = DERECHA;
-                    comando_cliente.jugador_id = 3;
-                    comandos_cliente.push(comando_cliente);
-                }
-                if (evento.key.keysym.sym == SDLK_a) {
-                    comando_cliente.tecla = IZQUIERDA;
-                    comando_cliente.jugador_id = 3;
-                    comandos_cliente.push(comando_cliente);
-                }
-                if (evento.key.keysym.sym == SDLK_w) {
-                    comando_cliente.tecla = ARRIBA;
-                    comando_cliente.jugador_id = 3;
-                    comandos_cliente.push(comando_cliente);
-                }
-                if (evento.key.keysym.sym == SDLK_s) {
-                    comando_cliente.tecla = ABAJO;
-                    comando_cliente.jugador_id = 3;
-                    comandos_cliente.push(comando_cliente);
-                }
-                if (evento.key.keysym.sym == SDLK_SPACE) {
-                    comando_cliente.tecla = SALTO;
-                    comando_cliente.jugador_id = 3;
-                    comandos_cliente.push(comando_cliente);
-                }
-                if (evento.key.keysym.sym == SDLK_f) {
-                    comando_cliente.tecla = DISPARO;
-                    comando_cliente.jugador_id = 3;
-                    comandos_cliente.push(comando_cliente);
-                }
-                if (evento.key.keysym.sym == SDLK_g) {
-                    comando_cliente.tecla = AGARRAR_ARMA;
-                    comando_cliente.jugador_id = 3;
-                    comandos_cliente.push(comando_cliente);
+                manejar_eventos_por_jugador(comando_cliente, evento, key_map_jugador_1, 3, true);
+                if (cant_jugadores == 2) {
+                    manejar_eventos_por_jugador(comando_cliente, evento, key_map_jugador_2, 4, true);
                 }
             }
             keysHeld.insert(evento.key.keysym.sym);
         } else if (evento.type == SDL_KEYUP) {
-            
-            if (evento.key.keysym.sym == SDLK_d) {
-                comando_cliente.tecla = NO_DERECHA;
-                comando_cliente.jugador_id = 3;
-                comandos_cliente.push(comando_cliente);
-            }
-            if (evento.key.keysym.sym == SDLK_a) {
-                comando_cliente.tecla = NO_IZQUIERDA;
-                comando_cliente.jugador_id = 3;
-                comandos_cliente.push(comando_cliente);
-            }
-            if (evento.key.keysym.sym == SDLK_w) {
-                comando_cliente.tecla = NO_ARRIBA;
-                comando_cliente.jugador_id = 3;
-                comandos_cliente.push(comando_cliente);
-            }
-            if (evento.key.keysym.sym == SDLK_s) {
-                comando_cliente.tecla = NO_ABAJO;
-                comando_cliente.jugador_id = 3;
-                comandos_cliente.push(comando_cliente);
-            }
-            if (evento.key.keysym.sym == SDLK_SPACE) {
-                comando_cliente.tecla = NO_SALTO;
-                comando_cliente.jugador_id = 3;
-                comandos_cliente.push(comando_cliente);
-            }
-            if (evento.key.keysym.sym == SDLK_f) {
-                comando_cliente.tecla = NO_DISPARO;
-                comando_cliente.jugador_id = 3;
-                comandos_cliente.push(comando_cliente);
-            }
-            if (evento.key.keysym.sym == SDLK_g) {
-                comando_cliente.tecla = NO_AGARRAR_ARMA;
-                comando_cliente.jugador_id = 3;
-                comandos_cliente.push(comando_cliente);
+            manejar_eventos_por_jugador(comando_cliente, evento, key_map_jugador_1, 3, false);
+            if (cant_jugadores == 2) {
+                manejar_eventos_por_jugador(comando_cliente, evento, key_map_jugador_2, 4, false);
             }
             keysHeld.erase(evento.key.keysym.sym);
         }
