@@ -10,8 +10,8 @@
 #define SHOTGUN "Shotgun"
 #define DISTANCIA_ARMA 4
 
-#define ALTO_TILE 16
-#define ANCHO_TILE 16
+#define ALTO_TILE 32
+#define ANCHO_TILE 24
 
 GameLoop::GameLoop(Queue<EstadoJuego>& cola_estados_juego,
         bool* conexion):
@@ -123,25 +123,20 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
     }
 }
 
-
 void GameLoop::agarrar_recompensa(Pato& pato){
     for(Caja& caja : ultimo_estado.cajas){
-           if(pato.colisiona_con_recompensa(caja.get_hitbox()) == Recompensas){
-               std::cout<<"AGARRANDO RECOMPENSA:  "<<static_cast<int>(caja.get_id())<<std::endl;
-                return;            
-           }
+        if(pato.colisiona_con_recompensa(caja.get_hitbox()) == Recompensas){
+            std::cout<<"AGARRANDO RECOMPENSA:  "<<static_cast<int>(caja.get_id())<<std::endl;
+            return;            
         }
+    }
     for(Arma& arma : ultimo_estado.armas){
         if(pato.colisiona_con_recompensa(arma.get_hitbox()) == Recompensas){
             std::cout<<"AGARRANDO ARMA:  "<<static_cast<int>(arma.get_id())<<std::endl;
             return;
-        }
-        
-    }    
-
+        }   
+    }
 }
-
-
 
 bool GameLoop::validar_movimiento(Pato& pato, TipoColision colision){
     bool colisiona = false;
@@ -366,7 +361,6 @@ void GameLoop::calcular_colisiones_balas(){
     
 // }
 
-
 void GameLoop::actualizar_hitbox_entidades(){
     for (Pato& pato: ultimo_estado.patos) {
         pato.calcular_hitbox();
@@ -377,8 +371,6 @@ void GameLoop::actualizar_hitbox_entidades(){
     for (Arma& arma : ultimo_estado.armas){
         arma.calcular_hitbox();
     }
-    
-    
 }
 
 void GameLoop::eliminar_patos_muertos(){
@@ -406,10 +398,10 @@ void GameLoop::inicializar_patos(){
             id++;
             Arma* arma = new Arma(1, pos_x, pos_y, 15, 200, PEW_PEW_LASER);
             pato.tomar_arma(arma);
-            pato.tomar_armadura();
-            pato.equipar_armadura();
-            pato.tomar_casco();
-            pato.equipar_casco();
+            // pato.tomar_armadura();
+            // pato.equipar_armadura();
+            // pato.tomar_casco();
+            // pato.equipar_casco();
             ultimo_estado.patos.emplace_back(pato);
         }
     }

@@ -208,7 +208,6 @@ TipoColision Pato::colisiona_con_recompensa(HitBox hitbox_caja) {
         return Nada;
     }
     if (hitbox.colisiona_arriba_con(hitbox_caja.get_hitbox_rect()) || hitbox.colisiona_abajo_con(hitbox_caja.get_hitbox_rect()) ||hitbox.colisiona_izquierda_con(hitbox_caja.get_hitbox_rect()) || hitbox.colisiona_derecha_con(hitbox_caja.get_hitbox_rect() )) {
-        // std::cout<<"colisiona arriba"<<std::endl;
         return Recompensas;
     }
     return Nada;
