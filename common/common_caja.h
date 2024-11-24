@@ -10,10 +10,13 @@ private:
     bool esta_vacia;
 
 public:
+    Caja();
     Caja(uint16_t id, uint16_t pos_x, uint16_t pos_y, uint8_t recompensa);
     uint8_t get_recompensa();
+    bool operator==(const Caja& otra) const;
     void calcular_hitbox() override;
     HitBox get_hitbox();
+    bool get_esta_vacia();
 };
 
 #endif

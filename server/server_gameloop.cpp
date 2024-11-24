@@ -48,6 +48,7 @@ void GameLoop::procesar_evento(EventoServer& evento, EstadoJuego& estado_juego) 
 
 void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
     Bala bala;
+    Caja caja;
     switch (accion) {
         case MOVER_IZQUIERDA:
             pato.estado.set_moviendo_izquierda();
@@ -73,11 +74,19 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
             }
             break;
         case AGARRAR_RECOMPENSA:
-            for(Pato& pato :ultimo_estado.patos){
-                agarrar_recompensa(pato);
+            if (pato.tiene_arma()) {
+                pato.soltar_arma();
+                break;
+            }
+            caja = agarrar_recompensa(pato);
+            if (!caja.get_esta_vacia()) {
+                Arma* arma = new Arma(caja.get_id(), caja.get_pos_x(), caja.get_pos_y(), 30, 30, caja.get_recompensa());
+                pato.tomar_arma(arma);
+                std::cout << ultimo_estado.cajas.size() << std::endl;
+                ultimo_estado.cajas.remove(caja);
+                std::cout << ultimo_estado.cajas.size() << std::endl;
             }
             break;
-
         case DEJAR_MOVER_IZQUIERDA:
             pato.estado.set_dejar_de_moverse();
             break;
@@ -123,19 +132,21 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
     }
 }
 
-void GameLoop::agarrar_recompensa(Pato& pato){
+Caja GameLoop::agarrar_recompensa(Pato& pato){
     for(Caja& caja : ultimo_estado.cajas){
         if(pato.colisiona_con_recompensa(caja.get_hitbox()) == Recompensas){
             std::cout<<"AGARRANDO RECOMPENSA:  "<<static_cast<int>(caja.get_id())<<std::endl;
-            return;            
+            return caja;          
         }
     }
-    for(Arma& arma : ultimo_estado.armas){
-        if(pato.colisiona_con_recompensa(arma.get_hitbox()) == Recompensas){
-            std::cout<<"AGARRANDO ARMA:  "<<static_cast<int>(arma.get_id())<<std::endl;
-            return;
-        }   
-    }
+
+    return Caja();
+    // for(Arma& arma : ultimo_estado.armas){
+    //     if(pato.colisiona_con_recompensa(arma.get_hitbox()) == Recompensas){
+    //         std::cout<<"AGARRANDO ARMA:  "<<static_cast<int>(arma.get_id())<<std::endl;
+    //         return arma;
+    //     }   
+    // }
 }
 
 bool GameLoop::validar_movimiento(Pato& pato, TipoColision colision){
@@ -411,7 +422,7 @@ void GameLoop::inicializar_patos(){
 void GameLoop::inicializar_cajas(){
     for (const auto& cajas : ultimo_estado.mapa.getCajas()) {
         for (SDL_Point posicion_caja : cajas.second) {
-            Caja caja(ultimo_estado.cajas.size() + 1, posicion_caja.x, posicion_caja.y, 0x05);
+            Caja caja(ultimo_estado.cajas.size() + 1, posicion_caja.x, posicion_caja.y, AK_47);
             ultimo_estado.cajas.push_back(caja);
         }
     }
