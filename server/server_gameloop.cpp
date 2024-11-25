@@ -63,6 +63,7 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
             break;
         case APUNTAR_ARRIBA:
             pato.apuntar_arriba();
+            pato.saltar();
             break;
         case SALTAR:
             if (pato.estado.get_estado_salto() == BYTE_NULO) {
@@ -74,6 +75,7 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
             }
             break;
         case AGARRAR_RECOMPENSA:
+            pato.saltar();
             if (pato.tiene_arma()) {
                 pato.soltar_arma();
                 break;
@@ -180,6 +182,13 @@ void GameLoop::aplicar_estados(){
         }
         if(pato.estado.get_estado_salto() == ALETEAR){
             pato.aletear();
+            for (Tile& tile: colisiones) {
+                if (pato.colisiona_con_tile(tile.get_hitbox()) == Piso) {
+                    pato.estado.set_dejar_de_aletear();
+                    pato.ajustar_sobre_tile(tile.get_hitbox());
+                    break;
+                }
+            }
         }
     }
 }
@@ -201,7 +210,7 @@ void GameLoop::crear_bala(Pato& pato){
 
 void GameLoop::enviar_estado_juego_si_cambio( EstadoJuego& estado_anterior) {
     for(Pato& pato :ultimo_estado.patos){
-        if (pato.estado.get_estado_agachado() != estado_anterior.patos.front().estado.get_estado_agachado() || pato.estado.get_estado_movimiento() != estado_anterior.patos.front().estado.get_estado_movimiento() || pato.estado.get_estado_salto() != estado_anterior.patos.front().estado.get_estado_salto() || pato.estado.get_estado_disparo() != estado_anterior.patos.front().estado.get_estado_disparo()) {
+        if (pato.estado.get_estado_agachado() != estado_anterior.patos.front().estado.get_estado_agachado() || pato.estado.get_estado_movimiento() != estado_anterior.patos.front().estado.get_estado_movimiento() || pato.estado.get_estado_salto() != estado_anterior.patos.front().estado.get_estado_salto() || pato.estado.get_estado_disparo() != estado_anterior.patos.front().estado.get_estado_disparo() || pato.esta_apuntando_arriba() != estado_anterior.patos.front().esta_apuntando_arriba()) {
             cola_estados_juego.push(ultimo_estado);
         }
         if (pato.get_pos_x() != estado_anterior.patos.front().get_pos_x() || pato.get_pos_y() != estado_anterior.patos.front().get_pos_y()) {            
@@ -295,20 +304,42 @@ void GameLoop::frenar_saltos_patos_si_colisionan(){
     }
 }
 
-void GameLoop::aplicar_gravedad(){
-    for (Pato& pato: ultimo_estado.patos) {
-        for (Tile& tile: colisiones) {
+void GameLoop::aplicar_gravedad() {
+    for (Pato& pato : ultimo_estado.patos) {
+        bool colision_detectada = false;
+
+        for (Tile& tile : colisiones) {
             if (pato.colisiona_con_tile(tile.get_hitbox()) == Piso) {
-                    pato.estado.set_dejar_de_caer();
+                pato.estado.set_dejar_de_caer();
+                colision_detectada = true;
                 break;
-            } else {
-                if (pato.estado.get_estado_salto() != SALTAR && pato.estado.get_estado_salto() != ALETEAR) {
-                    pato.estado.set_caer();
-                }
             }
         }
+
+        if (!colision_detectada && pato.estado.get_estado_salto() != SALTAR && pato.estado.get_estado_salto() != ALETEAR) {
+            pato.estado.set_caer();
+        }
+
         if (pato.estado.get_estado_salto() == CAER) {
-            pato.caer();
+            for (int i = 0; i < pato.velocidad_caida; ++i) {
+                colision_detectada = false;
+                //std::cout << i << std::endl;
+                pato.caer();
+                actualizar_hitbox_entidades();
+                for (Tile& tile : colisiones) {
+                    //std::cout << "colisionando con tile" << std::endl;
+                    if (pato.colisiona_con_tile(tile.get_hitbox()) == Piso) {
+                        std::cout << "ajustar tile" << std::endl;
+                        pato.estado.set_dejar_de_caer();
+                        pato.ajustar_sobre_tile(tile.get_hitbox());
+                        colision_detectada = true;
+                        break;
+                    }
+                }
+                if (colision_detectada) {
+                    break;
+                }
+            }
         }
     }
 }

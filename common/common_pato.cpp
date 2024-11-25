@@ -20,7 +20,8 @@ Pato::Pato(uint16_t id, uint16_t pos_x, uint16_t pos_y, uint8_t direccion):
         direccion(direccion),
         estado(),
         contador_salto(0),
-        contador_caer(0) 
+        contador_caer(0),
+        velocidad_caida(3) 
         {
     calcular_hitbox();
     // if (color == "rojo") {
@@ -72,9 +73,12 @@ void Pato::aletear() {
 }
 
 void Pato::caer() { 
-    pos_y+=3; 
+    if (velocidad_caida == 10 || estado.get_estado_salto() != CAER) {
+        velocidad_caida = 3;
+    }
+    pos_y++;
     estado.set_caer();
-   
+    velocidad_caida+=1;
 }
 
 void Pato::tomar_arma(Arma* nuevaArma) { arma = nuevaArma; }
@@ -170,19 +174,19 @@ TipoColision Pato::colisiona_con_tile(SDL2pp::Rect hitbox_tile) {
         return Nada;
     }
     if (hitbox.colisiona_arriba_con(hitbox_tile)) {
-        // std::cout<<"colisiona arriba"<<std::endl;
+        std::cout<<"colisiona arriba"<<std::endl;
         return Piso;
     }
     if (hitbox.colisiona_abajo_con(hitbox_tile)) {
-        // std::cout<<"colisiona abajo"<<std::endl;
+        std::cout<<"colisiona abajo"<<std::endl;
         return Techo;
     }
     if (hitbox.colisiona_izquierda_con(hitbox_tile)) {
-        // std::cout<<"colisiona izq"<<std::endl;
+        std::cout<<"colisiona izq"<<std::endl;
         return ParedIzquierda;
     }
     if (hitbox.colisiona_derecha_con(hitbox_tile)) {
-        // std::cout<<"colisiona der"<<std::endl;
+        std::cout<<"colisiona der"<<std::endl;
         return ParedDerecha;
     }
     return Nada;
@@ -211,5 +215,10 @@ TipoColision Pato::colisiona_con_recompensa(HitBox hitbox_caja) {
         return Recompensas;
     }
     return Nada;
+}
+
+void Pato::ajustar_sobre_tile(const SDL2pp::Rect& tile_hitbox) {
+    std::cout << "ajustando sobre tile" << std::endl;
+    pos_y = tile_hitbox.GetY() - hitbox.get_hitbox_rect().GetH(); // Coloca el pato justo encima del tile
 }
 

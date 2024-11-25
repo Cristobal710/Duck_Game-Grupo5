@@ -26,6 +26,7 @@ public:
     EstadoPato estado;
     uint8_t contador_salto;
     uint8_t contador_caer;
+    uint8_t velocidad_caida;
     Pato();
     Pato(uint16_t id, uint16_t pos_x, uint16_t pos_y, uint8_t direccion);
     //~Pato();
@@ -61,8 +62,7 @@ public:
     TipoColision colisiona_con_tile(SDL2pp::Rect hitbox_tile);
     TipoColision colisiona_con_bala(Bala& bala);
     TipoColision colisiona_con_recompensa(HitBox hitbox_caja);
-
-    
+    void ajustar_sobre_tile(const SDL2pp::Rect& tile_hitbox);
 };
 
 #endif
