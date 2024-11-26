@@ -30,7 +30,7 @@ chmod +x install_dependencies.sh
 2. y luego correr: 
 
 ```
-sudo ./install_dependencies.sh
+./install_dependencies.sh
 
 ```
 
