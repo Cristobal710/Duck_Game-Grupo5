@@ -3,7 +3,7 @@
 # Actualizar los repositorios e instalar herramientas básicas
 echo "Actualizando repositorios e instalando herramientas básicas..."
 sudo apt-get update
-sudo apt-get install -y make git gcc g++ python3 python3-pip python3-dev valgrind gdb bsdmainutils diffutils manpages-dev build-essential strace unzip cppcheck
+sudo apt-get install -y make git gcc g++ python3 python3-pip python3-dev valgrind gdb bsdmainutils diffutils manpages-dev build-essential strace unzip cppcheck curl
 
 # Instalar dependencias específicas para SDL
 echo "Instalando dependencias específicas para SDL..."
@@ -32,8 +32,16 @@ install_sdl_library() {
     echo "Descomprimiendo..."
     unzip -q "$temp_dir/library.zip" -d "$temp_dir"
 
-    # Cambiar al directorio descomprimido
-    cd "$temp_dir"/* || exit 1
+    # Encontrar el directorio descomprimido
+    TARGET_DIR=$(find "$temp_dir" -mindepth 1 -maxdepth 1 -type d | head -n 1)
+
+    if [[ -z "$TARGET_DIR" ]]; then
+        echo "Error: No se encontró el directorio descomprimido."
+        exit 1
+    fi
+
+    echo "Cambiando al directorio $TARGET_DIR..."
+    cd "$TARGET_DIR" || exit 1
 
     # Compilar e instalar
     echo "Compilando e instalando..."
