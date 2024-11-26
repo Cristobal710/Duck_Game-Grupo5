@@ -58,8 +58,8 @@ install_git_library_sdl2pp() {
     echo "Clonando $repo_url..."
     git clone "$repo_url" "$temp_dir/repo" || { echo "Fallo al clonar $repo_url"; exit 1; }
 
-    echo "Entrando al directorio SDL2pp..."
-    cd "$temp_dir/repo/SDL2pp" || { echo "No se encontró la carpeta SDL2pp en el repositorio"; exit 1; }
+    echo "Entrando al repositorio libSDL2pp..."
+    cd "$temp_dir/repo" || { echo "No se encontró la carpeta raíz del repositorio"; exit 1; }
 
     echo "Compilando e instalando libSDL2pp..."
     mkdir -p build
