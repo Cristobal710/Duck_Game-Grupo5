@@ -51,21 +51,22 @@ install_sdl_library() {
 }
 
 # Función para clonar, compilar e instalar desde un repositorio git
-install_git_library() {
+install_git_library_sdl2pp() {
     local repo_url=$1
     local temp_dir=$2
 
     echo "Clonando $repo_url..."
     git clone "$repo_url" "$temp_dir/repo" || { echo "Fallo al clonar $repo_url"; exit 1; }
 
-    cd "$temp_dir/repo" || exit 1
+    echo "Entrando al directorio SDL2pp..."
+    cd "$temp_dir/repo/SDL2pp" || { echo "No se encontró la carpeta SDL2pp en el repositorio"; exit 1; }
 
-    echo "Compilando e instalando..."
+    echo "Compilando e instalando libSDL2pp..."
     mkdir -p build
     cd build
-    cmake .. || { echo "Fallo en cmake para $repo_url"; exit 1; }
-    make -j$(nproc) || { echo "Fallo en make para $repo_url"; exit 1; }
-    sudo make install || { echo "Fallo en make install para $repo_url"; exit 1; }
+    cmake .. || { echo "Fallo en cmake para libSDL2pp"; exit 1; }
+    make -j4 || { echo "Fallo en make para libSDL2pp"; exit 1; }
+    sudo make install || { echo "Fallo en make install para libSDL2pp"; exit 1; }
 }
 
 # Instalar las librerías SDL2
@@ -74,7 +75,7 @@ install_sdl_library "$SDL2_MIXER_URL" "$TEMP_DIR"
 install_sdl_library "$SDL2_TTF_URL" "$TEMP_DIR"
 
 # Instalar libSDL2pp
-install_git_library "$SDL2PP_REPO_URL" "$TEMP_DIR"
+install_git_library_sdl2pp "$SDL2PP_REPO_URL" "$TEMP_DIR"
 
 # Limpiar directorio temporal
 echo "Limpiando directorio temporal..."
@@ -86,7 +87,4 @@ fi
 
 echo "Instalación completada."
 
-# Verificación final
-echo "Verificando las bibliotecas instaladas..."
-ls /usr/local/lib | grep SDL2 || echo "Algunas bibliotecas SDL2 podrían no estar instaladas correctamente."
 
