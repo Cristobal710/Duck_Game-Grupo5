@@ -3,6 +3,7 @@
 struct EventoServer {
     uint8_t accion;
     uint8_t jugador_id;
+    PedidoJugador pedido;
 };
 
 

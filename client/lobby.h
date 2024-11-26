@@ -7,6 +7,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <string>
 #include <functional>
+#include "../common/common_pedido_jugador.h"
 
 class Lobby {
 private:
@@ -30,7 +31,7 @@ private:
 public:
     Lobby(SDL_Renderer* renderer);
     void dibujar();
-    void manejar_eventos();
+    PedidoJugador manejar_eventos();
     bool empezo() const;
     int cantidad_jugadores() const;
 };

@@ -19,10 +19,28 @@ EventoServer ServerProtocolo::recibir_evento() {
     EventoServer evento;
     evento.accion = recibir_byte(cerrado);
     evento.jugador_id = recibir_byte(cerrado);
+    evento.pedido.crear_partida = recibir_byte(cerrado);
+    evento.pedido.unirse_a_partida = recibir_byte(cerrado);
+    evento.pedido.id_partida_a_unirse = recibir_byte(cerrado);
+    evento.pedido.un_jugador = recibir_byte(cerrado);
+    evento.pedido.dos_jugadores = recibir_byte(cerrado);
     return evento;
 }
 
-void ServerProtocolo::enviar_coordenada(SDL_Point& coord){
+void ServerProtocolo::enviar_estado_lobby(LobbyInfo& lobby_data) {
+    enviar_byte(lobby_data.cantidad_partidas());
+    std::cout << "el server tiene esta cantidad de partidas --> " << static_cast<int> (lobby_data.cantidad_partidas()) << std::endl;
+    for (Partida partida : lobby_data.obtener_partidas()){
+        std::cout << "mando una partida" << std::endl;
+        enviar_byte(partida.obtener_id());
+        enviar_byte(partida.cantidad_jugadores());
+        for (Pato pato : partida.obtener_jugadores()){
+            enviar_pato(pato);
+        }
+    }
+}
+
+void ServerProtocolo::enviar_coordenada(SDL_Point& coord) {
     enviar_dos_bytes(static_cast<uint16_t>(coord.x));
     enviar_dos_bytes(static_cast<uint16_t>(coord.y));
 }
@@ -127,6 +145,7 @@ void ServerProtocolo::enviar_string(const std::string& mensaje) {
 
 void ServerProtocolo::enviar_estado_juego(EstadoJuego& estado) {
     
+    enviar_estado_lobby(estado.lobby_data);
     enviar_byte(static_cast<uint8_t>(estado.patos.size()));
     enviar_patos(estado.patos);
     enviar_byte(estado.balas.size());

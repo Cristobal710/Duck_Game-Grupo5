@@ -33,8 +33,8 @@ private:
     void inicializar_patos();
     void inicializar_armas();
 
-
-
+    void procesar_evento_lobby(EventoServer& evento);
+    void ejecutar_accion_lobby(PedidoJugador& pedido, uint16_t id_jugador);
     void ejecutar_accion(uint8_t accion, Pato& pato);
     void enviar_estado_juego_si_cambio( EstadoJuego& estado_juego);
     void avanzar_balas();

@@ -13,6 +13,11 @@ void ClienteProtocolo::enviar_comando(ComandoGrafica comando) {
     uint8_t accion = acciones[comando.tecla];
     enviar_byte(accion);
     enviar_byte(comando.jugador_id);
+    enviar_byte(comando.pedido.crear_partida);
+    enviar_byte(comando.pedido.unirse_a_partida);
+    enviar_byte(comando.pedido.id_partida_a_unirse);
+    enviar_byte(comando.pedido.un_jugador);
+    enviar_byte(comando.pedido.dos_jugadores);
 }
 
 void ClienteProtocolo::recibir_pato(std::list<Pato>& patos) {
@@ -185,6 +190,7 @@ std::list<Granada> ClienteProtocolo::recibir_granadas() {
 
 EstadoJuego ClienteProtocolo::recibir_estado_juego() {
     EstadoJuego estado_juego;
+    estado_juego.lobby_data = recibir_lobby_data();
     estado_juego.patos = recibir_patos();
     estado_juego.balas = recibir_balas();
     estado_juego.mapa = recibir_mapa();
@@ -207,6 +213,22 @@ std::string ClienteProtocolo::recibir_string() {
 
     std::string mensajeDeserializado = std::string(datos_recibidos.begin(), datos_recibidos.begin() + largo);
     return mensajeDeserializado;
+}
+
+LobbyInfo ClienteProtocolo::recibir_lobby_data() {
+    LobbyInfo lobby_data;
+    bool cerrado;
+    int cantidad_partidas = static_cast<int>(recibir_byte(cerrado));
+    std::cout << "el cliente tiene esta cantidad de partidas --> " << cantidad_partidas << std::endl;
+    for (int i = 0; i < cantidad_partidas; i++){
+        Partida partida(recibir_byte(cerrado));
+        int cantidad_jugadores = static_cast<int>(recibir_byte(cerrado));
+        for (int i = 0; i < cantidad_jugadores; i++) {
+            recibir_pato(partida.obtener_jugadores());
+        }
+        lobby_data.agregar_partida(partida);
+    }
+    return lobby_data;
 }
 
 

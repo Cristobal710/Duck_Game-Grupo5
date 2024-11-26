@@ -15,6 +15,7 @@
 #include "mapa_interfaz.h"
 #include <set>
 #include <unordered_map>
+#include "../common/common_pedido_jugador.h"
 
 class InterfazGrafica {
     private:

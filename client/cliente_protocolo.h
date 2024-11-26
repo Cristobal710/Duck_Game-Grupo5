@@ -30,6 +30,8 @@ public:
     
     std::string recibir_string();
 
+    LobbyInfo recibir_lobby_data();
+
     void recibir_pato(std::list<Pato>& patos);
     std::list<Pato> recibir_patos();
     // std::vector<Pato> deserializar_patos(std::vector<uint8_t>& patos);

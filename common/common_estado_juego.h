@@ -3,7 +3,7 @@
 
 #include <cstdint>
 #include <list>
-
+#include "common_lobby_info.h"
 #include "common_arma.h"
 #include "common_bala.h"
 #include "common_caja.h"
@@ -13,6 +13,7 @@
 
 
 struct EstadoJuego {
+    LobbyInfo lobby_data;
     Mapa mapa;
     std::list<Pato> patos;
     std::list<Caja> cajas;

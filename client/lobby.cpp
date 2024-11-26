@@ -105,12 +105,14 @@ void Lobby::dibujar() {
     SDL_RenderPresent(renderer);
 }
 
-void Lobby::manejar_eventos() {
+PedidoJugador Lobby::manejar_eventos() {
     SDL_Event event;
+    PedidoJugador pedido;
+
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
             cerrar();
-            return;
+            return pedido;
         }
 
         if (event.type == SDL_MOUSEBUTTONDOWN) {
@@ -122,13 +124,15 @@ void Lobby::manejar_eventos() {
                 if (x >= un_jugador_rect.x && x <= un_jugador_rect.x + un_jugador_rect.w &&
                     y >= un_jugador_rect.y && y <= un_jugador_rect.y + un_jugador_rect.h) {
                      // Single player selected
+                    pedido.juega_uno_solo();
                     cant_jugadores = 1;
-                    empezo_partida = true; 
+                    empezo_partida = true; //esta data deberia llegar del servidor
                 }
 
                 if (x >= dos_jugadores_rect.x && x <= dos_jugadores_rect.x + dos_jugadores_rect.w &&
                     y >= dos_jugadores_rect.y && y <= dos_jugadores_rect.y + dos_jugadores_rect.h) {
                       // Multiplayer selected
+                    pedido.juegan_dos_personas();
                     cant_jugadores = 2;
                     empezo_partida = true;
                 }
@@ -137,18 +141,21 @@ void Lobby::manejar_eventos() {
             // check modo de juego
             if (x >= partida_nueva_rect.x && x <= partida_nueva_rect.x + partida_nueva_rect.w &&
                 y >= partida_nueva_rect.y && y <= partida_nueva_rect.y + partida_nueva_rect.h) {
+                pedido.partida_nueva();
+                std::cout << "me dieron una partida" << std::endl;
                 seleccion_cant_jugadores = true;
             }
 
             if (x >= partida_existente_rect.x && x <= partida_existente_rect.x + partida_existente_rect.w &&
                 y >= partida_existente_rect.y && y <= partida_existente_rect.y + partida_existente_rect.h) {
+                pedido.unirse_a_partida_con_id(1);
+                seleccion_cant_jugadores = true;
                 //algo para decir que se unio a una partida existente
             }
-
         }
     }
 
-    //return empezo_partida;
+    return pedido;
 }
 
 bool Lobby::empezo() const{

@@ -46,6 +46,34 @@ void GameLoop::procesar_evento(EventoServer& evento, EstadoJuego& estado_juego) 
     }
 }
 
+void GameLoop::procesar_evento_lobby(EventoServer& evento) {
+    PedidoJugador pedido_cliente = evento.pedido;
+    ejecutar_accion_lobby(pedido_cliente, evento.jugador_id);
+}
+
+void GameLoop::ejecutar_accion_lobby(PedidoJugador& pedido, uint16_t id_jugador){
+    if (pedido.crear_partida == 0x01){
+        std::cout << "agrego una partida" << std::endl;
+        ultimo_estado.lobby_data.agregar_partida(id_jugador);
+        //crear una partida
+        return;
+    }
+    if (pedido.unirse_a_partida == 0x01){
+        ultimo_estado.lobby_data.unirse_a_partida(pedido.id_partida_a_unirse, id_jugador);
+        //unirse a partida con id que esta en el pedido 
+        return;
+    }
+    if (pedido.un_jugador == 0x01){
+        //crear un pato?
+        return;
+    }
+    if (pedido.dos_jugadores == 0x01){
+        //crear dos patos?
+        return;
+    }
+}
+
+
 void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
     Bala bala;
     Caja caja;
@@ -477,13 +505,26 @@ void GameLoop::inicializar_juego(){
 
 
 void GameLoop::run() {
+
+    float tiempo_ultimo_frame = SDL_GetTicks();
+    bool iniciar_partida = false; 
+    while (!iniciar_partida){
+        std::vector<EventoServer> eventos = clientes.recibir_mensajes_clientes();
+        for(EventoServer evento : eventos){
+            procesar_evento_lobby(evento);
+        }
+        cola_estados_juego.push(ultimo_estado);
+        drop_and_rest(tiempo_ultimo_frame);
+    }
+    
+
     LectorJson lector_mapa = LectorJson();
     Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa3");
     ultimo_estado.mapa = mapa;
     inicializar_juego();
     calcular_colisiones_tiles(mapa);
 
-    float tiempo_ultimo_frame = SDL_GetTicks();
+    tiempo_ultimo_frame = SDL_GetTicks();
     while (!(*esta_cerrado)) {
         //eliminar_clientes_cerrados();
         // ultimo_estado.mapa = Mapa();
