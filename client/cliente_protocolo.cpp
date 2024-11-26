@@ -83,7 +83,9 @@ void ClienteProtocolo::recibir_caja(std::list<Caja>& cajas) {
     uint16_t pos_x = recibir_dos_bytes(cerrado);
     uint16_t pos_y = recibir_dos_bytes(cerrado);
     uint8_t recompensa_id = recibir_byte(cerrado);
+    uint8_t esta_vacia = recibir_byte(cerrado);
     Caja caja(id, pos_x, pos_y, recompensa_id);
+    caja.set_esta_vacia(static_cast<bool> (esta_vacia));
     cajas.push_back(caja);
 }
 

@@ -7,7 +7,7 @@ Arma::Arma(uint16_t id, uint16_t pos_x, uint16_t pos_y, uint8_t municion_disponi
         Entidad(id, pos_x, pos_y),
         municion_disponible(municion_disponible),
         alcance(alcance),
-        tipo_arma(tipo_arma) {
+        tipo_arma(tipo_arma){
         calcular_hitbox();
         }
 
@@ -25,4 +25,14 @@ void Arma::calcular_hitbox() {
 
 uint8_t Arma::get_tipo_arma() { return tipo_arma; }
 
+bool Arma::operator==(const Arma& otra) const {
+    return id == otra.id && pos_x == otra.pos_x && pos_y == otra.pos_y && tipo_arma == otra.tipo_arma && municion_disponible == otra.municion_disponible;
+}
 
+bool Arma::get_se_agarro(){
+    return se_agarro;
+}
+
+void Arma::set_se_agarro(bool agarrado){
+    se_agarro = agarrado;
+}
