@@ -184,3 +184,11 @@ void MapaInterfaz::caja_recogida(int pos_x, int pos_y){
         }
     }
 }
+
+void MapaInterfaz::equip_recogido(int x, int y) {
+    for (EquipamientoInterfaz& equip : equipamientos){
+        if (equip.mismo_equip(x, y)){
+            equip.no_dibujar();
+        }
+    }
+}

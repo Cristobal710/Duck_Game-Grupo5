@@ -51,15 +51,20 @@ void PatoInterfaz::dibujar(int it) {
     
     if(se_tira_al_piso == TIRAR_PISO || se_tira_al_piso == DEJAR_TIRAR_PISO){
         movimiento_pato_agachado.pato_agachado(se_tira_al_piso, pos_x, pos_y, direccion_pato);
+        dibujar_equipamiento(pos_x, pos_y);
         return;
     }
     if (estado_pato_salto == SALTAR || estado_pato_salto == CAER || estado_pato_salto == ALETEAR) {
         movimiento_pato_salto.pato_salta(estado_pato_salto, pos_x, pos_y, it, direccion_pato);
+        dibujar_equipamiento(pos_x, pos_y);
         return;
     }
 
     movimiento_pato_lateral.pato_movimiento(estado_pato_movimiento, direccion_pato, pos_x, pos_y, it);
+    dibujar_equipamiento(pos_x, pos_y);
+}
 
+void PatoInterfaz::dibujar_equipamiento(int pos_x, int pos_y) {
     if(armadura_equipada){
         ArmaduraInterfaz armadura(superficie, pos_x, pos_y);
         armadura.dibujar(direccion_pato);
@@ -74,7 +79,6 @@ void PatoInterfaz::dibujar(int it) {
         ArmaInterfaz arma = tomar_arma();
         arma.dibujar(direccion_pato);
     }
-
 }
 
 void PatoInterfaz::actualizar_estado(uint8_t estado_nuevo, std::string tipo_estado) {

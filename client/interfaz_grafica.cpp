@@ -263,11 +263,18 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
             mapa.agregar_bala(balas_juego.get_tipo_arma(), balas_juego.get_pos_x(),
             balas_juego.get_pos_y(), balas_juego.get_direccion());
         }
+        //verificar cajas agarradas
         for (Caja caja : ultimo_estado.cajas){
             if (caja.get_esta_vacia()){
             mapa.caja_recogida(caja.get_pos_x(), caja.get_pos_y());
             }
         }
+        //verificar equipamiento agarrado
+        /*for(Equipamiento equip : ultimo_estado.equipamientos){
+            if (equip.se_agarro()){
+                mapa.equip_recogido(equip.get_pos_x(), equip.get_pos_y());
+            }
+        }*/
     } 
 }
 
