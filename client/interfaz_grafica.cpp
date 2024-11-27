@@ -62,7 +62,11 @@ void InterfazGrafica::iniciar() {
     tiempo_ultimo_frame = SDL_GetTicks();
     while (correr_programa) {
         renderer.Clear();
-        manejar_eventos(keysHeld, cant_jugadores);
+        if (cant_jugadores > 1){
+        manejar_eventos(keysHeld, mapa_a_jugar.get_pato_con_id(3).get_id(), mapa_a_jugar.get_pato_con_id(4).get_id());
+        } else {
+            manejar_eventos(keysHeld, mapa_a_jugar.get_pato_con_id(3).get_id(), BYTE_NULO);
+        }
         obtener_estado_juego(mapa_a_jugar);
         
         mapa_a_jugar.dibujar(it);
@@ -70,7 +74,6 @@ void InterfazGrafica::iniciar() {
             
         //ahora calculamos cuanto tardamos en hacer todo, si nos pasamos, drop & rest.
         drop_rest(tiempo_ultimo_frame, it);
-
     }
 
     //Mix_FreeMusic(music);
@@ -88,12 +91,12 @@ void InterfazGrafica::drop_rest(float& tiempo_ultimo_frame, int& it) {
         int32_t tiempo_atrasado = -descansar;
         descansar = DURACION_FRAME - (tiempo_atrasado % DURACION_FRAME);
         int32_t tiempo_perdido = tiempo_atrasado + descansar;
-
         tiempo_ultimo_frame += tiempo_perdido;
         it += static_cast<int>(tiempo_perdido / DURACION_FRAME);
         if (tiempo_perdido % DURACION_FRAME != 0 && (tiempo_perdido < 0) != (DURACION_FRAME < 0)) {
             it--;
         }
+        //std::cout << "pierdo frames" << std::endl;
     }
     SDL_Delay(descansar);
     it += 1;
@@ -110,7 +113,7 @@ void InterfazGrafica::manejar_eventos_por_jugador(ComandoGrafica& comando_client
     }
 }
 
-void InterfazGrafica::manejar_eventos(std::set<SDL_Keycode>& keysHeld, int cant_jugadores) {
+void InterfazGrafica::manejar_eventos(std::set<SDL_Keycode>& keysHeld, uint16_t pato1, uint16_t pato2) {
     SDL_Event evento;
 
     std::unordered_map<SDL_Keycode, std::string> key_map_jugador_1 = {
@@ -135,20 +138,32 @@ void InterfazGrafica::manejar_eventos(std::set<SDL_Keycode>& keysHeld, int cant_
 
         } else if (evento.type == SDL_KEYDOWN) {
             if (keysHeld.find(evento.key.keysym.sym) == keysHeld.end()) {
+                // Check for escape key
                 if (evento.key.keysym.sym == SDLK_ESCAPE) {
                     correr_programa = false;
                 }
-                manejar_eventos_por_jugador(comando_cliente, evento, key_map_jugador_1, 3, true);
-                if (cant_jugadores == 2) {
-                    manejar_eventos_por_jugador(comando_cliente, evento, key_map_jugador_2, 4, true);
+                
+                // Handle player 1 input
+                manejar_eventos_por_jugador(comando_cliente, evento, key_map_jugador_1, pato1, true);
+                
+                // Handle player 2 input if there are 2 players
+                if (pato2 != BYTE_NULO) {
+                    manejar_eventos_por_jugador(comando_cliente, evento, key_map_jugador_2, pato2, true);
                 }
+
+                // Mark this key as held
+                keysHeld.insert(evento.key.keysym.sym);
             }
-            keysHeld.insert(evento.key.keysym.sym);
         } else if (evento.type == SDL_KEYUP) {
-            manejar_eventos_por_jugador(comando_cliente, evento, key_map_jugador_1, 3, false);
-            if (cant_jugadores == 2) {
-                manejar_eventos_por_jugador(comando_cliente, evento, key_map_jugador_2, 4, false);
+            // Handle player 1 key release
+            manejar_eventos_por_jugador(comando_cliente, evento, key_map_jugador_1, pato1, false);
+            
+            // Handle player 2 key release if there are 2 players
+            if (pato2 != BYTE_NULO) {
+                manejar_eventos_por_jugador(comando_cliente, evento, key_map_jugador_2, pato2, false);
             }
+
+            // Remove the released key from the held keys set
             keysHeld.erase(evento.key.keysym.sym);
         }
     }
@@ -180,8 +195,8 @@ void InterfazGrafica::procesar_mapa(MapaInterfaz& mapa, EstadoJuego& ultimo_esta
             int pos_y = static_cast<int>(pato.get_pos_y());
             mapa.agregar_spawn(pato.get_id(), pos_x, pos_y);
         }
-       
-        // procesar cajas 
+
+        //procesar cajas 
         std::map<std::string, std::vector<SDL_Point>> cajas = mapa_a_jugar.getCajas();
         for (const auto& textura_punto : cajas) {
             std::string path_textura = textura_punto.first;
@@ -203,6 +218,8 @@ void InterfazGrafica::procesar_mapa(MapaInterfaz& mapa, EstadoJuego& ultimo_esta
 
         mapa.procesado();
     }
+
+    
 }
 
 void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
@@ -217,6 +234,7 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
 
     while (estado_juego.try_pop(ultimo_estado)) {
         for (Pato pato_juego: ultimo_estado.patos) {
+            //std::cout << "el id del pato es --> " << static_cast<int>(pato_juego.get_id()) << std::endl;
             PatoInterfaz& pato_prueba = mapa.get_pato_con_id(pato_juego.get_id());
             pato_prueba.set_esta_vivo(pato_juego.esta_vivo());
             pato_prueba.actualizar_posicion(pato_juego.get_pos_x(), pato_juego.get_pos_y());
@@ -244,6 +262,11 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
         for (Bala balas_juego: ultimo_estado.balas) {
             mapa.agregar_bala(balas_juego.get_tipo_arma(), balas_juego.get_pos_x(),
             balas_juego.get_pos_y(), balas_juego.get_direccion());
+        }
+        for (Caja caja : ultimo_estado.cajas){
+            if (caja.get_esta_vacia()){
+            mapa.caja_recogida(caja.get_pos_x(), caja.get_pos_y());
+            }
         }
     } 
 }

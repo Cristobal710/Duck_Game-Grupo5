@@ -5,7 +5,7 @@
 CajaInterfaz::CajaInterfaz(SDL2pp::Surface& superficie, std::string path, int x, int y) 
     : caja_surface(IMG_Load(path.c_str())),
     superficie(superficie),
-    rectangulo(x, y, PIXEL_CAJA, PIXEL_CAJA) {}
+    rectangulo(x, y, PIXEL_CAJA, PIXEL_CAJA), recogida(false) {}
 
 CajaInterfaz::CajaInterfaz(CajaInterfaz&& other) noexcept
     : caja_surface(std::move(other.caja_surface)),
@@ -21,5 +21,18 @@ CajaInterfaz& CajaInterfaz::operator=(CajaInterfaz&& other) noexcept {
 }
 
 void CajaInterfaz::dibujar() {
-    SDL_BlitScaled(caja_surface.Get(), nullptr, superficie.Get(), &rectangulo);
+    if (!recogida) {
+        SDL_BlitScaled(caja_surface.Get(), nullptr, superficie.Get(), &rectangulo);
+    }
+}
+
+bool CajaInterfaz::misma_caja(int x, int y) {  
+    if (x == rectangulo.x && y == rectangulo.y){
+        return true;
+    }
+    return false;
+}
+
+void CajaInterfaz::no_dibujar() {
+    recogida = true;
 }

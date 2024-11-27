@@ -74,6 +74,7 @@ public:
     int pos_y();
     int get_w();
     int get_h();
+    uint16_t get_id();
 };
 
 #endif

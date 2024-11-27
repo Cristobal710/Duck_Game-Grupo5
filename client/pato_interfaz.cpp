@@ -190,3 +190,5 @@ int PatoInterfaz::pos_y() { return rect_dibujado.GetY();  }
 int PatoInterfaz::get_w() { return rect_dibujado.GetW(); }
 
 int PatoInterfaz::get_h() { return rect_dibujado.GetH(); }
+
+uint16_t PatoInterfaz::get_id() { return id_jugador; }
