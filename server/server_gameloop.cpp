@@ -475,7 +475,7 @@ void GameLoop::inicializar_armas(){
 
 void GameLoop::inicializar_juego(){
     inicializar_patos();
-    // inicializar_cajas();
+    inicializar_cajas();
     inicializar_armas();
     cola_estados_juego.push(ultimo_estado);
 }
@@ -483,7 +483,7 @@ void GameLoop::inicializar_juego(){
 
 void GameLoop::run() {
     LectorJson lector_mapa = LectorJson();
-    Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa3");
+    Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa5");
     ultimo_estado.mapa = mapa;
     inicializar_juego();
     calcular_colisiones_tiles(mapa);
