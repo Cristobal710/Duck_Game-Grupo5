@@ -56,7 +56,7 @@ void InterfazGrafica::iniciar() {
     iniciar_audio(audio_fondo_path);
     MapaInterfaz mapa_a_jugar(renderer);
     obtener_estado_juego(mapa_a_jugar);
-    
+
     std::set<SDL_Keycode> keysHeld;
     it = 0;
     tiempo_ultimo_frame = SDL_GetTicks();
@@ -77,6 +77,11 @@ void InterfazGrafica::iniciar() {
     }
     
     //mostrar pantalla de ganador o perdedor 
+    while(true) {
+        renderer.Clear();
+        lobby.mostrar_pantalla_ganador(it);
+        drop_rest(tiempo_ultimo_frame, it);
+    }
 
     //Mix_FreeMusic(music);
     IMG_Quit();

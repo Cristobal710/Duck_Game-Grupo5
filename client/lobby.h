@@ -24,7 +24,8 @@ private:
 
     void cargar_fondo();
     void cargar_boton(std::string& texto, SDL_Rect& boton_rect);
-    void cargar_texto_boton(std::string& texto, SDL_Rect& boton_rect);
+    void cargar_texto(std::string& texto, SDL_Rect& boton_rect, SDL_Color& color, int tamanio);
+    void cargar_pantalla(std::vector<SDL_Texture*>& texturas_ganador);
     void cerrar();
 
 public:
@@ -33,6 +34,8 @@ public:
     void manejar_eventos();
     bool empezo() const;
     int cantidad_jugadores() const;
+    void mostrar_pantalla_ganador(int it);
+    void mostrar_pantalla_perdedor();
 };
 
 #endif //LOBBY_H
