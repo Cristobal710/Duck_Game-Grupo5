@@ -75,6 +75,8 @@ void InterfazGrafica::iniciar() {
         //ahora calculamos cuanto tardamos en hacer todo, si nos pasamos, drop & rest.
         drop_rest(tiempo_ultimo_frame, it);
     }
+    
+    //mostrar pantalla de ganador o perdedor 
 
     //Mix_FreeMusic(music);
     IMG_Quit();
@@ -270,10 +272,20 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
             }
         }
         //verificar equipamiento agarrado
-        /*for(Equipamiento equip : ultimo_estado.equipamientos){
-            if (equip.se_agarro()){
-                mapa.equip_recogido(equip.get_pos_x(), equip.get_pos_y());
-            }
+        for (Arma arma : ultimo_estado.armas){
+           if (arma.get_se_agarro()){
+               mapa.equip_recogido(arma.get_pos_x(), arma.get_pos_y());
+           }
+        }
+        /*for (Armadura armadura : ultimo_estado.armaduras){
+           if (armadura.get_se_agarro()){
+               mapa.equip_recogido(armadura.get_pos_x(), armadura.get_pos_y());
+           }
+        }
+        for (Casco casco : ultimo_estado.cascos){
+              if (casco.get_se_agarro()){
+                mapa.equip_recogido(casco.get_pos_x(), casco.get_pos_y());
+              }
         }*/
     } 
 }

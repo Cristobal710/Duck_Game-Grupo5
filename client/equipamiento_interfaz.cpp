@@ -25,5 +25,8 @@ void EquipamientoInterfaz::no_dibujar(){
 }
 
 bool EquipamientoInterfaz::mismo_equip(int x, int y) {
-    return rect_dibujado_equipamiento.x == x && rect_dibujado_equipamiento.y == y;
+    if (x == rect_dibujado_equipamiento.x && y == rect_dibujado_equipamiento.y){
+        return true;
+    }
+    return false;
 }
