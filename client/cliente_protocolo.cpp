@@ -105,13 +105,15 @@ std::list<Caja> ClienteProtocolo::recibir_cajas() {
 
 void ClienteProtocolo::recibir_arma(std::list<Arma>& armas) {
     bool cerrado;
-    uint8_t id = recibir_byte(cerrado);
-    uint8_t pos_x = recibir_byte(cerrado);
-    uint8_t pos_y = recibir_byte(cerrado);
-    uint8_t alcance = recibir_byte(cerrado);
+    uint16_t id = recibir_dos_bytes(cerrado);
+    uint16_t pos_x = recibir_dos_bytes(cerrado);
+    uint16_t pos_y = recibir_dos_bytes(cerrado);
+    uint16_t alcance = recibir_dos_bytes(cerrado);
     uint8_t municion_disponible = recibir_byte(cerrado);
     uint8_t tipo_arma = recibir_byte(cerrado);
+    uint8_t se_agarro = recibir_byte(cerrado);
     Arma arma(id, pos_x, pos_y, alcance, municion_disponible, tipo_arma);
+    arma.set_se_agarro(static_cast<bool>(se_agarro));
     armas.push_back(arma);
 }
 

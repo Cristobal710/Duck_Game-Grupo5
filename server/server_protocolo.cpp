@@ -172,12 +172,13 @@ void ServerProtocolo::enviar_caja(Caja& caja) {
 }
 
 void ServerProtocolo::enviar_arma(Arma& arma) {
-    enviar_byte(arma.get_id());
-    enviar_byte(arma.get_pos_x());
-    enviar_byte(arma.get_pos_y());
-    enviar_byte(arma.get_alcance());
+    enviar_dos_bytes(arma.get_id());
+    enviar_dos_bytes(arma.get_pos_x());
+    enviar_dos_bytes(arma.get_pos_y());
+    enviar_dos_bytes(arma.get_alcance());
     enviar_byte(arma.get_municion_disponible());
     enviar_byte(arma.get_tipo_arma());
+    enviar_byte(arma.get_se_agarro());
 }
 
 void ServerProtocolo::enviar_bala(Bala& bala) {
