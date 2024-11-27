@@ -161,18 +161,17 @@ int Lobby::cantidad_jugadores() const{
 }
 
 
-void Lobby::cargar_pantalla(std::vector<SDL_Texture*>& texturas_ganador) {
+void Lobby::cargar_pantalla(std::vector<SDL_Texture*>& texturas_ganador, std::string path, 
+            int cant_frames, int frame_width, int frame_height, int offset_x, int offset_y) {
     // Load the surface for the winner screen
-    SDL_Surface* ganador_surface = IMG_Load("../resources/winner.png");
+    SDL_Surface* ganador_surface = IMG_Load(path.c_str());
     if (!ganador_surface) {
         SDL_Log("Failed to load image: %s", SDL_GetError());
         return;
     }
 
-    int frame_width = 152;
-    int frame_height = 275;
-    for (int i = 0; i < 6; i++) {
-        SDL_Rect frame_rect = { i * frame_width, 0, frame_width, frame_height };
+    for (int i = 0; i < cant_frames; i++) {
+        SDL_Rect frame_rect = { i * frame_width + offset_x , offset_y, frame_width, frame_height };
         SDL_Surface* frame_surface = SDL_CreateRGBSurface(0, frame_width, frame_height, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
 
         SDL_BlitSurface(ganador_surface, &frame_rect, frame_surface, nullptr);
@@ -191,7 +190,8 @@ void Lobby::mostrar_pantalla_ganador(int it) {
     static std::vector<SDL_Texture*> texturas_ganador;
     static bool loaded = false;
     if (!loaded) {
-        cargar_pantalla(texturas_ganador);
+        std::string path = "../resources/winner.png";
+        cargar_pantalla(texturas_ganador, path, 6, 136, 275, 0, 0);
         loaded = true;
     }
 
@@ -216,10 +216,50 @@ void Lobby::mostrar_pantalla_ganador(int it) {
     cargar_texto(texto, rect_texto, color, tamanio);
     SDL_Rect dest_rect = { 475, 150, 300, 400 };
     SDL_RenderCopy(renderer, texturas_ganador[it % 6], nullptr, &dest_rect);
+    SDL_Delay(100);
+    SDL_RenderPresent(renderer);
+
+    if (quit) return;
+}
+
+void Lobby::mostrar_pantalla_perdedor(){
+    static std::vector<SDL_Texture*> texturas_ganador;
+    static bool loaded = false;
+    if (!loaded) {
+        std::string path = "../resources/Grey-Duck.png";
+        cargar_pantalla(texturas_ganador, path, 4, 32, 32, 1, 71);
+        loaded = true;
+    }
+
+    SDL_Event event;
+    bool quit = false;
+
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) {
+            cerrar();
+            quit = true;
+            break;
+        }
+    }
+
+    SDL_RenderClear(renderer);
+    SDL_Texture* fondo_texture = IMG_LoadTexture(renderer, "../resources/backgrounds/forest.png");
+    SDL_RenderCopy(renderer, fondo_texture, NULL, NULL);
+    SDL_Texture* grave_texture = IMG_LoadTexture(renderer, "../resources/grave.png");
+    SDL_Rect rect_grave = { 475, 250, 275, 275 };
+    SDL_RenderCopy(renderer, grave_texture, NULL, &rect_grave);
+    std::string texto = "YOU LOSE :(";
+    SDL_Rect rect_texto = { 520, 100, 200, 100 };
+    SDL_Color color = { 0, 0, 0, 255 };
+    int tamanio = 36;
+    cargar_texto(texto, rect_texto, color, tamanio);
+    SDL_Rect dest_rect = { 500, 200, 250, 350 };
+    SDL_RenderCopy(renderer, texturas_ganador[1], nullptr, &dest_rect);
 
     SDL_RenderPresent(renderer);
 
     if (quit) return;
+
 }
     
 

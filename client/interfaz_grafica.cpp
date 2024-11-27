@@ -80,6 +80,7 @@ void InterfazGrafica::iniciar() {
     while(true) {
         renderer.Clear();
         lobby.mostrar_pantalla_ganador(it);
+        //lobby.mostrar_pantalla_perdedor();
         drop_rest(tiempo_ultimo_frame, it);
     }
 
