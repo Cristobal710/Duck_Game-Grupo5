@@ -5,17 +5,24 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <yaml-cpp/yaml.h>
+
+
 #include "../common/common_mapa.h"
 #include "server_lector_json.h"
 #include "../common/common_estado_juego.h"
 #include "../common/common_queue.h"
-#include "../common/common_thread.h"
+#include "../common/common_thread.h" 
 
 #include "server_client.h"
 #include "server_evento.h"
+#include "server_arma_config.h"
 #include "server_proteger_clientes.h"
 #include "common/common_tile.h"
 #include "../common/common_tipo_colision.h"
+
+
+#define RUTA_CONFIGURACION "../resources/config.yaml"
 
 class GameLoop: public Thread {
 private:
@@ -25,6 +32,8 @@ private:
     bool* esta_cerrado;
     EstadoJuego ultimo_estado;
     std::vector<Tile> colisiones;
+    std::map<std::string, ArmaConfig> armamento_config;
+
 
     // void eliminar_clientes_cerrados();
     // void cerrar_gameloop();
@@ -56,6 +65,10 @@ private:
     bool validar_movimiento(Pato& pato, TipoColision tipo_colision);
     void eliminar_balas_si_colisionan(std::__cxx11::list<Bala>::iterator& it);
     void agarrar_recompensa(Pato& pato);
+
+
+    void leer_configuracion(const std::string& archivo_yaml);
+    uint8_t mapear_armas(ArmaConfig armamento);
 
 public:
     GameLoop(Queue<EstadoJuego>& cola_estados_juego,

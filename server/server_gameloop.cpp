@@ -134,8 +134,8 @@ void GameLoop::agarrar_recompensa(Pato& pato){
                 Arma* arma = caja.get_arma();
                 pato.tomar_arma(arma);
                 arma->set_se_agarro(true);
-                std::cout << ultimo_estado.cajas.size() << std::endl;
-                std::cout << ultimo_estado.cajas.size() << std::endl;
+               // std::cout << ultimo_estado.cajas.size() << std::endl;
+               // std::cout << ultimo_estado.cajas.size() << std::endl;
                 caja.set_esta_vacia(true);
                 return;          
             }
@@ -330,7 +330,7 @@ void GameLoop::aplicar_gravedad() {
                 for (Tile& tile : colisiones) {
                     //std::cout << "colisionando con tile" << std::endl;
                     if (pato.colisiona_con_tile(tile.get_hitbox()) == Piso) {
-                        std::cout << "ajustar tile" << std::endl;
+                        //std::cout << "ajustar tile" << std::endl;
                         pato.estado.set_dejar_de_caer();
                         pato.ajustar_sobre_tile(tile.get_hitbox());
                         colision_detectada = true;
@@ -462,18 +462,70 @@ void GameLoop::inicializar_cajas(){
             ultimo_estado.cajas.push_back(caja);
         }
     }
-
 }
+
+
+uint8_t GameLoop::mapear_armas(ArmaConfig armamento){
+    
+     if (armamento.nombre == "ak47") {
+        return AK_47;
+    } else if (armamento.nombre == "banana") {
+        return BANANA;
+    } else if (armamento.nombre == "escopeta") {
+        return ESCOPETA;
+    } else if (armamento.nombre == "granada") {
+        return GRANADA;
+    } else if (armamento.nombre == "laserRifle") {
+        return LASER_RIFLE;
+    } else if (armamento.nombre == "magnum") {
+        return MAGNUM;
+    } else if (armamento.nombre == "pewpewLaser") {
+        return PEW_PEW_LASER;
+    } else if (armamento.nombre == "pistolaCowboy") {
+        return PISTOLA_COWBOY;
+    } else if (armamento.nombre == "pistolaDuelos") {
+        return PISTOLA_DE_DUELOS;
+    } else if (armamento.nombre == "sniper") {
+        return SNIPER;
+    } else {
+        return 0x00;
+    }
+}
+
+
+
 void GameLoop::inicializar_armas(){
+    
     for (const auto& armas : ultimo_estado.mapa.getEquipamiento()) {
         for (SDL_Point posicion_arma : armas.second) {
-            Arma arma(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, 15, 300, AK_47);
+            ArmaConfig armamento = armamento_config[armas.first];
+            uint8_t arma_id = mapear_armas(armamento);
+
+            Arma arma(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, armamento.municiones, armamento.alcance, arma_id);
             ultimo_estado.armas.push_back(arma);
         }
     }
 }
 
+
+void GameLoop::leer_configuracion(const std::string& archivo_yaml){
+    YAML::Node config = YAML::LoadFile(archivo_yaml);
+
+    for (const auto& arma : config["armas"]) {
+        ArmaConfig config_arma;
+        
+        config_arma.nombre = arma.first.as<std::string>();
+        config_arma.alcance = arma.second["alcance"].as<int>();
+        config_arma.municiones = arma.second["municiones"].as<int>();
+        std::string path = arma.second["path"].as<std::string>();
+
+        armamento_config[path] = config_arma;
+    }
+}
+
+
 void GameLoop::inicializar_juego(){
+    leer_configuracion(RUTA_CONFIGURACION);
     inicializar_patos();
     inicializar_cajas();
     inicializar_armas();

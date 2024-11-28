@@ -1,0 +1,41 @@
+armas:
+  granada:
+    path: "../resources/weapons/granada.png"
+    alcance: 5
+    municiones: 1
+  banana:
+    path: "../resources/weapons/banana.png"
+    alcance: 5
+    municiones: 1
+  pewpewLaser:
+    path: "../resources/weapons/pewpewLaser.png"
+    alcance: 35
+    municiones: 12
+  laserRifle:
+    path: "../resources/weapons/laserRifle.png"
+    alcance: 30
+    municiones: 10
+  ak47:
+    path: "../resources/weapons/ak47.png"
+    alcance: 13
+    municiones: 30
+  pistolaDuelos:
+    path: "../resources/weapons/pistolaDuelos.png"
+    alcance: 5
+    municiones: 1
+  pistolaCowboy:
+    path: "../resources/weapons/pistolaCowboy.png"
+    alcance: 20
+    municiones: 6
+  magnum:
+    path: "../resources/weapons/magnum.png"
+    alcance: 20
+    municiones: 6
+  escopeta:
+    path: "../resources/weapons/escopeta.png"
+    alcance: 7
+    municiones: 2
+  sniper:
+    path: "../resources/weapons/sniper.png"
+    alcance: 64
+    municiones: 3
