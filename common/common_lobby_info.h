@@ -12,7 +12,7 @@ class LobbyInfo {
     void agregar_partida(uint16_t id_jugador_inicial);
     void agregar_partida(Partida& partida);
     void unirse_a_partida(uint8_t& id_partida, uint16_t& id_jugador);
-    uint8_t cantidad_partidas();
+    size_t cantidad_partidas();
     std::list<Partida>& obtener_partidas();
 };
 

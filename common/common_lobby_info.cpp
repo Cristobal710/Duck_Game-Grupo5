@@ -23,8 +23,8 @@ void LobbyInfo::unirse_a_partida(uint8_t& id_partida, uint16_t& id_jugador) {
     }
 }
 
-uint8_t LobbyInfo::cantidad_partidas() { 
-    return static_cast<uint8_t>(partidas.size()) ; }
+size_t LobbyInfo::cantidad_partidas() { 
+    return partidas.size();}
 
 std::list<Partida>& LobbyInfo::obtener_partidas() {
     return partidas;

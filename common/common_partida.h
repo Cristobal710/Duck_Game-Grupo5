@@ -16,7 +16,7 @@ class Partida {
     bool tiene_id(uint8_t id);
     uint8_t obtener_id();
     std::list<Pato>& obtener_jugadores();
-    uint8_t cantidad_jugadores();
+    size_t cantidad_jugadores();
 };
 
 

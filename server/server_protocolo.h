@@ -32,7 +32,7 @@ struct Comando {
 
 class ServerProtocolo: public Protocolo {
 private:
-    void enviar_estado_lobby(LobbyInfo& lobby_data);
+    void enviar_estado_lobby(LobbyInfo lobby_data);
     Comando recibir_nombre();
     uint8_t recibir_caja();
     void enviar_coordenada(SDL_Point& coord);

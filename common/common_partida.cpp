@@ -20,4 +20,4 @@ std::list<Pato>& Partida::obtener_jugadores() {
     return jugadores;
 }
 
-uint8_t Partida::cantidad_jugadores() { return static_cast<uint8_t>(jugadores.size()); }
+size_t Partida::cantidad_jugadores() { return jugadores.size(); }

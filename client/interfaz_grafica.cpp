@@ -41,22 +41,28 @@ void InterfazGrafica::iniciar() {
     float tiempo_ultimo_frame = SDL_GetTicks();
     Lobby lobby(renderer.Get());
 
-    EstadoJuego ultimo_estado;  
+    
+
     while (!lobby.empezo()) {
-        while (estado_juego.try_pop(ultimo_estado)){
-            LobbyInfo lobby_data = ultimo_estado.lobby_data;
-            std::list<Partida>& partidas = lobby_data.obtener_partidas();
-                for (Partida& partida : partidas){
-                    partida.tiene_id(0x00);
-                }
-        }
         ComandoGrafica comando_cliente;
         lobby.dibujar();
         comando_cliente.pedido = lobby.manejar_eventos();
         comando_cliente.jugador_id = 3;
         comando_cliente.tecla = NO_ABAJO;
         comandos_cliente.push(comando_cliente);
-        drop_rest(tiempo_ultimo_frame, it);
+
+        //obtener estado lobby
+        EstadoJuego ultimo_estado;  
+
+        while (estado_juego.try_pop(ultimo_estado)) {
+            LobbyInfo lobby_data = ultimo_estado.lobby_data;
+            //std::cout << "print" << std::endl;
+            std::list<Partida>& partidas = lobby_data.obtener_partidas();
+                for (Partida& partida : partidas){
+                    partida.tiene_id(0x00);
+                }
+        }
+       drop_rest(tiempo_ultimo_frame, it);
     }
 
     // aca hay q mandar cuantos jugadores selecciono y si creo una partida nueva

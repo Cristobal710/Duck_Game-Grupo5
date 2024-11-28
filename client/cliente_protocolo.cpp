@@ -70,10 +70,10 @@ void ClienteProtocolo::recibir_pato(std::list<Pato>& patos) {
 
 std::list<Pato> ClienteProtocolo::recibir_patos() {
     std::list<Pato> patos;
-    std::vector<uint8_t> cantidad_patos(2);
+    std::vector<uint8_t> cantidad_patos(1);
     bool cerrado;
     socket.recvall(cantidad_patos.data(), cantidad_patos.size(), &cerrado);
-    int cantidad = static_cast<int>(cantidad_patos[1]);
+    int cantidad = static_cast<int>(cantidad_patos[0]);
 
     for (int i = 0; i < cantidad; i++) {
         recibir_pato(patos);
@@ -145,10 +145,10 @@ void ClienteProtocolo::recibir_bala(std::list<Bala>& balas) {
 
 std::list<Bala> ClienteProtocolo::recibir_balas() {
     std::list<Bala> balas;
-    std::vector<uint8_t> cantidad_balas(2);
+    std::vector<uint8_t> cantidad_balas(1);
     bool cerrado;
     socket.recvall(cantidad_balas.data(), cantidad_balas.size(), &cerrado);
-    int cantidad = static_cast<int>(cantidad_balas[1]);
+    int cantidad = static_cast<int>(cantidad_balas[0]);
 
     for (int i = 0; i < cantidad; i++) {
         recibir_bala(balas);
@@ -194,8 +194,8 @@ EstadoJuego ClienteProtocolo::recibir_estado_juego() {
     estado_juego.patos = recibir_patos();
     estado_juego.balas = recibir_balas();
     estado_juego.mapa = recibir_mapa();
-    estado_juego.cajas = recibir_cajas();
-    estado_juego.armas = recibir_armas();
+    // estado_juego.cajas = recibir_cajas();
+    // estado_juego.armas = recibir_armas();
     return estado_juego;
 }
 
@@ -217,17 +217,17 @@ std::string ClienteProtocolo::recibir_string() {
 
 LobbyInfo ClienteProtocolo::recibir_lobby_data() {
     LobbyInfo lobby_data;
-    bool cerrado;
-    int cantidad_partidas = static_cast<int>(recibir_byte(cerrado));
-    std::cout << "el cliente tiene esta cantidad de partidas --> " << cantidad_partidas << std::endl;
+    bool cerrado = false;
+    uint16_t cantidad_partidas = recibir_dos_bytes(cerrado);
     for (int i = 0; i < cantidad_partidas; i++){
         Partida partida(recibir_byte(cerrado));
-        int cantidad_jugadores = static_cast<int>(recibir_byte(cerrado));
+        uint16_t cantidad_jugadores = recibir_dos_bytes(cerrado);
         for (int i = 0; i < cantidad_jugadores; i++) {
             recibir_pato(partida.obtener_jugadores());
         }
         lobby_data.agregar_partida(partida);
     }
+    std::cout << "hay estas partidas " << lobby_data.cantidad_partidas() << std::endl; 
     return lobby_data;
 }
 
@@ -279,6 +279,8 @@ void ClienteProtocolo::recibir_spawns(Mapa& mapa){
     std::map<std::string, std::vector<SDL_Point>> mapa_spawns; 
     bool cerrado; 
     uint16_t largo_spawns = recibir_dos_bytes(cerrado);
+
+    std::cout << "spawns size cliente " << static_cast<int>(largo_spawns) << std::endl;
     for(int i = 0; i<largo_spawns; i++){
         SDL_Point coordenada = recibir_coordenada();
         mapa_spawns["default"].push_back(coordenada);
@@ -306,10 +308,10 @@ Mapa ClienteProtocolo::recibir_mapa(){
 
     std::string fondo = recibir_string();
     mapa.set_fondo(fondo);
-    recibir_spawns(mapa);
-    recibir_cajas(mapa);
-    recibir_tiles(mapa);
-    recibir_equipamiento(mapa);
+    //recibir_spawns(mapa);
+    // recibir_cajas(mapa);
+    // recibir_tiles(mapa);
+    // recibir_equipamiento(mapa);
     return mapa;
 
 }
