@@ -194,8 +194,8 @@ EstadoJuego ClienteProtocolo::recibir_estado_juego() {
     estado_juego.patos = recibir_patos();
     estado_juego.balas = recibir_balas();
     estado_juego.mapa = recibir_mapa();
-    // estado_juego.cajas = recibir_cajas();
-    // estado_juego.armas = recibir_armas();
+    //estado_juego.cajas = recibir_cajas();
+    estado_juego.armas = recibir_armas();
     return estado_juego;
 }
 
@@ -309,9 +309,9 @@ Mapa ClienteProtocolo::recibir_mapa(){
     std::string fondo = recibir_string();
     mapa.set_fondo(fondo);
     //recibir_spawns(mapa);
-    // recibir_cajas(mapa);
-    // recibir_tiles(mapa);
-    // recibir_equipamiento(mapa);
+    recibir_cajas(mapa);
+    recibir_tiles(mapa);
+    recibir_equipamiento(mapa);
     return mapa;
 
 }

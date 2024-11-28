@@ -49,7 +49,7 @@ private:
     std::list<uint8_t> serializar_pato(Pato& pato);
     void enviar_string(const std::string& mensaje);
     void enviar_equipamiento(std::map<std::string, std::vector<SDL_Point>>& equipamiento);
-    void enviar_spawns(Mapa& mapa);
+    //void enviar_spawns(Mapa& mapa);
     void enviar_cajas_mapa(Mapa& mapa);
     void enviar_tiles(Mapa& mapa);
 

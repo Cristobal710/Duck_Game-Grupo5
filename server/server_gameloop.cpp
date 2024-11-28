@@ -53,7 +53,6 @@ void GameLoop::procesar_evento_lobby(EventoServer& evento) {
 
 void GameLoop::ejecutar_accion_lobby(PedidoJugador& pedido, uint16_t id_jugador){
     if (pedido.crear_partida == 0x01){
-        std::cout << "agrego una partida" << std::endl;
         ultimo_estado.lobby_data.agregar_partida(id_jugador);
         //crear una partida
         return;
