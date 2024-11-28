@@ -18,12 +18,17 @@ EventoServer ServerProtocolo::recibir_evento() {
     bool cerrado = false;
     EventoServer evento;
     evento.accion = recibir_byte(cerrado);
+    if (cerrado) return evento;
+
     evento.jugador_id = recibir_byte(cerrado);
+    if (cerrado) return evento;
+
     evento.pedido.crear_partida = recibir_byte(cerrado);
     evento.pedido.unirse_a_partida = recibir_byte(cerrado);
     evento.pedido.id_partida_a_unirse = recibir_byte(cerrado);
     evento.pedido.un_jugador = recibir_byte(cerrado);
     evento.pedido.dos_jugadores = recibir_byte(cerrado);
+
     return evento;
 }
 
@@ -32,8 +37,8 @@ void ServerProtocolo::enviar_estado_lobby(LobbyInfo lobby_data) {
     for (Partida& partida : lobby_data.obtener_partidas()){
         enviar_byte(partida.obtener_id());
         enviar_dos_bytes(partida.cantidad_jugadores());
-        for (Pato pato : partida.obtener_jugadores()){
-            enviar_pato(pato);
+        for (const auto& jugador : partida.obtener_jugadores()){
+            enviar_dos_bytes(jugador);
         }
     }
 }
@@ -81,6 +86,19 @@ void ServerProtocolo::enviar_equipamiento(std::map<std::string, std::vector<SDL_
 //     // }
 // }
 
+void ServerProtocolo::enviar_spawns(Mapa& mapa) {
+    std::map<std::string, std::vector<SDL_Point>> spawns = mapa.getSpawns();
+    enviar_dos_bytes(spawns.size());
+    
+    for (const auto& [key, coordinates] : spawns) {
+        enviar_string(key);
+        enviar_dos_bytes(coordinates.size());
+        for (SDL_Point coord : coordinates) {
+            enviar_coordenada(coord);
+        }
+    }
+}
+
 void ServerProtocolo::enviar_cajas_mapa(Mapa& mapa){
     std::map<std::string, std::vector<SDL_Point>> cajas =mapa.getCajas();
     std::vector<SDL_Point> cajas_list;
@@ -118,6 +136,7 @@ void ServerProtocolo::enviar_tiles(Mapa& mapa){
 
 void ServerProtocolo::enviar_mapa(Mapa& mapa){
     enviar_string(mapa.getFondo());
+    enviar_spawns(mapa);
     enviar_cajas_mapa(mapa);
     enviar_tiles(mapa);
 
@@ -130,14 +149,9 @@ void ServerProtocolo::enviar_mapa(Mapa& mapa){
 void ServerProtocolo::enviar_string(const std::string& mensaje) {
     bool cerrado;
     uint16_t largo = mensaje.size(); 
-    enviar_dos_bytes(largo);
-    std::vector<uint8_t> serializado(largo);
-    serializado.insert(serializado.begin(), mensaje.begin(), mensaje.end());
-    // serializado.insert(serializado.begin(), largo);
-    // serializado.insert(serializado.begin(), largo >> 8);
-    //serializado.resize(largo + 2);
-    socket.sendall((serializado.data()), serializado.size(), &cerrado);
- 
+    enviar_dos_bytes(largo);  // Send string length first
+
+    socket.sendall(reinterpret_cast<const uint8_t*>(mensaje.data()), largo, &cerrado);  // Send string data directly
 }
 
 void ServerProtocolo::enviar_estado_juego(EstadoJuego& estado) {

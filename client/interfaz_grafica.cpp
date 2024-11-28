@@ -64,25 +64,30 @@ void InterfazGrafica::iniciar() {
        drop_rest(tiempo_ultimo_frame, it);
     }
 
+    std::cout << "empezo partida" << std::endl;
     // aca hay q mandar cuantos jugadores selecciono y si creo una partida nueva
     // o se unio a una existente al servidor
     //por ahora:
     int cant_jugadores = lobby.cantidad_jugadores();
+    bool mapa_procesado = false;
     //se deberia recibir el/los id de los jugadores
     
     std::string audio_fondo_path = "../resources/sounds/background_music.mp3";
     iniciar_audio(audio_fondo_path);
     MapaInterfaz mapa_a_jugar(renderer);
-    obtener_estado_juego(mapa_a_jugar);
-    
+    EstadoJuego ultimo_estado;
+    while (!mapa_procesado){
+        estado_juego.try_pop(ultimo_estado);
+        procesar_mapa(mapa_a_jugar, ultimo_estado, mapa_procesado);
+    }
+    std::cout << "sali del while" << std::endl;
     std::set<SDL_Keycode> keysHeld;
     it = 0;
     tiempo_ultimo_frame = SDL_GetTicks();
     while (correr_programa) {
         renderer.Clear();
         manejar_eventos(keysHeld, cant_jugadores);
-        obtener_estado_juego(mapa_a_jugar);
-        
+        obtener_estado_juego(mapa_a_jugar, mapa_procesado);
         mapa_a_jugar.dibujar(it);
         renderer.Present();
             
@@ -172,16 +177,17 @@ void InterfazGrafica::manejar_eventos(std::set<SDL_Keycode>& keysHeld, int cant_
     }
 }
 
-void InterfazGrafica::procesar_mapa(MapaInterfaz& mapa, EstadoJuego& ultimo_estado) {
+void InterfazGrafica::procesar_mapa(MapaInterfaz& mapa, EstadoJuego& ultimo_estado, bool& mapa_procesado) {
     Mapa mapa_a_jugar = ultimo_estado.mapa;
-    if (!mapa.esta_procesado()){
-        
+    if (!mapa_procesado) {
+
+        std::cout << "procesando fondo" << std::endl;
         //procesar fondo
         std::string fondo = mapa_a_jugar.getFondo();
         if (!fondo.empty()){
             mapa.set_fondo(fondo);
         }
-
+        std::cout << "procesando tiles" << std::endl;
         //procesar tiles
         std::map<std::string, std::vector<SDL_Point>> tiles = mapa_a_jugar.getTiles();
         for (const auto& textura_punto : tiles) {
@@ -191,14 +197,16 @@ void InterfazGrafica::procesar_mapa(MapaInterfaz& mapa, EstadoJuego& ultimo_esta
                 mapa.agregar_tile(path_textura, punto.x, punto.y);
             }
         }
-
+        std::cout << "procesando spawns" << std::endl;
         // procesar spawns
         for (auto& pato : ultimo_estado.patos) {
             int pos_x = static_cast<int>(pato.get_pos_x());
             int pos_y = static_cast<int>(pato.get_pos_y());
             mapa.agregar_spawn(pato.get_id(), pos_x, pos_y);
+            std::cout << "agregando spawn en " << pos_x << " " << pos_y << std::endl;
+            std::cout << "id pato: " << pato.get_id() << std::endl;
         }
-       
+        std::cout << "procesando cajas" << std::endl;
         // procesar cajas 
         std::map<std::string, std::vector<SDL_Point>> cajas = mapa_a_jugar.getCajas();
         for (const auto& textura_punto : cajas) {
@@ -208,7 +216,7 @@ void InterfazGrafica::procesar_mapa(MapaInterfaz& mapa, EstadoJuego& ultimo_esta
                 mapa.agregar_caja(punto.x, punto.y);
             }
         }
-
+        std::cout << "procesando equipamiento" << std::endl;
         // procesar equipamiento
         std::map<std::string, std::vector<SDL_Point>> equipamientos = mapa_a_jugar.getEquipamiento();
         for (const auto& equipamiento : equipamientos) {
@@ -218,12 +226,14 @@ void InterfazGrafica::procesar_mapa(MapaInterfaz& mapa, EstadoJuego& ultimo_esta
                 mapa.agregar_equipamiento(equipamiento_path, punto.x, punto.y);
             }
         }
-
-        mapa.procesado();
+        std::cout << "cant patos " << mapa.cant_patos() << std::endl;
+        if (mapa.cant_patos() > 0) {
+            mapa_procesado = true;
+        }
     }
 }
 
-void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
+void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa, bool& mapa_procesado) {
     
     EstadoJuego ultimo_estado;  
     
@@ -231,7 +241,7 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa) {
         return;
     }
 
-    procesar_mapa(mapa, ultimo_estado);
+    procesar_mapa(mapa, ultimo_estado, mapa_procesado);
 
     while (estado_juego.try_pop(ultimo_estado)) {
         for (Pato pato_juego: ultimo_estado.patos) {

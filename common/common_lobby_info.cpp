@@ -7,6 +7,7 @@ partidas(), id_jugadores()
 
 void LobbyInfo::agregar_partida(uint16_t id_jugador) {
     Partida partida_nueva(static_cast<uint8_t>(partidas.size()));
+    partida_nueva.agregar_creador(id_jugador);
     partida_nueva.agregar_jugador(id_jugador);
     partidas.emplace_front(partida_nueva);
 }

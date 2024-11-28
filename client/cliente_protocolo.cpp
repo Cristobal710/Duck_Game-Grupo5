@@ -199,7 +199,7 @@ EstadoJuego ClienteProtocolo::recibir_estado_juego() {
     return estado_juego;
 }
 
-std::string ClienteProtocolo::recibir_string() {
+/*std::string ClienteProtocolo::recibir_string() {
     std::vector<uint8_t> mensajeSize(2);
     bool cerrado;
 
@@ -213,6 +213,14 @@ std::string ClienteProtocolo::recibir_string() {
 
     std::string mensajeDeserializado = std::string(datos_recibidos.begin(), datos_recibidos.begin() + largo);
     return mensajeDeserializado;
+}*/
+
+std::string ClienteProtocolo::recibir_string() {
+    bool cerrado = false;
+    uint16_t largo = recibir_dos_bytes(cerrado);
+    std::vector<char> buffer(largo);
+    socket.recvall(buffer.data(), largo, &cerrado);
+    return std::string(buffer.begin(), buffer.end());
 }
 
 LobbyInfo ClienteProtocolo::recibir_lobby_data() {
@@ -223,7 +231,7 @@ LobbyInfo ClienteProtocolo::recibir_lobby_data() {
         Partida partida(recibir_byte(cerrado));
         uint16_t cantidad_jugadores = recibir_dos_bytes(cerrado);
         for (int i = 0; i < cantidad_jugadores; i++) {
-            recibir_pato(partida.obtener_jugadores());
+            partida.agregar_jugador(recibir_dos_bytes(cerrado));
         }
         lobby_data.agregar_partida(partida);
     }
@@ -275,7 +283,7 @@ void ClienteProtocolo::recibir_tiles(Mapa& mapa){
 }
 
 
-void ClienteProtocolo::recibir_spawns(Mapa& mapa){
+/*void ClienteProtocolo::recibir_spawns(Mapa& mapa){
     std::map<std::string, std::vector<SDL_Point>> mapa_spawns; 
     bool cerrado; 
     uint16_t largo_spawns = recibir_dos_bytes(cerrado);
@@ -287,6 +295,25 @@ void ClienteProtocolo::recibir_spawns(Mapa& mapa){
     }
     mapa.set_spawns(mapa_spawns);
     
+}*/
+
+void ClienteProtocolo::recibir_spawns(Mapa& mapa) {
+    std::map<std::string, std::vector<SDL_Point>> spawns;
+    bool cerrado = false;
+    uint16_t num_spawn_types = recibir_dos_bytes(cerrado);
+    
+    for (int i = 0; i < num_spawn_types; ++i) {
+        std::string spawn_type = recibir_string();
+        uint16_t num_coordinates = recibir_dos_bytes(cerrado);
+        
+        std::vector<SDL_Point> coordinates;
+        for (int j = 0; j < num_coordinates; ++j) {
+            SDL_Point point = recibir_coordenada();
+            coordinates.push_back(point);
+        }
+        spawns[spawn_type] = coordinates;
+    }
+    mapa.set_spawns(spawns);
 }
 
 
@@ -308,7 +335,7 @@ Mapa ClienteProtocolo::recibir_mapa(){
 
     std::string fondo = recibir_string();
     mapa.set_fondo(fondo);
-    //recibir_spawns(mapa);
+    recibir_spawns(mapa);
     recibir_cajas(mapa);
     recibir_tiles(mapa);
     recibir_equipamiento(mapa);

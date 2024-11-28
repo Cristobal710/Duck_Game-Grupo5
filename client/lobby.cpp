@@ -119,8 +119,23 @@ PedidoJugador Lobby::manejar_eventos() {
             int x, y;
             SDL_GetMouseState(&x, &y);
 
-            // Check cantidad de jugadores
-            if (seleccion_cant_jugadores) {
+            if(!seleccion_cant_jugadores){
+                // check modo de juego
+                if (x >= partida_nueva_rect.x && x <= partida_nueva_rect.x + partida_nueva_rect.w &&
+                    y >= partida_nueva_rect.y && y <= partida_nueva_rect.y + partida_nueva_rect.h) {
+                    pedido.partida_nueva();
+                    std::cout << "me dieron una partida" << std::endl;
+                    seleccion_cant_jugadores = true;
+                }
+
+                if (x >= partida_existente_rect.x && x <= partida_existente_rect.x + partida_existente_rect.w &&
+                    y >= partida_existente_rect.y && y <= partida_existente_rect.y + partida_existente_rect.h) {
+                    pedido.unirse_a_partida_con_id(1);
+                    seleccion_cant_jugadores = true;
+                    //algo para decir que se unio a una partida existente
+                }
+            } else {
+                // Check cantidad de jugadores
                 if (x >= un_jugador_rect.x && x <= un_jugador_rect.x + un_jugador_rect.w &&
                     y >= un_jugador_rect.y && y <= un_jugador_rect.y + un_jugador_rect.h) {
                      // Single player selected
@@ -136,21 +151,6 @@ PedidoJugador Lobby::manejar_eventos() {
                     cant_jugadores = 2;
                     empezo_partida = true;
                 }
-            }
-
-            // check modo de juego
-            if (x >= partida_nueva_rect.x && x <= partida_nueva_rect.x + partida_nueva_rect.w &&
-                y >= partida_nueva_rect.y && y <= partida_nueva_rect.y + partida_nueva_rect.h) {
-                pedido.partida_nueva();
-                std::cout << "me dieron una partida" << std::endl;
-                seleccion_cant_jugadores = true;
-            }
-
-            if (x >= partida_existente_rect.x && x <= partida_existente_rect.x + partida_existente_rect.w &&
-                y >= partida_existente_rect.y && y <= partida_existente_rect.y + partida_existente_rect.h) {
-                pedido.unirse_a_partida_con_id(1);
-                seleccion_cant_jugadores = true;
-                //algo para decir que se unio a una partida existente
             }
         }
     }

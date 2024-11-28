@@ -45,6 +45,8 @@ public:
     
     void procesado();
     bool esta_procesado() {return mapa_procesado;};
+
+    int cant_patos();
 };
 
 

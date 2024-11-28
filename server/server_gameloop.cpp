@@ -46,12 +46,12 @@ void GameLoop::procesar_evento(EventoServer& evento, EstadoJuego& estado_juego) 
     }
 }
 
-void GameLoop::procesar_evento_lobby(EventoServer& evento) {
+void GameLoop::procesar_evento_lobby(EventoServer& evento, bool& iniciar_partida) {
     PedidoJugador pedido_cliente = evento.pedido;
-    ejecutar_accion_lobby(pedido_cliente, evento.jugador_id);
+    ejecutar_accion_lobby(pedido_cliente, evento.jugador_id, iniciar_partida);
 }
 
-void GameLoop::ejecutar_accion_lobby(PedidoJugador& pedido, uint16_t id_jugador){
+void GameLoop::ejecutar_accion_lobby(PedidoJugador& pedido, uint16_t id_jugador, bool& iniciar_partida) {
     if (pedido.crear_partida == 0x01){
         ultimo_estado.lobby_data.agregar_partida(id_jugador);
         //crear una partida
@@ -64,10 +64,14 @@ void GameLoop::ejecutar_accion_lobby(PedidoJugador& pedido, uint16_t id_jugador)
     }
     if (pedido.un_jugador == 0x01){
         //crear un pato?
+        std::cout << "hay un jugador" << std::endl;
+        iniciar_partida = true;
         return;
     }
     if (pedido.dos_jugadores == 0x01){
         //crear dos patos?
+        std::cout << "hay dos jugadores" << std::endl;
+        iniciar_partida = true;
         return;
     }
 }
@@ -457,12 +461,15 @@ void GameLoop::inicializar_patos(){
     int pos_y = 0;
     int id = 3;
     std::map<std::string, std::vector<SDL_Point>> spawns = ultimo_estado.mapa.getSpawns();
+    std::cout << "spawns size: " << spawns.size() << std::endl;
     for (const auto& id_posicion : spawns) {        
         std::string id_jugador = id_posicion.first;
+        std::cout << "id jugador: " << id_jugador << std::endl;
         std::vector<SDL_Point> posicion = id_posicion.second;
         for(SDL_Point coord : posicion){
             pos_x = coord.x;
             pos_y = coord.y;
+            std::cout << "pos x: " << pos_x << " pos y: " << pos_y << std::endl;
             Pato pato(id, pos_x, pos_y, 0);
             id++;
             Arma* arma = new Arma(1, pos_x, pos_y, 15, 200, PEW_PEW_LASER);
@@ -510,12 +517,12 @@ void GameLoop::run() {
     while (!iniciar_partida){
         std::vector<EventoServer> eventos = clientes.recibir_mensajes_clientes();
         for(EventoServer evento : eventos){
-            procesar_evento_lobby(evento);
+            procesar_evento_lobby(evento, iniciar_partida);
         }
         cola_estados_juego.push(ultimo_estado);
         drop_and_rest(tiempo_ultimo_frame);
     }
-    
+
 
     LectorJson lector_mapa = LectorJson();
     Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa3");
