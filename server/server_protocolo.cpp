@@ -28,6 +28,7 @@ EventoServer ServerProtocolo::recibir_evento() {
     evento.pedido.id_partida_a_unirse = recibir_byte(cerrado);
     evento.pedido.un_jugador = recibir_byte(cerrado);
     evento.pedido.dos_jugadores = recibir_byte(cerrado);
+    evento.pedido.empezar = recibir_byte(cerrado);
 
     return evento;
 }

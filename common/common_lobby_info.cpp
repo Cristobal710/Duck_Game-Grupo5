@@ -30,3 +30,11 @@ size_t LobbyInfo::cantidad_partidas() {
 std::list<Partida>& LobbyInfo::obtener_partidas() {
     return partidas;
 }
+
+void LobbyInfo::empezar_partida(uint8_t id_partida) {
+    for (Partida& partida : partidas){
+        if (partida.tiene_id(id_partida)){
+            partida.iniciar();
+        }
+    }
+}

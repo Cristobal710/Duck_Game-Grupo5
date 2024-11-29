@@ -142,19 +142,19 @@ SDL2pp::Rect MapaInterfaz::obtener_rect_dibujar() {
 void MapaInterfaz::dibujar(int it){
 
     fondo.dibujar();
-    std::cout << "dibuje fondo" << std::endl;
+
     for (auto& tile : tiles) {
         tile.dibujar();
     }
-    std::cout << "dibuje tiles" << std::endl;
+
     for (CajaInterfaz& caja : cajas){
         caja.dibujar();
     }
-    std::cout << "dibuje cajas" << std::endl;
+
     for (EquipamientoInterfaz& equip : equipamientos){
         equip.dibujar();
     }
-    std::cout << "dibuje equipamientos" << std::endl;
+
     for (PatoInterfaz& pato : patos){
         if(pato.esta_vivo()){
             pato.dibujar(it);
@@ -162,15 +162,13 @@ void MapaInterfaz::dibujar(int it){
             pato.dibujar_muerto();
         }
     }
-    std::cout << "dibuje patos" << std::endl;
+    
     for (BalaInterfaz& bala : balas){
         bala.dibujar(it);
     }
-    std::cout << "dibuje balas" << std::endl;
     balas.clear();
-    std::cout << "limpie balas" << std::endl;
+
     SDL2pp::Rect rect_dibujar = obtener_rect_dibujar();
-    std::cout << "obtuve rect dibujar" << std::endl;
     SDL2pp::Rect rect_superficie(0, 0, 1280, 720);
     SDL2pp::Texture texture(renderer, superficie);
     renderer.Copy(texture,

@@ -18,6 +18,7 @@ void ClienteProtocolo::enviar_comando(ComandoGrafica comando) {
     enviar_byte(comando.pedido.id_partida_a_unirse);
     enviar_byte(comando.pedido.un_jugador);
     enviar_byte(comando.pedido.dos_jugadores);
+    enviar_byte(comando.pedido.empezar);
 }
 
 void ClienteProtocolo::recibir_pato(std::list<Pato>& patos) {

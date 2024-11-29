@@ -57,11 +57,12 @@ void InterfazGrafica::iniciar() {
         while (estado_juego.try_pop(ultimo_estado)) {
             LobbyInfo lobby_data = ultimo_estado.lobby_data;
             std::list<Partida>& partidas = lobby_data.obtener_partidas();
-                for (Partida& partida : partidas){
-                    std::cout << "partida con id: " << static_cast<int>(partida.obtener_id()) << std::endl;
-                }
+            lobby.actualizar_partidas(partidas);
+            for (Partida& partida : partidas){
+                std::cout << "partida con id: " << static_cast<int>(partida.obtener_id()) << std::endl;
+            }
         }
-       drop_rest(tiempo_ultimo_frame, it);
+        drop_rest(tiempo_ultimo_frame, it);
     }
 
     std::cout << "empezo partida" << std::endl;

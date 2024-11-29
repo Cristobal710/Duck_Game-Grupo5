@@ -13,10 +13,12 @@ class PedidoJugador {
     uint8_t id_partida_a_unirse;
     uint8_t un_jugador;
     uint8_t dos_jugadores;
+    uint8_t empezar;
     void partida_nueva();
     void unirse_a_partida_con_id(uint8_t id_partida);
     void juega_uno_solo();
     void juegan_dos_personas();
+    void iniciar_partida();
 };
 
 

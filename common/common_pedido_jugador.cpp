@@ -35,3 +35,12 @@ void PedidoJugador::juegan_dos_personas() {
     un_jugador = BYTE_NULO;
     dos_jugadores = 0x01;
 }
+
+void PedidoJugador::iniciar_partida() {
+    crear_partida = BYTE_NULO;
+    unirse_a_partida = BYTE_NULO;
+    id_partida_a_unirse = BYTE_NULO;
+    un_jugador = BYTE_NULO;
+    dos_jugadores = BYTE_NULO;
+    empezar = 0x01;
+}

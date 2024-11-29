@@ -23,6 +23,9 @@ class Partida {
 
     void set_cant_jugadores(int cant);
     int get_cant_jugadores();
+
+    void iniciar();
+    bool esta_iniciada();
 };
 
 

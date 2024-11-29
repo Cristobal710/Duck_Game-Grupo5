@@ -8,6 +8,17 @@
 #include <string>
 #include <functional>
 #include "../common/common_pedido_jugador.h"
+#include "../common/common_lobby_info.h"
+#include <list>
+#include <map>
+
+enum EstadoLobby {
+    INICIAL,
+    MODO_JUEGO,
+    INICIAR_PARTIDA,
+    UNIRSE_A_PARTIDA,
+    FINALIZADO
+};
 
 class Lobby {
 private:
@@ -18,9 +29,12 @@ private:
     SDL_Rect partida_existente_rect;
     SDL_Rect un_jugador_rect;
     SDL_Rect dos_jugadores_rect;
-    bool seleccion_cant_jugadores;
-    bool empezo_partida;
+    SDL_Rect id_partida_rect;
+    SDL_Rect iniciar_partida_rect;
+    std::map<uint16_t, SDL_Rect> rects_ids_partidas;
     int cant_jugadores;
+    EstadoLobby estado;
+    std::list<Partida> partidas;
 
 
     void cargar_fondo();
@@ -34,6 +48,7 @@ public:
     PedidoJugador manejar_eventos();
     bool empezo() const;
     int cantidad_jugadores() const;
+    void actualizar_partidas(std::list<Partida>& partidas);
 };
 
 #endif //LOBBY_H

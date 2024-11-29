@@ -65,12 +65,15 @@ void GameLoop::ejecutar_accion_lobby(PedidoJugador& pedido, uint16_t id_jugador,
     if (pedido.un_jugador == 0x01){
         //crear un pato?
         std::cout << "hay un jugador" << std::endl;
-        iniciar_partida = true;
         return;
     }
     if (pedido.dos_jugadores == 0x01){
         //crear dos patos?
         std::cout << "hay dos jugadores" << std::endl;
+        return;
+    }
+    if(pedido.empezar == 0x01){
+        ultimo_estado.lobby_data.empezar_partida(0);
         iniciar_partida = true;
         return;
     }

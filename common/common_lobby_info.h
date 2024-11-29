@@ -14,6 +14,7 @@ class LobbyInfo {
     void unirse_a_partida(uint8_t& id_partida, uint16_t& id_jugador);
     size_t cantidad_partidas();
     std::list<Partida>& obtener_partidas();
+    void empezar_partida(uint8_t id_partida);
 };
 
 

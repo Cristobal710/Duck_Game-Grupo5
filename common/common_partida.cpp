@@ -36,3 +36,11 @@ void Partida::set_cant_jugadores(int cant) {
 int Partida::get_cant_jugadores() {
     return cant_jugadores;
 }
+
+void Partida::iniciar() {
+    partida_iniciada = true;
+}
+
+bool Partida::esta_iniciada() {
+    return partida_iniciada;
+}
