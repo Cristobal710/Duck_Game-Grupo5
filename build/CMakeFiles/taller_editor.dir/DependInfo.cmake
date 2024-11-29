@@ -8,9 +8,9 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/cartchera/taller1/Duck_Game-Grupo5/editor/button.cpp" "CMakeFiles/taller_editor.dir/editor/button.cpp.o" "gcc" "CMakeFiles/taller_editor.dir/editor/button.cpp.o.d"
-  "/home/cartchera/taller1/Duck_Game-Grupo5/editor/editor.cpp" "CMakeFiles/taller_editor.dir/editor/editor.cpp.o" "gcc" "CMakeFiles/taller_editor.dir/editor/editor.cpp.o.d"
-  "/home/cartchera/taller1/Duck_Game-Grupo5/editor/main.cpp" "CMakeFiles/taller_editor.dir/editor/main.cpp.o" "gcc" "CMakeFiles/taller_editor.dir/editor/main.cpp.o.d"
+  "/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/editor/button.cpp" "CMakeFiles/taller_editor.dir/editor/button.cpp.o" "gcc" "CMakeFiles/taller_editor.dir/editor/button.cpp.o.d"
+  "/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/editor/editor.cpp" "CMakeFiles/taller_editor.dir/editor/editor.cpp.o" "gcc" "CMakeFiles/taller_editor.dir/editor/editor.cpp.o.d"
+  "/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/editor/main.cpp" "CMakeFiles/taller_editor.dir/editor/main.cpp.o" "gcc" "CMakeFiles/taller_editor.dir/editor/main.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

@@ -191,6 +191,9 @@ std::list<Granada> ClienteProtocolo::recibir_granadas() {
 
 EstadoJuego ClienteProtocolo::recibir_estado_juego() {
     EstadoJuego estado_juego;
+    bool cerrado = false;
+    estado_juego.id_ultimo_jugador = recibir_dos_bytes(cerrado);
+    std::cout << "id ultimo jugador cliente --> " << estado_juego.id_ultimo_jugador << std::endl;
     estado_juego.lobby_data = recibir_lobby_data();
     estado_juego.patos = recibir_patos();
     estado_juego.balas = recibir_balas();

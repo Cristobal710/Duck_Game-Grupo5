@@ -1,4 +1,4 @@
-# Install script for directory: /home/cartchera/taller1/Duck_Game-Grupo5
+# Install script for directory: /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -44,14 +44,14 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/cartchera/taller1/Duck_Game-Grupo5/build/common/cmake_install.cmake")
-  include("/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/libsdl2pp-build/cmake_install.cmake")
-  include("/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/nlohmann_json-build/cmake_install.cmake")
-  include("/home/cartchera/taller1/Duck_Game-Grupo5/build/client/cmake_install.cmake")
-  include("/home/cartchera/taller1/Duck_Game-Grupo5/build/server/cmake_install.cmake")
-  include("/home/cartchera/taller1/Duck_Game-Grupo5/build/editor/cmake_install.cmake")
-  include("/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/googletest-build/cmake_install.cmake")
-  include("/home/cartchera/taller1/Duck_Game-Grupo5/build/tests/cmake_install.cmake")
+  include("/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/common/cmake_install.cmake")
+  include("/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/libsdl2pp-build/cmake_install.cmake")
+  include("/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/nlohmann_json-build/cmake_install.cmake")
+  include("/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/client/cmake_install.cmake")
+  include("/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/server/cmake_install.cmake")
+  include("/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/editor/cmake_install.cmake")
+  include("/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/googletest-build/cmake_install.cmake")
+  include("/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/tests/cmake_install.cmake")
 
 endif()
 
@@ -63,5 +63,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/cartchera/taller1/Duck_Game-Grupo5/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

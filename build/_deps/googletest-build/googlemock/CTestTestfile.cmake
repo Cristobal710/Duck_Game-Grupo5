@@ -1,6 +1,6 @@
 # CMake generated Testfile for 
-# Source directory: /home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/googletest-src/googlemock
-# Build directory: /home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/googletest-build/googlemock
+# Source directory: /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/googletest-src/googlemock
+# Build directory: /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/googletest-build/googlemock
 # 
 # This file includes the relevant testing commands required for 
 # testing this directory and lists subdirectories to be tested as well.

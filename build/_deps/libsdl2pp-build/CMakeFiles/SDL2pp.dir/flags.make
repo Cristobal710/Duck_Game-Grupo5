@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = -DSDL2pp_EXPORTS
 
-CXX_INCLUDES = -I/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/libsdl2pp-src -I/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/libsdl2pp-build -isystem /usr/include/SDL2 -isystem /usr/local/include/SDL2
+CXX_INCLUDES = -I/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/libsdl2pp-src -I/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/libsdl2pp-build -isystem /usr/include/SDL2 -isystem /usr/local/include/SDL2
 
 CXX_FLAGS = -g -std=c++17 -fPIC
 

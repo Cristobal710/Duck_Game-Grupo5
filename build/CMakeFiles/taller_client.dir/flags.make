@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/cartchera/taller1/Duck_Game-Grupo5/client/../common -I/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/libsdl2pp-src -I/home/cartchera/taller1/Duck_Game-Grupo5/common -I/home/cartchera/taller1/Duck_Game-Grupo5/. -I/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/libsdl2pp-build -I/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/nlohmann_json-src/include -isystem /usr/include/SDL2 -isystem /usr/local/include/SDL2
+CXX_INCLUDES = -I/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/client/../common -I/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/libsdl2pp-src -I/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common -I/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/. -I/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/libsdl2pp-build -I/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/nlohmann_json-src/include -isystem /usr/include/SDL2 -isystem /usr/local/include/SDL2
 
 CXX_FLAGS = -g -std=gnu++20 -Wall -Wextra -Wmisleading-indentation -Wzero-as-null-pointer-constant -Wnon-virtual-dtor -Wunused -Woverloaded-virtual -Wpedantic -Wnull-dereference -Wformat=2 -Wimplicit-fallthrough -Wmismatched-tags -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wsuggest-override -Werror
 

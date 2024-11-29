@@ -26,6 +26,7 @@ private:
 public:
     ServerClient(uint16_t id, Socket skt, Queue<EstadoJuego>& recibidos, Queue<EventoServer>& enviados);
     void run() override;
+    uint16_t& get_id();
 };
 
 #endif

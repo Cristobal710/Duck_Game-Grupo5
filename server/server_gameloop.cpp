@@ -35,6 +35,7 @@ GameLoop::GameLoop(Queue<EstadoJuego>& cola_estados_juego,
 
 void GameLoop::agregar_cliente(ServerClient& cliente, Queue<EventoServer>& cola_cliente) {
     clientes.agregar_cliente(cliente, cola_cliente);
+    mandar_id_cliente(cliente.get_id());
 }
 
 void GameLoop::procesar_evento(EventoServer& evento, EstadoJuego& estado_juego) {
@@ -553,4 +554,9 @@ void GameLoop::run() {
         }
     }
     //cerrar_gameloop();
+}
+
+void GameLoop::mandar_id_cliente(uint16_t& id) {
+    ultimo_estado.id_ultimo_jugador = id;
+    cola_estados_juego.push(ultimo_estado);
 }

@@ -38,3 +38,5 @@ void ServerClient::run() {
 
     cerrar(enviar);
 }
+
+uint16_t& ServerClient::get_id() { return id; }

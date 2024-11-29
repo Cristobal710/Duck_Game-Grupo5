@@ -28,8 +28,8 @@ set_property(GLOBAL PROPERTY _CMAKE_FindGit_GIT_EXECUTABLE_VERSION
 include(ExternalProject)
 ExternalProject_Add(nlohmann_json-populate
                      "UPDATE_DISCONNECTED" "False" "GIT_REPOSITORY" "https://github.com/nlohmann/json.git" "EXTERNALPROJECT_INTERNAL_ARGUMENT_SEPARATOR" "GIT_TAG" "v3.11.2"
-                    SOURCE_DIR          "/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/nlohmann_json-src"
-                    BINARY_DIR          "/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/nlohmann_json-build"
+                    SOURCE_DIR          "/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/nlohmann_json-src"
+                    BINARY_DIR          "/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/nlohmann_json-build"
                     CONFIGURE_COMMAND   ""
                     BUILD_COMMAND       ""
                     INSTALL_COMMAND     ""

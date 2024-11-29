@@ -2,37 +2,37 @@
 	"sources" : 
 	[
 		{
-			"file" : "/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/googletest-subbuild/CMakeFiles/googletest-populate"
+			"file" : "/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/googletest-subbuild/CMakeFiles/googletest-populate"
 		},
 		{
-			"file" : "/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/googletest-subbuild/CMakeFiles/googletest-populate.rule"
+			"file" : "/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/googletest-subbuild/CMakeFiles/googletest-populate.rule"
 		},
 		{
-			"file" : "/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/googletest-subbuild/CMakeFiles/googletest-populate-complete.rule"
+			"file" : "/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/googletest-subbuild/CMakeFiles/googletest-populate-complete.rule"
 		},
 		{
-			"file" : "/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-build.rule"
+			"file" : "/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-build.rule"
 		},
 		{
-			"file" : "/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-configure.rule"
+			"file" : "/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-configure.rule"
 		},
 		{
-			"file" : "/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-download.rule"
+			"file" : "/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-download.rule"
 		},
 		{
-			"file" : "/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-install.rule"
+			"file" : "/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-install.rule"
 		},
 		{
-			"file" : "/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-mkdir.rule"
+			"file" : "/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-mkdir.rule"
 		},
 		{
-			"file" : "/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-patch.rule"
+			"file" : "/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-patch.rule"
 		},
 		{
-			"file" : "/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-test.rule"
+			"file" : "/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-test.rule"
 		},
 		{
-			"file" : "/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-update.rule"
+			"file" : "/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-update.rule"
 		}
 	],
 	"target" : 

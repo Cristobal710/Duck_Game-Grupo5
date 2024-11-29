@@ -64,6 +64,7 @@ public:
     int get_indice_por_id(uint8_t id);
     void agregar_cliente(ServerClient& cliente, Queue<EventoServer>& cola_cliente);
     void run() override;
+    void mandar_id_cliente(uint16_t& id);
 };
 
 #endif

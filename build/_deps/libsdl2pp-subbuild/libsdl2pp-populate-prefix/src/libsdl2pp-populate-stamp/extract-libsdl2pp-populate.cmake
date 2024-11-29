@@ -5,8 +5,8 @@ cmake_minimum_required(VERSION 3.5)
 
 # Make file names absolute:
 #
-get_filename_component(filename "/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/libsdl2pp-subbuild/libsdl2pp-populate-prefix/src/cc198c9a5657048bee67ece82de620b2d5661084.zip" ABSOLUTE)
-get_filename_component(directory "/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/libsdl2pp-src" ABSOLUTE)
+get_filename_component(filename "/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/libsdl2pp-subbuild/libsdl2pp-populate-prefix/src/cc198c9a5657048bee67ece82de620b2d5661084.zip" ABSOLUTE)
+get_filename_component(directory "/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/libsdl2pp-src" ABSOLUTE)
 
 message(STATUS "extracting...
      src='${filename}'

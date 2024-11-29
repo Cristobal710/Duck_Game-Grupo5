@@ -1,4 +1,4 @@
-# Install script for directory: /home/cartchera/taller1/Duck_Game-Grupo5/editor
+# Install script for directory: /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/editor
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

@@ -13,6 +13,7 @@
 
 
 struct EstadoJuego {
+    uint16_t id_ultimo_jugador;
     LobbyInfo lobby_data;
     Mapa mapa;
     std::list<Pato> patos;

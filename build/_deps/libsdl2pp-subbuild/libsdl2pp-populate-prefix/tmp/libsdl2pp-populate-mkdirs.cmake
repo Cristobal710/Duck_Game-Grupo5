@@ -4,19 +4,19 @@
 cmake_minimum_required(VERSION 3.5)
 
 file(MAKE_DIRECTORY
-  "/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/libsdl2pp-src"
-  "/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/libsdl2pp-build"
-  "/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/libsdl2pp-subbuild/libsdl2pp-populate-prefix"
-  "/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/libsdl2pp-subbuild/libsdl2pp-populate-prefix/tmp"
-  "/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/libsdl2pp-subbuild/libsdl2pp-populate-prefix/src/libsdl2pp-populate-stamp"
-  "/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/libsdl2pp-subbuild/libsdl2pp-populate-prefix/src"
-  "/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/libsdl2pp-subbuild/libsdl2pp-populate-prefix/src/libsdl2pp-populate-stamp"
+  "/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/libsdl2pp-src"
+  "/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/libsdl2pp-build"
+  "/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/libsdl2pp-subbuild/libsdl2pp-populate-prefix"
+  "/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/libsdl2pp-subbuild/libsdl2pp-populate-prefix/tmp"
+  "/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/libsdl2pp-subbuild/libsdl2pp-populate-prefix/src/libsdl2pp-populate-stamp"
+  "/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/libsdl2pp-subbuild/libsdl2pp-populate-prefix/src"
+  "/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/libsdl2pp-subbuild/libsdl2pp-populate-prefix/src/libsdl2pp-populate-stamp"
 )
 
 set(configSubDirs )
 foreach(subDir IN LISTS configSubDirs)
-    file(MAKE_DIRECTORY "/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/libsdl2pp-subbuild/libsdl2pp-populate-prefix/src/libsdl2pp-populate-stamp/${subDir}")
+    file(MAKE_DIRECTORY "/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/libsdl2pp-subbuild/libsdl2pp-populate-prefix/src/libsdl2pp-populate-stamp/${subDir}")
 endforeach()
 if(cfgdir)
-  file(MAKE_DIRECTORY "/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/libsdl2pp-subbuild/libsdl2pp-populate-prefix/src/libsdl2pp-populate-stamp${cfgdir}") # cfgdir has leading slash
+  file(MAKE_DIRECTORY "/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/libsdl2pp-subbuild/libsdl2pp-populate-prefix/src/libsdl2pp-populate-stamp${cfgdir}") # cfgdir has leading slash
 endif()

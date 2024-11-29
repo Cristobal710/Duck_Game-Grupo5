@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/cartchera/taller1/Duck_Game-Grupo5
+CMAKE_SOURCE_DIR = /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/cartchera/taller1/Duck_Game-Grupo5/build
+CMAKE_BINARY_DIR = /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/taller_common.dir/depend.make
@@ -70,242 +70,242 @@ include CMakeFiles/taller_common.dir/progress.make
 include CMakeFiles/taller_common.dir/flags.make
 
 CMakeFiles/taller_common.dir/common/common_arma.cpp.o: CMakeFiles/taller_common.dir/flags.make
-CMakeFiles/taller_common.dir/common/common_arma.cpp.o: /home/cartchera/taller1/Duck_Game-Grupo5/common/common_arma.cpp
+CMakeFiles/taller_common.dir/common/common_arma.cpp.o: /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_arma.cpp
 CMakeFiles/taller_common.dir/common/common_arma.cpp.o: CMakeFiles/taller_common.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cartchera/taller1/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/taller_common.dir/common/common_arma.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_arma.cpp.o -MF CMakeFiles/taller_common.dir/common/common_arma.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_arma.cpp.o -c /home/cartchera/taller1/Duck_Game-Grupo5/common/common_arma.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/taller_common.dir/common/common_arma.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_arma.cpp.o -MF CMakeFiles/taller_common.dir/common/common_arma.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_arma.cpp.o -c /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_arma.cpp
 
 CMakeFiles/taller_common.dir/common/common_arma.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/taller_common.dir/common/common_arma.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cartchera/taller1/Duck_Game-Grupo5/common/common_arma.cpp > CMakeFiles/taller_common.dir/common/common_arma.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_arma.cpp > CMakeFiles/taller_common.dir/common/common_arma.cpp.i
 
 CMakeFiles/taller_common.dir/common/common_arma.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/taller_common.dir/common/common_arma.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cartchera/taller1/Duck_Game-Grupo5/common/common_arma.cpp -o CMakeFiles/taller_common.dir/common/common_arma.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_arma.cpp -o CMakeFiles/taller_common.dir/common/common_arma.cpp.s
 
 CMakeFiles/taller_common.dir/common/common_bala.cpp.o: CMakeFiles/taller_common.dir/flags.make
-CMakeFiles/taller_common.dir/common/common_bala.cpp.o: /home/cartchera/taller1/Duck_Game-Grupo5/common/common_bala.cpp
+CMakeFiles/taller_common.dir/common/common_bala.cpp.o: /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_bala.cpp
 CMakeFiles/taller_common.dir/common/common_bala.cpp.o: CMakeFiles/taller_common.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cartchera/taller1/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/taller_common.dir/common/common_bala.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_bala.cpp.o -MF CMakeFiles/taller_common.dir/common/common_bala.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_bala.cpp.o -c /home/cartchera/taller1/Duck_Game-Grupo5/common/common_bala.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/taller_common.dir/common/common_bala.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_bala.cpp.o -MF CMakeFiles/taller_common.dir/common/common_bala.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_bala.cpp.o -c /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_bala.cpp
 
 CMakeFiles/taller_common.dir/common/common_bala.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/taller_common.dir/common/common_bala.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cartchera/taller1/Duck_Game-Grupo5/common/common_bala.cpp > CMakeFiles/taller_common.dir/common/common_bala.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_bala.cpp > CMakeFiles/taller_common.dir/common/common_bala.cpp.i
 
 CMakeFiles/taller_common.dir/common/common_bala.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/taller_common.dir/common/common_bala.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cartchera/taller1/Duck_Game-Grupo5/common/common_bala.cpp -o CMakeFiles/taller_common.dir/common/common_bala.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_bala.cpp -o CMakeFiles/taller_common.dir/common/common_bala.cpp.s
 
 CMakeFiles/taller_common.dir/common/common_caja.cpp.o: CMakeFiles/taller_common.dir/flags.make
-CMakeFiles/taller_common.dir/common/common_caja.cpp.o: /home/cartchera/taller1/Duck_Game-Grupo5/common/common_caja.cpp
+CMakeFiles/taller_common.dir/common/common_caja.cpp.o: /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_caja.cpp
 CMakeFiles/taller_common.dir/common/common_caja.cpp.o: CMakeFiles/taller_common.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cartchera/taller1/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/taller_common.dir/common/common_caja.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_caja.cpp.o -MF CMakeFiles/taller_common.dir/common/common_caja.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_caja.cpp.o -c /home/cartchera/taller1/Duck_Game-Grupo5/common/common_caja.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/taller_common.dir/common/common_caja.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_caja.cpp.o -MF CMakeFiles/taller_common.dir/common/common_caja.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_caja.cpp.o -c /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_caja.cpp
 
 CMakeFiles/taller_common.dir/common/common_caja.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/taller_common.dir/common/common_caja.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cartchera/taller1/Duck_Game-Grupo5/common/common_caja.cpp > CMakeFiles/taller_common.dir/common/common_caja.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_caja.cpp > CMakeFiles/taller_common.dir/common/common_caja.cpp.i
 
 CMakeFiles/taller_common.dir/common/common_caja.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/taller_common.dir/common/common_caja.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cartchera/taller1/Duck_Game-Grupo5/common/common_caja.cpp -o CMakeFiles/taller_common.dir/common/common_caja.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_caja.cpp -o CMakeFiles/taller_common.dir/common/common_caja.cpp.s
 
 CMakeFiles/taller_common.dir/common/common_entidad.cpp.o: CMakeFiles/taller_common.dir/flags.make
-CMakeFiles/taller_common.dir/common/common_entidad.cpp.o: /home/cartchera/taller1/Duck_Game-Grupo5/common/common_entidad.cpp
+CMakeFiles/taller_common.dir/common/common_entidad.cpp.o: /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_entidad.cpp
 CMakeFiles/taller_common.dir/common/common_entidad.cpp.o: CMakeFiles/taller_common.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cartchera/taller1/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/taller_common.dir/common/common_entidad.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_entidad.cpp.o -MF CMakeFiles/taller_common.dir/common/common_entidad.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_entidad.cpp.o -c /home/cartchera/taller1/Duck_Game-Grupo5/common/common_entidad.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/taller_common.dir/common/common_entidad.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_entidad.cpp.o -MF CMakeFiles/taller_common.dir/common/common_entidad.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_entidad.cpp.o -c /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_entidad.cpp
 
 CMakeFiles/taller_common.dir/common/common_entidad.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/taller_common.dir/common/common_entidad.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cartchera/taller1/Duck_Game-Grupo5/common/common_entidad.cpp > CMakeFiles/taller_common.dir/common/common_entidad.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_entidad.cpp > CMakeFiles/taller_common.dir/common/common_entidad.cpp.i
 
 CMakeFiles/taller_common.dir/common/common_entidad.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/taller_common.dir/common/common_entidad.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cartchera/taller1/Duck_Game-Grupo5/common/common_entidad.cpp -o CMakeFiles/taller_common.dir/common/common_entidad.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_entidad.cpp -o CMakeFiles/taller_common.dir/common/common_entidad.cpp.s
 
 CMakeFiles/taller_common.dir/common/common_estado_pato.cpp.o: CMakeFiles/taller_common.dir/flags.make
-CMakeFiles/taller_common.dir/common/common_estado_pato.cpp.o: /home/cartchera/taller1/Duck_Game-Grupo5/common/common_estado_pato.cpp
+CMakeFiles/taller_common.dir/common/common_estado_pato.cpp.o: /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_estado_pato.cpp
 CMakeFiles/taller_common.dir/common/common_estado_pato.cpp.o: CMakeFiles/taller_common.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cartchera/taller1/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/taller_common.dir/common/common_estado_pato.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_estado_pato.cpp.o -MF CMakeFiles/taller_common.dir/common/common_estado_pato.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_estado_pato.cpp.o -c /home/cartchera/taller1/Duck_Game-Grupo5/common/common_estado_pato.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/taller_common.dir/common/common_estado_pato.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_estado_pato.cpp.o -MF CMakeFiles/taller_common.dir/common/common_estado_pato.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_estado_pato.cpp.o -c /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_estado_pato.cpp
 
 CMakeFiles/taller_common.dir/common/common_estado_pato.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/taller_common.dir/common/common_estado_pato.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cartchera/taller1/Duck_Game-Grupo5/common/common_estado_pato.cpp > CMakeFiles/taller_common.dir/common/common_estado_pato.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_estado_pato.cpp > CMakeFiles/taller_common.dir/common/common_estado_pato.cpp.i
 
 CMakeFiles/taller_common.dir/common/common_estado_pato.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/taller_common.dir/common/common_estado_pato.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cartchera/taller1/Duck_Game-Grupo5/common/common_estado_pato.cpp -o CMakeFiles/taller_common.dir/common/common_estado_pato.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_estado_pato.cpp -o CMakeFiles/taller_common.dir/common/common_estado_pato.cpp.s
 
 CMakeFiles/taller_common.dir/common/common_granada.cpp.o: CMakeFiles/taller_common.dir/flags.make
-CMakeFiles/taller_common.dir/common/common_granada.cpp.o: /home/cartchera/taller1/Duck_Game-Grupo5/common/common_granada.cpp
+CMakeFiles/taller_common.dir/common/common_granada.cpp.o: /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_granada.cpp
 CMakeFiles/taller_common.dir/common/common_granada.cpp.o: CMakeFiles/taller_common.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cartchera/taller1/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/taller_common.dir/common/common_granada.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_granada.cpp.o -MF CMakeFiles/taller_common.dir/common/common_granada.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_granada.cpp.o -c /home/cartchera/taller1/Duck_Game-Grupo5/common/common_granada.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/taller_common.dir/common/common_granada.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_granada.cpp.o -MF CMakeFiles/taller_common.dir/common/common_granada.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_granada.cpp.o -c /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_granada.cpp
 
 CMakeFiles/taller_common.dir/common/common_granada.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/taller_common.dir/common/common_granada.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cartchera/taller1/Duck_Game-Grupo5/common/common_granada.cpp > CMakeFiles/taller_common.dir/common/common_granada.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_granada.cpp > CMakeFiles/taller_common.dir/common/common_granada.cpp.i
 
 CMakeFiles/taller_common.dir/common/common_granada.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/taller_common.dir/common/common_granada.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cartchera/taller1/Duck_Game-Grupo5/common/common_granada.cpp -o CMakeFiles/taller_common.dir/common/common_granada.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_granada.cpp -o CMakeFiles/taller_common.dir/common/common_granada.cpp.s
 
 CMakeFiles/taller_common.dir/common/common_hitbox.cpp.o: CMakeFiles/taller_common.dir/flags.make
-CMakeFiles/taller_common.dir/common/common_hitbox.cpp.o: /home/cartchera/taller1/Duck_Game-Grupo5/common/common_hitbox.cpp
+CMakeFiles/taller_common.dir/common/common_hitbox.cpp.o: /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_hitbox.cpp
 CMakeFiles/taller_common.dir/common/common_hitbox.cpp.o: CMakeFiles/taller_common.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cartchera/taller1/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/taller_common.dir/common/common_hitbox.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_hitbox.cpp.o -MF CMakeFiles/taller_common.dir/common/common_hitbox.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_hitbox.cpp.o -c /home/cartchera/taller1/Duck_Game-Grupo5/common/common_hitbox.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/taller_common.dir/common/common_hitbox.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_hitbox.cpp.o -MF CMakeFiles/taller_common.dir/common/common_hitbox.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_hitbox.cpp.o -c /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_hitbox.cpp
 
 CMakeFiles/taller_common.dir/common/common_hitbox.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/taller_common.dir/common/common_hitbox.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cartchera/taller1/Duck_Game-Grupo5/common/common_hitbox.cpp > CMakeFiles/taller_common.dir/common/common_hitbox.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_hitbox.cpp > CMakeFiles/taller_common.dir/common/common_hitbox.cpp.i
 
 CMakeFiles/taller_common.dir/common/common_hitbox.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/taller_common.dir/common/common_hitbox.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cartchera/taller1/Duck_Game-Grupo5/common/common_hitbox.cpp -o CMakeFiles/taller_common.dir/common/common_hitbox.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_hitbox.cpp -o CMakeFiles/taller_common.dir/common/common_hitbox.cpp.s
 
 CMakeFiles/taller_common.dir/common/common_liberror.cpp.o: CMakeFiles/taller_common.dir/flags.make
-CMakeFiles/taller_common.dir/common/common_liberror.cpp.o: /home/cartchera/taller1/Duck_Game-Grupo5/common/common_liberror.cpp
+CMakeFiles/taller_common.dir/common/common_liberror.cpp.o: /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_liberror.cpp
 CMakeFiles/taller_common.dir/common/common_liberror.cpp.o: CMakeFiles/taller_common.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cartchera/taller1/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/taller_common.dir/common/common_liberror.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_liberror.cpp.o -MF CMakeFiles/taller_common.dir/common/common_liberror.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_liberror.cpp.o -c /home/cartchera/taller1/Duck_Game-Grupo5/common/common_liberror.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/taller_common.dir/common/common_liberror.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_liberror.cpp.o -MF CMakeFiles/taller_common.dir/common/common_liberror.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_liberror.cpp.o -c /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_liberror.cpp
 
 CMakeFiles/taller_common.dir/common/common_liberror.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/taller_common.dir/common/common_liberror.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cartchera/taller1/Duck_Game-Grupo5/common/common_liberror.cpp > CMakeFiles/taller_common.dir/common/common_liberror.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_liberror.cpp > CMakeFiles/taller_common.dir/common/common_liberror.cpp.i
 
 CMakeFiles/taller_common.dir/common/common_liberror.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/taller_common.dir/common/common_liberror.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cartchera/taller1/Duck_Game-Grupo5/common/common_liberror.cpp -o CMakeFiles/taller_common.dir/common/common_liberror.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_liberror.cpp -o CMakeFiles/taller_common.dir/common/common_liberror.cpp.s
 
 CMakeFiles/taller_common.dir/common/common_lobby_info.cpp.o: CMakeFiles/taller_common.dir/flags.make
-CMakeFiles/taller_common.dir/common/common_lobby_info.cpp.o: /home/cartchera/taller1/Duck_Game-Grupo5/common/common_lobby_info.cpp
+CMakeFiles/taller_common.dir/common/common_lobby_info.cpp.o: /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_lobby_info.cpp
 CMakeFiles/taller_common.dir/common/common_lobby_info.cpp.o: CMakeFiles/taller_common.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cartchera/taller1/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/taller_common.dir/common/common_lobby_info.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_lobby_info.cpp.o -MF CMakeFiles/taller_common.dir/common/common_lobby_info.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_lobby_info.cpp.o -c /home/cartchera/taller1/Duck_Game-Grupo5/common/common_lobby_info.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/taller_common.dir/common/common_lobby_info.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_lobby_info.cpp.o -MF CMakeFiles/taller_common.dir/common/common_lobby_info.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_lobby_info.cpp.o -c /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_lobby_info.cpp
 
 CMakeFiles/taller_common.dir/common/common_lobby_info.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/taller_common.dir/common/common_lobby_info.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cartchera/taller1/Duck_Game-Grupo5/common/common_lobby_info.cpp > CMakeFiles/taller_common.dir/common/common_lobby_info.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_lobby_info.cpp > CMakeFiles/taller_common.dir/common/common_lobby_info.cpp.i
 
 CMakeFiles/taller_common.dir/common/common_lobby_info.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/taller_common.dir/common/common_lobby_info.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cartchera/taller1/Duck_Game-Grupo5/common/common_lobby_info.cpp -o CMakeFiles/taller_common.dir/common/common_lobby_info.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_lobby_info.cpp -o CMakeFiles/taller_common.dir/common/common_lobby_info.cpp.s
 
 CMakeFiles/taller_common.dir/common/common_partida.cpp.o: CMakeFiles/taller_common.dir/flags.make
-CMakeFiles/taller_common.dir/common/common_partida.cpp.o: /home/cartchera/taller1/Duck_Game-Grupo5/common/common_partida.cpp
+CMakeFiles/taller_common.dir/common/common_partida.cpp.o: /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_partida.cpp
 CMakeFiles/taller_common.dir/common/common_partida.cpp.o: CMakeFiles/taller_common.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cartchera/taller1/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/taller_common.dir/common/common_partida.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_partida.cpp.o -MF CMakeFiles/taller_common.dir/common/common_partida.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_partida.cpp.o -c /home/cartchera/taller1/Duck_Game-Grupo5/common/common_partida.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/taller_common.dir/common/common_partida.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_partida.cpp.o -MF CMakeFiles/taller_common.dir/common/common_partida.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_partida.cpp.o -c /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_partida.cpp
 
 CMakeFiles/taller_common.dir/common/common_partida.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/taller_common.dir/common/common_partida.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cartchera/taller1/Duck_Game-Grupo5/common/common_partida.cpp > CMakeFiles/taller_common.dir/common/common_partida.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_partida.cpp > CMakeFiles/taller_common.dir/common/common_partida.cpp.i
 
 CMakeFiles/taller_common.dir/common/common_partida.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/taller_common.dir/common/common_partida.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cartchera/taller1/Duck_Game-Grupo5/common/common_partida.cpp -o CMakeFiles/taller_common.dir/common/common_partida.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_partida.cpp -o CMakeFiles/taller_common.dir/common/common_partida.cpp.s
 
 CMakeFiles/taller_common.dir/common/common_pato.cpp.o: CMakeFiles/taller_common.dir/flags.make
-CMakeFiles/taller_common.dir/common/common_pato.cpp.o: /home/cartchera/taller1/Duck_Game-Grupo5/common/common_pato.cpp
+CMakeFiles/taller_common.dir/common/common_pato.cpp.o: /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_pato.cpp
 CMakeFiles/taller_common.dir/common/common_pato.cpp.o: CMakeFiles/taller_common.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cartchera/taller1/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/taller_common.dir/common/common_pato.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_pato.cpp.o -MF CMakeFiles/taller_common.dir/common/common_pato.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_pato.cpp.o -c /home/cartchera/taller1/Duck_Game-Grupo5/common/common_pato.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/taller_common.dir/common/common_pato.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_pato.cpp.o -MF CMakeFiles/taller_common.dir/common/common_pato.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_pato.cpp.o -c /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_pato.cpp
 
 CMakeFiles/taller_common.dir/common/common_pato.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/taller_common.dir/common/common_pato.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cartchera/taller1/Duck_Game-Grupo5/common/common_pato.cpp > CMakeFiles/taller_common.dir/common/common_pato.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_pato.cpp > CMakeFiles/taller_common.dir/common/common_pato.cpp.i
 
 CMakeFiles/taller_common.dir/common/common_pato.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/taller_common.dir/common/common_pato.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cartchera/taller1/Duck_Game-Grupo5/common/common_pato.cpp -o CMakeFiles/taller_common.dir/common/common_pato.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_pato.cpp -o CMakeFiles/taller_common.dir/common/common_pato.cpp.s
 
 CMakeFiles/taller_common.dir/common/common_pedido_jugador.cpp.o: CMakeFiles/taller_common.dir/flags.make
-CMakeFiles/taller_common.dir/common/common_pedido_jugador.cpp.o: /home/cartchera/taller1/Duck_Game-Grupo5/common/common_pedido_jugador.cpp
+CMakeFiles/taller_common.dir/common/common_pedido_jugador.cpp.o: /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_pedido_jugador.cpp
 CMakeFiles/taller_common.dir/common/common_pedido_jugador.cpp.o: CMakeFiles/taller_common.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cartchera/taller1/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/taller_common.dir/common/common_pedido_jugador.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_pedido_jugador.cpp.o -MF CMakeFiles/taller_common.dir/common/common_pedido_jugador.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_pedido_jugador.cpp.o -c /home/cartchera/taller1/Duck_Game-Grupo5/common/common_pedido_jugador.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/taller_common.dir/common/common_pedido_jugador.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_pedido_jugador.cpp.o -MF CMakeFiles/taller_common.dir/common/common_pedido_jugador.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_pedido_jugador.cpp.o -c /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_pedido_jugador.cpp
 
 CMakeFiles/taller_common.dir/common/common_pedido_jugador.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/taller_common.dir/common/common_pedido_jugador.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cartchera/taller1/Duck_Game-Grupo5/common/common_pedido_jugador.cpp > CMakeFiles/taller_common.dir/common/common_pedido_jugador.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_pedido_jugador.cpp > CMakeFiles/taller_common.dir/common/common_pedido_jugador.cpp.i
 
 CMakeFiles/taller_common.dir/common/common_pedido_jugador.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/taller_common.dir/common/common_pedido_jugador.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cartchera/taller1/Duck_Game-Grupo5/common/common_pedido_jugador.cpp -o CMakeFiles/taller_common.dir/common/common_pedido_jugador.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_pedido_jugador.cpp -o CMakeFiles/taller_common.dir/common/common_pedido_jugador.cpp.s
 
 CMakeFiles/taller_common.dir/common/common_protocolo.cpp.o: CMakeFiles/taller_common.dir/flags.make
-CMakeFiles/taller_common.dir/common/common_protocolo.cpp.o: /home/cartchera/taller1/Duck_Game-Grupo5/common/common_protocolo.cpp
+CMakeFiles/taller_common.dir/common/common_protocolo.cpp.o: /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_protocolo.cpp
 CMakeFiles/taller_common.dir/common/common_protocolo.cpp.o: CMakeFiles/taller_common.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cartchera/taller1/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/taller_common.dir/common/common_protocolo.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_protocolo.cpp.o -MF CMakeFiles/taller_common.dir/common/common_protocolo.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_protocolo.cpp.o -c /home/cartchera/taller1/Duck_Game-Grupo5/common/common_protocolo.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/taller_common.dir/common/common_protocolo.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_protocolo.cpp.o -MF CMakeFiles/taller_common.dir/common/common_protocolo.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_protocolo.cpp.o -c /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_protocolo.cpp
 
 CMakeFiles/taller_common.dir/common/common_protocolo.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/taller_common.dir/common/common_protocolo.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cartchera/taller1/Duck_Game-Grupo5/common/common_protocolo.cpp > CMakeFiles/taller_common.dir/common/common_protocolo.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_protocolo.cpp > CMakeFiles/taller_common.dir/common/common_protocolo.cpp.i
 
 CMakeFiles/taller_common.dir/common/common_protocolo.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/taller_common.dir/common/common_protocolo.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cartchera/taller1/Duck_Game-Grupo5/common/common_protocolo.cpp -o CMakeFiles/taller_common.dir/common/common_protocolo.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_protocolo.cpp -o CMakeFiles/taller_common.dir/common/common_protocolo.cpp.s
 
 CMakeFiles/taller_common.dir/common/common_resolver.cpp.o: CMakeFiles/taller_common.dir/flags.make
-CMakeFiles/taller_common.dir/common/common_resolver.cpp.o: /home/cartchera/taller1/Duck_Game-Grupo5/common/common_resolver.cpp
+CMakeFiles/taller_common.dir/common/common_resolver.cpp.o: /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_resolver.cpp
 CMakeFiles/taller_common.dir/common/common_resolver.cpp.o: CMakeFiles/taller_common.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cartchera/taller1/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/taller_common.dir/common/common_resolver.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_resolver.cpp.o -MF CMakeFiles/taller_common.dir/common/common_resolver.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_resolver.cpp.o -c /home/cartchera/taller1/Duck_Game-Grupo5/common/common_resolver.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/taller_common.dir/common/common_resolver.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_resolver.cpp.o -MF CMakeFiles/taller_common.dir/common/common_resolver.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_resolver.cpp.o -c /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_resolver.cpp
 
 CMakeFiles/taller_common.dir/common/common_resolver.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/taller_common.dir/common/common_resolver.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cartchera/taller1/Duck_Game-Grupo5/common/common_resolver.cpp > CMakeFiles/taller_common.dir/common/common_resolver.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_resolver.cpp > CMakeFiles/taller_common.dir/common/common_resolver.cpp.i
 
 CMakeFiles/taller_common.dir/common/common_resolver.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/taller_common.dir/common/common_resolver.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cartchera/taller1/Duck_Game-Grupo5/common/common_resolver.cpp -o CMakeFiles/taller_common.dir/common/common_resolver.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_resolver.cpp -o CMakeFiles/taller_common.dir/common/common_resolver.cpp.s
 
 CMakeFiles/taller_common.dir/common/common_resolvererror.cpp.o: CMakeFiles/taller_common.dir/flags.make
-CMakeFiles/taller_common.dir/common/common_resolvererror.cpp.o: /home/cartchera/taller1/Duck_Game-Grupo5/common/common_resolvererror.cpp
+CMakeFiles/taller_common.dir/common/common_resolvererror.cpp.o: /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_resolvererror.cpp
 CMakeFiles/taller_common.dir/common/common_resolvererror.cpp.o: CMakeFiles/taller_common.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cartchera/taller1/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/taller_common.dir/common/common_resolvererror.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_resolvererror.cpp.o -MF CMakeFiles/taller_common.dir/common/common_resolvererror.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_resolvererror.cpp.o -c /home/cartchera/taller1/Duck_Game-Grupo5/common/common_resolvererror.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/taller_common.dir/common/common_resolvererror.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_resolvererror.cpp.o -MF CMakeFiles/taller_common.dir/common/common_resolvererror.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_resolvererror.cpp.o -c /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_resolvererror.cpp
 
 CMakeFiles/taller_common.dir/common/common_resolvererror.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/taller_common.dir/common/common_resolvererror.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cartchera/taller1/Duck_Game-Grupo5/common/common_resolvererror.cpp > CMakeFiles/taller_common.dir/common/common_resolvererror.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_resolvererror.cpp > CMakeFiles/taller_common.dir/common/common_resolvererror.cpp.i
 
 CMakeFiles/taller_common.dir/common/common_resolvererror.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/taller_common.dir/common/common_resolvererror.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cartchera/taller1/Duck_Game-Grupo5/common/common_resolvererror.cpp -o CMakeFiles/taller_common.dir/common/common_resolvererror.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_resolvererror.cpp -o CMakeFiles/taller_common.dir/common/common_resolvererror.cpp.s
 
 CMakeFiles/taller_common.dir/common/common_socket.cpp.o: CMakeFiles/taller_common.dir/flags.make
-CMakeFiles/taller_common.dir/common/common_socket.cpp.o: /home/cartchera/taller1/Duck_Game-Grupo5/common/common_socket.cpp
+CMakeFiles/taller_common.dir/common/common_socket.cpp.o: /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_socket.cpp
 CMakeFiles/taller_common.dir/common/common_socket.cpp.o: CMakeFiles/taller_common.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cartchera/taller1/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/taller_common.dir/common/common_socket.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_socket.cpp.o -MF CMakeFiles/taller_common.dir/common/common_socket.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_socket.cpp.o -c /home/cartchera/taller1/Duck_Game-Grupo5/common/common_socket.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/taller_common.dir/common/common_socket.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_socket.cpp.o -MF CMakeFiles/taller_common.dir/common/common_socket.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_socket.cpp.o -c /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_socket.cpp
 
 CMakeFiles/taller_common.dir/common/common_socket.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/taller_common.dir/common/common_socket.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cartchera/taller1/Duck_Game-Grupo5/common/common_socket.cpp > CMakeFiles/taller_common.dir/common/common_socket.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_socket.cpp > CMakeFiles/taller_common.dir/common/common_socket.cpp.i
 
 CMakeFiles/taller_common.dir/common/common_socket.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/taller_common.dir/common/common_socket.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cartchera/taller1/Duck_Game-Grupo5/common/common_socket.cpp -o CMakeFiles/taller_common.dir/common/common_socket.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_socket.cpp -o CMakeFiles/taller_common.dir/common/common_socket.cpp.s
 
 CMakeFiles/taller_common.dir/common/common_tile.cpp.o: CMakeFiles/taller_common.dir/flags.make
-CMakeFiles/taller_common.dir/common/common_tile.cpp.o: /home/cartchera/taller1/Duck_Game-Grupo5/common/common_tile.cpp
+CMakeFiles/taller_common.dir/common/common_tile.cpp.o: /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_tile.cpp
 CMakeFiles/taller_common.dir/common/common_tile.cpp.o: CMakeFiles/taller_common.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cartchera/taller1/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/taller_common.dir/common/common_tile.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_tile.cpp.o -MF CMakeFiles/taller_common.dir/common/common_tile.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_tile.cpp.o -c /home/cartchera/taller1/Duck_Game-Grupo5/common/common_tile.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/taller_common.dir/common/common_tile.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/taller_common.dir/common/common_tile.cpp.o -MF CMakeFiles/taller_common.dir/common/common_tile.cpp.o.d -o CMakeFiles/taller_common.dir/common/common_tile.cpp.o -c /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_tile.cpp
 
 CMakeFiles/taller_common.dir/common/common_tile.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/taller_common.dir/common/common_tile.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cartchera/taller1/Duck_Game-Grupo5/common/common_tile.cpp > CMakeFiles/taller_common.dir/common/common_tile.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_tile.cpp > CMakeFiles/taller_common.dir/common/common_tile.cpp.i
 
 CMakeFiles/taller_common.dir/common/common_tile.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/taller_common.dir/common/common_tile.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cartchera/taller1/Duck_Game-Grupo5/common/common_tile.cpp -o CMakeFiles/taller_common.dir/common/common_tile.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/common/common_tile.cpp -o CMakeFiles/taller_common.dir/common/common_tile.cpp.s
 
 # Object files for target taller_common
 taller_common_OBJECTS = \
@@ -349,7 +349,7 @@ libtaller_common.a: CMakeFiles/taller_common.dir/common/common_socket.cpp.o
 libtaller_common.a: CMakeFiles/taller_common.dir/common/common_tile.cpp.o
 libtaller_common.a: CMakeFiles/taller_common.dir/build.make
 libtaller_common.a: CMakeFiles/taller_common.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/cartchera/taller1/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Linking CXX static library libtaller_common.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Linking CXX static library libtaller_common.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/taller_common.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/taller_common.dir/link.txt --verbose=$(VERBOSE)
 
@@ -362,6 +362,6 @@ CMakeFiles/taller_common.dir/clean:
 .PHONY : CMakeFiles/taller_common.dir/clean
 
 CMakeFiles/taller_common.dir/depend:
-	cd /home/cartchera/taller1/Duck_Game-Grupo5/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/cartchera/taller1/Duck_Game-Grupo5 /home/cartchera/taller1/Duck_Game-Grupo5 /home/cartchera/taller1/Duck_Game-Grupo5/build /home/cartchera/taller1/Duck_Game-Grupo5/build /home/cartchera/taller1/Duck_Game-Grupo5/build/CMakeFiles/taller_common.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5 /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5 /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build /home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/CMakeFiles/taller_common.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/taller_common.dir/depend
 

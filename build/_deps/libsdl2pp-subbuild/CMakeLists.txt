@@ -20,8 +20,8 @@ project(libsdl2pp-populate NONE)
 include(ExternalProject)
 ExternalProject_Add(libsdl2pp-populate
                      "UPDATE_DISCONNECTED" "False" "DOWNLOAD_EXTRACT_TIMESTAMP" "FALSE" "EXTERNALPROJECT_INTERNAL_ARGUMENT_SEPARATOR" "URL" "https://github.com/libSDL2pp/libSDL2pp/archive/cc198c9a5657048bee67ece82de620b2d5661084.zip"
-                    SOURCE_DIR          "/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/libsdl2pp-src"
-                    BINARY_DIR          "/home/cartchera/taller1/Duck_Game-Grupo5/build/_deps/libsdl2pp-build"
+                    SOURCE_DIR          "/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/libsdl2pp-src"
+                    BINARY_DIR          "/home/cristobal/Escritorio/Taller1/TPFinal/Duck_Game-Grupo5/build/_deps/libsdl2pp-build"
                     CONFIGURE_COMMAND   ""
                     BUILD_COMMAND       ""
                     INSTALL_COMMAND     ""

@@ -2626,7 +2626,6 @@ _deps/libsdl2pp-build/CMakeFiles/SDL2pp.dir/SDL2pp/SDLImage.cc.o: _deps/libsdl2p
   /usr/include/SDL2/SDL_haptic.h \
   /usr/include/SDL2/SDL_hidapi.h \
   /usr/include/SDL2/SDL_hints.h \
-  /usr/include/SDL2/SDL_image.h \
   /usr/include/SDL2/SDL_joystick.h \
   /usr/include/SDL2/SDL_keyboard.h \
   /usr/include/SDL2/SDL_keycode.h \
@@ -2932,7 +2931,8 @@ _deps/libsdl2pp-build/CMakeFiles/SDL2pp.dir/SDL2pp/SDLImage.cc.o: _deps/libsdl2p
   /usr/lib/gcc/x86_64-linux-gnu/13/include/xsaveintrin.h \
   /usr/lib/gcc/x86_64-linux-gnu/13/include/xsaveoptintrin.h \
   /usr/lib/gcc/x86_64-linux-gnu/13/include/xsavesintrin.h \
-  /usr/lib/gcc/x86_64-linux-gnu/13/include/xtestintrin.h
+  /usr/lib/gcc/x86_64-linux-gnu/13/include/xtestintrin.h \
+  /usr/local/include/SDL2/SDL_image.h
 
 _deps/libsdl2pp-build/CMakeFiles/SDL2pp.dir/SDL2pp/Surface.cc.o: _deps/libsdl2pp-src/SDL2pp/Surface.cc \
   _deps/libsdl2pp-build/SDL2pp/Config.hh \
@@ -2962,7 +2962,6 @@ _deps/libsdl2pp-build/CMakeFiles/SDL2pp.dir/SDL2pp/Surface.cc.o: _deps/libsdl2pp
   /usr/include/SDL2/SDL_haptic.h \
   /usr/include/SDL2/SDL_hidapi.h \
   /usr/include/SDL2/SDL_hints.h \
-  /usr/include/SDL2/SDL_image.h \
   /usr/include/SDL2/SDL_joystick.h \
   /usr/include/SDL2/SDL_keyboard.h \
   /usr/include/SDL2/SDL_keycode.h \
@@ -3334,7 +3333,8 @@ _deps/libsdl2pp-build/CMakeFiles/SDL2pp.dir/SDL2pp/Surface.cc.o: _deps/libsdl2pp
   /usr/lib/gcc/x86_64-linux-gnu/13/include/xsaveintrin.h \
   /usr/lib/gcc/x86_64-linux-gnu/13/include/xsaveoptintrin.h \
   /usr/lib/gcc/x86_64-linux-gnu/13/include/xsavesintrin.h \
-  /usr/lib/gcc/x86_64-linux-gnu/13/include/xtestintrin.h
+  /usr/lib/gcc/x86_64-linux-gnu/13/include/xtestintrin.h \
+  /usr/local/include/SDL2/SDL_image.h
 
 _deps/libsdl2pp-build/CMakeFiles/SDL2pp.dir/SDL2pp/SurfaceLock.cc.o: _deps/libsdl2pp-src/SDL2pp/SurfaceLock.cc \
   _deps/libsdl2pp-build/SDL2pp/Config.hh \
@@ -3632,7 +3632,6 @@ _deps/libsdl2pp-build/CMakeFiles/SDL2pp.dir/SDL2pp/Texture.cc.o: _deps/libsdl2pp
   /usr/include/SDL2/SDL_haptic.h \
   /usr/include/SDL2/SDL_hidapi.h \
   /usr/include/SDL2/SDL_hints.h \
-  /usr/include/SDL2/SDL_image.h \
   /usr/include/SDL2/SDL_joystick.h \
   /usr/include/SDL2/SDL_keyboard.h \
   /usr/include/SDL2/SDL_keycode.h \
@@ -4009,7 +4008,8 @@ _deps/libsdl2pp-build/CMakeFiles/SDL2pp.dir/SDL2pp/Texture.cc.o: _deps/libsdl2pp
   /usr/lib/gcc/x86_64-linux-gnu/13/include/xsaveintrin.h \
   /usr/lib/gcc/x86_64-linux-gnu/13/include/xsaveoptintrin.h \
   /usr/lib/gcc/x86_64-linux-gnu/13/include/xsavesintrin.h \
-  /usr/lib/gcc/x86_64-linux-gnu/13/include/xtestintrin.h
+  /usr/lib/gcc/x86_64-linux-gnu/13/include/xtestintrin.h \
+  /usr/local/include/SDL2/SDL_image.h
 
 _deps/libsdl2pp-build/CMakeFiles/SDL2pp.dir/SDL2pp/TextureLock.cc.o: _deps/libsdl2pp-src/SDL2pp/TextureLock.cc \
   _deps/libsdl2pp-build/SDL2pp/Config.hh \
@@ -4890,7 +4890,7 @@ _deps/libsdl2pp-src/SDL2pp/SurfaceLock.cc:
 
 _deps/libsdl2pp-src/SDL2pp/Surface.cc:
 
-/usr/include/SDL2/SDL_image.h:
+/usr/local/include/SDL2/SDL_image.h:
 
 _deps/libsdl2pp-src/SDL2pp/Renderer.cc:
 
