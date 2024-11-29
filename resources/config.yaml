@@ -39,3 +39,11 @@ armas:
     path: "../resources/weapons/sniper.png"
     alcance: 64
     municiones: 3
+  armadura:
+    path: "../resources/armors/chestPlate.png"
+    alcance: 0
+    municiones: 0
+  casco:
+    path: "../resources/armors/helment.png"
+    alcance: 0
+    municiones: 0

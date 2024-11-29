@@ -487,6 +487,12 @@ uint8_t GameLoop::mapear_armas(ArmaConfig armamento){
         return PISTOLA_DE_DUELOS;
     } else if (armamento.nombre == "sniper") {
         return SNIPER;
+    } else if (armamento.nombre == "armadura") {
+        return BYTE_ARMADURA;
+    } else if (armamento.nombre == "casco") {
+        return BYTE_CASCO;
+
+
     } else {
         return 0x00;
     }
@@ -500,6 +506,16 @@ void GameLoop::inicializar_armas(){
         for (SDL_Point posicion_arma : armas.second) {
             ArmaConfig armamento = armamento_config[armas.first];
             uint8_t arma_id = mapear_armas(armamento);
+            
+            if(arma_id == BYTE_ARMADURA){
+                Proteccion proteccion(ultimo_estado.armaduras.size()+1, posicion_arma.x, posicion_arma.y, ARMADURA_ENUM, false);
+                ultimo_estado.armaduras.push_back(proteccion);
+                continue;
+            }else if(arma_id == BYTE_CASCO){
+                Proteccion proteccion(ultimo_estado.armaduras.size()+1, posicion_arma.x, posicion_arma.y, CASCO_ENUM, false);
+                ultimo_estado.armaduras.push_back(proteccion);
+                continue;
+            }
 
             Arma arma(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, armamento.municiones, armamento.alcance, arma_id);
             ultimo_estado.armas.push_back(arma);

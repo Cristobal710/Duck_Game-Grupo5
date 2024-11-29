@@ -194,6 +194,7 @@ EstadoJuego ClienteProtocolo::recibir_estado_juego() {
     estado_juego.mapa = recibir_mapa();
     estado_juego.cajas = recibir_cajas();
     estado_juego.armas = recibir_armas();
+    estado_juego.armaduras = recibir_protecciones();
     return estado_juego;
 }
 
@@ -294,4 +295,36 @@ Mapa ClienteProtocolo::recibir_mapa(){
     recibir_equipamiento(mapa);
     return mapa;
 
+}
+
+
+
+void ClienteProtocolo::recibir_proteccion(std::list<Proteccion>& protecciones) {
+    bool cerrado;
+    uint16_t id = recibir_dos_bytes(cerrado);
+    uint16_t pos_x = recibir_dos_bytes(cerrado);
+    uint16_t pos_y = recibir_dos_bytes(cerrado);
+    uint8_t se_agarro = recibir_byte(cerrado);
+    uint8_t tipo = recibir_byte(cerrado);
+
+    if (tipo == BYTE_ARMADURA) {
+        Proteccion proteccion(id, pos_x, pos_y, ARMADURA_ENUM, static_cast<bool> (se_agarro));
+        protecciones.push_back(proteccion);
+    }else if (tipo == BYTE_CASCO) {
+        Proteccion proteccion(id, pos_x, pos_y, CASCO_ENUM, static_cast<bool> (se_agarro));
+        protecciones.push_back(proteccion);
+    }
+}
+
+std::list<Proteccion> ClienteProtocolo::recibir_protecciones() {
+    std::list<Proteccion> protecciones;
+    std::vector<uint8_t> cantidad_protecciones(2);
+    bool cerrado;
+    socket.recvall(cantidad_protecciones.data(), cantidad_protecciones.size(), &cerrado);
+    int cantidad = static_cast<int>(cantidad_protecciones[1]);
+
+    for (int i = 0; i < cantidad; i++) {
+        recibir_proteccion(protecciones);
+    }
+    return protecciones;
 }

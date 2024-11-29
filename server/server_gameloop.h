@@ -13,6 +13,7 @@
 #include "../common/common_estado_juego.h"
 #include "../common/common_queue.h"
 #include "../common/common_thread.h" 
+#include "../common/common_tipo_proteccion.h"
 
 #include "server_client.h"
 #include "server_evento.h"

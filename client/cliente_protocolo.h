@@ -46,6 +46,9 @@ public:
     void recibir_granada(std::list<Granada>& granadas);
     std::list<Granada> recibir_granadas();
 
+    void recibir_proteccion(std::list<Proteccion>& protecciones);
+    std::list<Proteccion> recibir_protecciones();
+
     Mapa recibir_mapa();
 
     EstadoJuego recibir_estado_juego();

@@ -39,10 +39,14 @@ private:
     void enviar_caja(Caja& caja);
     void enviar_arma(Arma& arma);
     void enviar_bala(Bala& bala);
+    void enviar_proteccion(Proteccion& proteccion);
+    
     void enviar_granada(Granada& granada);
     void enviar_patos(std::list<Pato>& patos);
     void enviar_cajas(std::list<Caja>& cajas);
     void enviar_armas(std::list<Arma>& armas);
+    void enviar_protecciones(std::list<Proteccion>& protecciones);
+
     void enviar_balas(std::list<Bala>& balas);
     void enviar_granadas(std::list<Granada>& granadas);
     std::list<uint8_t> serializar_pato(Pato& pato);
