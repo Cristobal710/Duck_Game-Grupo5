@@ -10,11 +10,10 @@
 #include "../common/common_estado_juego.h"
 #include "../common/common_queue.h"
 #include "../common/common_thread.h"
-
+#include "common/common_tile.h"
 #include "server_client.h"
 #include "server_evento.h"
 #include "server_proteger_clientes.h"
-#include "common/common_tile.h"
 #include "../common/common_tipo_colision.h"
 
 class GameLoop: public Thread {

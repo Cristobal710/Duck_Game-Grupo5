@@ -8,6 +8,7 @@ target_sources(taller_server
     server_proteger_clientes.cpp
     server_protocolo.cpp
     server_lector_json.cpp
+    modo_juego.cpp
     
     ../common/common_liberror.cpp 
     ../common/common_resolver.cpp
@@ -27,7 +28,7 @@ target_sources(taller_server
     server_proteger_clientes.h
     server_protocolo.h
     server_lector_json.h
-
+    modo_juego.h
 
     ../common/common_liberror.h
     ../common/common_queue.h

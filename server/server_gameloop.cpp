@@ -526,18 +526,7 @@ void GameLoop::inicializar_juego(){
 
 
 void GameLoop::run() {
-
     float tiempo_ultimo_frame = SDL_GetTicks();
-    bool iniciar_partida = false; 
-    while (!iniciar_partida){
-        std::vector<EventoServer> eventos = clientes.recibir_mensajes_clientes();
-        for(EventoServer evento : eventos){
-            procesar_evento_lobby(evento, iniciar_partida);
-        }
-        cola_estados_juego.push(ultimo_estado);
-        drop_and_rest(tiempo_ultimo_frame);
-    }
-
 
     LectorJson lector_mapa = LectorJson();
     Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa3");
