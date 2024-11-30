@@ -76,10 +76,6 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
             break;
         case AGARRAR_RECOMPENSA:
             //pato.saltar();
-            if (pato.tiene_arma()) {
-                pato.soltar_arma();
-                break;
-            }
             agarrar_recompensa(pato);
             break;
         case DEJAR_MOVER_IZQUIERDA:
@@ -128,6 +124,28 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
 }
 
 void GameLoop::agarrar_recompensa(Pato& pato){
+    for (Proteccion& proteccion : ultimo_estado.armaduras){
+        if(pato.colisiona_con_recompensa(proteccion.get_hitbox()) == Recompensas){
+            if(!proteccion.get_se_agarro()){
+                if (proteccion.get_tipo() == CASCO_ENUM) {
+                    if (!pato.get_casco_equipado()) {
+                        pato.equipar_casco();
+                        proteccion.set_se_agarro(true);
+                    }
+                }else{
+                    if (!pato.get_armadura_equipada()) {
+                        pato.equipar_armadura();
+                        proteccion.set_se_agarro(true);
+                    }
+                }
+                return;
+            }
+        }
+    }
+    if (pato.tiene_arma()) {
+        pato.soltar_arma();
+        return;
+    }
     for(Caja& caja : ultimo_estado.cajas){
         if(pato.colisiona_con_recompensa(caja.get_hitbox()) == Recompensas){
             if (!caja.get_esta_vacia()) {
@@ -146,26 +164,6 @@ void GameLoop::agarrar_recompensa(Pato& pato){
             if(!arma.get_se_agarro()){
                 arma.set_se_agarro(true);
                 pato.tomar_arma(&arma);
-                return;
-            }
-        }   
-    }
-    for (Proteccion& proteccion : ultimo_estado.armaduras){
-        if(pato.colisiona_con_recompensa(proteccion.get_hitbox()) == Recompensas){
-            if(!proteccion.get_se_agarro()){
-                if (proteccion.get_tipo() == CASCO_ENUM) {
-                    if (!pato.get_casco_equipado()) {
-                        pato.equipar_casco();
-                        std::cout << "se equipa casco" << std::endl;
-                        proteccion.set_se_agarro(true);
-                    }
-                }else{
-                    if (!pato.get_armadura_equipada()) {
-                        pato.equipar_armadura();
-                        std::cout << "se equipa armadura" << std::endl;
-                        proteccion.set_se_agarro(true);
-                    }
-                }
                 return;
             }
         }
@@ -252,33 +250,33 @@ void GameLoop::enviar_estado_juego_si_cambio( EstadoJuego& estado_anterior) {
 void GameLoop::avanzar_balas_direccion_izquierda(std::__cxx11::list<Bala>::iterator& it){
     if (it->get_direccion() == DIRECCION_IZQUIERDA) {
         it->set_pos_x(it->get_pos_x() - 5);
-        //std::cout << "pos x bala avance:" << static_cast<int>(it->get_pos_x()) << std::endl;
+        // std::cout << "pos x bala avance:" << static_cast<int>(it->get_pos_x()) << std::endl;
     }
 }
 
 void GameLoop::avanzar_balas_direccion_derecha(std::__cxx11::list<Bala>::iterator& it){
     if (it->get_direccion() == DIRECCION_DERECHA) {
         it->set_pos_x(it->get_pos_x() + 5);
-        //std::cout << "pos x bala avance :" << static_cast<int>(it->get_pos_x()) << std::endl;
+        // std::cout << "pos x bala avance :" << static_cast<int>(it->get_pos_x()) << std::endl;
     }
 }
 
 void GameLoop::avanzar_balas_direccion_arriba(std::__cxx11::list<Bala>::iterator& it){
     if (it->get_direccion() == DIRECCION_ARRIBA) {
         it->set_pos_y(it->get_pos_y() - 5);
-        //std::cout << "pos y bala avance :" << static_cast<int>(it->get_pos_y()) << std::endl;
+        // std::cout << "pos y bala avance :" << static_cast<int>(it->get_pos_y()) << std::endl;
     }
 }
 
 void GameLoop::eliminar_balas_fuera_de_alcance(std::__cxx11::list<Bala>::iterator& it){
-    if ((it->get_pos_x() >= it->get_pos_x_final() && it->get_direccion() == DIRECCION_DERECHA) || (it->get_pos_x() == 1280 && it->get_direccion() == DIRECCION_IZQUIERDA)) {
-        //std::cout << "se elimina la bala que va a la derecha" << std::endl;
+    if ((it->get_pos_x() >= it->get_pos_x_final() && it->get_direccion() == DIRECCION_DERECHA)) {
+        // std::cout << "se elimina la bala que va a la derecha" << std::endl;
         it = ultimo_estado.balas.erase(it);
-    } else if ((it->get_pos_x() <= it->get_pos_x_final() && it->get_direccion() == DIRECCION_IZQUIERDA) || (it->get_pos_x() == 0 && it->get_direccion() == DIRECCION_IZQUIERDA)) {
-        //std::cout << "se elimina la bala que va a la izquierda" << std::endl;
+    } else if ((it->get_pos_x() <= it->get_pos_x_final() && it->get_direccion() == DIRECCION_IZQUIERDA)) {
+        // std::cout << "se elimina la bala que va a la izquierda" << std::endl;
         it = ultimo_estado.balas.erase(it);
     } else if (it->get_pos_y() <= it->get_pos_y_final() && it->get_direccion() == DIRECCION_ARRIBA) {
-        //std::cout << "se elimina la bala que va arriba" << std::endl;
+        // std::cout << "se elimina la bala que va arriba" << std::endl;
         it = ultimo_estado.balas.erase(it);
     } else {
         ++it;
@@ -505,7 +503,6 @@ uint8_t GameLoop::mapear_armas(ArmaConfig armamento){
 }
 
 void GameLoop::inicializar_armas(){
-    std::cout << "inicializando armas" << std::endl;
     for (const auto& armas : ultimo_estado.mapa.getEquipamiento()) {
         for (SDL_Point posicion_arma : armas.second) {
             ArmaConfig armamento = armamento_config[armas.first];
@@ -514,16 +511,14 @@ void GameLoop::inicializar_armas(){
             if(arma_id == BYTE_ARMADURA){
                 Proteccion proteccion(ultimo_estado.armaduras.size()+1, posicion_arma.x, posicion_arma.y, ARMADURA_ENUM, false);
                 ultimo_estado.armaduras.push_back(proteccion);
-                std::cout << "se agrego armadura" << std::endl;
                 continue;
             }else if(arma_id == BYTE_CASCO){
                 Proteccion proteccion(ultimo_estado.armaduras.size()+1, posicion_arma.x, posicion_arma.y, CASCO_ENUM, false);
                 ultimo_estado.armaduras.push_back(proteccion);
-                std::cout << "se agrego casco" << std::endl;
                 continue;
             }
 
-            Arma arma(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, armamento.municiones, armamento.alcance, arma_id);
+            Arma arma(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, armamento.municiones, armamento.alcance * ANCHO_TILE, arma_id);
             ultimo_estado.armas.push_back(arma);
         }
     }
