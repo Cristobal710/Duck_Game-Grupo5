@@ -218,7 +218,9 @@ void GameLoop::crear_bala(Pato& pato){
             Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y() + DISTANCIA_ARMA, pato.get_pos_x() + pato.get_arma()->get_alcance(), pato.get_pos_y() + DISTANCIA_ARMA, pato.get_direccion(), pato.get_arma()->get_tipo_arma(), pato.get_id());
             ultimo_estado.balas.push_back(bala);
         } else {
-            Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y() + DISTANCIA_ARMA, pato.get_pos_x() - pato.get_arma()->get_alcance(), pato.get_pos_y() + DISTANCIA_ARMA, pato.get_direccion(), pato.get_arma()->get_tipo_arma(), pato.get_id());
+            bool fuera_rango = pato.get_pos_x() < pato.get_arma()->get_alcance();
+            uint16_t pos_final_x = fuera_rango ? 0 : pato.get_pos_x() - pato.get_arma()->get_alcance();
+            Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y() + DISTANCIA_ARMA, pos_final_x, pato.get_pos_y() + DISTANCIA_ARMA, pato.get_direccion(), pato.get_arma()->get_tipo_arma(), pato.get_id());
             ultimo_estado.balas.push_back(bala);
         }
     } else {
@@ -249,7 +251,12 @@ void GameLoop::enviar_estado_juego_si_cambio( EstadoJuego& estado_anterior) {
 
 void GameLoop::avanzar_balas_direccion_izquierda(std::__cxx11::list<Bala>::iterator& it){
     if (it->get_direccion() == DIRECCION_IZQUIERDA) {
-        it->set_pos_x(it->get_pos_x() - 5);
+        if (it->get_pos_x() < 5) {
+            it->set_pos_x(0);
+        } else {
+            it->set_pos_x(it->get_pos_x() - 5);
+        }
+        //it->set_pos_x(it->get_pos_x() - 5);
         // std::cout << "pos x bala avance:" << static_cast<int>(it->get_pos_x()) << std::endl;
     }
 }
