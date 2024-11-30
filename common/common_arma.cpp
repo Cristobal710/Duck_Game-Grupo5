@@ -43,3 +43,11 @@ bool Arma::get_se_agarro(){
 void Arma::set_se_agarro(bool agarrado){
     se_agarro = agarrado;
 }
+
+void Arma::set_pos_x(uint16_t pos_x){
+    this->pos_x = pos_x;
+}
+
+void Arma::set_pos_y(uint16_t pos_y){
+    this->pos_y = pos_y;
+}

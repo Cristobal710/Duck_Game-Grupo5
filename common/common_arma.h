@@ -18,6 +18,8 @@ public:
          uint16_t alcance, uint8_t tipo_arma);
     bool disparar();
     void recargar();
+    void set_pos_x(uint16_t pos_x);
+    void set_pos_y(uint16_t pos_y);
     std::string get_nombre();
     uint8_t get_municion_disponible();
     uint16_t get_alcance();

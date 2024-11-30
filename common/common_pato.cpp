@@ -81,7 +81,12 @@ void Pato::caer() {
 
 void Pato::tomar_arma(Arma* nuevaArma) { arma = nuevaArma; }
 
-void Pato::soltar_arma() { arma = nullptr; }
+void Pato::soltar_arma() { 
+    arma->set_se_agarro(false);
+    arma->set_pos_x(get_pos_x());
+    arma->set_pos_y(get_pos_y());
+    arma = nullptr; 
+}
 
 uint8_t Pato::tiene_arma(){ 
     if (arma != nullptr){
