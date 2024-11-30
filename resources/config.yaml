@@ -1,6 +1,6 @@
 armas:
   granada:
-    path: "../resources/weapons/granada.png"
+    path: "../resources/weapons/grenade.png"
     alcance: 5
     municiones: 1
   banana:
@@ -20,11 +20,11 @@ armas:
     alcance: 13
     municiones: 30
   pistolaDuelos:
-    path: "../resources/weapons/pistolaDuelos.png"
+    path: "../resources/weapons/oldPistol.png"
     alcance: 5
     municiones: 1
   pistolaCowboy:
-    path: "../resources/weapons/pistolaCowboy.png"
+    path: "../resources/weapons/cowboyPistol.png"
     alcance: 20
     municiones: 6
   magnum:
@@ -32,7 +32,7 @@ armas:
     alcance: 20
     municiones: 6
   escopeta:
-    path: "../resources/weapons/escopeta.png"
+    path: "../resources/weapons/shotgun.png"
     alcance: 7
     municiones: 2
   sniper:

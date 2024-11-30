@@ -79,7 +79,10 @@ void Pato::caer() {
     velocidad_caida+=1;
 }
 
-void Pato::tomar_arma(Arma* nuevaArma) { arma = nuevaArma; }
+void Pato::tomar_arma(Arma* nuevaArma) { 
+    arma = nuevaArma;
+    arma->set_se_agarro(true);
+}
 
 void Pato::soltar_arma() { 
     arma->set_se_agarro(false);

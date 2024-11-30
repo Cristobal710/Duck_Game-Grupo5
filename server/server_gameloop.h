@@ -15,6 +15,15 @@
 #include "../common/common_thread.h" 
 #include "../common/common_tipo_proteccion.h"
 
+#include "../common/common_ak47.h"
+#include "../common/common_escopeta.h"
+#include "../common/common_laserrifle.h"
+#include "../common/common_magnum.h"
+#include "../common/common_pistolacowboy.h"
+#include "../common/common_pistoladuelos.h"
+#include "../common/common_pewpewlaser.h"
+#include "../common/common_sniper.h"
+
 #include "server_client.h"
 #include "server_evento.h"
 #include "server_arma_config.h"
@@ -69,7 +78,7 @@ private:
 
 
     void leer_configuracion(const std::string& archivo_yaml);
-    uint8_t mapear_armas(ArmaConfig armamento);
+    Arma mapear_armas(ArmaConfig armamento, SDL_Point posicion_arma);
 
 public:
     GameLoop(Queue<EstadoJuego>& cola_estados_juego,

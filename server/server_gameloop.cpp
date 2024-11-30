@@ -151,9 +151,6 @@ void GameLoop::agarrar_recompensa(Pato& pato){
             if (!caja.get_esta_vacia()) {
                 Arma* arma = caja.get_arma();
                 pato.tomar_arma(arma);
-                arma->set_se_agarro(true);
-               // std::cout << ultimo_estado.cajas.size() << std::endl;
-               // std::cout << ultimo_estado.cajas.size() << std::endl;
                 caja.set_esta_vacia(true);
                 return;          
             }
@@ -469,43 +466,36 @@ void GameLoop::inicializar_patos(){
 void GameLoop::inicializar_cajas(){
     for (const auto& cajas : ultimo_estado.mapa.getCajas()) {
         for (SDL_Point posicion_caja : cajas.second) {
-            Arma arma(ultimo_estado.armas.size()+1, posicion_caja.x, posicion_caja.y, 30, 30, AK_47);
-            arma.set_se_agarro(true);
-            Caja caja(ultimo_estado.cajas.size() + 1, posicion_caja.x, posicion_caja.y, AK_47, &arma);
-            ultimo_estado.armas.push_back(arma);
+            AK47 escopeta(ultimo_estado.armas.size()+1, posicion_caja.x, posicion_caja.y, 30, 30);
+            escopeta.set_se_agarro(true);
+            Caja caja(ultimo_estado.cajas.size() + 1, posicion_caja.x, posicion_caja.y, AK_47, &escopeta);
+            ultimo_estado.armas.push_back(escopeta);
             ultimo_estado.cajas.push_back(caja);
         }
     }
 }
 
 
-uint8_t GameLoop::mapear_armas(ArmaConfig armamento){
+Arma GameLoop::mapear_armas(ArmaConfig armamento, SDL_Point posicion_arma){
     if (armamento.nombre == "ak47") {
-        return AK_47;
-    } else if (armamento.nombre == "banana") {
-        return BANANA;
+        return AK47(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, armamento.municiones, armamento.alcance * ANCHO_TILE);
     } else if (armamento.nombre == "escopeta") {
-        return ESCOPETA;
-    } else if (armamento.nombre == "granada") {
-        return GRANADA;
+        return Escopeta(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, armamento.municiones, armamento.alcance * ANCHO_TILE);
     } else if (armamento.nombre == "laserRifle") {
-        return LASER_RIFLE;
+        return LaserRifle(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, armamento.municiones, armamento.alcance * ANCHO_TILE);
     } else if (armamento.nombre == "magnum") {
-        return MAGNUM;
+        return Magnum(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, armamento.municiones, armamento.alcance * ANCHO_TILE);
     } else if (armamento.nombre == "pewpewLaser") {
-        return PEW_PEW_LASER;
+        return PewPewLaser(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, armamento.municiones, armamento.alcance * ANCHO_TILE);
     } else if (armamento.nombre == "pistolaCowboy") {
-        return PISTOLA_COWBOY;
+        return PistolaCowboy(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, armamento.municiones, armamento.alcance * ANCHO_TILE);
     } else if (armamento.nombre == "pistolaDuelos") {
-        return PISTOLA_DE_DUELOS;
+        return PistolaDuelos(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, armamento.municiones, armamento.alcance * ANCHO_TILE);
     } else if (armamento.nombre == "sniper") {
-        return SNIPER;
-    } else if (armamento.nombre == "armadura") {
-        return BYTE_ARMADURA;
-    } else if (armamento.nombre == "casco") {
-        return BYTE_CASCO;
+        return Sniper(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, armamento.municiones, armamento.alcance * ANCHO_TILE);
     } else {
-        return BYTE_NULO;
+        std::cout << "arma no encontrada" << std::endl;
+        return Arma();
     }
 }
 
@@ -513,19 +503,18 @@ void GameLoop::inicializar_armas(){
     for (const auto& armas : ultimo_estado.mapa.getEquipamiento()) {
         for (SDL_Point posicion_arma : armas.second) {
             ArmaConfig armamento = armamento_config[armas.first];
-            uint8_t arma_id = mapear_armas(armamento);
-            
-            if(arma_id == BYTE_ARMADURA){
+            if(armamento.nombre == "armadura"){
                 Proteccion proteccion(ultimo_estado.armaduras.size()+1, posicion_arma.x, posicion_arma.y, ARMADURA_ENUM, false);
                 ultimo_estado.armaduras.push_back(proteccion);
                 continue;
-            }else if(arma_id == BYTE_CASCO){
+            }else if(armamento.nombre == "casco"){
                 Proteccion proteccion(ultimo_estado.armaduras.size()+1, posicion_arma.x, posicion_arma.y, CASCO_ENUM, false);
                 ultimo_estado.armaduras.push_back(proteccion);
                 continue;
             }
-
-            Arma arma(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, armamento.municiones, armamento.alcance * ANCHO_TILE, arma_id);
+            Arma arma = mapear_armas(armamento, posicion_arma);
+            std::cout << "arma creada" << std::endl;
+            std::cout << static_cast<int>(arma.get_tipo_arma()) << std::endl;
             ultimo_estado.armas.push_back(arma);
         }
     }

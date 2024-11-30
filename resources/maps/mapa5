@@ -41,8 +41,18 @@
             "y": 416
         },
         {
-            "arma": "../resources/weapons/ak47.png",
+            "arma": "../resources/weapons/shotgun.png",
             "x": 992,
+            "y": 512
+        },
+        {
+            "arma": "../resources/weapons/magnum.png",
+            "x": 380,
+            "y": 416
+        },
+        {
+            "arma": "../resources/weapons/pewpewLaser.png",
+            "x": 900,
             "y": 512
         }
     ],
