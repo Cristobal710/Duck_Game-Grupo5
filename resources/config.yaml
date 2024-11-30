@@ -40,10 +40,10 @@ armas:
     alcance: 64
     municiones: 3
   armadura:
-    path: "../resources/armors/chestPlate.png"
+    path: "../resources/armors/chestPlatePickup.png"
     alcance: 0
     municiones: 0
   casco:
-    path: "../resources/armors/helment.png"
+    path: "../resources/armors/knightHelmet.png"
     alcance: 0
     municiones: 0

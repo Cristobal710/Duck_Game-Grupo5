@@ -27,8 +27,6 @@ void ClienteProtocolo::recibir_pato(std::list<Pato>& patos) {
     uint8_t estado_agachado = recibir_byte(cerrado);
     uint8_t estado_disparo = recibir_byte(cerrado);
     uint8_t esta_vivo = recibir_byte(cerrado);
-    uint8_t casco_inventario = recibir_byte(cerrado);
-    uint8_t armadura_inventario = recibir_byte(cerrado);
     uint8_t casco_equipado = recibir_byte(cerrado);
     uint8_t armadura_equipada = recibir_byte(cerrado);
     uint8_t tiene_arma = recibir_byte(cerrado);
@@ -44,12 +42,6 @@ void ClienteProtocolo::recibir_pato(std::list<Pato>& patos) {
     }
     if (static_cast<bool>(apunta_arriba)) {
         pato.apuntar_arriba();
-    }
-    if (static_cast<bool>(casco_inventario)) {
-        pato.tomar_casco();
-    }
-    if (static_cast<bool>(armadura_inventario)) {
-        pato.tomar_armadura();
     }
     if (static_cast<bool>(casco_equipado)) {
         pato.equipar_casco();

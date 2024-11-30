@@ -150,6 +150,26 @@ void GameLoop::agarrar_recompensa(Pato& pato){
             }
         }   
     }
+    for (Proteccion& proteccion : ultimo_estado.armaduras){
+        if(pato.colisiona_con_recompensa(proteccion.get_hitbox()) == Recompensas){
+            if(!proteccion.get_se_agarro()){
+                if (proteccion.get_tipo() == CASCO_ENUM) {
+                    if (!pato.get_casco_equipado()) {
+                        pato.equipar_casco();
+                        std::cout << "se equipa casco" << std::endl;
+                        proteccion.set_se_agarro(true);
+                    }
+                }else{
+                    if (!pato.get_armadura_equipada()) {
+                        pato.equipar_armadura();
+                        std::cout << "se equipa armadura" << std::endl;
+                        proteccion.set_se_agarro(true);
+                    }
+                }
+                return;
+            }
+        }
+    }
 }
 
 bool GameLoop::validar_movimiento(Pato& pato, TipoColision colision){
@@ -393,17 +413,6 @@ void GameLoop::calcular_colisiones_balas(){
     }
 }
 
-// void GameLoop::calcular_colisiones_cajas(){
-//     for(Pato& pato : ultimo_estado.patos){
-//         for(Caja& caja : ultimo_estado.cajas){
-//             if(pato.colisiona_con_caja(caja.get_hitbox()) == Cajas){
-//                 //std::cout<<"ESTOY COLISIONANDO CON UNA CAJARDA"<<std::endl;
-//             }
-//         }
-//     }
-    
-// }
-
 void GameLoop::actualizar_hitbox_entidades(){
     for (Pato& pato: ultimo_estado.patos) {
         pato.calcular_hitbox();
@@ -466,7 +475,6 @@ void GameLoop::inicializar_cajas(){
 
 
 uint8_t GameLoop::mapear_armas(ArmaConfig armamento){
-    
      if (armamento.nombre == "ak47") {
         return AK_47;
     } else if (armamento.nombre == "banana") {
@@ -491,17 +499,13 @@ uint8_t GameLoop::mapear_armas(ArmaConfig armamento){
         return BYTE_ARMADURA;
     } else if (armamento.nombre == "casco") {
         return BYTE_CASCO;
-
-
     } else {
-        return 0x00;
+        return BYTE_NULO;
     }
 }
 
-
-
 void GameLoop::inicializar_armas(){
-    
+    std::cout << "inicializando armas" << std::endl;
     for (const auto& armas : ultimo_estado.mapa.getEquipamiento()) {
         for (SDL_Point posicion_arma : armas.second) {
             ArmaConfig armamento = armamento_config[armas.first];
@@ -510,10 +514,12 @@ void GameLoop::inicializar_armas(){
             if(arma_id == BYTE_ARMADURA){
                 Proteccion proteccion(ultimo_estado.armaduras.size()+1, posicion_arma.x, posicion_arma.y, ARMADURA_ENUM, false);
                 ultimo_estado.armaduras.push_back(proteccion);
+                std::cout << "se agrego armadura" << std::endl;
                 continue;
             }else if(arma_id == BYTE_CASCO){
                 Proteccion proteccion(ultimo_estado.armaduras.size()+1, posicion_arma.x, posicion_arma.y, CASCO_ENUM, false);
                 ultimo_estado.armaduras.push_back(proteccion);
+                std::cout << "se agrego casco" << std::endl;
                 continue;
             }
 

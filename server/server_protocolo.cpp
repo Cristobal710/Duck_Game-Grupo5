@@ -62,8 +62,6 @@ void ServerProtocolo::enviar_spawns(Mapa& mapa){
             enviar_coordenada(coord);
         }
     }
-
-
 }
 
 void ServerProtocolo::enviar_cajas_mapa(Mapa& mapa){
@@ -72,15 +70,12 @@ void ServerProtocolo::enviar_cajas_mapa(Mapa& mapa){
     if (cajas.find("default") != cajas.end()){
         cajas_list = cajas.at("default");
     }
-
     uint16_t size_cajas = cajas_list.size();
     enviar_dos_bytes(size_cajas);
     for(SDL_Point coord : cajas_list){
         enviar_coordenada(coord);
     }
-
 }
-
 
 void ServerProtocolo::enviar_tiles(Mapa& mapa){
     std::map<std::string, std::vector<SDL_Point>> tiles =mapa.getTiles();
@@ -95,11 +90,7 @@ void ServerProtocolo::enviar_tiles(Mapa& mapa){
             enviar_coordenada(coord);
         }
     }
-
-
-
 }
-
 
 void ServerProtocolo::enviar_mapa(Mapa& mapa){
     enviar_string(mapa.getFondo());
@@ -153,8 +144,6 @@ void ServerProtocolo::enviar_pato(Pato& pato) {
     enviar_byte(pato.estado.get_estado_agachado());
     enviar_byte(pato.estado.get_estado_disparo());
     enviar_byte(pato.esta_vivo());
-    enviar_byte(pato.casco_en_inventario());
-    enviar_byte(pato.armadura_en_inventario());
     enviar_byte(pato.get_casco_equipado());
     enviar_byte(pato.get_armadura_equipada());
     enviar_byte(pato.tiene_arma());

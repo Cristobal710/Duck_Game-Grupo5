@@ -11,8 +11,6 @@ Pato::Pato(){}
 Pato::Pato(uint16_t id, uint16_t pos_x, uint16_t pos_y, uint8_t direccion):
         Entidad(id, pos_x, pos_y),
         arma(nullptr),
-        tomo_armadura(false),
-        tomo_casco(false),
         armadura_equipada(false),
         casco_equipado(false),
         vivo(true),
@@ -119,20 +117,12 @@ void Pato::levantarse_del_piso(){
     estado.set_dejar_de_agacharse();
 }
 
-void Pato::tomar_armadura() { tomo_armadura = true; }
-
-void Pato::tomar_casco() { tomo_casco = true; }
-
 void Pato::equipar_armadura() {
-    if (tomo_armadura) {
-        armadura_equipada = true;
-    }
+    armadura_equipada = true;
 }
 
 void Pato::equipar_casco() {
-    if (tomo_casco) {
-        casco_equipado = true;
-    }
+    casco_equipado = true;
 }
 
 bool Pato::get_casco_equipado() { return casco_equipado; }
@@ -144,12 +134,10 @@ void Pato::recibir_danio() {
     // sino tiene armadura o casco
     if (casco_equipado) {
         casco_equipado = false;
-        tomo_casco = false;
         return;
     }
     if (armadura_equipada) {
         armadura_equipada = false;
-        tomo_armadura = false;
         return;
     }
     morir();
@@ -162,10 +150,6 @@ Arma* Pato::get_arma() { return arma; }
 bool Pato::esta_vivo() const { return vivo; }
 
 void Pato::morir() { vivo = false; }
-
-bool Pato::armadura_en_inventario() { return tomo_armadura; }
-
-bool Pato::casco_en_inventario() { return tomo_casco; }
 
 // int Pato::get_color() { return color; }
 

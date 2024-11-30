@@ -36,16 +36,6 @@
             "y": 512
         },
         {
-            "casco": "../resources/armors/knightHelmet.png",
-            "x": 640,
-            "y": 128
-        },
-        {
-            "arma": "../resources/weapons/ak47.png",
-            "x": 640,
-            "y": 128
-        },
-        {
             "arma": "../resources/weapons/ak47.png",
             "x": 416,
             "y": 416
@@ -54,11 +44,6 @@
             "arma": "../resources/weapons/ak47.png",
             "x": 992,
             "y": 512
-        },
-        {
-            "arma": "../resources/weapons/ak47.png",
-            "x": 640,
-            "y": 192
         }
     ],
     "spawns": [
