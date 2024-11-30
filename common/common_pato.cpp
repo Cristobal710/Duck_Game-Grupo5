@@ -91,14 +91,18 @@ uint8_t Pato::tiene_arma(){
     }
 }
 
-void Pato::disparar() {
-    estado.set_disparando();
-    // if (arma) {
-    //     arma->disparar();
-    // } else {
-    //     estado.set_dejar_de_disparar();
-    //     // Si el pato no tiene un arma, no puede disparar
-    // }
+bool Pato::disparar() {
+    if (tiene_arma()) {
+        if (arma->disparar()){
+            estado.set_disparando();
+            return true;
+        }
+        return false;
+    } else {
+        estado.set_dejar_de_disparar();
+        return false;
+        // Si el pato no tiene un arma, no puede disparar
+    }
 }
 
 void Pato::apuntar_arriba() { 

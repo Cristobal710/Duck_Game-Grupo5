@@ -37,7 +37,7 @@ public:
     void caer();
     void tomar_arma(Arma* nuevaArma);
     void soltar_arma();
-    void disparar();
+    bool disparar();
     void apuntar_arriba();
     void dejar_de_apuntar_arriba();
     void tirarse_al_piso();

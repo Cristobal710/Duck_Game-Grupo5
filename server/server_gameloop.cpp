@@ -49,6 +49,7 @@ void GameLoop::procesar_evento(EventoServer& evento, EstadoJuego& estado_juego) 
 void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
     Bala bala;
     Caja caja;
+    bool puede_disparar = false;
     switch (accion) {
         case MOVER_IZQUIERDA:
             pato.estado.set_moviendo_izquierda();
@@ -108,14 +109,13 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
             // pato.tomar_arma();
             break;
         case DISPARAR:
-            if (!pato.tiene_arma()) { 
-                break;
-            } 
-            if (pato.estado.get_estado_agachado() == TIRAR_PISO) {
-                pato.estado.set_dejar_de_agacharse();
+            puede_disparar = pato.disparar();
+            if (puede_disparar){
+                crear_bala(pato);
+                if (pato.estado.get_estado_agachado() == TIRAR_PISO) {
+                    pato.estado.set_dejar_de_agacharse();
+                }
             }
-            pato.disparar();
-            crear_bala(pato);
             break;
         default:
             break;
@@ -480,7 +480,7 @@ void GameLoop::inicializar_cajas(){
 
 
 uint8_t GameLoop::mapear_armas(ArmaConfig armamento){
-     if (armamento.nombre == "ak47") {
+    if (armamento.nombre == "ak47") {
         return AK_47;
     } else if (armamento.nombre == "banana") {
         return BANANA;

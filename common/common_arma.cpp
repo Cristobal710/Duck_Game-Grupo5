@@ -12,7 +12,13 @@ Arma::Arma(uint16_t id, uint16_t pos_x, uint16_t pos_y, uint8_t municion_disponi
         calcular_hitbox();
         }
 
-void Arma::disparar() { municion_disponible--; }
+bool Arma::disparar() {
+    if (municion_disponible > 0) {
+        municion_disponible--;
+        return true;
+    }
+    return false;
+}
 
 // std::string Arma::get_nombre() { return nombre; }
 
