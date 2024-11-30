@@ -13,11 +13,12 @@ std::vector<EventoServer> ClientesProtegidos::recibir_mensajes_clientes() {
     std::vector<EventoServer> eventos;
     std::lock_guard<std::mutex> lock(mutex);
     if (!clientes.empty()) {
+        EventoServer evento;
         for (const auto& cliente: clientes) {
-            EventoServer evento;
             while(cliente.second->try_pop(evento)){
-                eventos.push_back(evento);
+                //eventos.push_back(evento);
             }
+            eventos.push_back(evento);
         }
     }
     return eventos;

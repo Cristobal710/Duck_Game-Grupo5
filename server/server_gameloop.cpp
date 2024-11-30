@@ -14,12 +14,12 @@
 #define ANCHO_TILE 24
 
 GameLoop::GameLoop(Queue<EstadoJuego>& cola_estados_juego,
-        bool* conexion):
+        bool* conexion, uint8_t id):
         mapa_clientes(),
         clientes(mapa_clientes),
         cola_estados_juego(cola_estados_juego),
         esta_cerrado(conexion),
-        id_ultimo_jugador(0)
+        id_ultimo_jugador(0), id_partida(id)
         {
         ultimo_estado = EstadoJuego();
         }
@@ -74,7 +74,7 @@ void GameLoop::ejecutar_accion_lobby(PedidoJugador& pedido, uint16_t id_jugador,
     }
     if (pedido.un_jugador == 0x01){
         //crear un pato?
-        std::cout << "hay un jugador" << std::endl;
+        // std::cout << "hay un jugador" << std::endl;
         return;
     }
     if (pedido.dos_jugadores == 0x01){
@@ -476,15 +476,15 @@ void GameLoop::inicializar_patos(){
     int pos_y = 0;
     int id = 1;
     std::map<std::string, std::vector<SDL_Point>> spawns = ultimo_estado.mapa.getSpawns();
-    std::cout << "spawns size: " << spawns.size() << std::endl;
+
     for (const auto& id_posicion : spawns) {        
         std::string id_jugador = id_posicion.first;
-        std::cout << "id jugador: " << id_jugador << std::endl;
+       
         std::vector<SDL_Point> posicion = id_posicion.second;
         for(SDL_Point coord : posicion){
             pos_x = coord.x;
             pos_y = coord.y;
-            std::cout << "pos x: " << pos_x << " pos y: " << pos_y << std::endl;
+            
             Pato pato(id, pos_x, pos_y, 0);
             id++;
             Arma* arma = new Arma(1, pos_x, pos_y, 15, 200, PEW_PEW_LASER);
@@ -521,7 +521,6 @@ void GameLoop::inicializar_juego(){
     inicializar_patos();
     inicializar_cajas();
     inicializar_armas();
-    cola_estados_juego.push(ultimo_estado);
 }
 
 
@@ -533,6 +532,9 @@ void GameLoop::run() {
     ultimo_estado.mapa = mapa;
     inicializar_juego();
     calcular_colisiones_tiles(mapa);
+    ultimo_estado.id_partida = id_partida;
+
+    cola_estados_juego.push(ultimo_estado);
 
     tiempo_ultimo_frame = SDL_GetTicks();
     while (!(*esta_cerrado)) {
@@ -545,11 +547,13 @@ void GameLoop::run() {
                 procesar_evento(evento, ultimo_estado);
                 cola_estados_juego.push(ultimo_estado);
             }
+           
             eliminar_patos_muertos();
             actualizar_hitbox_entidades();
             aplicar_logica();
             calcular_colisiones_balas();
-            enviar_estado_juego_si_cambio(estado_anterior);
+            cola_estados_juego.push(ultimo_estado);
+            //enviar_estado_juego_si_cambio(estado_anterior);
             drop_and_rest(tiempo_ultimo_frame);
         }
     }
@@ -557,6 +561,7 @@ void GameLoop::run() {
 }
 
 void GameLoop::mandar_id_cliente(uint16_t& id) {
-    ultimo_estado.id_ultimo_jugador = id;
+    //ultimo_estado.id_ultimo_jugador = id;
+    id = id;
     cola_estados_juego.push(ultimo_estado);
 }

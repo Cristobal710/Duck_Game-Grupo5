@@ -192,13 +192,25 @@ std::list<Granada> ClienteProtocolo::recibir_granadas() {
 EstadoJuego ClienteProtocolo::recibir_estado_juego() {
     EstadoJuego estado_juego;
     bool cerrado = false;
-    estado_juego.id_ultimo_jugador = recibir_dos_bytes(cerrado);
-    //std::cout << "id ultimo jugador cliente --> " << estado_juego.id_ultimo_jugador << std::endl;
-    estado_juego.lobby_data = recibir_lobby_data();
-    estado_juego.patos = recibir_patos();
-    estado_juego.balas = recibir_balas();
+
+    uint8_t cant_ids_tomados = recibir_byte(cerrado);
+    std::list<uint16_t> lista_id;
+    for (uint8_t i = 0; i < cant_ids_tomados ; i++){
+        lista_id.emplace_front(recibir_dos_bytes(cerrado));
+    }
+
+    estado_juego.ids_tomados = lista_id;
+    estado_juego.id_partida = recibir_byte(cerrado);
     estado_juego.mapa = recibir_mapa();
+
+    //estado_juego.lobby_data = recibir_lobby_data();
+    
+    estado_juego.patos = recibir_patos();
+
+    estado_juego.balas = recibir_balas();
+    
     //estado_juego.cajas = recibir_cajas();
+    
     estado_juego.armas = recibir_armas();
     return estado_juego;
 }
@@ -339,7 +351,7 @@ Mapa ClienteProtocolo::recibir_mapa(){
 
     std::string fondo = recibir_string();
     mapa.set_fondo(fondo);
-    recibir_spawns(mapa);
+    //recibir_spawns(mapa);
     recibir_cajas(mapa);
     recibir_tiles(mapa);
     recibir_equipamiento(mapa);

@@ -30,7 +30,7 @@ class InterfazGrafica {
                         const std::unordered_map<SDL_Keycode, std::string>& key_map, int jugador_id, bool es_presionado);
     void manejar_eventos(std::set<SDL_Keycode>& keysHeld, int cant_jugadores, int id1, int id2);
     void procesar_mapa(MapaInterfaz& mapa, EstadoJuego& ultimo_estado, bool& mapa_procesado);
-    void obtener_estado_juego(MapaInterfaz& mapa, bool& mapa_procesado);
+    void obtener_estado_juego(MapaInterfaz& mapa, bool& mapa_procesado, uint8_t& id_partida);
 
     public:
     InterfazGrafica(Queue<ComandoGrafica>& cola_comandos, Queue<EstadoJuego>& cola_estado_juego);

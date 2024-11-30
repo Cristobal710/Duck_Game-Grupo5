@@ -16,6 +16,7 @@ class ModoJuego: public Thread {
     Queue<EventoServer>& queue_cliente;
     Queue<EstadoJuego>& broadcast;
     EstadoJuego ultimo_estado;
+    uint8_t id_partida;
 
     void procesar_evento_lobby(EventoServer& evento, bool& iniciar_partida, bool& partida_nueva);
     void drop_and_rest(float& tiempo_ultimo_frame);
@@ -23,7 +24,7 @@ class ModoJuego: public Thread {
 
 
     public:
-    ModoJuego(ServerClient& cliente, Queue<EventoServer>& cola_cliente, Queue<EstadoJuego>& recibidos);
+    ModoJuego(ServerClient& cliente, Queue<EventoServer>& cola_cliente, Queue<EstadoJuego>& recibidos, uint8_t id);
     void run() override;
     
 };

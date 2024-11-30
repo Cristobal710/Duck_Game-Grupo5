@@ -25,6 +25,7 @@ private:
     EstadoJuego ultimo_estado;
     std::vector<Tile> colisiones;
     uint16_t id_ultimo_jugador;
+    uint8_t id_partida;
 
     // void eliminar_clientes_cerrados();
     // void cerrar_gameloop();
@@ -59,7 +60,7 @@ private:
 
 public:
     GameLoop(Queue<EstadoJuego>& cola_estados_juego,
-             bool* conexion);
+             bool* conexion, uint8_t id);
     void procesar_evento(EventoServer& evento, EstadoJuego& cola_estados_juego);
     int get_indice_por_id(uint8_t id);
     void agregar_cliente(ServerClient& cliente, Queue<EventoServer>& cola_cliente);

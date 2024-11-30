@@ -218,7 +218,6 @@ TipoColision Pato::colisiona_con_recompensa(HitBox hitbox_caja) {
 }
 
 void Pato::ajustar_sobre_tile(const SDL2pp::Rect& tile_hitbox) {
-    std::cout << "ajustando sobre tile" << std::endl;
-    pos_y = tile_hitbox.GetY() - hitbox.get_hitbox_rect().GetH(); // Coloca el pato justo encima del tile
+    pos_y = tile_hitbox.GetY() - hitbox.get_hitbox_rect().GetH(); 
 }
 

@@ -160,7 +160,7 @@ PedidoJugador Lobby::manejar_eventos() {
                 if (x >= partida_nueva_rect.x && x <= partida_nueva_rect.x + partida_nueva_rect.w &&
                     y >= partida_nueva_rect.y && y <= partida_nueva_rect.y + partida_nueva_rect.h) {
                     pedido.partida_nueva();
-                    std::cout << "me dieron una partida" << std::endl;
+
                     estado = EstadoLobby::INICIAR_PARTIDA;
                 }
 

@@ -137,7 +137,7 @@ void ServerProtocolo::enviar_tiles(Mapa& mapa){
 
 void ServerProtocolo::enviar_mapa(Mapa& mapa){
     enviar_string(mapa.getFondo());
-    enviar_spawns(mapa);
+    //enviar_spawns(mapa);
     enviar_cajas_mapa(mapa);
     enviar_tiles(mapa);
 
@@ -150,18 +150,22 @@ void ServerProtocolo::enviar_mapa(Mapa& mapa){
 void ServerProtocolo::enviar_string(const std::string& mensaje) {
     bool cerrado;
     uint16_t largo = mensaje.size(); 
-    enviar_dos_bytes(largo);  // Send string length first
+    enviar_dos_bytes(largo); 
 
-    socket.sendall(reinterpret_cast<const uint8_t*>(mensaje.data()), largo, &cerrado);  // Send string data directly
+    socket.sendall(reinterpret_cast<const uint8_t*>(mensaje.data()), largo, &cerrado);  
 }
 
 void ServerProtocolo::enviar_estado_juego(EstadoJuego& estado) {
-    enviar_dos_bytes(estado.id_ultimo_jugador);
-    //std::cout << "id ultimo jugador --> " << estado.id_ultimo_jugador << std::endl;
-    enviar_estado_lobby(estado.lobby_data);
+    //enviar_dos_bytes(estado.id_ultimo_jugador);
+    enviar_byte(estado.ids_tomados.size());
+    for (uint16_t id : estado.ids_tomados){
+        enviar_dos_bytes(id);
+    }
+    enviar_byte(estado.id_partida);
+    //enviar_estado_lobby(estado.lobby_data);
+    enviar_mapa(estado.mapa);
     enviar_patos(estado.patos);
     enviar_balas(estado.balas);
-    enviar_mapa(estado.mapa);
     // enviar_byte(estado.cajas.size());
     // enviar_cajas(estado.cajas);
     enviar_byte(estado.armas.size());

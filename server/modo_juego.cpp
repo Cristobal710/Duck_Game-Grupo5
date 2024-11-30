@@ -1,9 +1,10 @@
 #include "modo_juego.h"
 #include "server_gameloop.h"
+#define LOBBY_REQUEST 0x01
 #define RATE 1000 / 30
 
-ModoJuego::ModoJuego(ServerClient& cliente, Queue<EventoServer>& cola_cliente, Queue<EstadoJuego>& recibidos):
-cliente(cliente), queue_cliente(cola_cliente), broadcast(recibidos), ultimo_estado() 
+ModoJuego::ModoJuego(ServerClient& cliente, Queue<EventoServer>& cola_cliente, Queue<EstadoJuego>& recibidos, uint8_t id):
+cliente(cliente), queue_cliente(cola_cliente), broadcast(recibidos), ultimo_estado(), id_partida(id) 
 {}
 
 void ModoJuego::run() {
@@ -11,7 +12,14 @@ void ModoJuego::run() {
     float tiempo_ultimo_frame = SDL_GetTicks();
     bool iniciar_partida = false; 
     bool partida_nueva = false;
-    ultimo_estado.id_ultimo_jugador = cliente.get_id();
+
+    std::list<uint16_t> ids_tomados;
+    for (uint16_t i = cliente.get_id(); i > 0; i--){
+        ids_tomados.emplace_front(i);
+    }
+    ultimo_estado.ids_tomados = ids_tomados;
+    ultimo_estado.id_partida = id_partida;
+    //std::cout << "mando el ID de partida -->" << static_cast<int>(ultimo_estado.id_partida) << std::endl;
     broadcast.push(ultimo_estado);
     while (!iniciar_partida){
         std::vector<EventoServer> eventos;
@@ -28,7 +36,7 @@ void ModoJuego::run() {
     }
 
     if (partida_nueva){
-        auto* gameloop = new GameLoop(broadcast, &cerrado);
+        auto* gameloop = new GameLoop(broadcast, &cerrado, id_partida);
         gameloop->start();
         gameloop->agregar_cliente(cliente, queue_cliente);
     }
@@ -61,31 +69,31 @@ void ModoJuego::procesar_evento_lobby(EventoServer& evento, bool& iniciar_partid
 }
 
 void ModoJuego::ejecutar_accion_lobby(PedidoJugador& pedido, uint16_t id_jugador, bool& iniciar_partida, bool& partida_nueva) {
-    if (pedido.crear_partida == 0x01){
-        ultimo_estado.lobby_data.agregar_partida(id_jugador);
+    if (pedido.crear_partida == LOBBY_REQUEST){
+        // ultimo_estado.lobby_data.agregar_partida(id_jugador);
         partida_nueva = true;
         //crear una partida
         return;
     }
-    if (pedido.unirse_a_partida == 0x01){
+    if (pedido.unirse_a_partida == LOBBY_REQUEST){
         ultimo_estado.lobby_data.unirse_a_partida(pedido.id_partida_a_unirse, id_jugador);
         //unirse a partida con id que esta en el pedido 
         return;
     }
-    if (pedido.un_jugador == 0x01){
+    if (pedido.un_jugador == LOBBY_REQUEST){
         //crear un pato?
         std::cout << "hay un jugador" << std::endl;
         return;
     }
-    if (pedido.dos_jugadores == 0x01){
+    if (pedido.dos_jugadores == LOBBY_REQUEST){
         //crear dos patos?
         //mandar_id_cliente(cliente.get_id());
         // mandar_id_cliente(cliente.get_id() + 1);
-        ultimo_estado.id_ultimo_jugador = cliente.get_id() + 1;
+        //ultimo_estado.id_ultimo_jugador = cliente.get_id() + 1;
         std::cout << "hay dos jugadores" << std::endl;
         return;
     }
-    if(pedido.empezar == 0x01){
+    if(pedido.empezar == LOBBY_REQUEST){
         ultimo_estado.lobby_data.empezar_partida(0);
         iniciar_partida = true;
         return;
