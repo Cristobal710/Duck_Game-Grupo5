@@ -193,7 +193,7 @@ EstadoJuego ClienteProtocolo::recibir_estado_juego() {
     EstadoJuego estado_juego;
     bool cerrado = false;
     estado_juego.id_ultimo_jugador = recibir_dos_bytes(cerrado);
-    std::cout << "id ultimo jugador cliente --> " << estado_juego.id_ultimo_jugador << std::endl;
+    //std::cout << "id ultimo jugador cliente --> " << estado_juego.id_ultimo_jugador << std::endl;
     estado_juego.lobby_data = recibir_lobby_data();
     estado_juego.patos = recibir_patos();
     estado_juego.balas = recibir_balas();
@@ -239,7 +239,7 @@ LobbyInfo ClienteProtocolo::recibir_lobby_data() {
         }
         lobby_data.agregar_partida(partida);
     }
-    std::cout << "hay estas partidas " << lobby_data.cantidad_partidas() << std::endl; 
+    //std::cout << "hay estas partidas " << lobby_data.cantidad_partidas() << std::endl; 
     return lobby_data;
 }
 

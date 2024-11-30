@@ -25,6 +25,7 @@ private:
     bool* esta_cerrado;
     EstadoJuego ultimo_estado;
     std::vector<Tile> colisiones;
+    uint16_t id_ultimo_jugador;
 
     // void eliminar_clientes_cerrados();
     // void cerrar_gameloop();

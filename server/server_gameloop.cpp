@@ -18,7 +18,9 @@ GameLoop::GameLoop(Queue<EstadoJuego>& cola_estados_juego,
         mapa_clientes(),
         clientes(mapa_clientes),
         cola_estados_juego(cola_estados_juego),
-        esta_cerrado(conexion) {
+        esta_cerrado(conexion),
+        id_ultimo_jugador(0)
+        {
         ultimo_estado = EstadoJuego();
         }
 
@@ -35,7 +37,14 @@ GameLoop::GameLoop(Queue<EstadoJuego>& cola_estados_juego,
 
 void GameLoop::agregar_cliente(ServerClient& cliente, Queue<EventoServer>& cola_cliente) {
     clientes.agregar_cliente(cliente, cola_cliente);
+    if(cliente.get_id() == id_ultimo_jugador){
+        uint16_t id_nuevo = id_ultimo_jugador + 1;
+        mandar_id_cliente(id_nuevo);
+        id_ultimo_jugador = id_nuevo;
+        return;
+    }
     mandar_id_cliente(cliente.get_id());
+    id_ultimo_jugador = cliente.get_id();
 }
 
 void GameLoop::procesar_evento(EventoServer& evento, EstadoJuego& estado_juego) {
@@ -70,6 +79,8 @@ void GameLoop::ejecutar_accion_lobby(PedidoJugador& pedido, uint16_t id_jugador,
     }
     if (pedido.dos_jugadores == 0x01){
         //crear dos patos?
+        uint16_t id_nuevo = id_ultimo_jugador + 1;
+        mandar_id_cliente(id_nuevo);
         std::cout << "hay dos jugadores" << std::endl;
         return;
     }
@@ -364,7 +375,7 @@ void GameLoop::aplicar_gravedad() {
                 for (Tile& tile : colisiones) {
                     //std::cout << "colisionando con tile" << std::endl;
                     if (pato.colisiona_con_tile(tile.get_hitbox()) == Piso) {
-                        std::cout << "ajustar tile" << std::endl;
+                        //std::cout << "ajustar tile" << std::endl;
                         pato.estado.set_dejar_de_caer();
                         pato.ajustar_sobre_tile(tile.get_hitbox());
                         colision_detectada = true;
@@ -463,7 +474,7 @@ void GameLoop::eliminar_patos_muertos(){
 void GameLoop::inicializar_patos(){
     int pos_x = 0;
     int pos_y = 0;
-    int id = 3;
+    int id = 1;
     std::map<std::string, std::vector<SDL_Point>> spawns = ultimo_estado.mapa.getSpawns();
     std::cout << "spawns size: " << spawns.size() << std::endl;
     for (const auto& id_posicion : spawns) {        

@@ -157,7 +157,7 @@ void ServerProtocolo::enviar_string(const std::string& mensaje) {
 
 void ServerProtocolo::enviar_estado_juego(EstadoJuego& estado) {
     enviar_dos_bytes(estado.id_ultimo_jugador);
-    std::cout << "id ultimo jugador --> " << estado.id_ultimo_jugador << std::endl;
+    //std::cout << "id ultimo jugador --> " << estado.id_ultimo_jugador << std::endl;
     enviar_estado_lobby(estado.lobby_data);
     enviar_patos(estado.patos);
     enviar_balas(estado.balas);

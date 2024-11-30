@@ -39,20 +39,32 @@ void InterfazGrafica::iniciar() {
 
     int it = 0;
     float tiempo_ultimo_frame = SDL_GetTicks();
+    uint16_t id1 = 0;
+    uint16_t id2 = 0;
+    bool tengo_id = false;
+    EstadoJuego ultimo_estado;
+    while(!tengo_id && estado_juego.try_pop(ultimo_estado)){
+        if(ultimo_estado.id_ultimo_jugador == 0){
+            drop_rest(tiempo_ultimo_frame, it);
+            continue;
+        }
+        id1 = ultimo_estado.id_ultimo_jugador;
+        std::cout << "mi id es: " << static_cast<int>(id1) << std::endl;
+        tengo_id = true;
+        drop_rest(tiempo_ultimo_frame, it);
+    }
+    std::cout << "sali del while del id" << std::endl;
     Lobby lobby(renderer.Get());
-
-    
-
     while (!lobby.empezo()) {
         ComandoGrafica comando_cliente;
         lobby.dibujar();
         comando_cliente.pedido = lobby.manejar_eventos();
-        comando_cliente.jugador_id = 3;
+        comando_cliente.jugador_id = id1;
         comando_cliente.tecla = NO_ABAJO;
         comandos_cliente.push(comando_cliente);
 
         //obtener estado lobby
-        EstadoJuego ultimo_estado;  
+        //EstadoJuego ultimo_estado;  
 
         while (estado_juego.try_pop(ultimo_estado)) {
             LobbyInfo lobby_data = ultimo_estado.lobby_data;
@@ -70,13 +82,16 @@ void InterfazGrafica::iniciar() {
     // o se unio a una existente al servidor
     //por ahora:
     int cant_jugadores = lobby.cantidad_jugadores();
+    if(cant_jugadores == 2){
+        id2 = ultimo_estado.id_ultimo_jugador;
+    }
     bool mapa_procesado = false;
     //se deberia recibir el/los id de los jugadores
     
     std::string audio_fondo_path = "../resources/sounds/background_music.mp3";
     iniciar_audio(audio_fondo_path);
     MapaInterfaz mapa_a_jugar(renderer);
-    EstadoJuego ultimo_estado;
+    //EstadoJuego ultimo_estado;
     while (!mapa_procesado){
         estado_juego.try_pop(ultimo_estado);
         procesar_mapa(mapa_a_jugar, ultimo_estado, mapa_procesado);
@@ -87,7 +102,7 @@ void InterfazGrafica::iniciar() {
     tiempo_ultimo_frame = SDL_GetTicks();
     while (correr_programa) {
         renderer.Clear();
-        manejar_eventos(keysHeld, cant_jugadores);
+        manejar_eventos(keysHeld, cant_jugadores, static_cast<int>(id1), static_cast<int>(id2));
         obtener_estado_juego(mapa_a_jugar, mapa_procesado);
         mapa_a_jugar.dibujar(it);
         renderer.Present();
@@ -134,7 +149,8 @@ void InterfazGrafica::manejar_eventos_por_jugador(ComandoGrafica& comando_client
     }
 }
 
-void InterfazGrafica::manejar_eventos(std::set<SDL_Keycode>& keysHeld, int cant_jugadores) {
+void InterfazGrafica::manejar_eventos(std::set<SDL_Keycode>& keysHeld, int cant_jugadores, 
+                                            int id1, int id2) {
     SDL_Event evento;
 
     std::unordered_map<SDL_Keycode, std::string> key_map_jugador_1 = {
@@ -162,16 +178,16 @@ void InterfazGrafica::manejar_eventos(std::set<SDL_Keycode>& keysHeld, int cant_
                 if (evento.key.keysym.sym == SDLK_ESCAPE) {
                     correr_programa = false;
                 }
-                manejar_eventos_por_jugador(comando_cliente, evento, key_map_jugador_1, 3, true);
+                manejar_eventos_por_jugador(comando_cliente, evento, key_map_jugador_1, id1, true);
                 if (cant_jugadores == 2) {
-                    manejar_eventos_por_jugador(comando_cliente, evento, key_map_jugador_2, 4, true);
+                    manejar_eventos_por_jugador(comando_cliente, evento, key_map_jugador_2, id2, true);
                 }
             }
             keysHeld.insert(evento.key.keysym.sym);
         } else if (evento.type == SDL_KEYUP) {
-            manejar_eventos_por_jugador(comando_cliente, evento, key_map_jugador_1, 3, false);
+            manejar_eventos_por_jugador(comando_cliente, evento, key_map_jugador_1, id1, false);
             if (cant_jugadores == 2) {
-                manejar_eventos_por_jugador(comando_cliente, evento, key_map_jugador_2, 4, false);
+                manejar_eventos_por_jugador(comando_cliente, evento, key_map_jugador_2, id2, false);
             }
             keysHeld.erase(evento.key.keysym.sym);
         }
