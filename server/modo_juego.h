@@ -22,7 +22,7 @@ class ModoJuego: public Thread {
     void procesar_evento_lobby(EventoServer& evento, bool& iniciar_partida);
     void drop_and_rest(float& tiempo_ultimo_frame);
     void ejecutar_accion_lobby(PedidoJugador& pedido, uint16_t id_jugador, bool& iniciar_partida);
-
+    void buscar_partidas();
 
     public:
     ModoJuego(ServerClient& cliente, Queue<EventoServer>& cola_cliente, Queue<EstadoJuego>& recibidos, uint8_t id,

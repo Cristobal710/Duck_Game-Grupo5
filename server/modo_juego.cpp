@@ -34,6 +34,7 @@ void ModoJuego::run() {
         for(EventoServer evento : eventos){
             procesar_evento_lobby(evento, iniciar_partida);
         }
+        buscar_partidas();
         broadcast.enviar_mensaje(ultimo_estado);
         drop_and_rest(tiempo_ultimo_frame);
     }
@@ -80,15 +81,6 @@ void ModoJuego::ejecutar_accion_lobby(PedidoJugador& pedido, uint16_t id_jugador
     std::cout << "tamanio de partidas --> " << partidas_distintas.size() << std::endl;
     if (pedido.crear_partida == LOBBY_REQUEST){
         partida_nueva = true;
-        std::list<uint8_t> partidas;
-        
-        for (ModoJuego* cliente_nuevo : partidas_distintas){
-            if (cliente_nuevo->tiene_partida()){
-                partidas.emplace_front(cliente_nuevo->obtener_id_partida());
-            }
-        }
-        ultimo_estado.partidas = partidas;
-        
         return;
         } 
     if (pedido.unirse_a_partida == LOBBY_REQUEST){
@@ -113,4 +105,12 @@ void ModoJuego::ejecutar_accion_lobby(PedidoJugador& pedido, uint16_t id_jugador
     }
 }
 
-
+void ModoJuego::buscar_partidas() {
+    std::list<uint8_t> partidas;
+        for (ModoJuego* cliente_nuevo : partidas_distintas){
+            if (cliente_nuevo->tiene_partida()){
+                partidas.emplace_front(cliente_nuevo->obtener_id_partida());
+            }
+        }
+    ultimo_estado.partidas = partidas;
+}

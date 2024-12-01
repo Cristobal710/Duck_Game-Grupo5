@@ -76,13 +76,14 @@ void InterfazGrafica::iniciar() {
         ComandoGrafica comando_cliente;
         comando_cliente.pedido = lobby.manejar_eventos();
         comando_cliente.jugador_id = id1;
-        comando_cliente.tecla = NO_ABAJO;
+        comando_cliente.tecla = NO_ABAJO; //algo arbitrario no relevante
         comandos_cliente.push(comando_cliente);
 
         while (estado_juego.try_pop(ultimo_estado)) {
-            for (uint8_t id_partida_creada : ultimo_estado.partidas){
-                std::cout << "existe partida con este ID --> " << static_cast<int>(id_partida_creada) << std::endl;
-            }
+            // for (uint8_t id_partida_creada : ultimo_estado.partidas){
+            //     std::cout << "existe partida con este ID --> " << static_cast<int>(id_partida_creada) << std::endl;
+            // }
+            std::cout << "existe partida con este ID --> " << static_cast<int>(ultimo_estado.partidas.front()) << std::endl;
             // if (ultimo_estado.id_partida == id_partida){
             //     drop_rest(tiempo_ultimo_frame, it);
             // }
