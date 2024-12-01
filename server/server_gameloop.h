@@ -43,17 +43,13 @@ private:
     EstadoJuego ultimo_estado;
     std::vector<Tile> colisiones;
     std::map<std::string, ArmaConfig> armamento_config;
-
-
+    std::vector<ArmaConfig> armas_posibles;
     // void eliminar_clientes_cerrados();
     // void cerrar_gameloop();
     void inicializar_juego();
     void inicializar_cajas();
     void inicializar_patos();
     void inicializar_armas();
-
-
-
     void ejecutar_accion(uint8_t accion, Pato& pato);
     void enviar_estado_juego_si_cambio( EstadoJuego& estado_juego);
     void avanzar_balas();
@@ -75,8 +71,7 @@ private:
     bool validar_movimiento(Pato& pato, TipoColision tipo_colision);
     void eliminar_balas_si_colisionan(std::__cxx11::list<Bala>::iterator& it);
     void agarrar_recompensa(Pato& pato);
-
-
+    Arma elegir_arma_aleatoria(SDL_Point posicion_caja);
     void leer_configuracion(const std::string& archivo_yaml);
     Arma mapear_armas(ArmaConfig armamento, SDL_Point posicion_arma);
 

@@ -158,7 +158,6 @@ void ServerProtocolo::enviar_caja(Caja& caja) {
     enviar_dos_bytes(caja.get_id());
     enviar_dos_bytes(caja.get_pos_x());
     enviar_dos_bytes(caja.get_pos_y());
-    enviar_byte(caja.get_recompensa());
     enviar_byte(caja.get_esta_vacia());
 }
 

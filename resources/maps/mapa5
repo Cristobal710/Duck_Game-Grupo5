@@ -54,6 +54,11 @@
             "arma": "../resources/weapons/pewpewLaser.png",
             "x": 900,
             "y": 512
+        },
+        {
+            "arma": "../resources/weapons/sniper.png",
+            "x": 700,
+            "y": 416
         }
     ],
     "spawns": [
