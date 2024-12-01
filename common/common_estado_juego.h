@@ -15,6 +15,7 @@
 struct EstadoJuego {
     std::list<uint16_t> ids_tomados;
     uint8_t id_partida;
+    std::list<uint8_t> partidas;
     LobbyInfo lobby_data;
     Mapa mapa;
     std::list<Pato> patos;

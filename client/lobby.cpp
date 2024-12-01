@@ -87,7 +87,7 @@ void Lobby::cargar_texto_boton(std::string& texto, SDL_Rect& boton_rect){
 }
 
 
-void Lobby::dibujar() {
+void Lobby::dibujar(std::list<uint8_t>& partidas) {
     SDL_RenderClear(renderer);
     
     cargar_fondo();
@@ -119,9 +119,8 @@ void Lobby::dibujar() {
         SDL_Texture* fondo = IMG_LoadTexture(renderer, "../resources/lobby/background_lobby2.jpg");
         SDL_RenderCopy(renderer, fondo, NULL, NULL);
 
-        for (Partida& partida : partidas) {
-            if(!partida.esta_iniciada()){
-                int id = partida.obtener_id();
+        for (uint8_t& id_partida : partidas) {
+                int id = static_cast<int>(id_partida);
                 SDL_Rect rect;
                 if(id > 0){
                     SDL_Rect rect_anterior = rects_ids_partidas[id - 1];
@@ -130,13 +129,11 @@ void Lobby::dibujar() {
                 } else {
                     rect = {200, 200, 100, 100};
                 }
-                rects_ids_partidas[partida.obtener_id()] = rect;
-                std::string id_texto = std::to_string(partida.obtener_id());
+                rects_ids_partidas[id] = rect;
+                std::string id_texto = std::to_string(id);
                 cargar_boton(id_texto, rect);
             }
         }
-
-    }
 
     SDL_RenderPresent(renderer);
 }

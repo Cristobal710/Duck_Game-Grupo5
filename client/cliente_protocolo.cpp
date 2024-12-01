@@ -198,12 +198,9 @@ EstadoJuego ClienteProtocolo::recibir_estado_juego() {
     for (uint8_t i = 0; i < cant_ids_tomados ; i++){
         lista_id.emplace_front(recibir_dos_bytes(cerrado));
     }
-
     estado_juego.ids_tomados = lista_id;
     estado_juego.id_partida = recibir_byte(cerrado);
     estado_juego.mapa = recibir_mapa();
-
-    //estado_juego.lobby_data = recibir_lobby_data();
     
     estado_juego.patos = recibir_patos();
 
@@ -212,6 +209,13 @@ EstadoJuego ClienteProtocolo::recibir_estado_juego() {
     //estado_juego.cajas = recibir_cajas();
     
     estado_juego.armas = recibir_armas();
+
+    uint8_t cantidad_partidas = recibir_byte(cerrado);
+    std::list<uint8_t> lista_partidas;
+    for (uint8_t i = 0; i < cantidad_partidas ; i++){
+        lista_partidas.emplace_front(recibir_byte(cerrado));
+    }
+    estado_juego.partidas = lista_partidas;
     return estado_juego;
 }
 

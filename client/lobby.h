@@ -44,7 +44,7 @@ private:
 
 public:
     Lobby(SDL_Renderer* renderer);
-    void dibujar();
+    void dibujar(std::list<uint8_t>& partidas);
     PedidoJugador manejar_eventos();
     bool empezo() const;
     int cantidad_jugadores() const;

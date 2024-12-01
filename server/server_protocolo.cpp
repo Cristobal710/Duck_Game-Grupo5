@@ -170,6 +170,11 @@ void ServerProtocolo::enviar_estado_juego(EstadoJuego& estado) {
     // enviar_cajas(estado.cajas);
     enviar_byte(estado.armas.size());
     enviar_armas(estado.armas);
+
+    enviar_byte(estado.partidas.size());
+    for (uint8_t id_partida_creada : estado.partidas){
+        enviar_byte(id_partida_creada);
+    }
     // enviar_byte(estado.granadas.size());
     // enviar_granadas(estado.granadas);
 }

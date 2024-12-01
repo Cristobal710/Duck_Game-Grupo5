@@ -15,7 +15,7 @@ void Accepter::run() {
             auto* cliente = new ServerClient(ultimo_id, std::move(skt_nuevo_cliente), recibidos, *enviados);
             ultimo_id += ultimo_id + 2;
             
-            auto* modo_juego = new ModoJuego(*cliente, *enviados, recibidos, partidas_distintas.size() + 1); 
+            auto* modo_juego = new ModoJuego(*cliente, *enviados, recibidos, partidas_distintas.size() + 1, partidas_distintas); 
             partidas_distintas.emplace_back(modo_juego);
             modo_juego->start();
 
