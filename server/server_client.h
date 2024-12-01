@@ -20,6 +20,7 @@ private:
     bool esta_cerrado;
     Queue<EstadoJuego>& estados_juego;
     Queue<EventoServer>& eventos;
+    bool dos_jugadores;
 
     void cerrar(ServerEnviar& enviar);
 
@@ -27,6 +28,8 @@ public:
     ServerClient(uint16_t id, Socket skt, Queue<EstadoJuego>& recibidos, Queue<EventoServer>& enviados);
     void run() override;
     uint16_t& get_id();
+    void juegan_2_personas();
+    bool juegan_dos();
 };
 
 #endif

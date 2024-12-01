@@ -19,7 +19,6 @@ void ModoJuego::run() {
     }
     ultimo_estado.ids_tomados = ids_tomados;
     ultimo_estado.id_partida = id_partida;
-    //std::cout << "mando el ID de partida -->" << static_cast<int>(ultimo_estado.id_partida) << std::endl;
     broadcast.push(ultimo_estado);
     while (!iniciar_partida){
         std::vector<EventoServer> eventos;
@@ -81,20 +80,16 @@ void ModoJuego::ejecutar_accion_lobby(PedidoJugador& pedido, uint16_t id_jugador
         return;
     }
     if (pedido.un_jugador == LOBBY_REQUEST){
-        //crear un pato?
-        std::cout << "hay un jugador" << std::endl;
+        //por default es uno solo
         return;
     }
     if (pedido.dos_jugadores == LOBBY_REQUEST){
-        //crear dos patos?
-        //mandar_id_cliente(cliente.get_id());
-        // mandar_id_cliente(cliente.get_id() + 1);
-        //ultimo_estado.id_ultimo_jugador = cliente.get_id() + 1;
+        cliente.juegan_2_personas();
         std::cout << "hay dos jugadores" << std::endl;
         return;
     }
     if(pedido.empezar == LOBBY_REQUEST){
-        ultimo_estado.lobby_data.empezar_partida(0);
+        //ultimo_estado.lobby_data.empezar_partida(0);
         iniciar_partida = true;
         return;
     }

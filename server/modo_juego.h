@@ -26,6 +26,7 @@ class ModoJuego: public Thread {
     public:
     ModoJuego(ServerClient& cliente, Queue<EventoServer>& cola_cliente, Queue<EstadoJuego>& recibidos, uint8_t id);
     void run() override;
+
     
 };
 

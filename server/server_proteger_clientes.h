@@ -6,7 +6,7 @@
 #include <mutex>
 #include <string>
 #include <thread>
-
+#include <list>
 #include "../common/common_queue.h"
 
 #include "server_client.h"
@@ -23,6 +23,7 @@ public:
     std::vector<EventoServer> recibir_mensajes_clientes();
     void eliminar_clientes_cerrados();
     void cerrar_gameloop();
+    std::vector<uint16_t> obtener_ids();
 };
 
 #endif

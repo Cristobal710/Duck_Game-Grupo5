@@ -5,7 +5,7 @@ ServerClient::ServerClient(uint16_t id, Socket skt, Queue<EstadoJuego>& recibido
         conexion_socket(std::move(skt)),
         esta_cerrado(false),
         estados_juego(recibidos),
-        eventos(enviados) {}
+        eventos(enviados), dos_jugadores(false) {}
 
 void ServerClient::cerrar(ServerEnviar& enviar) {
     esta_cerrado = true;
@@ -40,3 +40,9 @@ void ServerClient::run() {
 }
 
 uint16_t& ServerClient::get_id() { return id; }
+
+void ServerClient::juegan_2_personas() {
+    dos_jugadores = true;
+}
+
+bool ServerClient::juegan_dos() { return dos_jugadores; }

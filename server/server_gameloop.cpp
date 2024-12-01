@@ -474,30 +474,34 @@ void GameLoop::eliminar_patos_muertos(){
 void GameLoop::inicializar_patos(){
     int pos_x = 0;
     int pos_y = 0;
-    int id = 1;
+    std::vector<uint16_t> id_jugadores = clientes.obtener_ids();
+    int contador = 0;
     std::map<std::string, std::vector<SDL_Point>> spawns = ultimo_estado.mapa.getSpawns();
-
-    for (const auto& id_posicion : spawns) {        
-        std::string id_jugador = id_posicion.first;
        
-        std::vector<SDL_Point> posicion = id_posicion.second;
+        std::vector<SDL_Point> posicion = spawns.at("default");
         for(SDL_Point coord : posicion){
             pos_x = coord.x;
             pos_y = coord.y;
-            
-            Pato pato(id, pos_x, pos_y, 0);
-            id++;
-            Arma* arma = new Arma(1, pos_x, pos_y, 15, 200, PEW_PEW_LASER);
-            pato.tomar_arma(arma);
-            // pato.tomar_armadura();
-            // pato.equipar_armadura();
-            // pato.tomar_casco();
-            // pato.equipar_casco();
-            ultimo_estado.patos.emplace_back(pato);
+            // for (Pato pato : ultimo_estado.patos){
+            //     if (pato.get_pos_x() != pos_x && pato.get_pos_y() != pos_y){
+                    
+            //     }
+            // }
+            if (static_cast<int>(id_jugadores.size()) > contador){
+                Pato pato(id_jugadores.at(contador), pos_x, pos_y, 0);
+                Arma* arma = new Arma(1, pos_x, pos_y, 15, 200, PEW_PEW_LASER);
+                pato.tomar_arma(arma);
+                // pato.tomar_armadura();
+                // pato.equipar_armadura();
+                // pato.tomar_casco();
+                // pato.equipar_casco();
+                ultimo_estado.patos.emplace_back(pato);
+                contador++;
+            } else {
+                return;
+            }
         }
     }
-
-}
 
 void GameLoop::inicializar_cajas(){
     for (const auto& cajas : ultimo_estado.mapa.getCajas()) {

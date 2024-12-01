@@ -70,3 +70,15 @@ void ClientesProtegidos::cerrar_gameloop() {
         }
     }
 }
+
+std::vector<uint16_t> ClientesProtegidos::obtener_ids() {  
+    std::vector<uint16_t> id_jugadores;
+
+    for (const auto& cliente: clientes) {
+        id_jugadores.emplace_back(cliente.first->get_id());
+        if (cliente.first->juegan_dos()){
+            id_jugadores.emplace_back(cliente.first->get_id() + 1);
+        }
+    }
+    return id_jugadores;
+}
