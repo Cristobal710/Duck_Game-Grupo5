@@ -46,3 +46,7 @@ void ServerClient::juegan_2_personas() {
 }
 
 bool ServerClient::juegan_dos() { return dos_jugadores; }
+
+Queue<EventoServer>& ServerClient::get_queue() {
+    return eventos;
+}

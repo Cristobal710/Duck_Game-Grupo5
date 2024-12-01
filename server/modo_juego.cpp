@@ -6,10 +6,11 @@
 ModoJuego::ModoJuego(ServerClient& cliente, Queue<EventoServer>& cola_cliente, Queue<EstadoJuego>& recibidos, uint8_t id,
 std::list<ModoJuego*>& partidas_distintas):
 cliente(cliente), queue_cliente(cola_cliente), broadcast(recibidos), ultimo_estado(), id_partida(id),
-partidas_distintas(partidas_distintas), partida_nueva(false) 
+partidas_distintas(partidas_distintas), partida_nueva(false), clientes() 
 {}
 
 void ModoJuego::run() {
+    clientes.emplace_back(&cliente);
 
     bool cerrado = false;
     float tiempo_ultimo_frame = SDL_GetTicks();
@@ -41,8 +42,11 @@ void ModoJuego::run() {
 
     if (partida_nueva){
         auto* gameloop = new GameLoop(broadcast.conseguir_cola(), &cerrado, id_partida);
+        for (ServerClient* client : clientes){
+            gameloop->agregar_cliente(*client, client->get_queue());
+        }
         gameloop->start();
-        gameloop->agregar_cliente(cliente, queue_cliente);
+        
     }
     while (not cerrado){
         drop_and_rest(tiempo_ultimo_frame);
@@ -52,6 +56,8 @@ void ModoJuego::run() {
 bool ModoJuego::tiene_partida() { return partida_nueva; }
 
 uint8_t ModoJuego::obtener_id_partida() { return id_partida; }
+
+bool ModoJuego::tiene_id(uint8_t un_id) { return (un_id == id_partida); }
 
 
 void ModoJuego::drop_and_rest(float& tiempo_ultimo_frame){
@@ -84,6 +90,11 @@ void ModoJuego::ejecutar_accion_lobby(PedidoJugador& pedido, uint16_t id_jugador
         return;
         } 
     if (pedido.unirse_a_partida == LOBBY_REQUEST){
+        for (ModoJuego* partida_posible : partidas_distintas){
+            if (partida_posible->tiene_id(pedido.id_partida_a_unirse)){
+                partida_posible->nuevo_jugador(&cliente);   
+            }
+        }
         //ultimo_estado.lobby_data.unirse_a_partida(pedido.id_partida_a_unirse, id_jugador);
         
         //unirse a partida con id que esta en el pedido 
@@ -113,4 +124,8 @@ void ModoJuego::buscar_partidas() {
             }
         }
     ultimo_estado.partidas = partidas;
+}
+
+void ModoJuego::nuevo_jugador(ServerClient* client){
+    clientes.emplace_back(client);
 }

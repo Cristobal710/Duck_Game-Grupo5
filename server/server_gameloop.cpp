@@ -538,7 +538,6 @@ void GameLoop::run() {
     calcular_colisiones_tiles(mapa);
     ultimo_estado.id_partida = id_partida;
 
-    cola_estados_juego.push(ultimo_estado);
 
     tiempo_ultimo_frame = SDL_GetTicks();
     while (!(*esta_cerrado)) {

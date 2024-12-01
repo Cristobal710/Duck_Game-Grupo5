@@ -197,7 +197,7 @@ PedidoJugador Lobby::manejar_eventos() {
                         y >= rect.second.y && y <= rect.second.y + rect.second.h) {
                         pedido.unirse_a_partida_con_id(rect.first);
                         std::cout << "Unido a la partida con ID: " << rect.first << std::endl;
-                        estado = EstadoLobby::FINALIZADO;
+                        //estado = EstadoLobby::FINALIZADO;
                         return pedido;  
                     }
                 }

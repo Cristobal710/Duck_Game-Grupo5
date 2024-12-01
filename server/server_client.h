@@ -30,6 +30,7 @@ public:
     uint16_t& get_id();
     void juegan_2_personas();
     bool juegan_dos();
+    Queue<EventoServer>& get_queue();
 };
 
 #endif

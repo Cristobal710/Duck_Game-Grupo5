@@ -134,7 +134,6 @@ void ServerProtocolo::enviar_tiles(Mapa& mapa){
 
 }
 
-
 void ServerProtocolo::enviar_mapa(Mapa& mapa){
     enviar_string(mapa.getFondo());
     //enviar_spawns(mapa);

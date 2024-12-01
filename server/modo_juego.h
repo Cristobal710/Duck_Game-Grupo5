@@ -18,6 +18,8 @@ class ModoJuego: public Thread {
     uint8_t id_partida;
     std::list<ModoJuego*>& partidas_distintas;
     bool partida_nueva;
+    std::list<ServerClient*> clientes;
+
 
     void procesar_evento_lobby(EventoServer& evento, bool& iniciar_partida);
     void drop_and_rest(float& tiempo_ultimo_frame);
@@ -30,7 +32,8 @@ class ModoJuego: public Thread {
     void run() override;
     bool tiene_partida();
     uint8_t obtener_id_partida();
-
+    bool tiene_id(uint8_t un_id);
+    void nuevo_jugador(ServerClient* client);
     
 };
 

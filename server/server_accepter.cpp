@@ -10,12 +10,13 @@ void Accepter::run() {
 
     while (!(*esta_cerrado)) {
         try {
+            auto* recibido2 = new Queue<EstadoJuego>() ;
             auto skt_nuevo_cliente = socket_aceptador.accept();
             auto* enviados = new Queue<EventoServer>();
-            auto* cliente = new ServerClient(ultimo_id, std::move(skt_nuevo_cliente), recibidos, *enviados);
-            ultimo_id += ultimo_id + 2;
+            auto* cliente = new ServerClient(ultimo_id, std::move(skt_nuevo_cliente), *recibido2, *enviados);
+            ultimo_id += 2;
             
-            auto* modo_juego = new ModoJuego(*cliente, *enviados, recibidos, partidas_distintas.size() + 1, partidas_distintas); 
+            auto* modo_juego = new ModoJuego(*cliente, *enviados, *recibido2, partidas_distintas.size() + 1, partidas_distintas); 
             partidas_distintas.emplace_back(modo_juego);
             modo_juego->start();
 
