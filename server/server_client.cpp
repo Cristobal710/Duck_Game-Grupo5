@@ -28,6 +28,7 @@ void ServerClient::run() {
         try {
             EventoServer evento = protocolo.recibir_evento();
             eventos.push(evento);
+
         } catch (ClosedQueue& e) {
             break;
         } catch (...) {
@@ -52,4 +53,8 @@ Queue<EventoServer>& ServerClient::get_queue() {
 
 void ServerClient::iniciar_partida(EstadoJuego& estado) {
     enviar.iniciar_partida(estado);
+}
+
+void ServerClient::cambiar_queue(Queue<EstadoJuego>* nueva_queue) {
+    enviar.cambiar_queue(nueva_queue);
 }

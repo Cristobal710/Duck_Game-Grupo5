@@ -54,13 +54,19 @@ void ModoJuego::run() {
         inicializar_armas(estado_inicial);
 
 
-        QueueProtegida queue_nueva(broadcast.conseguir_cola());
-        auto* gameloop = new GameLoop(queue_nueva, &cerrado, id_partida);
 
+
+        // QueueProtegida queue_nueva(broadcast.conseguir_cola());
+        auto* jugadores = new std::map<uint16_t, Queue<EstadoJuego>*>();
         for (ServerClient* client : clientes){
-            
-            //Queue<EstadoJuego> nueva_cola_juego;
+            auto* queue = new Queue<EstadoJuego>();
+            jugadores->emplace(client->get_id(), queue);
+            client->cambiar_queue(jugadores->at(client->get_id()));
+        }
 
+
+        auto* gameloop = new GameLoop(jugadores, &cerrado, id_partida);
+        for (ServerClient* client : clientes){
             client->iniciar_partida(estado_inicial);
             gameloop->agregar_cliente(*client, client->get_queue());
         }

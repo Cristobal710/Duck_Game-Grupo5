@@ -13,13 +13,11 @@
 #define ALTO_TILE 32
 #define ANCHO_TILE 24
 
-GameLoop::GameLoop(QueueProtegida& cola_estados_juego,
+GameLoop::GameLoop(std::map<uint16_t, Queue<EstadoJuego>*>* mapa_jugadores,
         bool* conexion, uint8_t id):
-        mapa_clientes(),
-        clientes(mapa_clientes),
-        cola_estados_juego(cola_estados_juego),
+        clientes(),
         esta_cerrado(conexion),
-        id_ultimo_jugador(0), id_partida(id)
+        id_ultimo_jugador(0), id_partida(id), mapa_jugadores(mapa_jugadores)
         {
         ultimo_estado = EstadoJuego();
         }
@@ -37,14 +35,14 @@ GameLoop::GameLoop(QueueProtegida& cola_estados_juego,
 
 void GameLoop::agregar_cliente(ServerClient& cliente, Queue<EventoServer>& cola_cliente) {
     clientes.agregar_cliente(cliente, cola_cliente);
-    if(cliente.get_id() == id_ultimo_jugador){
-        uint16_t id_nuevo = id_ultimo_jugador + 1;
-        mandar_id_cliente(id_nuevo);
-        id_ultimo_jugador = id_nuevo;
-        return;
-    }
-    mandar_id_cliente(cliente.get_id());
-    id_ultimo_jugador = cliente.get_id();
+    // if(cliente.get_id() == id_ultimo_jugador){
+    //     uint16_t id_nuevo = id_ultimo_jugador + 1;
+    //     mandar_id_cliente(id_nuevo);
+    //     id_ultimo_jugador = id_nuevo;
+    //     return;
+    // }
+    // mandar_id_cliente(cliente.get_id());
+    // id_ultimo_jugador = cliente.get_id();
 }
 
 void GameLoop::procesar_evento(EventoServer& evento, EstadoJuego& estado_juego) {
@@ -253,25 +251,25 @@ void GameLoop::crear_bala(Pato& pato){
     }
 }
 
-void GameLoop::enviar_estado_juego_si_cambio( EstadoJuego& estado_anterior) {
-    for(Pato& pato :ultimo_estado.patos){
-        if (pato.estado.get_estado_agachado() != estado_anterior.patos.front().estado.get_estado_agachado() || pato.estado.get_estado_movimiento() != estado_anterior.patos.front().estado.get_estado_movimiento() || pato.estado.get_estado_salto() != estado_anterior.patos.front().estado.get_estado_salto() || pato.estado.get_estado_disparo() != estado_anterior.patos.front().estado.get_estado_disparo() || pato.esta_apuntando_arriba() != estado_anterior.patos.front().esta_apuntando_arriba()) {
-            cola_estados_juego.enviar_mensaje(ultimo_estado);
-        }
-        if (pato.get_pos_x() != estado_anterior.patos.front().get_pos_x() || pato.get_pos_y() != estado_anterior.patos.front().get_pos_y()) {            
-            cola_estados_juego.enviar_mensaje(ultimo_estado);
-        }
-    }
-    bool cambio = false;
-    for (Bala& bala: ultimo_estado.balas) {
-        if (bala.get_pos_x() != estado_anterior.balas.front().get_pos_x() || bala.get_pos_y() != estado_anterior.balas.front().get_pos_y()) {
-            cambio = true;
-        }
-    }
-    if (cambio) {
-        cola_estados_juego.enviar_mensaje(ultimo_estado);
-    }
-}
+// void GameLoop::enviar_estado_juego_si_cambio( EstadoJuego& estado_anterior) {
+//     for(Pato& pato :ultimo_estado.patos){
+//         if (pato.estado.get_estado_agachado() != estado_anterior.patos.front().estado.get_estado_agachado() || pato.estado.get_estado_movimiento() != estado_anterior.patos.front().estado.get_estado_movimiento() || pato.estado.get_estado_salto() != estado_anterior.patos.front().estado.get_estado_salto() || pato.estado.get_estado_disparo() != estado_anterior.patos.front().estado.get_estado_disparo() || pato.esta_apuntando_arriba() != estado_anterior.patos.front().esta_apuntando_arriba()) {
+//             cola_estados_juego.enviar_mensaje(ultimo_estado);
+//         }
+//         if (pato.get_pos_x() != estado_anterior.patos.front().get_pos_x() || pato.get_pos_y() != estado_anterior.patos.front().get_pos_y()) {            
+//             cola_estados_juego.enviar_mensaje(ultimo_estado);
+//         }
+//     }
+//     bool cambio = false;
+//     for (Bala& bala: ultimo_estado.balas) {
+//         if (bala.get_pos_x() != estado_anterior.balas.front().get_pos_x() || bala.get_pos_y() != estado_anterior.balas.front().get_pos_y()) {
+//             cambio = true;
+//         }
+//     }
+//     if (cambio) {
+//         cola_estados_juego.enviar_mensaje(ultimo_estado);
+//     }
+// }
 
 void GameLoop::avanzar_balas_direccion_izquierda(std::__cxx11::list<Bala>::iterator& it){
     if (it->get_direccion() == DIRECCION_IZQUIERDA) {
@@ -546,23 +544,31 @@ void GameLoop::run() {
             std::vector<EventoServer> eventos = clientes.recibir_mensajes_clientes();
             for(EventoServer evento : eventos){
                 procesar_evento(evento, ultimo_estado);
-                cola_estados_juego.enviar_mensaje(ultimo_estado);
+                for (auto it = mapa_jugadores->begin(); it != mapa_jugadores->end(); ++it) {
+                    Queue<EstadoJuego>* queue = it->second;
+                    queue->push(ultimo_estado);
+                }
             }
-           
             eliminar_patos_muertos();
             actualizar_hitbox_entidades();
             aplicar_logica();
             calcular_colisiones_balas();
             ultimo_estado.informacion_enviada = ENVIAR_ESTADO_JUEGO;
-            cola_estados_juego.enviar_mensaje(ultimo_estado);
+            for (auto it = mapa_jugadores->begin(); it != mapa_jugadores->end(); ++it) {
+                Queue<EstadoJuego>* queue = it->second;
+                queue->push(ultimo_estado);
+            }
             drop_and_rest(tiempo_ultimo_frame);
         }
     }
     //cerrar_gameloop();
 }
 
-void GameLoop::mandar_id_cliente(uint16_t& id) {
-    ultimo_estado.id_jugador = id;
-    ultimo_estado.informacion_enviada = ENVIAR_ESTADO_JUEGO;
-    cola_estados_juego.enviar_mensaje(ultimo_estado);
-}
+// void GameLoop::mandar_id_cliente(uint16_t& id) {
+//     ultimo_estado.id_jugador = id;
+//     ultimo_estado.informacion_enviada = ENVIAR_ESTADO_JUEGO;
+//    for (auto it = mapa_jugadores.begin(); it != mapa_jugadores.end();) {
+//         auto* queue_actual = it->second;
+//         queue_actual->push(ultimo_estado);
+//     }
+// }

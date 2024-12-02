@@ -18,6 +18,8 @@ ServerProtocolo::ServerProtocolo(Socket& skt): Protocolo(skt) {}
 EventoServer ServerProtocolo::recibir_evento() {
     bool cerrado = false;
     EventoServer evento;
+    
+
     evento.accion = recibir_byte(cerrado);
     if (cerrado) return evento;
 
@@ -30,7 +32,6 @@ EventoServer ServerProtocolo::recibir_evento() {
     evento.pedido.un_jugador = recibir_byte(cerrado);
     evento.pedido.dos_jugadores = recibir_byte(cerrado);
     evento.pedido.empezar = recibir_byte(cerrado);
-
     return evento;
 }
 

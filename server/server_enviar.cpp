@@ -24,7 +24,8 @@ void ServerEnviar::run() {
             EstadoJuego nuevo_estado = estados_juego.pop();
             server_protocolo.enviar_estado_juego(nuevo_estado);
         } catch (ClosedQueue& e) {
-            break;
+            EstadoJuego nuevo_estado = estados_partida->pop();
+            server_protocolo.enviar_estado_juego(nuevo_estado);
         } catch (...) {
             break;
         }
@@ -33,4 +34,9 @@ void ServerEnviar::run() {
 
 void ServerEnviar::iniciar_partida(EstadoJuego& estado) {
     server_protocolo.enviar_estado_juego(estado);
+}
+
+void ServerEnviar::cambiar_queue(Queue<EstadoJuego>* nueva_queue) {
+    estados_partida = nueva_queue;
+    estados_juego.close();
 }

@@ -1,7 +1,7 @@
 #include "server_proteger_clientes.h"
 
-ClientesProtegidos::ClientesProtegidos(std::map<ServerClient*, Queue<EventoServer>*>& mapa_clientes):
-        clientes(mapa_clientes) {}
+ClientesProtegidos::ClientesProtegidos():
+        clientes() {}
 
 void ClientesProtegidos::agregar_cliente(ServerClient& cliente, Queue<EventoServer>& enviados) {
     std::lock_guard<std::mutex> lock(mutex);

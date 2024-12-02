@@ -19,14 +19,13 @@
 
 class GameLoop: public Thread {
 private:
-    std::map<ServerClient*, Queue<EventoServer>*> mapa_clientes;
     ClientesProtegidos clientes;
-    QueueProtegida& cola_estados_juego;
     bool* esta_cerrado;
     EstadoJuego ultimo_estado;
     std::vector<Tile> colisiones;
     uint16_t id_ultimo_jugador;
     uint8_t id_partida;
+    std::map<uint16_t, Queue<EstadoJuego>*>* mapa_jugadores;
 
     // void eliminar_clientes_cerrados();
     // void cerrar_gameloop();
@@ -60,7 +59,7 @@ private:
     Caja agarrar_recompensa(Pato& pato);
 
 public:
-    GameLoop(QueueProtegida& cola_estados_juego,
+    GameLoop(std::map<uint16_t, Queue<EstadoJuego>*>* mapa_jugadores,
              bool* conexion, uint8_t id);
     void procesar_evento(EventoServer& evento, EstadoJuego& cola_estados_juego);
     int get_indice_por_id(uint8_t id);
