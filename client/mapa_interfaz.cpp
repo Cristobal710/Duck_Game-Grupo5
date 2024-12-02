@@ -10,7 +10,8 @@ MapaInterfaz::MapaInterfaz(SDL2pp::Renderer& renderer, uint16_t id_jugador_princ
     patos(), 
     balas(), 
     cajas(),
-    equipamientos(),
+    armas(),
+    protecciones(),
     mapa_procesado(false), id_pato(id_jugador_principal) 
 {}
 
@@ -41,9 +42,47 @@ void MapaInterfaz::agregar_caja(int x, int y) {
     cajas.emplace_back(std::move(caja));
 }
 
-void MapaInterfaz::agregar_equipamiento(std::string& equipamiento_path, int x, int y) {
-    EquipamientoInterfaz equipamiento(superficie, equipamiento_path, x, y);
-    equipamientos.emplace_back(std::move(equipamiento));
+void MapaInterfaz::agregar_arma(uint16_t id, int x, int y, uint8_t tipo_arma){
+    std::string path_arma;
+    obtener_tipo_arma(tipo_arma, path_arma);
+    ArmaInterfaz arma(superficie, path_arma, x, y, id);
+    armas.emplace_back(std::move(arma));
+}
+
+void MapaInterfaz::obtener_tipo_arma(uint8_t tipo_arma, std::string& arma_path) {
+    if (tipo_arma == GRANADA){
+        arma_path =  "../resources/weapons/grenadeLauncher.png";
+    } else if (tipo_arma == BANANA){
+        arma_path = "../resources/weapons/bananaMano.png";
+    } else if (tipo_arma == PEW_PEW_LASER){
+        arma_path = "../resources/weapons/pewpewLaser.png";
+    } else if (tipo_arma == LASER_RIFLE){
+        arma_path = "../resources/weapons/laserRifle.png";
+    } else if (tipo_arma == AK_47){
+        arma_path = "../resources/weapons/ak47.png";
+    } else if (tipo_arma == PISTOLA_DE_DUELOS){
+        arma_path = "../resources/weapons/combatShotgun.png";
+    } else if (tipo_arma == PISTOLA_COWBOY){
+        arma_path = "../resources/weapons/cowboyPistol.png";
+    } else if (tipo_arma == MAGNUM){
+        arma_path = "../resources/weapons/magnum.png";
+    } else if (tipo_arma == ESCOPETA){
+        arma_path = "../resources/weapons/shotgun.png";
+    } else if (tipo_arma == SNIPER){
+        arma_path = "../resources/weapons/sniper.png";
+    }
+}
+
+void MapaInterfaz::agregar_proteccion(int x, int y, TipoProteccion tipo) {
+    std::string path;
+    if(tipo == ARMADURA_ENUM){
+        path = "../resources/armors/chestPlatePickup.png"; 
+    } else if (tipo == CASCO_ENUM){
+        path = "../resources/armors/knightHelmet.png";
+    }
+
+    EquipamientoInterfaz equipamiento(superficie, path, x, y);
+    protecciones.emplace_back(std::move(equipamiento));
 }
 
 void MapaInterfaz::obtener_tipo_bala(uint8_t tipo_arma, std::string& path_bala){
@@ -151,9 +190,17 @@ void MapaInterfaz::dibujar(int it){
         caja.dibujar();
     }
 
-    for (EquipamientoInterfaz& equip : equipamientos){
-        equip.dibujar();
+    for (EquipamientoInterfaz& proteccion : protecciones){
+        proteccion.dibujar();
     }
+
+    if(!armas.empty()){
+        for(ArmaInterfaz& arma : armas){
+            uint8_t direccion = DIRECCION_DERECHA;
+            arma.dibujar(direccion);
+        }        
+    }
+
 
     for (PatoInterfaz& pato : patos){
         if(pato.esta_vivo()){
@@ -168,6 +215,7 @@ void MapaInterfaz::dibujar(int it){
     }
 
     balas.clear();
+    //armas.clear();
     //cajas.clear();
 
     SDL2pp::Rect rect_dibujar = obtener_rect_dibujar();
@@ -187,10 +235,43 @@ void MapaInterfaz::caja_recogida(int pos_x, int pos_y){
     }
 }
 
+void MapaInterfaz::agregar_equipamiento(std::string& equipamiento_path, int x, int y) {
+    EquipamientoInterfaz equipamiento(superficie, equipamiento_path, x, y);
+    protecciones.emplace_back(std::move(equipamiento));
+}
+
 void MapaInterfaz::equip_recogido(int x, int y) {
-    for (EquipamientoInterfaz& equip : equipamientos){
+    for (EquipamientoInterfaz& equip : protecciones){
         if (equip.mismo_equip(x, y)){
             equip.no_dibujar();
+        }
+    }
+}
+
+bool MapaInterfaz::existe_arma(uint16_t id){
+    for (ArmaInterfaz& arma : armas){
+        if(arma.mismo_arma(id)){
+            return true;
+        }
+    }
+    return false;
+}
+
+void MapaInterfaz::actualizar_estado_arma(uint16_t id, int x, int y, bool se_agarro){
+    for (ArmaInterfaz& arma : armas) {
+        if(arma.mismo_arma(id)){
+            arma.set_posicion(x, y);
+            if(!se_agarro){
+                arma.soltar();
+            }
+        }
+    }
+}
+
+void MapaInterfaz::arma_recogida(uint16_t id){
+    for (ArmaInterfaz& arma : armas) {
+        if(arma.mismo_arma(id)){
+            arma.no_dibujar();
         }
     }
 }

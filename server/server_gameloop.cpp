@@ -574,7 +574,6 @@ void GameLoop::leer_configuracion(const std::string& archivo_yaml){
 void GameLoop::inicializar_juego(){
     leer_configuracion(RUTA_CONFIGURACION);
     inicializar_patos();
-    inicializar_armas();
     inicializar_cajas();
     inicializar_armas();
 }

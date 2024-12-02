@@ -226,24 +226,42 @@ void InterfazGrafica::procesar_mapa(MapaInterfaz& mapa, EstadoJuego& ultimo_esta
         }
      
         // procesar cajas 
-        std::map<std::string, std::vector<SDL_Point>> cajas = mapa_a_jugar.getCajas();
-        for (const auto& textura_punto : cajas) {
-            std::string path_textura = textura_punto.first;
-            std::vector<SDL_Point> puntos = textura_punto.second;
-            for (const auto& punto : puntos) {
-                mapa.agregar_caja(punto.x, punto.y);
-            }
+        for (auto& caja : ultimo_estado.cajas) {
+            int pos_x = static_cast<int>(caja.get_pos_x());
+            int pos_y = static_cast<int>(caja.get_pos_y());
+            mapa.agregar_caja(pos_x, pos_y);
         }
-      
-        // procesar equipamiento
+
         std::map<std::string, std::vector<SDL_Point>> equipamientos = mapa_a_jugar.getEquipamiento();
         for (const auto& equipamiento : equipamientos) {
             std::string equipamiento_path = equipamiento.first;
+            if (equipamiento_path.find("weapons") != std::string::npos) {
+                continue; 
+            }
             std::vector<SDL_Point> puntos = equipamiento.second;
             for (const auto& punto : puntos) {
                 mapa.agregar_equipamiento(equipamiento_path, punto.x, punto.y);
             }
         }
+
+        // procesar armas
+        // for (auto& arma : ultimo_estado.armas){
+        //     std::cout << "hay " << ultimo_estado.armas.size() << " armas" << std::endl;
+        //     uint16_t id = arma.get_id();
+        //     int pos_x = static_cast<int>(arma.get_pos_x());
+        //     int pos_y = static_cast<int>(arma.get_pos_y());
+        //     uint8_t tipo_arma = arma.get_tipo_arma();
+        //     mapa.agregar_arma(id, pos_x, pos_y, tipo_arma);
+        // }
+      
+        // // procesar equipamiento
+        // for (auto& proteccion : ultimo_estado.armaduras){
+        //     int pos_x = static_cast<int>(proteccion.get_pos_x());
+        //     int pos_y = static_cast<int>(proteccion.get_pos_y());
+        //     TipoProteccion tipo_proteccion = proteccion.get_tipo();
+        //     mapa.agregar_proteccion(pos_x, pos_y, tipo_proteccion);
+        // }
+
         mapa_procesado = true;
 }
 
@@ -287,24 +305,30 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa, bool& mapa_proces
         for (Bala balas_juego: ultimo_estado.balas) {
             mapa.agregar_bala(balas_juego.get_tipo_arma(), balas_juego.get_pos_x(),
             balas_juego.get_pos_y(), balas_juego.get_direccion());
-            
         }
         //verificar cajas agarradas
         for (Caja caja : ultimo_estado.cajas){
             if (caja.get_esta_vacia()){
-            mapa.caja_recogida(caja.get_pos_x(), caja.get_pos_y());
+                mapa.caja_recogida(caja.get_pos_x(), caja.get_pos_y());
             }
         }
         //verificar equipamiento agarrado
         for (Arma arma : ultimo_estado.armas){
-           if (arma.get_se_agarro()){
-               mapa.equip_recogido(arma.get_pos_x(), arma.get_pos_y());
-           }
+            if(!arma.get_se_agarro()){
+                if(!mapa.existe_arma(arma.get_id())){
+                    mapa.agregar_arma(arma.get_id(), arma.get_pos_x(), arma.get_pos_y(), arma.get_tipo_arma());
+                } else {
+                    mapa.actualizar_estado_arma(arma.get_id(), arma.get_pos_x(), arma.get_pos_y(), arma.get_se_agarro());
+                }    
+            } else {
+                mapa.arma_recogida(arma.get_id());
+            }   
         }
+
         for (Proteccion armadura : ultimo_estado.armaduras){
-           if (armadura.get_se_agarro()){
+            if (armadura.get_se_agarro()){
                mapa.equip_recogido(armadura.get_pos_x(), armadura.get_pos_y());
-           }
+            }
         }
     } 
     }

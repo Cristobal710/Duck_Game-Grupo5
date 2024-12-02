@@ -3,6 +3,9 @@
 #define LOBBY_REQUEST 0x01
 #define RATE 1000 / 30
 
+#define ALTO_TILE 32
+#define ANCHO_TILE 24
+
 ModoJuego::ModoJuego(ServerClient& cliente, Queue<EventoServer>& cola_cliente, Queue<EstadoJuego>& recibidos, uint8_t id,
 std::list<ModoJuego*>& partidas_distintas):
 cliente(cliente), queue_cliente(cola_cliente), broadcast(recibidos), ultimo_estado(), id_partida(id),
@@ -49,12 +52,10 @@ void ModoJuego::run() {
         estado_inicial.partida_iniciada = 0x01;
         estado_inicial.mapa = mapa;
         estado_inicial.informacion_enviada = ENVIAR_MAPA;
+        leer_configuracion(RUTA_CONFIGURACION);
         inicializar_patos(estado_inicial);
         inicializar_cajas(estado_inicial);
         inicializar_armas(estado_inicial);
-
-
-
 
         // QueueProtegida queue_nueva(broadcast.conseguir_cola());
         auto* jugadores = new std::map<uint16_t, Queue<EstadoJuego>*>();
@@ -148,6 +149,24 @@ void ModoJuego::buscar_partidas() {
     ultimo_estado.partidas = partidas;
 }
 
+void ModoJuego::leer_configuracion(const std::string& archivo_yaml){
+    YAML::Node config = YAML::LoadFile(archivo_yaml);
+
+    for (const auto& arma : config["armas"]) {
+        ArmaConfig config_arma;
+        
+        config_arma.nombre = arma.first.as<std::string>();
+        config_arma.alcance = arma.second["alcance"].as<int>();
+        config_arma.municiones = arma.second["municiones"].as<int>();
+        std::string path = arma.second["path"].as<std::string>();
+
+        armamento_config[path] = config_arma;
+        if (config_arma.nombre != "armadura" && config_arma.nombre != "casco") {
+            armas_posibles.push_back(config_arma);
+        }
+    }
+}
+
 void ModoJuego::inicializar_patos(EstadoJuego& estado) {
     int pos_x = 0;
     int pos_y = 0;
@@ -188,16 +207,61 @@ void ModoJuego::inicializar_patos(EstadoJuego& estado) {
 void ModoJuego::inicializar_cajas(EstadoJuego& estado) {
     for (const auto& cajas : estado.mapa.getCajas()) {
         for (SDL_Point posicion_caja : cajas.second) {
-            Caja caja(estado.cajas.size() + 1, posicion_caja.x, posicion_caja.y);
+            Arma arma = elegir_arma_aleatoria(posicion_caja);
+            arma.set_se_agarro(true);
+            Caja caja(estado.cajas.size() + 1, posicion_caja.x, posicion_caja.y, arma);
+            estado.armas.push_back(arma);
             estado.cajas.push_back(caja);
         }
     }
 }
 
+Arma ModoJuego::elegir_arma_aleatoria(SDL_Point posicion_caja){
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> distrib(0, armas_posibles.size() - 1);
+    int indice_aleatorio = distrib(gen);
+    ArmaConfig elemento_aleatorio = armas_posibles[indice_aleatorio];
+    Arma arma = mapear_armas(elemento_aleatorio, posicion_caja);
+    return arma;
+}
+
+Arma ModoJuego::mapear_armas(ArmaConfig armamento, SDL_Point posicion_arma){
+    if (armamento.nombre == "ak47") {
+        return AK47(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, armamento.municiones, armamento.alcance * ANCHO_TILE);
+    } else if (armamento.nombre == "escopeta") {
+        return Escopeta(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, armamento.municiones, armamento.alcance * ANCHO_TILE);
+    } else if (armamento.nombre == "laserRifle") {
+        return LaserRifle(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, armamento.municiones, armamento.alcance * ANCHO_TILE);
+    } else if (armamento.nombre == "magnum") {
+        return Magnum(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, armamento.municiones, armamento.alcance * ANCHO_TILE);
+    } else if (armamento.nombre == "pewpewLaser") {
+        return PewPewLaser(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, armamento.municiones, armamento.alcance * ANCHO_TILE);
+    } else if (armamento.nombre == "pistolaCowboy") {
+        return PistolaCowboy(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, armamento.municiones, armamento.alcance * ANCHO_TILE);
+    } else if (armamento.nombre == "pistolaDuelos") {
+        return PistolaDuelos(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, armamento.municiones, armamento.alcance * ANCHO_TILE);
+    } else if (armamento.nombre == "sniper") {
+        return Sniper(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, armamento.municiones, armamento.alcance * ANCHO_TILE);
+    } else {
+        return Arma();
+    }
+}
+
 void ModoJuego::inicializar_armas(EstadoJuego& estado) {
-    for (const auto& armas : estado.mapa.getEquipamiento()) {
+for (const auto& armas : estado.mapa.getEquipamiento()) {
         for (SDL_Point posicion_arma : armas.second) {
-            Arma arma(estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, 15, 300, AK_47);
+            ArmaConfig armamento = armamento_config[armas.first];
+            if(armamento.nombre == "armadura"){
+                Proteccion proteccion(ultimo_estado.armaduras.size()+1, posicion_arma.x, posicion_arma.y, ARMADURA_ENUM, false);
+                estado.armaduras.push_back(proteccion);
+                continue;
+            }else if(armamento.nombre == "casco"){
+                Proteccion proteccion(estado.armaduras.size()+1, posicion_arma.x, posicion_arma.y, CASCO_ENUM, false);
+                estado.armaduras.push_back(proteccion);
+                continue;
+            }
+            Arma arma = mapear_armas(armamento, posicion_arma);
             estado.armas.push_back(arma);
         }
     }

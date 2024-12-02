@@ -8,6 +8,9 @@
 #include "server_client.h"
 #include "server_evento.h"
 #include "queue_protegida.h"
+#include "../common/common_arma.h"
+#include <random>
+#include "server_arma_config.h"
 
 class ModoJuego: public Thread {
     private:
@@ -19,6 +22,8 @@ class ModoJuego: public Thread {
     std::list<ModoJuego*>& partidas_distintas;
     bool partida_nueva;
     std::list<ServerClient*> clientes;
+    std::map<std::string, ArmaConfig> armamento_config;
+    std::vector<ArmaConfig> armas_posibles;
 
 
     void procesar_evento_lobby(EventoServer& evento, bool& iniciar_partida);
@@ -28,6 +33,9 @@ class ModoJuego: public Thread {
     void inicializar_patos(EstadoJuego& estado);
     void inicializar_cajas(EstadoJuego& estado);
     void inicializar_armas(EstadoJuego& estado);
+    Arma elegir_arma_aleatoria(SDL_Point posicion_caja);
+    Arma mapear_armas(ArmaConfig armamento, SDL_Point posicion_arma);
+    void leer_configuracion(const std::string& archivo_yaml);
 
     public:
     ModoJuego(ServerClient& cliente, Queue<EventoServer>& cola_cliente, Queue<EstadoJuego>& recibidos, uint8_t id,

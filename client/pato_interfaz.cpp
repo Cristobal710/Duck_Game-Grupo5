@@ -163,7 +163,7 @@ ArmaInterfaz PatoInterfaz::tomar_arma() {
     } else if (tipo_arma == TipoArma::Sniper){
         arma_path = "../resources/weapons/sniper.png";
     }
-    return ArmaInterfaz(superficie, arma_path, rect_dibujado.GetX(), rect_dibujado.GetY());
+    return ArmaInterfaz(superficie, arma_path, rect_dibujado.GetX(), rect_dibujado.GetY(), 0);
 }
 
 void PatoInterfaz::set_tipo_arma(TipoArma tipo_arma) {
