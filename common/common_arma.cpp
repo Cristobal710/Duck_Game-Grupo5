@@ -3,7 +3,7 @@
 #define ANCHO_ARMA 32
 #define ALTO_ARMA 32
 
-Arma::Arma() {}
+Arma::Arma() {se_agarro = false;}
 
 Arma::Arma(uint16_t id, uint16_t pos_x, uint16_t pos_y, uint8_t municion_disponible, uint16_t alcance, uint8_t tipo_arma):
         Entidad(id, pos_x, pos_y),

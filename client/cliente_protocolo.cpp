@@ -37,7 +37,7 @@ void ClienteProtocolo::recibir_pato(std::list<Pato>& patos) {
         uint16_t arma_id = recibir_dos_bytes(cerrado);
         uint8_t municion_disponible = recibir_byte(cerrado);
         uint8_t tipo_arma = recibir_byte(cerrado);
-        Arma* arma = new Arma(arma_id, pos_x, pos_y, municion_disponible, 30, tipo_arma);
+        Arma arma(arma_id, pos_x, pos_y, municion_disponible, 30, tipo_arma);
         pato.tomar_arma(arma);
     }
     if (static_cast<bool>(apunta_arriba)) {

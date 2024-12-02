@@ -11,7 +11,7 @@
 
 class Pato: public Entidad {
 private:
-    Arma* arma;
+    Arma arma;
     bool armadura_equipada;
     bool casco_equipado;
     bool vivo;
@@ -35,7 +35,7 @@ public:
     void saltar();
     void aletear();
     void caer();
-    void tomar_arma(Arma* nuevaArma);
+    void tomar_arma(Arma nueva_arma);
     void soltar_arma();
     bool disparar();
     void apuntar_arriba();
@@ -49,7 +49,7 @@ public:
     void recibir_danio();
     bool esta_vivo() const;
     uint8_t get_direccion();
-    Arma* get_arma();
+    Arma get_arma();
     bool esta_apuntando_arriba();
     bool esta_tirado_al_piso();
     void morir();

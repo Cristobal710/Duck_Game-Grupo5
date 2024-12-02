@@ -5,7 +5,7 @@
 
 Caja::Caja(): Entidad(0, 0, 0), esta_vacia(true){}
 
-Caja::Caja(uint16_t id, uint16_t pos_x, uint16_t pos_y, Arma* arma):
+Caja::Caja(uint16_t id, uint16_t pos_x, uint16_t pos_y, Arma& arma):
         Entidad(id, pos_x, pos_y), esta_vacia(false), arma(arma) {
                 calcular_hitbox();
         }
@@ -28,6 +28,6 @@ void Caja::calcular_hitbox() {
 }
 HitBox Caja::get_hitbox(){return hitbox;}
 
-Arma* Caja::get_arma(){
+Arma Caja::get_arma(){
     return arma;
 }

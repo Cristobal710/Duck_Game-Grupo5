@@ -10,7 +10,6 @@ Pato::Pato(){}
 
 Pato::Pato(uint16_t id, uint16_t pos_x, uint16_t pos_y, uint8_t direccion):
         Entidad(id, pos_x, pos_y),
-        arma(nullptr),
         armadura_equipada(false),
         casco_equipado(false),
         vivo(true),
@@ -21,17 +20,19 @@ Pato::Pato(uint16_t id, uint16_t pos_x, uint16_t pos_y, uint8_t direccion):
         contador_caer(0),
         velocidad_caida(3) 
         {
+    Arma arma;
+    arma.set_se_agarro(false);
     calcular_hitbox();
     // if (color == "rojo") {
-    //     this->color = 1;
+    //     this.color = 1;
     // } else if (color == "azul") {
-    //     this->color = 2;
+    //     this.color = 2;
     // } else if (color == "verde") {
-    //     this->color = 3;
+    //     this.color = 3;
     // } else if (color == "amarillo") {
-    //     this->color = 4;
+    //     this.color = 4;
     // } else {
-    //     this->color = 0;
+    //     this.color = 0;
     // }
 }
 
@@ -79,20 +80,18 @@ void Pato::caer() {
     velocidad_caida+=1;
 }
 
-void Pato::tomar_arma(Arma* nuevaArma) { 
-    arma = nuevaArma;
-    arma->set_se_agarro(true);
+void Pato::tomar_arma(Arma nueva_arma) { 
+    arma = nueva_arma;
+    arma.set_se_agarro(true);
 }
 
 void Pato::soltar_arma() { 
-    arma->set_se_agarro(false);
-    arma->set_pos_x(get_pos_x());
-    arma->set_pos_y(get_pos_y());
-    arma = nullptr; 
+    arma.set_se_agarro(false);
+    Arma arma; 
 }
 
 uint8_t Pato::tiene_arma(){ 
-    if (arma != nullptr){
+    if (arma.get_se_agarro()){
         return TOMAR_ARMA;
     } else{
         return BYTE_NULO;
@@ -101,7 +100,7 @@ uint8_t Pato::tiene_arma(){
 
 bool Pato::disparar() {
     if (tiene_arma()) {
-        if (arma->disparar()){
+        if (arma.disparar()){
             estado.set_disparando();
             return true;
         }
@@ -157,7 +156,7 @@ void Pato::recibir_danio() {
 
 uint8_t Pato::get_direccion() { return direccion; }
 
-Arma* Pato::get_arma() { return arma; }
+Arma Pato::get_arma() { return arma; }
 
 bool Pato::esta_vivo() const { return vivo; }
 
