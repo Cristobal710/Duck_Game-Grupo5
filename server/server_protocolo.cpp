@@ -203,15 +203,13 @@ void ServerProtocolo::enviar_pato(Pato& pato) {
     enviar_byte(pato.estado.get_estado_agachado());
     enviar_byte(pato.estado.get_estado_disparo());
     enviar_byte(pato.esta_vivo());
-    enviar_byte(pato.casco_en_inventario());
-    enviar_byte(pato.armadura_en_inventario());
     enviar_byte(pato.get_casco_equipado());
     enviar_byte(pato.get_armadura_equipada());
     enviar_byte(pato.tiene_arma());
     if (pato.tiene_arma() == TOMAR_ARMA){
-        enviar_dos_bytes((pato.get_arma())->get_id());
-        enviar_byte((pato.get_arma())->get_municion_disponible());
-        enviar_byte((pato.get_arma())->get_tipo_arma());
+        enviar_dos_bytes((pato.get_arma()).get_id());
+        enviar_byte((pato.get_arma()).get_municion_disponible());
+        enviar_byte((pato.get_arma()).get_tipo_arma());
     }
 }
 
@@ -219,16 +217,17 @@ void ServerProtocolo::enviar_caja(Caja& caja) {
     enviar_dos_bytes(caja.get_id());
     enviar_dos_bytes(caja.get_pos_x());
     enviar_dos_bytes(caja.get_pos_y());
-    enviar_byte(caja.get_recompensa());
+    enviar_byte(caja.get_esta_vacia());
 }
 
 void ServerProtocolo::enviar_arma(Arma& arma) {
-    enviar_byte(arma.get_id());
-    enviar_byte(arma.get_pos_x());
-    enviar_byte(arma.get_pos_y());
-    enviar_byte(arma.get_alcance());
+    enviar_dos_bytes(arma.get_id());
+    enviar_dos_bytes(arma.get_pos_x());
+    enviar_dos_bytes(arma.get_pos_y());
+    enviar_dos_bytes(arma.get_alcance());
     enviar_byte(arma.get_municion_disponible());
     enviar_byte(arma.get_tipo_arma());
+    enviar_byte(arma.get_se_agarro());
 }
 
 void ServerProtocolo::enviar_bala(Bala& bala) {

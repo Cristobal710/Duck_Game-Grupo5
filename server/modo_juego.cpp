@@ -42,7 +42,7 @@ void ModoJuego::run() {
     if (partida_nueva){
         
         LectorJson lector_mapa = LectorJson();
-        Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa1");
+        Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa5");
         EstadoJuego estado_inicial;
         
         estado_inicial.id_partida = id_partida;
@@ -173,8 +173,6 @@ void ModoJuego::inicializar_patos(EstadoJuego& estado) {
             // }
             if (static_cast<int>(id_jugadores.size()) > contador){
                 Pato pato(id_jugadores.at(contador), pos_x, pos_y, 0);
-                Arma* arma = new Arma(1, pos_x, pos_y, 15, 200, PEW_PEW_LASER);
-                pato.tomar_arma(arma);
                 // pato.tomar_armadura();
                 // pato.equipar_armadura();
                 // pato.tomar_casco();
@@ -190,7 +188,7 @@ void ModoJuego::inicializar_patos(EstadoJuego& estado) {
 void ModoJuego::inicializar_cajas(EstadoJuego& estado) {
     for (const auto& cajas : estado.mapa.getCajas()) {
         for (SDL_Point posicion_caja : cajas.second) {
-            Caja caja(estado.cajas.size() + 1, posicion_caja.x, posicion_caja.y, AK_47);
+            Caja caja(estado.cajas.size() + 1, posicion_caja.x, posicion_caja.y);
             estado.cajas.push_back(caja);
         }
     }
@@ -199,8 +197,8 @@ void ModoJuego::inicializar_cajas(EstadoJuego& estado) {
 void ModoJuego::inicializar_armas(EstadoJuego& estado) {
     for (const auto& armas : estado.mapa.getEquipamiento()) {
         for (SDL_Point posicion_arma : armas.second) {
-            Arma* arma = new Arma(estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, 15, 300, AK_47);
-            estado.armas.push_back(*arma);
+            Arma arma(estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, 15, 300, AK_47);
+            estado.armas.push_back(arma);
         }
     }
 }

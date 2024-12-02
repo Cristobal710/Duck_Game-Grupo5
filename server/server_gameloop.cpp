@@ -55,42 +55,6 @@ void GameLoop::procesar_evento(EventoServer& evento, EstadoJuego& estado_juego) 
     }
 }
 
-void GameLoop::procesar_evento_lobby(EventoServer& evento, bool& iniciar_partida) {
-    PedidoJugador pedido_cliente = evento.pedido;
-    ejecutar_accion_lobby(pedido_cliente, evento.jugador_id, iniciar_partida);
-}
-
-void GameLoop::ejecutar_accion_lobby(PedidoJugador& pedido, uint16_t id_jugador, bool& iniciar_partida) {
-    if (pedido.crear_partida == 0x01){
-        ultimo_estado.lobby_data.agregar_partida(id_jugador);
-        //crear una partida
-        return;
-    }
-    if (pedido.unirse_a_partida == 0x01){
-        ultimo_estado.lobby_data.unirse_a_partida(pedido.id_partida_a_unirse, id_jugador);
-        //unirse a partida con id que esta en el pedido 
-        return;
-    }
-    if (pedido.un_jugador == 0x01){
-        //crear un pato?
-        // std::cout << "hay un jugador" << std::endl;
-        return;
-    }
-    if (pedido.dos_jugadores == 0x01){
-        //crear dos patos?
-        // uint16_t id_nuevo = id_ultimo_jugador + 1;
-        // mandar_id_cliente(id_nuevo);
-        std::cout << "hay dos jugadores" << std::endl;
-        return;
-    }
-    if(pedido.empezar == 0x01){
-        ultimo_estado.lobby_data.empezar_partida(0);
-        iniciar_partida = true;
-        return;
-    }
-}
-
-
 void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
     Bala bala;
     Caja caja;
@@ -502,29 +466,25 @@ void GameLoop::inicializar_patos(){
     std::vector<uint16_t> id_jugadores = clientes.obtener_ids();
     int contador = 0;
     std::map<std::string, std::vector<SDL_Point>> spawns = ultimo_estado.mapa.getSpawns();
-       
-        std::vector<SDL_Point> posicion = spawns.at("default");
-        for(SDL_Point coord : posicion){
-            pos_x = coord.x;
-            pos_y = coord.y;
-            // for (Pato pato : ultimo_estado.patos){
-            //     if (pato.get_pos_x() != pos_x && pato.get_pos_y() != pos_y){
-                    
-            //     }
-            // }
-            if (static_cast<int>(id_jugadores.size()) > contador){
-                Pato pato(id_jugadores.at(contador), pos_x, pos_y, 0);
-                Arma* arma = new Arma(1, pos_x, pos_y, 15, 200, PEW_PEW_LASER);
-                pato.tomar_arma(arma);
-                // pato.tomar_armadura();
-                // pato.equipar_armadura();
-                // pato.tomar_casco();
-                // pato.equipar_casco();
-                ultimo_estado.patos.emplace_back(pato);
-                contador++;
-            } else {
-                return;
-            }
+    std::vector<SDL_Point> posicion = spawns.at("default");
+    for(SDL_Point coord : posicion){
+        pos_x = coord.x;
+        pos_y = coord.y;
+        // for (Pato pato : ultimo_estado.patos){
+        //     if (pato.get_pos_x() != pos_x && pato.get_pos_y() != pos_y){
+                
+        //     }
+        // }
+        if (static_cast<int>(id_jugadores.size()) > contador){
+            Pato pato(id_jugadores.at(contador), pos_x, pos_y, 0);
+            // pato.tomar_armadura();
+            // pato.equipar_armadura();
+            // pato.tomar_casco();
+            // pato.equipar_casco();
+            ultimo_estado.patos.emplace_back(pato);
+            contador++;
+        } else {
+            return;
         }
     }
 }
