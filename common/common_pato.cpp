@@ -10,9 +10,6 @@ Pato::Pato(){}
 
 Pato::Pato(uint16_t id, uint16_t pos_x, uint16_t pos_y, uint8_t direccion):
         Entidad(id, pos_x, pos_y),
-        arma(nullptr),
-        tomo_armadura(false),
-        tomo_casco(false),
         armadura_equipada(false),
         casco_equipado(false),
         vivo(true),
@@ -23,17 +20,19 @@ Pato::Pato(uint16_t id, uint16_t pos_x, uint16_t pos_y, uint8_t direccion):
         contador_caer(0),
         velocidad_caida(3) 
         {
+    Arma arma;
+    arma.set_se_agarro(false);
     calcular_hitbox();
     // if (color == "rojo") {
-    //     this->color = 1;
+    //     this.color = 1;
     // } else if (color == "azul") {
-    //     this->color = 2;
+    //     this.color = 2;
     // } else if (color == "verde") {
-    //     this->color = 3;
+    //     this.color = 3;
     // } else if (color == "amarillo") {
-    //     this->color = 4;
+    //     this.color = 4;
     // } else {
-    //     this->color = 0;
+    //     this.color = 0;
     // }
 }
 
@@ -81,26 +80,36 @@ void Pato::caer() {
     velocidad_caida+=1;
 }
 
-void Pato::tomar_arma(Arma* nuevaArma) { arma = nuevaArma; }
+void Pato::tomar_arma(Arma nueva_arma) { 
+    arma = nueva_arma;
+    arma.set_se_agarro(true);
+}
 
-void Pato::soltar_arma() { arma = nullptr; }
+void Pato::soltar_arma() { 
+    arma.set_se_agarro(false);
+    Arma arma; 
+}
 
 uint8_t Pato::tiene_arma(){ 
-    if (arma != nullptr){
+    if (arma.get_se_agarro()){
         return TOMAR_ARMA;
     } else{
         return BYTE_NULO;
     }
 }
 
-void Pato::disparar() {
-    estado.set_disparando();
-    // if (arma) {
-    //     arma->disparar();
-    // } else {
-    //     estado.set_dejar_de_disparar();
-    //     // Si el pato no tiene un arma, no puede disparar
-    // }
+bool Pato::disparar() {
+    if (tiene_arma()) {
+        if (arma.disparar()){
+            estado.set_disparando();
+            return true;
+        }
+        return false;
+    } else {
+        estado.set_dejar_de_disparar();
+        return false;
+        // Si el pato no tiene un arma, no puede disparar
+    }
 }
 
 void Pato::apuntar_arriba() { 
@@ -119,20 +128,12 @@ void Pato::levantarse_del_piso(){
     estado.set_dejar_de_agacharse();
 }
 
-void Pato::tomar_armadura() { tomo_armadura = true; }
-
-void Pato::tomar_casco() { tomo_casco = true; }
-
 void Pato::equipar_armadura() {
-    if (tomo_armadura) {
-        armadura_equipada = true;
-    }
+    armadura_equipada = true;
 }
 
 void Pato::equipar_casco() {
-    if (tomo_casco) {
-        casco_equipado = true;
-    }
+    casco_equipado = true;
 }
 
 bool Pato::get_casco_equipado() { return casco_equipado; }
@@ -144,12 +145,10 @@ void Pato::recibir_danio() {
     // sino tiene armadura o casco
     if (casco_equipado) {
         casco_equipado = false;
-        tomo_casco = false;
         return;
     }
     if (armadura_equipada) {
         armadura_equipada = false;
-        tomo_armadura = false;
         return;
     }
     morir();
@@ -157,15 +156,11 @@ void Pato::recibir_danio() {
 
 uint8_t Pato::get_direccion() { return direccion; }
 
-Arma* Pato::get_arma() { return arma; }
+Arma Pato::get_arma() { return arma; }
 
 bool Pato::esta_vivo() const { return vivo; }
 
 void Pato::morir() { vivo = false; }
-
-bool Pato::armadura_en_inventario() { return tomo_armadura; }
-
-bool Pato::casco_en_inventario() { return tomo_casco; }
 
 // int Pato::get_color() { return color; }
 

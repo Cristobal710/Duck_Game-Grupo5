@@ -78,6 +78,9 @@ if(TALLER_CLIENT OR TALLER_EDITOR)
 
 endif()
 
+# Find yaml-cpp library
+find_package(yaml-cpp REQUIRED)  # Aquí se agregó la búsqueda de yaml-cpp
+
 # Program section
 # ---------------
 if(TALLER_CLIENT)
@@ -105,7 +108,8 @@ if(TALLER_CLIENT)
         SDL2_image::SDL2_image
         nlohmann_json
         SDL2_ttf::SDL2_ttf
-        SDL2_mixer::SDL2_mixer)  
+        SDL2_mixer::SDL2_mixer
+        yaml-cpp)  
 endif()
 
 if(TALLER_SERVER)
@@ -125,7 +129,8 @@ if(TALLER_SERVER)
     SDL2pp::SDL2pp 
     SDL2::SDL2
     nlohmann_json
-    SDL2_mixer::SDL2_mixer)
+    SDL2_mixer::SDL2_mixer
+    yaml-cpp)  
 
    
 endif()
@@ -147,7 +152,7 @@ if(TALLER_EDITOR)
     target_include_directories(taller_editor PRIVATE ${libSDL2pp_SOURCE_DIR})
 
     # Link the taller_common lib target
-    target_link_libraries(taller_editor taller_common SDL2pp::SDL2pp nlohmann_json SDL2_ttf::SDL2_ttf SDL2_mixer::SDL2_mixer)
+    target_link_libraries(taller_editor taller_common SDL2pp::SDL2pp nlohmann_json SDL2_ttf::SDL2_ttf SDL2_mixer::SDL2_mixer yaml-cpp)  
 endif()
 
 

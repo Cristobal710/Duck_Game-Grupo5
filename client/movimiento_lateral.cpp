@@ -27,7 +27,7 @@ void MovimientoLateral::mostrar_frame(uint8_t& direccion_pato) {
     if (direccion_pato == DIRECCION_DERECHA){
         SDL_BlitScaled(movimiento_pato_derecha[0].Get(), nullptr, superficie.Get(), &rect_dibujado);
     } else if (direccion_pato == DIRECCION_IZQUIERDA) {
-        SDL_BlitScaled(movimiento_pato_izquierda[0].Get(), nullptr, superficie.Get(), &rect_dibujado);
+        SDL_BlitScaled(movimiento_pato_izquierda[5].Get(), nullptr, superficie.Get(), &rect_dibujado);
     }
 }
 

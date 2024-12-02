@@ -3,7 +3,7 @@
 
 #define NUM_FRAMES_SALTA_PATO 3
 #define NUM_FRAMES_CAE_PATO 2
-#define NUM_FRAMES_ALETEA_PATO 3
+#define NUM_FRAMES_ALETEA_PATO 4
 
 MovimientoSalto::MovimientoSalto(SDL2pp::Surface& superficie, const std::string& pato_path,
                                  int pos_x, int pos_y, SDL_Color color):
@@ -44,9 +44,9 @@ void MovimientoSalto::mostrar_frame_caida(int it, uint8_t direccion) {
 
 void MovimientoSalto::mostrar_frame_aleteo(int it, uint8_t direccion) {
     if(direccion == DIRECCION_DERECHA) {
-        SDL_BlitScaled(salto_frames_derecha[it % NUM_FRAMES_ALETEA_PATO].Get(), nullptr, superficie.Get(), &rect_dibujado);
+        SDL_BlitScaled(aleteo_frames_derecha[it % NUM_FRAMES_ALETEA_PATO].Get(), nullptr, superficie.Get(), &rect_dibujado);
     } else {
-        SDL_BlitScaled(salto_frames_izquierda[it % NUM_FRAMES_ALETEA_PATO].Get(), nullptr, superficie.Get(), &rect_dibujado);    
+        SDL_BlitScaled(aleteo_frames_izquierda[it % NUM_FRAMES_ALETEA_PATO].Get(), nullptr, superficie.Get(), &rect_dibujado);    
     }
 }
 

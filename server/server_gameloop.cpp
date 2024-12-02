@@ -2,6 +2,7 @@
 
 #include "../common/common_constantes.h"
 #include <SDL2/SDL.h>
+#include <random>
 
 #define RATE 1000 / 30
 #define BAZOOKA "Bazooka"
@@ -93,6 +94,7 @@ void GameLoop::ejecutar_accion_lobby(PedidoJugador& pedido, uint16_t id_jugador,
 void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
     Bala bala;
     Caja caja;
+    bool puede_disparar = false;
     switch (accion) {
         case MOVER_IZQUIERDA:
             pato.estado.set_moviendo_izquierda();
@@ -119,19 +121,8 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
             }
             break;
         case AGARRAR_RECOMPENSA:
-            // pato.saltar();
-            if (pato.tiene_arma()) {
-                pato.soltar_arma();
-                break;
-            }
-            caja = agarrar_recompensa(pato);
-            if (!caja.get_esta_vacia()) {
-                Arma* arma = new Arma(caja.get_id(), caja.get_pos_x(), caja.get_pos_y(), 30, 30, caja.get_recompensa());
-                pato.tomar_arma(arma);
-                std::cout << ultimo_estado.cajas.size() << std::endl;
-                ultimo_estado.cajas.remove(caja);
-                std::cout << ultimo_estado.cajas.size() << std::endl;
-            }
+            //pato.saltar();
+            agarrar_recompensa(pato);
             break;
         case DEJAR_MOVER_IZQUIERDA:
             pato.estado.set_dejar_de_moverse();
@@ -163,14 +154,13 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
             //pato.tomar_arma();
             break;
         case DISPARAR:
-            if (!pato.tiene_arma()) { 
-                break;
-            } 
-            if (pato.estado.get_estado_agachado() == TIRAR_PISO) {
-                pato.estado.set_dejar_de_agacharse();
+            puede_disparar = pato.disparar();
+            if (puede_disparar){
+                crear_bala(pato);
+                if (pato.estado.get_estado_agachado() == TIRAR_PISO) {
+                    pato.estado.set_dejar_de_agacharse();
+                }
             }
-            pato.disparar();
-            crear_bala(pato);
             break;
         default:
             break;
@@ -178,20 +168,58 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
     }
 }
 
-Caja GameLoop::agarrar_recompensa(Pato& pato){
-    for(Caja& caja : ultimo_estado.cajas){
-        if(pato.colisiona_con_recompensa(caja.get_hitbox()) == Recompensas){
-            return caja;          
+void GameLoop::agarrar_recompensa(Pato& pato){
+    for (Proteccion& proteccion : ultimo_estado.armaduras){
+        if(pato.colisiona_con_recompensa(proteccion.get_hitbox()) == Recompensas){
+            if(!proteccion.get_se_agarro()){
+                if (proteccion.get_tipo() == CASCO_ENUM) {
+                    if (!pato.get_casco_equipado()) {
+                        pato.equipar_casco();
+                        proteccion.set_se_agarro(true);
+                    }
+                }else{
+                    if (!pato.get_armadura_equipada()) {
+                        pato.equipar_armadura();
+                        proteccion.set_se_agarro(true);
+                    }
+                }
+                return;
+            }
         }
     }
-
-    return Caja();
-    // for(Arma& arma : ultimo_estado.armas){
-    //     if(pato.colisiona_con_recompensa(arma.get_hitbox()) == Recompensas){
-    //         std::cout<<"AGARRANDO ARMA:  "<<static_cast<int>(arma.get_id())<<std::endl;
-    //         return arma;
-    //     }   
-    // }
+    if (pato.tiene_arma()) {
+        Arma arma_pato = pato.get_arma();
+        pato.soltar_arma();
+        for (Arma& arma : ultimo_estado.armas){
+            if (arma.get_id() == arma_pato.get_id()){
+                arma.set_se_agarro(false);
+                arma.set_pos_x(pato.get_pos_x());
+                arma.set_pos_y(pato.get_pos_y());
+                arma.set_municion_disponible(arma_pato.get_municion_disponible());
+                return;
+            }
+        }
+        return;
+    }
+    for(Caja& caja : ultimo_estado.cajas){
+        if(pato.colisiona_con_recompensa(caja.get_hitbox()) == Recompensas){
+            if (!caja.get_esta_vacia()) {
+                Arma arma = caja.get_arma();
+                pato.tomar_arma(arma);
+                caja.set_esta_vacia(true);
+                return;
+            }
+        }
+    }
+    for(Arma& arma : ultimo_estado.armas){
+        if(pato.colisiona_con_recompensa(arma.get_hitbox()) == Recompensas){
+            if(!arma.get_se_agarro()){
+                arma.set_se_agarro(true);
+                pato.tomar_arma(arma);
+                return;
+            }
+        }
+    }
 }
 
 bool GameLoop::validar_movimiento(Pato& pato, TipoColision colision){
@@ -239,14 +267,18 @@ void GameLoop::aplicar_estados(){
 void GameLoop::crear_bala(Pato& pato){  
     if (!pato.esta_apuntando_arriba()){
         if (pato.get_direccion() == DIRECCION_DERECHA) {
-            Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y() + DISTANCIA_ARMA, pato.get_pos_x() + pato.get_arma()->get_alcance(), pato.get_pos_y() + DISTANCIA_ARMA, pato.get_direccion(), pato.get_arma()->get_tipo_arma(), pato.get_id());
+            Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y() + DISTANCIA_ARMA, pato.get_pos_x() + pato.get_arma().get_alcance(), pato.get_pos_y() + DISTANCIA_ARMA, pato.get_direccion(), pato.get_arma().get_tipo_arma(), pato.get_id());
+            // std::cout << "cree bala "<< static_cast<int>(bala.get_id()) <<" pos x bala: " << static_cast<int>(bala.get_pos_x()) << std::endl;
             ultimo_estado.balas.push_back(bala);
         } else {
-            Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y() + DISTANCIA_ARMA, pato.get_pos_x() - pato.get_arma()->get_alcance(), pato.get_pos_y() + DISTANCIA_ARMA, pato.get_direccion(), pato.get_arma()->get_tipo_arma(), pato.get_id());
+            bool fuera_rango = pato.get_pos_x() < pato.get_arma().get_alcance();
+            uint16_t pos_final_x = fuera_rango ? 0 : pato.get_pos_x() - pato.get_arma().get_alcance();
+            Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y() + DISTANCIA_ARMA, pos_final_x, pato.get_pos_y() + DISTANCIA_ARMA, pato.get_direccion(), pato.get_arma().get_tipo_arma(), pato.get_id());
+            // std::cout << "cree bala "<< static_cast<int>(bala.get_id()) <<"pos x bala: " << static_cast<int>(bala.get_pos_x()) << std::endl;
             ultimo_estado.balas.push_back(bala);
         }
     } else {
-        Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x(), pato.get_pos_y() - pato.get_arma()->get_alcance(), pato.get_direccion(), pato.get_arma()->get_tipo_arma(), pato.get_id());
+        Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y(), pato.get_pos_x(), pato.get_pos_y() - pato.get_arma().get_alcance(), pato.get_direccion(), pato.get_arma().get_tipo_arma(), pato.get_id());
         ultimo_estado.balas.push_back(bala);
     }
 }
@@ -273,34 +305,41 @@ void GameLoop::crear_bala(Pato& pato){
 
 void GameLoop::avanzar_balas_direccion_izquierda(std::__cxx11::list<Bala>::iterator& it){
     if (it->get_direccion() == DIRECCION_IZQUIERDA) {
-        it->set_pos_x(it->get_pos_x() - 5);
-        //std::cout << "pos x bala avance:" << static_cast<int>(it->get_pos_x()) << std::endl;
+        // std::cout << "pos x bala " << it->get_id() << " antes de avance: " << static_cast<int>(it->get_pos_x()) << std::endl;
+        if (it->get_pos_x() < 5) {
+            it->set_pos_x(0);
+        } else {
+            it->set_pos_x(it->get_pos_x() - 5);
+        }
+        //it->set_pos_x(it->get_pos_x() - 5);
+        // std::cout << "pos x bala " << it->get_id() << " despues de avance: " << static_cast<int>(it->get_pos_x()) << std::endl;
     }
 }
 
 void GameLoop::avanzar_balas_direccion_derecha(std::__cxx11::list<Bala>::iterator& it){
     if (it->get_direccion() == DIRECCION_DERECHA) {
+        // std::cout << "pos x bala " << it->get_id() << " antes de avance: " << static_cast<int>(it->get_pos_x()) << std::endl;
         it->set_pos_x(it->get_pos_x() + 5);
-        //std::cout << "pos x bala avance :" << static_cast<int>(it->get_pos_x()) << std::endl;
+        // std::cout << "pos x bala " << it->get_id() << " despues de avance: " << static_cast<int>(it->get_pos_x()) << std::endl;
     }
 }
 
 void GameLoop::avanzar_balas_direccion_arriba(std::__cxx11::list<Bala>::iterator& it){
     if (it->get_direccion() == DIRECCION_ARRIBA) {
         it->set_pos_y(it->get_pos_y() - 5);
-        //std::cout << "pos y bala avance :" << static_cast<int>(it->get_pos_y()) << std::endl;
+        // std::cout << "pos y bala avance :" << static_cast<int>(it->get_pos_y()) << std::endl;
     }
 }
 
 void GameLoop::eliminar_balas_fuera_de_alcance(std::__cxx11::list<Bala>::iterator& it){
-    if ((it->get_pos_x() >= it->get_pos_x_final() && it->get_direccion() == DIRECCION_DERECHA) || (it->get_pos_x() == 1280 && it->get_direccion() == DIRECCION_IZQUIERDA)) {
-        //std::cout << "se elimina la bala que va a la derecha" << std::endl;
+    if ((it->get_pos_x() >= it->get_pos_x_final() && it->get_direccion() == DIRECCION_DERECHA)) {
+        // std::cout << "se elimina la bala que va a la derecha" << std::endl;
         it = ultimo_estado.balas.erase(it);
-    } else if ((it->get_pos_x() <= it->get_pos_x_final() && it->get_direccion() == DIRECCION_IZQUIERDA) || (it->get_pos_x() == 0 && it->get_direccion() == DIRECCION_IZQUIERDA)) {
-        //std::cout << "se elimina la bala que va a la izquierda" << std::endl;
+    } else if ((it->get_pos_x() <= it->get_pos_x_final() && it->get_direccion() == DIRECCION_IZQUIERDA)) {
+        // std::cout << "se elimina la bala que va a la izquierda" << std::endl;
         it = ultimo_estado.balas.erase(it);
     } else if (it->get_pos_y() <= it->get_pos_y_final() && it->get_direccion() == DIRECCION_ARRIBA) {
-        //std::cout << "se elimina la bala que va arriba" << std::endl;
+        // std::cout << "se elimina la bala que va arriba" << std::endl;
         it = ultimo_estado.balas.erase(it);
     } else {
         ++it;
@@ -320,7 +359,7 @@ void GameLoop::avanzar_balas(){
     for (auto it = ultimo_estado.balas.begin(); it != ultimo_estado.balas.end(); ) {
         eliminar_balas_si_colisionan(it);
         avanzar_balas_direccion_izquierda(it);
-        avanzar_balas_direccion_derecha(it);    
+        avanzar_balas_direccion_derecha(it);
         avanzar_balas_direccion_arriba(it);
         eliminar_balas_fuera_de_alcance(it);
     }
@@ -435,17 +474,6 @@ void GameLoop::calcular_colisiones_balas(){
     }
 }
 
-// void GameLoop::calcular_colisiones_cajas(){
-//     for(Pato& pato : ultimo_estado.patos){
-//         for(Caja& caja : ultimo_estado.cajas){
-//             if(pato.colisiona_con_caja(caja.get_hitbox()) == Cajas){
-//                 //std::cout<<"ESTOY COLISIONANDO CON UNA CAJARDA"<<std::endl;
-//             }
-//         }
-//     }
-    
-// }
-
 void GameLoop::actualizar_hitbox_entidades(){
     for (Pato& pato: ultimo_estado.patos) {
         pato.calcular_hitbox();
@@ -499,27 +527,94 @@ void GameLoop::inicializar_patos(){
             }
         }
     }
+}
+
+Arma GameLoop::elegir_arma_aleatoria(SDL_Point posicion_caja){
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> distrib(0, armas_posibles.size() - 1);
+    int indice_aleatorio = distrib(gen);
+    ArmaConfig elemento_aleatorio = armas_posibles[indice_aleatorio];
+    Arma arma = mapear_armas(elemento_aleatorio, posicion_caja);
+    return arma;
+}
 
 void GameLoop::inicializar_cajas(){
     for (const auto& cajas : ultimo_estado.mapa.getCajas()) {
         for (SDL_Point posicion_caja : cajas.second) {
-            Caja caja(ultimo_estado.cajas.size() + 1, posicion_caja.x, posicion_caja.y, AK_47);
+            Arma arma = elegir_arma_aleatoria(posicion_caja);
+            arma.set_se_agarro(true);
+            Caja caja(ultimo_estado.cajas.size() + 1, posicion_caja.x, posicion_caja.y, arma);
+            ultimo_estado.armas.push_back(arma);
             ultimo_estado.cajas.push_back(caja);
         }
     }
-
 }
+
+Arma GameLoop::mapear_armas(ArmaConfig armamento, SDL_Point posicion_arma){
+    if (armamento.nombre == "ak47") {
+        return AK47(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, armamento.municiones, armamento.alcance * ANCHO_TILE);
+    } else if (armamento.nombre == "escopeta") {
+        return Escopeta(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, armamento.municiones, armamento.alcance * ANCHO_TILE);
+    } else if (armamento.nombre == "laserRifle") {
+        return LaserRifle(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, armamento.municiones, armamento.alcance * ANCHO_TILE);
+    } else if (armamento.nombre == "magnum") {
+        return Magnum(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, armamento.municiones, armamento.alcance * ANCHO_TILE);
+    } else if (armamento.nombre == "pewpewLaser") {
+        return PewPewLaser(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, armamento.municiones, armamento.alcance * ANCHO_TILE);
+    } else if (armamento.nombre == "pistolaCowboy") {
+        return PistolaCowboy(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, armamento.municiones, armamento.alcance * ANCHO_TILE);
+    } else if (armamento.nombre == "pistolaDuelos") {
+        return PistolaDuelos(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, armamento.municiones, armamento.alcance * ANCHO_TILE);
+    } else if (armamento.nombre == "sniper") {
+        return Sniper(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, armamento.municiones, armamento.alcance * ANCHO_TILE);
+    } else {
+        return Arma();
+    }
+}
+
 void GameLoop::inicializar_armas(){
     for (const auto& armas : ultimo_estado.mapa.getEquipamiento()) {
         for (SDL_Point posicion_arma : armas.second) {
-            Arma* arma = new Arma(ultimo_estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, 15, 300, AK_47);
-            ultimo_estado.armas.push_back(*arma);
+            ArmaConfig armamento = armamento_config[armas.first];
+            if(armamento.nombre == "armadura"){
+                Proteccion proteccion(ultimo_estado.armaduras.size()+1, posicion_arma.x, posicion_arma.y, ARMADURA_ENUM, false);
+                ultimo_estado.armaduras.push_back(proteccion);
+                continue;
+            }else if(armamento.nombre == "casco"){
+                Proteccion proteccion(ultimo_estado.armaduras.size()+1, posicion_arma.x, posicion_arma.y, CASCO_ENUM, false);
+                ultimo_estado.armaduras.push_back(proteccion);
+                continue;
+            }
+            Arma arma = mapear_armas(armamento, posicion_arma);
+            ultimo_estado.armas.push_back(arma);
+        }
+    }
+}
+
+
+void GameLoop::leer_configuracion(const std::string& archivo_yaml){
+    YAML::Node config = YAML::LoadFile(archivo_yaml);
+
+    for (const auto& arma : config["armas"]) {
+        ArmaConfig config_arma;
+        
+        config_arma.nombre = arma.first.as<std::string>();
+        config_arma.alcance = arma.second["alcance"].as<int>();
+        config_arma.municiones = arma.second["municiones"].as<int>();
+        std::string path = arma.second["path"].as<std::string>();
+
+        armamento_config[path] = config_arma;
+        if (config_arma.nombre != "armadura" && config_arma.nombre != "casco") {
+            armas_posibles.push_back(config_arma);
         }
     }
 }
 
 void GameLoop::inicializar_juego(){
+    leer_configuracion(RUTA_CONFIGURACION);
     inicializar_patos();
+    inicializar_armas();
     inicializar_cajas();
     inicializar_armas();
 }
@@ -529,7 +624,7 @@ void GameLoop::run() {
     float tiempo_ultimo_frame = SDL_GetTicks();
 
     LectorJson lector_mapa = LectorJson();
-    Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa1");
+    Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa5");
     ultimo_estado.mapa = mapa;
     ultimo_estado.id_partida = id_partida;
     inicializar_juego();

@@ -10,7 +10,7 @@
 #include "common_granada.h"
 #include "common_pato.h"
 #include "common_mapa.h"
-
+#include "common_proteccion.h"
 
 struct EstadoJuego {
     uint8_t informacion_enviada;
@@ -25,7 +25,7 @@ struct EstadoJuego {
     std::list<Arma> armas;
     std::list<Bala> balas;
     std::list<Granada> granadas;
-
+    std::list<Proteccion> armaduras;
 };
 
 #endif

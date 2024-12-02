@@ -166,7 +166,9 @@ void MapaInterfaz::dibujar(int it){
     for (BalaInterfaz& bala : balas){
         bala.dibujar(it);
     }
+
     balas.clear();
+    //cajas.clear();
 
     SDL2pp::Rect rect_dibujar = obtener_rect_dibujar();
     SDL2pp::Rect rect_superficie(0, 0, 1280, 720);
@@ -177,3 +179,18 @@ void MapaInterfaz::dibujar(int it){
     );
 }
 
+void MapaInterfaz::caja_recogida(int pos_x, int pos_y){
+    for (CajaInterfaz& caja : cajas){
+        if (caja.misma_caja(pos_x, pos_y)){
+            caja.no_dibujar();
+        }
+    }
+}
+
+void MapaInterfaz::equip_recogido(int x, int y) {
+    for (EquipamientoInterfaz& equip : equipamientos){
+        if (equip.mismo_equip(x, y)){
+            equip.no_dibujar();
+        }
+    }
+}

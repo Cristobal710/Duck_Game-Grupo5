@@ -9,6 +9,7 @@ private:
     SDL2pp::Surface caja_surface;
     SDL2pp::Surface& superficie;
     SDL2pp::Rect rectangulo;
+    bool recogida;
 
 public:
     CajaInterfaz(SDL2pp::Surface& superficie, std::string path, int x, int y);
@@ -20,7 +21,8 @@ public:
     CajaInterfaz& operator=(const CajaInterfaz& other) = delete;
 
     void dibujar();
-    
+    bool misma_caja(int x, int y);
+    void no_dibujar();
 };
 
 #endif

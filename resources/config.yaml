@@ -1,0 +1,41 @@
+armas:
+  pewpewLaser:
+    path: "../resources/weapons/pewpewLaser.png"
+    alcance: 35
+    municiones: 12
+  laserRifle:
+    path: "../resources/weapons/laserRifle.png"
+    alcance: 30
+    municiones: 10
+  ak47:
+    path: "../resources/weapons/ak47.png"
+    alcance: 13
+    municiones: 30
+  pistolaDuelos:
+    path: "../resources/weapons/oldPistol.png"
+    alcance: 5
+    municiones: 1
+  pistolaCowboy:
+    path: "../resources/weapons/cowboyPistol.png"
+    alcance: 20
+    municiones: 6
+  magnum:
+    path: "../resources/weapons/magnum.png"
+    alcance: 20
+    municiones: 6
+  escopeta:
+    path: "../resources/weapons/shotgun.png"
+    alcance: 7
+    municiones: 2
+  sniper:
+    path: "../resources/weapons/sniper.png"
+    alcance: 64
+    municiones: 3
+  armadura:
+    path: "../resources/armors/chestPlatePickup.png"
+    alcance: 0
+    municiones: 0
+  casco:
+    path: "../resources/armors/knightHelmet.png"
+    alcance: 0
+    municiones: 0

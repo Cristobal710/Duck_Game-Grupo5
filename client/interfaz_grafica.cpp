@@ -105,6 +105,14 @@ void InterfazGrafica::iniciar() {
         //ahora calculamos cuanto tardamos en hacer todo, si nos pasamos, drop & rest.
         drop_rest(tiempo_ultimo_frame, it);
     }
+    
+    //mostrar pantalla de ganador o perdedor 
+    while(true) {
+        renderer.Clear();
+        lobby.mostrar_pantalla_ganador(it);
+        //lobby.mostrar_pantalla_perdedor();
+        drop_rest(tiempo_ultimo_frame, it);
+    }
 
     //Mix_FreeMusic(music);
     IMG_Quit();
@@ -121,12 +129,12 @@ void InterfazGrafica::drop_rest(float& tiempo_ultimo_frame, int& it) {
         int32_t tiempo_atrasado = -descansar;
         descansar = DURACION_FRAME - (tiempo_atrasado % DURACION_FRAME);
         int32_t tiempo_perdido = tiempo_atrasado + descansar;
-
         tiempo_ultimo_frame += tiempo_perdido;
         it += static_cast<int>(tiempo_perdido / DURACION_FRAME);
         if (tiempo_perdido % DURACION_FRAME != 0 && (tiempo_perdido < 0) != (DURACION_FRAME < 0)) {
             it--;
         }
+        //std::cout << "pierdo frames" << std::endl;
     }
     SDL_Delay(descansar);
     it += 1;
@@ -169,6 +177,7 @@ void InterfazGrafica::manejar_eventos(std::set<SDL_Keycode>& keysHeld, int cant_
 
         } else if (evento.type == SDL_KEYDOWN) {
             if (keysHeld.find(evento.key.keysym.sym) == keysHeld.end()) {
+                // Check for escape key
                 if (evento.key.keysym.sym == SDLK_ESCAPE) {
                     correr_programa = false;
                 }
@@ -176,13 +185,17 @@ void InterfazGrafica::manejar_eventos(std::set<SDL_Keycode>& keysHeld, int cant_
                 if (cant_jugadores == 2) {
                     manejar_eventos_por_jugador(comando_cliente, evento, key_map_jugador_2, id2, true);
                 }
+
+                // Mark this key as held
+                keysHeld.insert(evento.key.keysym.sym);
             }
-            keysHeld.insert(evento.key.keysym.sym);
         } else if (evento.type == SDL_KEYUP) {
             manejar_eventos_por_jugador(comando_cliente, evento, key_map_jugador_1, id1, false);
             if (cant_jugadores == 2) {
                 manejar_eventos_por_jugador(comando_cliente, evento, key_map_jugador_2, id2, false);
             }
+
+            // Remove the released key from the held keys set
             keysHeld.erase(evento.key.keysym.sym);
         }
     }
@@ -270,12 +283,28 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa, bool& mapa_proces
                 pato_prueba.actualizar_equipamiento(pato_juego.get_casco_equipado(), ESTADO_CASCO);
             }
 
-            //mostrar balas
-            for (Bala balas_juego: ultimo_estado.balas) {
-                mapa.agregar_bala(balas_juego.get_tipo_arma(), balas_juego.get_pos_x(),
-                balas_juego.get_pos_y(), balas_juego.get_direccion());
+        //mostrar balas
+        for (Bala balas_juego: ultimo_estado.balas) {
+            mapa.agregar_bala(balas_juego.get_tipo_arma(), balas_juego.get_pos_x(),
+            balas_juego.get_pos_y(), balas_juego.get_direccion());
+            
+        }
+        //verificar cajas agarradas
+        for (Caja caja : ultimo_estado.cajas){
+            if (caja.get_esta_vacia()){
+            mapa.caja_recogida(caja.get_pos_x(), caja.get_pos_y());
             }
+        }
+        //verificar equipamiento agarrado
+        for (Arma arma : ultimo_estado.armas){
+           if (arma.get_se_agarro()){
+               mapa.equip_recogido(arma.get_pos_x(), arma.get_pos_y());
+           }
+        }
+        for (Proteccion armadura : ultimo_estado.armaduras){
+           if (armadura.get_se_agarro()){
+               mapa.equip_recogido(armadura.get_pos_x(), armadura.get_pos_y());
+           }
         }
     } 
 }
-

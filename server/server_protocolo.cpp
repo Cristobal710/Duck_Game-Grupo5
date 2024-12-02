@@ -174,6 +174,7 @@ void ServerProtocolo::enviar_estado_juego(EstadoJuego& estado) {
         enviar_cajas(estado.cajas);
         enviar_armas(estado.armas);
         enviar_balas(estado.balas);
+        enviar_protecciones(estado.armaduras);
         return;
     }
 
@@ -279,5 +280,25 @@ void ServerProtocolo::enviar_granadas(std::list<Granada>& granadas) {
     enviar_byte(granadas.size());
     for (auto& granada: granadas) {
         enviar_granada(granada);
+    }
+}
+
+void ServerProtocolo::enviar_protecciones(std::list<Proteccion>& protecciones){
+    enviar_byte(protecciones.size());
+    for(auto& proteccion : protecciones){
+        enviar_proteccion(proteccion);
+    }
+    
+}
+
+void ServerProtocolo::enviar_proteccion(Proteccion& proteccion){
+    enviar_dos_bytes(proteccion.get_id());
+    enviar_dos_bytes(proteccion.get_pos_x());
+    enviar_dos_bytes(proteccion.get_pos_y());
+    enviar_byte(proteccion.get_se_agarro());
+    if (proteccion.get_tipo() == ARMADURA_ENUM){
+        enviar_byte(BYTE_ARMADURA);
+    }else if(proteccion.get_tipo() == CASCO_ENUM){
+        enviar_byte(BYTE_CASCO);
     }
 }

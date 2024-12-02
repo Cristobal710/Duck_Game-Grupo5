@@ -57,6 +57,7 @@ public:
 
     
     void dibujar(int it);
+    void dibujar_equipamiento(int pos_x, int pos_y);
 
     void actualizar_estado(uint8_t estado_nuevo, std::string tipo_estado);
     void actualizar_posicion(int pos_x, int pos_y);
@@ -74,6 +75,7 @@ public:
     int pos_y();
     int get_w();
     int get_h();
+    uint16_t get_id();
 };
 
 #endif

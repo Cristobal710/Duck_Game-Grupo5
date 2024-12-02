@@ -30,11 +30,13 @@ void Lobby::cargar_boton(std::string& texto, SDL_Rect& boton_rect){
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderDrawRect(renderer, &boton_rect);
 
-    cargar_texto_boton(texto, boton_rect);
+    SDL_Color color = {255, 165, 0, 255};
+    int tamanio = 24;
+    cargar_texto(texto, boton_rect, color, tamanio);
 }
     
 
-void Lobby::cargar_texto_boton(std::string& texto, SDL_Rect& boton_rect){
+void Lobby::cargar_texto(std::string& texto, SDL_Rect& boton_rect, SDL_Color& color_texto, int tamanio){
     /*TTF_Init();
     TTF_Font* font = TTF_OpenFont("../resources/lobby/lobby_font.TTF", 24);
     SDL_Color color_texto = {255, 165, 0, 255};
@@ -47,14 +49,13 @@ void Lobby::cargar_texto_boton(std::string& texto, SDL_Rect& boton_rect){
     }
 
     // Crear y renderizar el texto dentro del botón
-    TTF_Font* font = TTF_OpenFont("../resources/lobby/lobby_font.TTF", 24);  // Abrir fuente (ajusta el tamaño)
+    TTF_Font* font = TTF_OpenFont("../resources/lobby/lobby_font.TTF", tamanio);  // Abrir fuente (ajusta el tamaño)
     if (font == NULL) {
         std::cout << "Error loading font: " << TTF_GetError() << std::endl;
         return;
     }
 
     // Crear una superficie con el texto
-    SDL_Color color_texto = {255, 165, 0, 255};  // Blanco para el texto (puedes cambiar el color)
     SDL_Surface* surface_texto = TTF_RenderText_Solid(font, texto.c_str(), color_texto);  // Texto a mostrar
     if (surface_texto == NULL) {
         std::cout << "Error creating text surface: " << TTF_GetError() << std::endl;
@@ -246,6 +247,110 @@ void Lobby::actualizar_partidas(std::list<Partida>& partidas) {
 void Lobby::partida_iniciada() {
     estado = EstadoLobby::FINALIZADO;
 }
+
+
+void Lobby::cargar_pantalla(std::vector<SDL_Texture*>& texturas_ganador, std::string path, 
+            int cant_frames, int frame_width, int frame_height, int offset_x, int offset_y) {
+    // Load the surface for the winner screen
+    SDL_Surface* ganador_surface = IMG_Load(path.c_str());
+    if (!ganador_surface) {
+        SDL_Log("Failed to load image: %s", SDL_GetError());
+        return;
+    }
+
+    for (int i = 0; i < cant_frames; i++) {
+        SDL_Rect frame_rect = { i * frame_width + offset_x , offset_y, frame_width, frame_height };
+        SDL_Surface* frame_surface = SDL_CreateRGBSurface(0, frame_width, frame_height, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+
+        SDL_BlitSurface(ganador_surface, &frame_rect, frame_surface, nullptr);
+
+        SDL_Texture* frame_texture = SDL_CreateTextureFromSurface(renderer, frame_surface);
+        texturas_ganador.push_back(frame_texture);
+
+        SDL_FreeSurface(frame_surface);
+    }
+
+    SDL_FreeSurface(ganador_surface);
+
+}
+
+void Lobby::mostrar_pantalla_ganador(int it) {
+    static std::vector<SDL_Texture*> texturas_ganador;
+    static bool loaded = false;
+    if (!loaded) {
+        std::string path = "../resources/winner.png";
+        cargar_pantalla(texturas_ganador, path, 6, 136, 275, 0, 0);
+        loaded = true;
+    }
+
+    SDL_Event event;
+    bool quit = false;
+
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) {
+            cerrar();
+            quit = true;
+            break;
+        }
+    }
+
+    SDL_RenderClear(renderer);
+    SDL_Texture* fondo_texture = IMG_LoadTexture(renderer, "../resources/backgrounds/forest.png");
+    SDL_RenderCopy(renderer, fondo_texture, NULL, NULL);
+    std::string texto = "YOU WIN!";
+    SDL_Rect rect_texto = { 520, 100, 200, 100 };
+    SDL_Color color = { 240, 240, 0, 255 };
+    int tamanio = 36;
+    cargar_texto(texto, rect_texto, color, tamanio);
+    SDL_Rect dest_rect = { 475, 150, 300, 400 };
+    SDL_RenderCopy(renderer, texturas_ganador[it % 6], nullptr, &dest_rect);
+    SDL_Delay(100);
+    SDL_RenderPresent(renderer);
+
+    if (quit) return;
+}
+
+void Lobby::mostrar_pantalla_perdedor(){
+    static std::vector<SDL_Texture*> texturas_ganador;
+    static bool loaded = false;
+    if (!loaded) {
+        std::string path = "../resources/Grey-Duck.png";
+        cargar_pantalla(texturas_ganador, path, 4, 32, 32, 1, 71);
+        loaded = true;
+    }
+
+    SDL_Event event;
+    bool quit = false;
+
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) {
+            cerrar();
+            quit = true;
+            break;
+        }
+    }
+
+    SDL_RenderClear(renderer);
+    SDL_Texture* fondo_texture = IMG_LoadTexture(renderer, "../resources/backgrounds/forest.png");
+    SDL_RenderCopy(renderer, fondo_texture, NULL, NULL);
+    SDL_Texture* grave_texture = IMG_LoadTexture(renderer, "../resources/grave.png");
+    SDL_Rect rect_grave = { 475, 250, 275, 275 };
+    SDL_RenderCopy(renderer, grave_texture, NULL, &rect_grave);
+    std::string texto = "YOU LOSE :(";
+    SDL_Rect rect_texto = { 520, 100, 200, 100 };
+    SDL_Color color = { 0, 0, 0, 255 };
+    int tamanio = 36;
+    cargar_texto(texto, rect_texto, color, tamanio);
+    SDL_Rect dest_rect = { 500, 200, 250, 350 };
+    SDL_RenderCopy(renderer, texturas_ganador[1], nullptr, &dest_rect);
+
+    SDL_RenderPresent(renderer);
+
+    if (quit) return;
+
+}
+    
+
 
 void Lobby::cerrar() {
     SDL_DestroyTexture(fondo_texture);

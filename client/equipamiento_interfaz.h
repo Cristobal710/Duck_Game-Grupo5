@@ -14,11 +14,14 @@ private:
     std::vector<SDL2pp::Surface> equipamiento;
     SDL2pp::Rect rect_inicio_equipamiento;
     SDL2pp::Rect rect_dibujado_equipamiento;
+    bool recogido;
 
 public:
 
     EquipamientoInterfaz(SDL2pp::Surface& superficie, const std::string& equipamiento_path, int pos_x, int pos_y);
     void dibujar();
+    void no_dibujar();
+    bool mismo_equip(int x, int y);
 
 };
 

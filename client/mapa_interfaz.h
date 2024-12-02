@@ -41,6 +41,8 @@ public:
     void agregar_caja(int x, int y);
     void agregar_equipamiento(std::string& equipamiento_path, int x, int y);
     void agregar_bala(uint8_t tipo_arma, int x, int y, uint8_t direccion);
+    void caja_recogida(int x, int y);
+    void equip_recogido(int x, int y);
     PatoInterfaz& get_pato_con_id(uint16_t id);
     
     void procesado();

@@ -32,8 +32,6 @@ void ClienteProtocolo::recibir_pato(std::list<Pato>& patos) {
     uint8_t estado_agachado = recibir_byte(cerrado);
     uint8_t estado_disparo = recibir_byte(cerrado);
     uint8_t esta_vivo = recibir_byte(cerrado);
-    uint8_t casco_inventario = recibir_byte(cerrado);
-    uint8_t armadura_inventario = recibir_byte(cerrado);
     uint8_t casco_equipado = recibir_byte(cerrado);
     uint8_t armadura_equipada = recibir_byte(cerrado);
     uint8_t tiene_arma = recibir_byte(cerrado);
@@ -44,17 +42,11 @@ void ClienteProtocolo::recibir_pato(std::list<Pato>& patos) {
         uint16_t arma_id = recibir_dos_bytes(cerrado);
         uint8_t municion_disponible = recibir_byte(cerrado);
         uint8_t tipo_arma = recibir_byte(cerrado);
-        Arma* arma = new Arma(arma_id, pos_x, pos_y, municion_disponible, 30, tipo_arma);
+        Arma arma(arma_id, pos_x, pos_y, municion_disponible, 30, tipo_arma);
         pato.tomar_arma(arma);
     }
     if (static_cast<bool>(apunta_arriba)) {
         pato.apuntar_arriba();
-    }
-    if (static_cast<bool>(casco_inventario)) {
-        pato.tomar_casco();
-    }
-    if (static_cast<bool>(armadura_inventario)) {
-        pato.tomar_armadura();
     }
     if (static_cast<bool>(casco_equipado)) {
         pato.equipar_casco();
@@ -87,8 +79,9 @@ void ClienteProtocolo::recibir_caja(std::list<Caja>& cajas) {
     uint16_t id = recibir_dos_bytes(cerrado);
     uint16_t pos_x = recibir_dos_bytes(cerrado);
     uint16_t pos_y = recibir_dos_bytes(cerrado);
-    uint8_t recompensa_id = recibir_byte(cerrado);
-    Caja caja(id, pos_x, pos_y, recompensa_id);
+    uint8_t esta_vacia = recibir_byte(cerrado);
+    Caja caja(id, pos_x, pos_y);
+    caja.set_esta_vacia(static_cast<bool> (esta_vacia));
     cajas.push_back(caja);
 }
 
@@ -108,13 +101,15 @@ std::list<Caja> ClienteProtocolo::recibir_cajas() {
 
 void ClienteProtocolo::recibir_arma(std::list<Arma>& armas) {
     bool cerrado;
-    uint8_t id = recibir_byte(cerrado);
-    uint8_t pos_x = recibir_byte(cerrado);
-    uint8_t pos_y = recibir_byte(cerrado);
-    uint8_t alcance = recibir_byte(cerrado);
+    uint16_t id = recibir_dos_bytes(cerrado);
+    uint16_t pos_x = recibir_dos_bytes(cerrado);
+    uint16_t pos_y = recibir_dos_bytes(cerrado);
+    uint16_t alcance = recibir_dos_bytes(cerrado);
     uint8_t municion_disponible = recibir_byte(cerrado);
     uint8_t tipo_arma = recibir_byte(cerrado);
+    uint8_t se_agarro = recibir_byte(cerrado);
     Arma arma(id, pos_x, pos_y, alcance, municion_disponible, tipo_arma);
+    arma.set_se_agarro(static_cast<bool>(se_agarro));
     armas.push_back(arma);
 }
 
@@ -210,6 +205,7 @@ EstadoJuego ClienteProtocolo::recibir_estado_juego() {
         estado_juego.cajas            = recibir_cajas();
         estado_juego.armas            = recibir_armas();
         estado_juego.balas            = recibir_balas();
+        estado_juego.armaduras = recibir_protecciones();
         return estado_juego;
     }
 
@@ -358,4 +354,36 @@ Mapa ClienteProtocolo::recibir_mapa(){
     recibir_equipamiento(mapa);
     return mapa;
 
+}
+
+
+
+void ClienteProtocolo::recibir_proteccion(std::list<Proteccion>& protecciones) {
+    bool cerrado;
+    uint16_t id = recibir_dos_bytes(cerrado);
+    uint16_t pos_x = recibir_dos_bytes(cerrado);
+    uint16_t pos_y = recibir_dos_bytes(cerrado);
+    uint8_t se_agarro = recibir_byte(cerrado);
+    uint8_t tipo = recibir_byte(cerrado);
+
+    if (tipo == BYTE_ARMADURA) {
+        Proteccion proteccion(id, pos_x, pos_y, ARMADURA_ENUM, static_cast<bool> (se_agarro));
+        protecciones.push_back(proteccion);
+    }else if (tipo == BYTE_CASCO) {
+        Proteccion proteccion(id, pos_x, pos_y, CASCO_ENUM, static_cast<bool> (se_agarro));
+        protecciones.push_back(proteccion);
+    }
+}
+
+std::list<Proteccion> ClienteProtocolo::recibir_protecciones() {
+    std::list<Proteccion> protecciones;
+    std::vector<uint8_t> cantidad_protecciones(1);
+    bool cerrado;
+    socket.recvall(cantidad_protecciones.data(), cantidad_protecciones.size(), &cerrado);
+    int cantidad = static_cast<int>(cantidad_protecciones[0]);
+
+    for (int i = 0; i < cantidad; i++) {
+        recibir_proteccion(protecciones);
+    }
+    return protecciones;
 }

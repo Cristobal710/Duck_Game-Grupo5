@@ -5,17 +5,34 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <yaml-cpp/yaml.h>
+
+
 #include "../common/common_mapa.h"
 #include "server_lector_json.h"
 #include "../common/common_estado_juego.h"
 #include "../common/common_queue.h"
-#include "../common/common_thread.h"
+#include "../common/common_thread.h" 
+#include "../common/common_tipo_proteccion.h"
+
+#include "../common/common_ak47.h"
+#include "../common/common_escopeta.h"
+#include "../common/common_laserrifle.h"
+#include "../common/common_magnum.h"
+#include "../common/common_pistolacowboy.h"
+#include "../common/common_pistoladuelos.h"
+#include "../common/common_pewpewlaser.h"
+#include "../common/common_sniper.h"
 #include "common/common_tile.h"
 #include "server_client.h"
 #include "server_evento.h"
+#include "server_arma_config.h"
 #include "server_proteger_clientes.h"
 #include "../common/common_tipo_colision.h"
 #include "queue_protegida.h"
+
+
+#define RUTA_CONFIGURACION "../resources/config.yaml"
 
 class GameLoop: public Thread {
 private:
@@ -26,16 +43,14 @@ private:
     uint16_t id_ultimo_jugador;
     uint8_t id_partida;
     std::map<uint16_t, Queue<EstadoJuego>*>* mapa_jugadores;
-
+    std::map<std::string, ArmaConfig> armamento_config;
+    std::vector<ArmaConfig> armas_posibles;
     // void eliminar_clientes_cerrados();
     // void cerrar_gameloop();
     void inicializar_juego();
     void inicializar_cajas();
     void inicializar_patos();
     void inicializar_armas();
-
-    void procesar_evento_lobby(EventoServer& evento, bool& iniciar_partida);
-    void ejecutar_accion_lobby(PedidoJugador& pedido, uint16_t id_jugador, bool& iniciar_partida);
     void ejecutar_accion(uint8_t accion, Pato& pato);
     void enviar_estado_juego_si_cambio( EstadoJuego& estado_juego);
     void avanzar_balas();
@@ -56,7 +71,10 @@ private:
     void eliminar_patos_muertos();
     bool validar_movimiento(Pato& pato, TipoColision tipo_colision);
     void eliminar_balas_si_colisionan(std::__cxx11::list<Bala>::iterator& it);
-    Caja agarrar_recompensa(Pato& pato);
+    void agarrar_recompensa(Pato& pato);
+    Arma elegir_arma_aleatoria(SDL_Point posicion_caja);
+    void leer_configuracion(const std::string& archivo_yaml);
+    Arma mapear_armas(ArmaConfig armamento, SDL_Point posicion_arma);
 
 public:
     GameLoop(std::map<uint16_t, Queue<EstadoJuego>*>* mapa_jugadores,
