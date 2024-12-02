@@ -1,7 +1,7 @@
 #include "server_proteger_clientes.h"
 
-ClientesProtegidos::ClientesProtegidos(std::map<ServerClient*, Queue<EventoServer>*>& mapa_clientes):
-        clientes(mapa_clientes) {}
+ClientesProtegidos::ClientesProtegidos():
+        clientes() {}
 
 void ClientesProtegidos::agregar_cliente(ServerClient& cliente, Queue<EventoServer>& enviados) {
     std::lock_guard<std::mutex> lock(mutex);
@@ -13,11 +13,12 @@ std::vector<EventoServer> ClientesProtegidos::recibir_mensajes_clientes() {
     std::vector<EventoServer> eventos;
     std::lock_guard<std::mutex> lock(mutex);
     if (!clientes.empty()) {
+        EventoServer evento;
         for (const auto& cliente: clientes) {
-            EventoServer evento;
             while(cliente.second->try_pop(evento)){
-                eventos.push_back(evento);
+                //eventos.push_back(evento);
             }
+            eventos.push_back(evento);
         }
     }
     return eventos;
@@ -68,4 +69,16 @@ void ClientesProtegidos::cerrar_gameloop() {
             }
         }
     }
+}
+
+std::vector<uint16_t> ClientesProtegidos::obtener_ids() {  
+    std::vector<uint16_t> id_jugadores;
+
+    for (const auto& cliente: clientes) {
+        id_jugadores.emplace_back(cliente.first->get_id());
+        if (cliente.first->juegan_dos()){
+            id_jugadores.emplace_back(cliente.first->get_id() + 1);
+        }
+    }
+    return id_jugadores;
 }

@@ -3,7 +3,7 @@
 #include <SDL2/SDL.h>
 #include <string>
 #include <nlohmann/json.hpp>
-
+#include <iostream>
 using json = nlohmann::json;
 
 class Mapa {
@@ -75,6 +75,48 @@ class Mapa {
         }
 
         return mapa;
+    }
+
+    void print() const {
+        // Check if any of the maps are empty and print accordingly
+        if (tiles.empty()) {
+            std::cout << "Tiles map is empty!" << std::endl;
+        } else {
+            std::cout << "Tiles map contains:" << std::endl;
+            for (const auto& entry : tiles) {
+                std::cout << "Texture: " << entry.first << " with " << entry.second.size() << " points." << std::endl;
+            }
+        }
+
+        if (spawns.empty()) {
+            std::cout << "Spawns map is empty!" << std::endl;
+        } else {
+            std::cout << "Spawns map contains:" << std::endl;
+            for (const auto& entry : spawns) {
+                std::cout << "Spawn group: " << entry.first << " with " << entry.second.size() << " points." << std::endl;
+            }
+        }
+
+        if (equipamiento.empty()) {
+            std::cout << "Equipamiento map is empty!" << std::endl;
+        } else {
+            std::cout << "Equipamiento map contains:" << std::endl;
+            for (const auto& entry : equipamiento) {
+                std::cout << "Path: " << entry.first << " with " << entry.second.size() << " points." << std::endl;
+            }
+        }
+
+        if (cajas.empty()) {
+            std::cout << "Cajas map is empty!" << std::endl;
+        } else {
+            std::cout << "Cajas map contains:" << std::endl;
+            for (const auto& entry : cajas) {
+                std::cout << "Caja group: " << entry.first << " with " << entry.second.size() << " points." << std::endl;
+            }
+        }
+
+        // Print fondo if necessary
+        std::cout << "Fondo: " << fondo << std::endl;
     }
 
     const std::string& getFondo() const { return fondo; };

@@ -31,13 +31,22 @@ uint8_t Protocolo::recibir_byte(bool& cerrado) {
     return datos[0];
 }
 
-void Protocolo::enviar_dos_bytes(const uint16_t valor) {
+/*void Protocolo::enviar_dos_bytes(const uint16_t valor) {
     std::vector<uint8_t> data(2);
     data[0] = (valor >> 8) & 0xFF;  // Byte más significativo
     data[1] = valor & 0xFF;         // Byte menos significativo
     bool cerrado;
     socket.sendall(data.data(), data.size(), &cerrado);
+}*/
+
+void Protocolo::enviar_dos_bytes(uint16_t value) {
+    uint8_t buffer[2];
+    buffer[0] = (value >> 8) & 0xFF;  // High byte
+    buffer[1] = value & 0xFF;         // Low byte
+    bool cerrado;
+    socket.sendall(buffer, 2, &cerrado);
 }
+
 uint16_t Protocolo::recibir_dos_bytes( bool& cerrado) {
     std::vector<uint8_t> datos(2);
     socket.recvall(datos.data(), datos.size(), &cerrado);

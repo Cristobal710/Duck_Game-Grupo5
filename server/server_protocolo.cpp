@@ -12,17 +12,41 @@
 #define BYTE_CASCO 0X07
 #define BYTE_ARMA 0X08
 
+
 ServerProtocolo::ServerProtocolo(Socket& skt): Protocolo(skt) {}
 
 EventoServer ServerProtocolo::recibir_evento() {
     bool cerrado = false;
     EventoServer evento;
+    
+
     evento.accion = recibir_byte(cerrado);
+    if (cerrado) return evento;
+
     evento.jugador_id = recibir_byte(cerrado);
+    if (cerrado) return evento;
+
+    evento.pedido.crear_partida = recibir_byte(cerrado);
+    evento.pedido.unirse_a_partida = recibir_byte(cerrado);
+    evento.pedido.id_partida_a_unirse = recibir_byte(cerrado);
+    evento.pedido.un_jugador = recibir_byte(cerrado);
+    evento.pedido.dos_jugadores = recibir_byte(cerrado);
+    evento.pedido.empezar = recibir_byte(cerrado);
     return evento;
 }
 
-void ServerProtocolo::enviar_coordenada(SDL_Point& coord){
+void ServerProtocolo::enviar_estado_lobby(LobbyInfo lobby_data) {
+    enviar_dos_bytes(lobby_data.cantidad_partidas());
+    for (Partida& partida : lobby_data.obtener_partidas()){
+        enviar_byte(partida.obtener_id());
+        enviar_dos_bytes(partida.cantidad_jugadores());
+        for (const auto& jugador : partida.obtener_jugadores()){
+            enviar_dos_bytes(jugador);
+        }
+    }
+}
+
+void ServerProtocolo::enviar_coordenada(SDL_Point& coord) {
     enviar_dos_bytes(static_cast<uint16_t>(coord.x));
     enviar_dos_bytes(static_cast<uint16_t>(coord.y));
 }
@@ -48,17 +72,31 @@ void ServerProtocolo::enviar_equipamiento(std::map<std::string, std::vector<SDL_
 }
 
 
-void ServerProtocolo::enviar_spawns(Mapa& mapa){
-    std::map<std::string, std::vector<SDL_Point>> spawns =mapa.getSpawns();
+// void ServerProtocolo::enviar_spawns(Mapa& mapa){
+//     // std::map<std::string, std::vector<SDL_Point>> spawns =mapa.getSpawns();
 
-    if(spawns.find("default") != spawns.end()){
-        std::vector<SDL_Point> spawns_list = spawns.at("default");
+//     // if(spawns.find("default") != spawns.end()){
+//     //     std::vector<SDL_Point> spawns_list = spawns.at("default");
 
-        // enviar_byte(MAPA_SPAWNS);
-        uint16_t size_spawns = spawns_list.size();
-        enviar_dos_bytes(size_spawns);
-        for(SDL_Point coord : spawns_list){
+//     //     // enviar_byte(MAPA_SPAWNS);
+//     //     uint16_t size_spawns = spawns_list.size();
+//     //     enviar_dos_bytes(size_spawns);
+//     //     std::cout << "spawns size server " << static_cast<int>(size_spawns) << std::endl;
+//     //     for(SDL_Point coord : spawns_list){
 
+//     //         enviar_coordenada(coord);
+//     //     }
+//     // }
+// }
+
+void ServerProtocolo::enviar_spawns(Mapa& mapa) {
+    std::map<std::string, std::vector<SDL_Point>> spawns = mapa.getSpawns();
+    enviar_dos_bytes(spawns.size());
+    
+    for (const auto& [key, coordinates] : spawns) {
+        enviar_string(key);
+        enviar_dos_bytes(coordinates.size());
+        for (SDL_Point coord : coordinates) {
             enviar_coordenada(coord);
         }
     }
@@ -70,12 +108,14 @@ void ServerProtocolo::enviar_cajas_mapa(Mapa& mapa){
     if (cajas.find("default") != cajas.end()){
         cajas_list = cajas.at("default");
     }
+
     uint16_t size_cajas = cajas_list.size();
     enviar_dos_bytes(size_cajas);
     for(SDL_Point coord : cajas_list){
         enviar_coordenada(coord);
     }
 }
+
 
 void ServerProtocolo::enviar_tiles(Mapa& mapa){
     std::map<std::string, std::vector<SDL_Point>> tiles =mapa.getTiles();
@@ -90,12 +130,15 @@ void ServerProtocolo::enviar_tiles(Mapa& mapa){
             enviar_coordenada(coord);
         }
     }
+
+
+
 }
 
 void ServerProtocolo::enviar_mapa(Mapa& mapa){
     enviar_string(mapa.getFondo());
-    enviar_spawns(mapa);
-    enviar_cajas_mapa(mapa);
+    //enviar_spawns(mapa);
+    //enviar_cajas_mapa(mapa);
     enviar_tiles(mapa);
 
     std::map<std::string, std::vector<SDL_Point>> equipo = mapa.getEquipamiento();
@@ -107,30 +150,46 @@ void ServerProtocolo::enviar_mapa(Mapa& mapa){
 void ServerProtocolo::enviar_string(const std::string& mensaje) {
     bool cerrado;
     uint16_t largo = mensaje.size(); 
-    std::vector<uint8_t> serializado(largo + 2);
-    serializado.insert(serializado.begin(), mensaje.begin(), mensaje.end());
-    serializado.insert(serializado.begin(), largo);
-    serializado.insert(serializado.begin(), largo >> 8);
-    serializado.resize(largo + 2);
-    socket.sendall((serializado.data()), serializado.size(), &cerrado);
- 
+    enviar_dos_bytes(largo); 
+
+    socket.sendall(mensaje.data(), largo, &cerrado);  
 }
 
 void ServerProtocolo::enviar_estado_juego(EstadoJuego& estado) {
+    enviar_byte(estado.informacion_enviada);
+
+    if (estado.informacion_enviada == ENVIAR_MAPA){
+        enviar_byte(estado.partida_iniciada);
+        enviar_byte(estado.id_partida);
+        enviar_mapa(estado.mapa);
+        enviar_patos(estado.patos);
+        enviar_cajas(estado.cajas);
+        enviar_armas(estado.armas);
+        return;
+    }
+
+    if (estado.informacion_enviada == ENVIAR_ESTADO_JUEGO){
+        enviar_byte(estado.id_partida);
+        enviar_patos(estado.patos);
+        enviar_cajas(estado.cajas);
+        enviar_armas(estado.armas);
+        enviar_balas(estado.balas);
+        enviar_protecciones(estado.armaduras);
+        return;
+    }
+
+    if (estado.informacion_enviada == ESTADO_LOBBY){
+        enviar_dos_bytes(estado.id_jugador);
+        enviar_byte(estado.partida_iniciada);
+        enviar_byte(estado.id_partida);
+        
+        enviar_byte(estado.partidas.size());
+        for (uint8_t id_partida_creada : estado.partidas){
+            enviar_byte(id_partida_creada);
+        }
+        return;
+    }
     
-    enviar_byte(static_cast<uint8_t>(estado.patos.size()));
-    enviar_patos(estado.patos);
-    enviar_byte(estado.balas.size());
-    enviar_balas(estado.balas);
-    enviar_mapa(estado.mapa);
-    enviar_byte(estado.cajas.size());
-    enviar_cajas(estado.cajas);
-    enviar_byte(estado.armas.size());
-    enviar_armas(estado.armas);
-    enviar_byte(estado.armaduras.size());
-    enviar_protecciones(estado.armaduras);
-    // enviar_byte(estado.granadas.size());
-    // enviar_granadas(estado.granadas);
 }
 
 void ServerProtocolo::enviar_pato(Pato& pato) {
@@ -222,7 +281,6 @@ void ServerProtocolo::enviar_granadas(std::list<Granada>& granadas) {
         enviar_granada(granada);
     }
 }
-
 
 void ServerProtocolo::enviar_protecciones(std::list<Proteccion>& protecciones){
     enviar_byte(protecciones.size());

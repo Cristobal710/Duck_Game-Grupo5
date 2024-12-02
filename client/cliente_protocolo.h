@@ -24,11 +24,14 @@
 class ClienteProtocolo: public Protocolo {
 
 public:
+
     explicit ClienteProtocolo(Socket& socket);
 
     void enviar_comando(ComandoGrafica comando);
     
     std::string recibir_string();
+
+    LobbyInfo recibir_lobby_data();
 
     void recibir_pato(std::list<Pato>& patos);
     std::list<Pato> recibir_patos();

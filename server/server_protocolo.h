@@ -6,7 +6,7 @@
 #include <list>
 #include <string>
 #include <map>
-
+#include "../common/common_pedido_jugador.h"
 #include "../common/common_arma.h"
 #include "../common/common_bala.h"
 #include "../common/common_caja.h"
@@ -32,6 +32,7 @@ struct Comando {
 
 class ServerProtocolo: public Protocolo {
 private:
+    void enviar_estado_lobby(LobbyInfo lobby_data);
     Comando recibir_nombre();
     uint8_t recibir_caja();
     void enviar_coordenada(SDL_Point& coord);

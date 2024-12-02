@@ -23,25 +23,26 @@
 #include "../common/common_pistoladuelos.h"
 #include "../common/common_pewpewlaser.h"
 #include "../common/common_sniper.h"
-
+#include "common/common_tile.h"
 #include "server_client.h"
 #include "server_evento.h"
 #include "server_arma_config.h"
 #include "server_proteger_clientes.h"
-#include "common/common_tile.h"
 #include "../common/common_tipo_colision.h"
+#include "queue_protegida.h"
 
 
 #define RUTA_CONFIGURACION "../resources/config.yaml"
 
 class GameLoop: public Thread {
 private:
-    std::map<ServerClient*, Queue<EventoServer>*> mapa_clientes;
     ClientesProtegidos clientes;
-    Queue<EstadoJuego>& cola_estados_juego;
     bool* esta_cerrado;
     EstadoJuego ultimo_estado;
     std::vector<Tile> colisiones;
+    uint16_t id_ultimo_jugador;
+    uint8_t id_partida;
+    std::map<uint16_t, Queue<EstadoJuego>*>* mapa_jugadores;
     std::map<std::string, ArmaConfig> armamento_config;
     std::vector<ArmaConfig> armas_posibles;
     // void eliminar_clientes_cerrados();
@@ -76,12 +77,13 @@ private:
     Arma mapear_armas(ArmaConfig armamento, SDL_Point posicion_arma);
 
 public:
-    GameLoop(Queue<EstadoJuego>& cola_estados_juego,
-             bool* conexion);
+    GameLoop(std::map<uint16_t, Queue<EstadoJuego>*>* mapa_jugadores,
+             bool* conexion, uint8_t id);
     void procesar_evento(EventoServer& evento, EstadoJuego& cola_estados_juego);
     int get_indice_por_id(uint8_t id);
     void agregar_cliente(ServerClient& cliente, Queue<EventoServer>& cola_cliente);
     void run() override;
+    void mandar_id_cliente(uint16_t& id);
 };
 
 #endif

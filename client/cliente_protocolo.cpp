@@ -2,7 +2,6 @@
 
 #include <cstring>
 #include <iostream>
-
 #include <arpa/inet.h>
 
 #include "../common/common_liberror.h"
@@ -13,6 +12,12 @@ void ClienteProtocolo::enviar_comando(ComandoGrafica comando) {
     uint8_t accion = acciones[comando.tecla];
     enviar_byte(accion);
     enviar_byte(comando.jugador_id);
+    enviar_byte(comando.pedido.crear_partida);
+    enviar_byte(comando.pedido.unirse_a_partida);
+    enviar_byte(comando.pedido.id_partida_a_unirse);
+    enviar_byte(comando.pedido.un_jugador);
+    enviar_byte(comando.pedido.dos_jugadores);
+    enviar_byte(comando.pedido.empezar);
 }
 
 void ClienteProtocolo::recibir_pato(std::list<Pato>& patos) {
@@ -57,10 +62,10 @@ void ClienteProtocolo::recibir_pato(std::list<Pato>& patos) {
 
 std::list<Pato> ClienteProtocolo::recibir_patos() {
     std::list<Pato> patos;
-    std::vector<uint8_t> cantidad_patos(2);
+    std::vector<uint8_t> cantidad_patos(1);
     bool cerrado;
     socket.recvall(cantidad_patos.data(), cantidad_patos.size(), &cerrado);
-    int cantidad = static_cast<int>(cantidad_patos[1]);
+    int cantidad = static_cast<int>(cantidad_patos[0]);
 
     for (int i = 0; i < cantidad; i++) {
         recibir_pato(patos);
@@ -83,10 +88,10 @@ void ClienteProtocolo::recibir_caja(std::list<Caja>& cajas) {
 
 std::list<Caja> ClienteProtocolo::recibir_cajas() {
     std::list<Caja> cajas;
-    std::vector<uint8_t> cantidad_patos(2);
+    std::vector<uint8_t> cantidad_patos(1);
     bool cerrado;
     socket.recvall(cantidad_patos.data(), cantidad_patos.size(), &cerrado);
-    int cantidad = static_cast<int>(cantidad_patos[1]);
+    int cantidad = static_cast<int>(cantidad_patos[0]);
 
     for (int i = 0; i < cantidad; i++) {
         recibir_caja(cajas);
@@ -110,10 +115,10 @@ void ClienteProtocolo::recibir_arma(std::list<Arma>& armas) {
 
 std::list<Arma> ClienteProtocolo::recibir_armas() {
     std::list<Arma> armas;
-    std::vector<uint8_t> cantidad_armas(2);
+    std::vector<uint8_t> cantidad_armas(1);
     bool cerrado;
     socket.recvall(cantidad_armas.data(), cantidad_armas.size(), &cerrado);
-    int cantidad = static_cast<int>(cantidad_armas[1]);
+    int cantidad = static_cast<int>(cantidad_armas[0]);
 
     for (int i = 0; i < cantidad; i++) {
         recibir_arma(armas);
@@ -135,10 +140,10 @@ void ClienteProtocolo::recibir_bala(std::list<Bala>& balas) {
 
 std::list<Bala> ClienteProtocolo::recibir_balas() {
     std::list<Bala> balas;
-    std::vector<uint8_t> cantidad_balas(2);
+    std::vector<uint8_t> cantidad_balas(1);
     bool cerrado;
     socket.recvall(cantidad_balas.data(), cantidad_balas.size(), &cerrado);
-    int cantidad = static_cast<int>(cantidad_balas[1]);
+    int cantidad = static_cast<int>(cantidad_balas[0]);
 
     for (int i = 0; i < cantidad; i++) {
         recibir_bala(balas);
@@ -180,29 +185,71 @@ std::list<Granada> ClienteProtocolo::recibir_granadas() {
 
 EstadoJuego ClienteProtocolo::recibir_estado_juego() {
     EstadoJuego estado_juego;
-    estado_juego.patos = recibir_patos();
-    estado_juego.balas = recibir_balas();
-    estado_juego.mapa = recibir_mapa();
-    estado_juego.cajas = recibir_cajas();
-    estado_juego.armas = recibir_armas();
-    estado_juego.armaduras = recibir_protecciones();
+    bool cerrado = false;
+
+    estado_juego.informacion_enviada = recibir_byte(cerrado);
+
+    if (estado_juego.informacion_enviada == ENVIAR_MAPA){
+        estado_juego.partida_iniciada = recibir_byte(cerrado);
+        estado_juego.id_partida       = recibir_byte(cerrado);
+        estado_juego.mapa             = recibir_mapa();
+        estado_juego.patos            = recibir_patos();
+        estado_juego.cajas            = recibir_cajas(); 
+        estado_juego.armas            = recibir_armas();
+        return estado_juego;
+    }
+
+    if (estado_juego.informacion_enviada == ENVIAR_ESTADO_JUEGO){
+        estado_juego.id_partida       = recibir_byte(cerrado);
+        estado_juego.patos            = recibir_patos();
+        estado_juego.cajas            = recibir_cajas();
+        estado_juego.armas            = recibir_armas();
+        estado_juego.balas            = recibir_balas();
+        estado_juego.armaduras = recibir_protecciones();
+        return estado_juego;
+    }
+
+    if (estado_juego.informacion_enviada == ESTADO_LOBBY){
+        estado_juego.id_jugador       = recibir_dos_bytes(cerrado);
+        estado_juego.partida_iniciada = recibir_byte(cerrado);
+        estado_juego.id_partida       = recibir_byte(cerrado);
+        uint8_t size_partidas         = recibir_byte(cerrado);
+        std::list<uint8_t> partidas;
+
+        for (uint8_t i = 0; i < size_partidas; i++){
+            partidas.emplace_back(recibir_byte(cerrado));
+        }
+
+        estado_juego.partidas = partidas;
+        return estado_juego;
+    }
+
     return estado_juego;
 }
 
+
 std::string ClienteProtocolo::recibir_string() {
-    std::vector<uint8_t> mensajeSize(2);
-    bool cerrado;
+    bool cerrado = false;
+    uint16_t largo = recibir_dos_bytes(cerrado);
+    std::vector<char> buffer(largo);
+    socket.recvall(buffer.data(), largo, &cerrado);
+    return std::string(buffer.begin(), buffer.end());
+}
 
-    socket.recvall(mensajeSize.data(), mensajeSize.size(), &cerrado);
-    int tam = static_cast<int>(mensajeSize[1]);
-    std::vector<uint8_t> datos_recibidos(tam);
-    socket.recvall(datos_recibidos.data(), datos_recibidos.size(), &cerrado);
-
-
-    uint8_t largo = datos_recibidos.size();
-
-    std::string mensajeDeserializado = std::string(datos_recibidos.begin(), datos_recibidos.begin() + largo);
-    return mensajeDeserializado;
+LobbyInfo ClienteProtocolo::recibir_lobby_data() {
+    LobbyInfo lobby_data;
+    bool cerrado = false;
+    uint16_t cantidad_partidas = recibir_dos_bytes(cerrado);
+    for (int i = 0; i < cantidad_partidas; i++){
+        Partida partida(recibir_byte(cerrado));
+        uint16_t cantidad_jugadores = recibir_dos_bytes(cerrado);
+        for (int i = 0; i < cantidad_jugadores; i++) {
+            partida.agregar_jugador(recibir_dos_bytes(cerrado));
+        }
+        lobby_data.agregar_partida(partida);
+    }
+    //std::cout << "hay estas partidas " << lobby_data.cantidad_partidas() << std::endl; 
+    return lobby_data;
 }
 
 
@@ -249,16 +296,37 @@ void ClienteProtocolo::recibir_tiles(Mapa& mapa){
 }
 
 
-void ClienteProtocolo::recibir_spawns(Mapa& mapa){
+/*void ClienteProtocolo::recibir_spawns(Mapa& mapa){
     std::map<std::string, std::vector<SDL_Point>> mapa_spawns; 
     bool cerrado; 
     uint16_t largo_spawns = recibir_dos_bytes(cerrado);
+
+    std::cout << "spawns size cliente " << static_cast<int>(largo_spawns) << std::endl;
     for(int i = 0; i<largo_spawns; i++){
         SDL_Point coordenada = recibir_coordenada();
         mapa_spawns["default"].push_back(coordenada);
     }
     mapa.set_spawns(mapa_spawns);
     
+}*/
+
+void ClienteProtocolo::recibir_spawns(Mapa& mapa) {
+    std::map<std::string, std::vector<SDL_Point>> spawns;
+    bool cerrado = false;
+    uint16_t num_spawn_types = recibir_dos_bytes(cerrado);
+    
+    for (int i = 0; i < num_spawn_types; ++i) {
+        std::string spawn_type = recibir_string();
+        uint16_t num_coordinates = recibir_dos_bytes(cerrado);
+        
+        std::vector<SDL_Point> coordinates;
+        for (int j = 0; j < num_coordinates; ++j) {
+            SDL_Point point = recibir_coordenada();
+            coordinates.push_back(point);
+        }
+        spawns[spawn_type] = coordinates;
+    }
+    mapa.set_spawns(spawns);
 }
 
 
@@ -280,8 +348,8 @@ Mapa ClienteProtocolo::recibir_mapa(){
 
     std::string fondo = recibir_string();
     mapa.set_fondo(fondo);
-    recibir_spawns(mapa);
-    recibir_cajas(mapa);
+    //recibir_spawns(mapa);
+    //recibir_cajas(mapa);
     recibir_tiles(mapa);
     recibir_equipamiento(mapa);
     return mapa;
@@ -309,10 +377,10 @@ void ClienteProtocolo::recibir_proteccion(std::list<Proteccion>& protecciones) {
 
 std::list<Proteccion> ClienteProtocolo::recibir_protecciones() {
     std::list<Proteccion> protecciones;
-    std::vector<uint8_t> cantidad_protecciones(2);
+    std::vector<uint8_t> cantidad_protecciones(1);
     bool cerrado;
     socket.recvall(cantidad_protecciones.data(), cantidad_protecciones.size(), &cerrado);
-    int cantidad = static_cast<int>(cantidad_protecciones[1]);
+    int cantidad = static_cast<int>(cantidad_protecciones[0]);
 
     for (int i = 0; i < cantidad; i++) {
         recibir_proteccion(protecciones);
