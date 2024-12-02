@@ -151,6 +151,7 @@ void GameLoop::agarrar_recompensa(Pato& pato){
                 arma.set_se_agarro(false);
                 arma.set_pos_x(pato.get_pos_x());
                 arma.set_pos_y(pato.get_pos_y());
+                arma.set_municion_disponible(arma_pato.get_municion_disponible());
                 return;
             }
         }

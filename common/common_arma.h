@@ -29,7 +29,7 @@ public:
     bool operator==(const Arma& otra) const;
     bool get_se_agarro();
     void set_se_agarro(bool se_agarro);
-
+    void set_municion_disponible(uint8_t municion_disponible);
 };
 
 #endif

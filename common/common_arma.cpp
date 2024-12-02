@@ -53,3 +53,7 @@ void Arma::set_pos_x(uint16_t pos_x){
 void Arma::set_pos_y(uint16_t pos_y){
     this->pos_y = pos_y;
 }
+
+void Arma::set_municion_disponible(uint8_t municion_disponible){
+    this->municion_disponible = municion_disponible;
+}
