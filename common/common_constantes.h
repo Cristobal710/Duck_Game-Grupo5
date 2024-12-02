@@ -77,8 +77,10 @@
 
 
 
-
-
+//PARA PROTOCOLOS
+#define ENVIAR_MAPA 0X01
+#define ENVIAR_ESTADO_JUEGO 0X02    
+#define ESTADO_LOBBY 0X03
 
 
 

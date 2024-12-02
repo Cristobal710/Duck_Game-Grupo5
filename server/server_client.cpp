@@ -5,7 +5,7 @@ ServerClient::ServerClient(uint16_t id, Socket skt, Queue<EstadoJuego>& recibido
         conexion_socket(std::move(skt)),
         esta_cerrado(false),
         estados_juego(recibidos),
-        eventos(enviados), dos_jugadores(false) {}
+        eventos(enviados), dos_jugadores(false), enviar(conexion_socket, estados_juego) {}
 
 void ServerClient::cerrar(ServerEnviar& enviar) {
     esta_cerrado = true;
@@ -20,7 +20,6 @@ void ServerClient::cerrar(ServerEnviar& enviar) {
 
 void ServerClient::run() {
 
-    ServerEnviar enviar(conexion_socket, estados_juego);
     enviar.start();
 
     ServerProtocolo protocolo(conexion_socket);
@@ -49,4 +48,8 @@ bool ServerClient::juegan_dos() { return dos_jugadores; }
 
 Queue<EventoServer>& ServerClient::get_queue() {
     return eventos;
+}
+
+void ServerClient::iniciar_partida(EstadoJuego& estado) {
+    enviar.iniciar_partida(estado);
 }

@@ -13,7 +13,9 @@
 
 
 struct EstadoJuego {
-    std::list<uint16_t> ids_tomados;
+    uint8_t informacion_enviada;
+    uint8_t partida_iniciada;
+    uint16_t id_jugador;
     uint8_t id_partida;
     std::list<uint8_t> partidas;
     LobbyInfo lobby_data;
@@ -23,6 +25,7 @@ struct EstadoJuego {
     std::list<Arma> armas;
     std::list<Bala> balas;
     std::list<Granada> granadas;
+
 };
 
 #endif

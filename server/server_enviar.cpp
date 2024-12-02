@@ -14,12 +14,11 @@
 #define SHOTGUN "Shotgun"
 
 ServerEnviar::ServerEnviar(Socket& skt, Queue<EstadoJuego>& estados_juego):
-        socket(skt), estados_juego(estados_juego) {}
+        socket(skt), estados_juego(estados_juego), server_protocolo(socket) {}
 
 
 void ServerEnviar::run() {
     
-    ServerProtocolo server_protocolo(socket);
     while (!esta_cerrado) {
         try {
             EstadoJuego nuevo_estado = estados_juego.pop();
@@ -30,4 +29,8 @@ void ServerEnviar::run() {
             break;
         }
     }
+}
+
+void ServerEnviar::iniciar_partida(EstadoJuego& estado) {
+    server_protocolo.enviar_estado_juego(estado);
 }

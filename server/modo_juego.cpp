@@ -16,15 +16,13 @@ void ModoJuego::run() {
     float tiempo_ultimo_frame = SDL_GetTicks();
     bool iniciar_partida = false; 
 
-    std::list<uint16_t> ids_tomados;
-    for (uint16_t i = cliente.get_id(); i > 0; i--){
-        ids_tomados.emplace_front(i);
-    }
-
-    ultimo_estado.ids_tomados = ids_tomados;
+    ultimo_estado.id_jugador = cliente.get_id();
     ultimo_estado.id_partida = id_partida;
+    ultimo_estado.partida_iniciada = 0x00;
+    ultimo_estado.informacion_enviada = ESTADO_LOBBY;
 
     broadcast.enviar_mensaje(ultimo_estado);
+    
     while (!iniciar_partida){
         std::vector<EventoServer> eventos;
 
@@ -36,17 +34,37 @@ void ModoJuego::run() {
             procesar_evento_lobby(evento, iniciar_partida);
         }
         buscar_partidas();
+        ultimo_estado.informacion_enviada = ESTADO_LOBBY;
         broadcast.enviar_mensaje(ultimo_estado);
         drop_and_rest(tiempo_ultimo_frame);
     }
 
     if (partida_nueva){
-        auto* gameloop = new GameLoop(broadcast.conseguir_cola(), &cerrado, id_partida);
+        
+        LectorJson lector_mapa = LectorJson();
+        Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa3");
+        EstadoJuego estado_inicial;
+        
+        estado_inicial.id_partida = id_partida;
+        estado_inicial.partida_iniciada = 0x01;
+        estado_inicial.mapa = mapa;
+        estado_inicial.informacion_enviada = ENVIAR_MAPA;
+        inicializar_patos(estado_inicial);
+        inicializar_cajas(estado_inicial);
+        inicializar_armas(estado_inicial);
+
+
+        QueueProtegida queue_nueva(broadcast.conseguir_cola());
+        auto* gameloop = new GameLoop(queue_nueva, &cerrado, id_partida);
+
         for (ServerClient* client : clientes){
+            
+            //Queue<EstadoJuego> nueva_cola_juego;
+
+            client->iniciar_partida(estado_inicial);
             gameloop->agregar_cliente(*client, client->get_queue());
         }
         gameloop->start();
-        
     }
     while (not cerrado){
         drop_and_rest(tiempo_ultimo_frame);
@@ -84,7 +102,6 @@ void ModoJuego::procesar_evento_lobby(EventoServer& evento, bool& iniciar_partid
 
 void ModoJuego::ejecutar_accion_lobby(PedidoJugador& pedido, uint16_t id_jugador, bool& iniciar_partida) {
     id_jugador = id_jugador;
-    std::cout << "tamanio de partidas --> " << partidas_distintas.size() << std::endl;
     if (pedido.crear_partida == LOBBY_REQUEST){
         partida_nueva = true;
         return;
@@ -93,11 +110,10 @@ void ModoJuego::ejecutar_accion_lobby(PedidoJugador& pedido, uint16_t id_jugador
         for (ModoJuego* partida_posible : partidas_distintas){
             if (partida_posible->tiene_id(pedido.id_partida_a_unirse)){
                 partida_posible->nuevo_jugador(&cliente);   
+                ultimo_estado.id_partida =  pedido.id_partida_a_unirse;
             }
         }
-        //ultimo_estado.lobby_data.unirse_a_partida(pedido.id_partida_a_unirse, id_jugador);
-        
-        //unirse a partida con id que esta en el pedido 
+    
         return;
     }
     if (pedido.un_jugador == LOBBY_REQUEST){
@@ -124,6 +140,60 @@ void ModoJuego::buscar_partidas() {
             }
         }
     ultimo_estado.partidas = partidas;
+}
+
+void ModoJuego::inicializar_patos(EstadoJuego& estado) {
+    int pos_x = 0;
+    int pos_y = 0;
+    std::vector<uint16_t> id_jugadores;
+    for (ServerClient* client : clientes){
+        id_jugadores.emplace_back(client->get_id());
+    }
+    int contador = 0;
+    std::map<std::string, std::vector<SDL_Point>> spawns = estado.mapa.getSpawns();
+        //std::cout << "agarro spawns" << std::endl;
+        std::vector<SDL_Point> posicion = spawns["default"];
+    
+        for(SDL_Point coord : posicion){
+            pos_x = coord.x;
+            pos_y = coord.y;
+            // for (Pato pato : ultimo_estado.patos){
+            //     if (pato.get_pos_x() != pos_x && pato.get_pos_y() != pos_y){
+                    
+            //     }
+            // }
+            if (static_cast<int>(id_jugadores.size()) > contador){
+                Pato pato(id_jugadores.at(contador), pos_x, pos_y, 0);
+                Arma* arma = new Arma(1, pos_x, pos_y, 15, 200, PEW_PEW_LASER);
+                pato.tomar_arma(arma);
+                // pato.tomar_armadura();
+                // pato.equipar_armadura();
+                // pato.tomar_casco();
+                // pato.equipar_casco();
+                estado.patos.emplace_back(pato);
+                contador++;
+            } else {
+                return;
+            }
+        }
+}
+
+void ModoJuego::inicializar_cajas(EstadoJuego& estado) {
+    for (const auto& cajas : estado.mapa.getCajas()) {
+        for (SDL_Point posicion_caja : cajas.second) {
+            Caja caja(estado.cajas.size() + 1, posicion_caja.x, posicion_caja.y, AK_47);
+            estado.cajas.push_back(caja);
+        }
+    }
+}
+
+void ModoJuego::inicializar_armas(EstadoJuego& estado) {
+    for (const auto& armas : estado.mapa.getEquipamiento()) {
+        for (SDL_Point posicion_arma : armas.second) {
+            Arma* arma = new Arma(estado.armas.size() + 1, posicion_arma.x, posicion_arma.y, 15, 300, AK_47);
+            estado.armas.push_back(*arma);
+        }
+    }
 }
 
 void ModoJuego::nuevo_jugador(ServerClient* client){

@@ -9,7 +9,7 @@
 #include "../common/common_bala.h"
 #include "lobby.h"
 #define DURACION_FRAME 1000 / 30 // 30 frames por segundo
-
+#define INICIAR_PARTIDA 0X01
 
 
 InterfazGrafica::InterfazGrafica(Queue<ComandoGrafica>& queue, Queue<EstadoJuego>& cola_estado_juego):
@@ -41,37 +41,23 @@ void InterfazGrafica::iniciar() {
     float tiempo_ultimo_frame = SDL_GetTicks();
     uint16_t id1 = 0;
     uint16_t id2 = 0;
-
     uint8_t id_partida = 0;
-    bool tengo_id = false;
 
-    EstadoJuego ultimo_estado;
-    
-    while(!tengo_id && estado_juego.try_pop(ultimo_estado)){
-        if(ultimo_estado.ids_tomados.size() == 0){
-            drop_rest(tiempo_ultimo_frame, it);
-            continue;
-        }
-        uint16_t id_mayor = 0;
-        for (uint16_t id : ultimo_estado.ids_tomados){
-            if (id > id_mayor){
-                id_mayor = id;
-            }
-        }
-        if (id_partida == 0){
-            id_partida = ultimo_estado.id_partida;
-        }
-        id1 = id_mayor;
-        drop_rest(tiempo_ultimo_frame, it);
-    }
+    EstadoJuego ultimo_estado = estado_juego.pop();
 
+    id1 = ultimo_estado.id_jugador;
+    id_partida = ultimo_estado.id_partida;
 
     // std::cout << "ID CLIENTE ES: " << static_cast<int>(id1) << std::endl;
     // std::cout << "ID PARTIDA ES: " << static_cast<int>(id_partida) << std::endl;
 
     Lobby lobby(renderer.Get());
 
-    
+
+     MapaInterfaz mapa_a_jugar(renderer, id1);
+    //bool mapa_recibido = false;
+    bool mapa_procesado = false;
+
     while (!lobby.empezo()) {
         ComandoGrafica comando_cliente;
         comando_cliente.pedido = lobby.manejar_eventos();
@@ -79,43 +65,36 @@ void InterfazGrafica::iniciar() {
         comando_cliente.tecla = NO_ABAJO; //algo arbitrario no relevante
         comandos_cliente.push(comando_cliente);
 
+
+        
+        
         while (estado_juego.try_pop(ultimo_estado)) {
-            // for (uint8_t id_partida_creada : ultimo_estado.partidas){
-            //     std::cout << "existe partida con este ID --> " << static_cast<int>(id_partida_creada) << std::endl;
-            // }
-            std::cout << "existe partida con este ID --> " << static_cast<int>(ultimo_estado.partidas.front()) << std::endl;
-            // if (ultimo_estado.id_partida == id_partida){
-            //     drop_rest(tiempo_ultimo_frame, it);
-            // }
+            if (id_partida != ultimo_estado.id_partida){
+                id_partida = ultimo_estado.id_partida;
+            }
+            if (ultimo_estado.partida_iniciada == INICIAR_PARTIDA){
+                std::cout << "tengo que empezar la partida" << std::endl;
+                lobby.partida_iniciada();
+                procesar_mapa(mapa_a_jugar, ultimo_estado, mapa_procesado);
+                break;
+            }
         }
         lobby.dibujar(ultimo_estado.partidas);
+        // std::cout << "ID PARTIDA NUEVO ES: " << static_cast<int>(id_partida) << std::endl;
         drop_rest(tiempo_ultimo_frame, it);
     }
 
-    
     int cant_jugadores = lobby.cantidad_jugadores();
     if(cant_jugadores == 2){
-        id2 = 0x02;
+        id2 = id1 + 1;
     }
-    bool mapa_procesado = false;
-    //se deberia recibir el/los id de los jugadores
-    
+
     std::string audio_fondo_path = "../resources/sounds/background_music.mp3";
     iniciar_audio(audio_fondo_path);
-    MapaInterfaz mapa_a_jugar(renderer);
-    //EstadoJuego ultimo_estado;
-
-    while (mapa_a_jugar.cant_patos() == 0){
-        estado_juego.try_pop(ultimo_estado);
-        if (ultimo_estado.id_partida == id_partida){
-            procesar_mapa(mapa_a_jugar, ultimo_estado, mapa_procesado);
-        }
-        drop_rest(tiempo_ultimo_frame, it);  
-    }
-
     std::set<SDL_Keycode> keysHeld;
     it = 0;
     tiempo_ultimo_frame = SDL_GetTicks();
+
     while (correr_programa) {
         renderer.Clear();
         manejar_eventos(keysHeld, cant_jugadores, static_cast<int>(id1), static_cast<int>(id2));
@@ -125,7 +104,6 @@ void InterfazGrafica::iniciar() {
             
         //ahora calculamos cuanto tardamos en hacer todo, si nos pasamos, drop & rest.
         drop_rest(tiempo_ultimo_frame, it);
-
     }
 
     //Mix_FreeMusic(music);
@@ -212,7 +190,6 @@ void InterfazGrafica::manejar_eventos(std::set<SDL_Keycode>& keysHeld, int cant_
 
 void InterfazGrafica::procesar_mapa(MapaInterfaz& mapa, EstadoJuego& ultimo_estado, bool& mapa_procesado) {
     Mapa mapa_a_jugar = ultimo_estado.mapa;
-    if (!mapa_procesado) {
         //procesar fondo
         std::string fondo = mapa_a_jugar.getFondo();
         if (!fondo.empty()){
@@ -254,10 +231,7 @@ void InterfazGrafica::procesar_mapa(MapaInterfaz& mapa, EstadoJuego& ultimo_esta
                 mapa.agregar_equipamiento(equipamiento_path, punto.x, punto.y);
             }
         }
-        if (mapa.cant_patos() > 0) {
-            mapa_procesado = true;
-        }
-    }
+        mapa_procesado = true;
 }
 
 void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa, bool& mapa_procesado, uint8_t& id_partida) {
@@ -267,11 +241,11 @@ void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa, bool& mapa_proces
     if (!estado_juego.try_pop(ultimo_estado)){
         return;
     }
-
-    procesar_mapa(mapa, ultimo_estado, mapa_procesado);
+    mapa_procesado = true;
 
     while (estado_juego.try_pop(ultimo_estado)) {
         if (ultimo_estado.id_partida == id_partida){
+
             for (Pato pato_juego: ultimo_estado.patos) {
                 PatoInterfaz& pato_prueba = mapa.get_pato_con_id(pato_juego.get_id());
                 pato_prueba.set_esta_vivo(pato_juego.esta_vivo());

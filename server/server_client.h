@@ -21,7 +21,8 @@ private:
     Queue<EstadoJuego>& estados_juego;
     Queue<EventoServer>& eventos;
     bool dos_jugadores;
-
+    ServerEnviar enviar;
+    
     void cerrar(ServerEnviar& enviar);
 
 public:
@@ -31,6 +32,7 @@ public:
     void juegan_2_personas();
     bool juegan_dos();
     Queue<EventoServer>& get_queue();
+    void iniciar_partida(EstadoJuego& estado);
 };
 
 #endif

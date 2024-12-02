@@ -23,6 +23,7 @@ private:
     std::vector<CajaInterfaz> cajas;
     std::vector<EquipamientoInterfaz> equipamientos;
     bool mapa_procesado;
+    uint16_t id_pato;
 
     SDL_Color generar_color(int index);
     void obtener_tipo_bala(uint8_t tipo_arma, std::string& path_bala);
@@ -31,7 +32,7 @@ private:
     SDL2pp::Rect obtener_rect_dibujar();
 
 public:
-    MapaInterfaz(SDL2pp::Renderer& renderer);
+    MapaInterfaz(SDL2pp::Renderer& renderer, uint16_t id_jugador_principal);
     void dibujar(int it);
     
     void set_fondo(std::string fondo_path);
@@ -40,7 +41,6 @@ public:
     void agregar_caja(int x, int y);
     void agregar_equipamiento(std::string& equipamiento_path, int x, int y);
     void agregar_bala(uint8_t tipo_arma, int x, int y, uint8_t direccion);
-    
     PatoInterfaz& get_pato_con_id(uint16_t id);
     
     void procesado();

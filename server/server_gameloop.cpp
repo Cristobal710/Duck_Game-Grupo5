@@ -13,7 +13,7 @@
 #define ALTO_TILE 32
 #define ANCHO_TILE 24
 
-GameLoop::GameLoop(Queue<EstadoJuego>& cola_estados_juego,
+GameLoop::GameLoop(QueueProtegida& cola_estados_juego,
         bool* conexion, uint8_t id):
         mapa_clientes(),
         clientes(mapa_clientes),
@@ -79,8 +79,8 @@ void GameLoop::ejecutar_accion_lobby(PedidoJugador& pedido, uint16_t id_jugador,
     }
     if (pedido.dos_jugadores == 0x01){
         //crear dos patos?
-        uint16_t id_nuevo = id_ultimo_jugador + 1;
-        mandar_id_cliente(id_nuevo);
+        // uint16_t id_nuevo = id_ultimo_jugador + 1;
+        // mandar_id_cliente(id_nuevo);
         std::cout << "hay dos jugadores" << std::endl;
         return;
     }
@@ -183,7 +183,6 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
 Caja GameLoop::agarrar_recompensa(Pato& pato){
     for(Caja& caja : ultimo_estado.cajas){
         if(pato.colisiona_con_recompensa(caja.get_hitbox()) == Recompensas){
-            std::cout<<"AGARRANDO RECOMPENSA:  "<<static_cast<int>(caja.get_id())<<std::endl;
             return caja;          
         }
     }
@@ -257,10 +256,10 @@ void GameLoop::crear_bala(Pato& pato){
 void GameLoop::enviar_estado_juego_si_cambio( EstadoJuego& estado_anterior) {
     for(Pato& pato :ultimo_estado.patos){
         if (pato.estado.get_estado_agachado() != estado_anterior.patos.front().estado.get_estado_agachado() || pato.estado.get_estado_movimiento() != estado_anterior.patos.front().estado.get_estado_movimiento() || pato.estado.get_estado_salto() != estado_anterior.patos.front().estado.get_estado_salto() || pato.estado.get_estado_disparo() != estado_anterior.patos.front().estado.get_estado_disparo() || pato.esta_apuntando_arriba() != estado_anterior.patos.front().esta_apuntando_arriba()) {
-            cola_estados_juego.push(ultimo_estado);
+            cola_estados_juego.enviar_mensaje(ultimo_estado);
         }
         if (pato.get_pos_x() != estado_anterior.patos.front().get_pos_x() || pato.get_pos_y() != estado_anterior.patos.front().get_pos_y()) {            
-            cola_estados_juego.push(ultimo_estado);
+            cola_estados_juego.enviar_mensaje(ultimo_estado);
         }
     }
     bool cambio = false;
@@ -270,7 +269,7 @@ void GameLoop::enviar_estado_juego_si_cambio( EstadoJuego& estado_anterior) {
         }
     }
     if (cambio) {
-        cola_estados_juego.push(ultimo_estado);
+        cola_estados_juego.enviar_mensaje(ultimo_estado);
     }
 }
 
@@ -534,10 +533,9 @@ void GameLoop::run() {
     LectorJson lector_mapa = LectorJson();
     Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa3");
     ultimo_estado.mapa = mapa;
+    ultimo_estado.id_partida = id_partida;
     inicializar_juego();
     calcular_colisiones_tiles(mapa);
-    ultimo_estado.id_partida = id_partida;
-
 
     tiempo_ultimo_frame = SDL_GetTicks();
     while (!(*esta_cerrado)) {
@@ -548,15 +546,15 @@ void GameLoop::run() {
             std::vector<EventoServer> eventos = clientes.recibir_mensajes_clientes();
             for(EventoServer evento : eventos){
                 procesar_evento(evento, ultimo_estado);
-                cola_estados_juego.push(ultimo_estado);
+                cola_estados_juego.enviar_mensaje(ultimo_estado);
             }
            
             eliminar_patos_muertos();
             actualizar_hitbox_entidades();
             aplicar_logica();
             calcular_colisiones_balas();
-            cola_estados_juego.push(ultimo_estado);
-            //enviar_estado_juego_si_cambio(estado_anterior);
+            ultimo_estado.informacion_enviada = ENVIAR_ESTADO_JUEGO;
+            cola_estados_juego.enviar_mensaje(ultimo_estado);
             drop_and_rest(tiempo_ultimo_frame);
         }
     }
@@ -564,7 +562,7 @@ void GameLoop::run() {
 }
 
 void GameLoop::mandar_id_cliente(uint16_t& id) {
-    //ultimo_estado.id_ultimo_jugador = id;
-    id = id;
-    cola_estados_juego.push(ultimo_estado);
+    ultimo_estado.id_jugador = id;
+    ultimo_estado.informacion_enviada = ENVIAR_ESTADO_JUEGO;
+    cola_estados_juego.enviar_mensaje(ultimo_estado);
 }

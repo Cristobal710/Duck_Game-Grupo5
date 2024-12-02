@@ -24,6 +24,7 @@
 class ClienteProtocolo: public Protocolo {
 
 public:
+
     explicit ClienteProtocolo(Socket& socket);
 
     void enviar_comando(ComandoGrafica comando);

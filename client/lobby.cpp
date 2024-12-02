@@ -189,15 +189,12 @@ PedidoJugador Lobby::manejar_eventos() {
                 if (x >= iniciar_partida_rect.x && x <= iniciar_partida_rect.x + iniciar_partida_rect.w &&
                     y >= iniciar_partida_rect.y && y <= iniciar_partida_rect.y + iniciar_partida_rect.h) {
                     pedido.iniciar_partida();
-                    estado = EstadoLobby::FINALIZADO;
                 }
             } else if (estado == EstadoLobby::UNIRSE_A_PARTIDA){
                 for (auto& rect : rects_ids_partidas) {
                     if (x >= rect.second.x && x <= rect.second.x + rect.second.w &&
                         y >= rect.second.y && y <= rect.second.y + rect.second.h) {
                         pedido.unirse_a_partida_con_id(rect.first);
-                        std::cout << "Unido a la partida con ID: " << rect.first << std::endl;
-                        //estado = EstadoLobby::FINALIZADO;
                         return pedido;  
                     }
                 }
@@ -244,6 +241,10 @@ int Lobby::cantidad_jugadores() const{
 
 void Lobby::actualizar_partidas(std::list<Partida>& partidas) {
     this->partidas = partidas;
+}
+
+void Lobby::partida_iniciada() {
+    estado = EstadoLobby::FINALIZADO;
 }
 
 void Lobby::cerrar() {

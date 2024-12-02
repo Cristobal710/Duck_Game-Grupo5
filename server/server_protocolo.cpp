@@ -12,6 +12,7 @@
 #define BYTE_CASCO 0X07
 #define BYTE_ARMA 0X08
 
+
 ServerProtocolo::ServerProtocolo(Socket& skt): Protocolo(skt) {}
 
 EventoServer ServerProtocolo::recibir_evento() {
@@ -112,7 +113,6 @@ void ServerProtocolo::enviar_cajas_mapa(Mapa& mapa){
     for(SDL_Point coord : cajas_list){
         enviar_coordenada(coord);
     }
-
 }
 
 
@@ -137,7 +137,7 @@ void ServerProtocolo::enviar_tiles(Mapa& mapa){
 void ServerProtocolo::enviar_mapa(Mapa& mapa){
     enviar_string(mapa.getFondo());
     //enviar_spawns(mapa);
-    enviar_cajas_mapa(mapa);
+    //enviar_cajas_mapa(mapa);
     enviar_tiles(mapa);
 
     std::map<std::string, std::vector<SDL_Point>> equipo = mapa.getEquipamiento();
@@ -151,31 +151,43 @@ void ServerProtocolo::enviar_string(const std::string& mensaje) {
     uint16_t largo = mensaje.size(); 
     enviar_dos_bytes(largo); 
 
-    socket.sendall(reinterpret_cast<const uint8_t*>(mensaje.data()), largo, &cerrado);  
+    socket.sendall(mensaje.data(), largo, &cerrado);  
 }
 
 void ServerProtocolo::enviar_estado_juego(EstadoJuego& estado) {
-    //enviar_dos_bytes(estado.id_ultimo_jugador);
-    enviar_byte(estado.ids_tomados.size());
-    for (uint16_t id : estado.ids_tomados){
-        enviar_dos_bytes(id);
-    }
-    enviar_byte(estado.id_partida);
-    //enviar_estado_lobby(estado.lobby_data);
-    enviar_mapa(estado.mapa);
-    enviar_patos(estado.patos);
-    enviar_balas(estado.balas);
-    // enviar_byte(estado.cajas.size());
-    // enviar_cajas(estado.cajas);
-    enviar_byte(estado.armas.size());
-    enviar_armas(estado.armas);
+    enviar_byte(estado.informacion_enviada);
 
-    enviar_byte(estado.partidas.size());
-    for (uint8_t id_partida_creada : estado.partidas){
-        enviar_byte(id_partida_creada);
+    if (estado.informacion_enviada == ENVIAR_MAPA){
+        enviar_byte(estado.partida_iniciada);
+        enviar_byte(estado.id_partida);
+        enviar_mapa(estado.mapa);
+        enviar_patos(estado.patos);
+        enviar_cajas(estado.cajas);
+        enviar_armas(estado.armas);
+        return;
     }
-    // enviar_byte(estado.granadas.size());
-    // enviar_granadas(estado.granadas);
+
+    if (estado.informacion_enviada == ENVIAR_ESTADO_JUEGO){
+        enviar_byte(estado.id_partida);
+        enviar_patos(estado.patos);
+        enviar_cajas(estado.cajas);
+        enviar_armas(estado.armas);
+        enviar_balas(estado.balas);
+        return;
+    }
+
+    if (estado.informacion_enviada == ESTADO_LOBBY){
+        enviar_dos_bytes(estado.id_jugador);
+        enviar_byte(estado.partida_iniciada);
+        enviar_byte(estado.id_partida);
+        
+        enviar_byte(estado.partidas.size());
+        for (uint8_t id_partida_creada : estado.partidas){
+            enviar_byte(id_partida_creada);
+        }
+        return;
+    }
+    
 }
 
 void ServerProtocolo::enviar_pato(Pato& pato) {

@@ -2,7 +2,6 @@
 
 #include <cstring>
 #include <iostream>
-
 #include <arpa/inet.h>
 
 #include "../common/common_liberror.h"
@@ -96,10 +95,10 @@ void ClienteProtocolo::recibir_caja(std::list<Caja>& cajas) {
 
 std::list<Caja> ClienteProtocolo::recibir_cajas() {
     std::list<Caja> cajas;
-    std::vector<uint8_t> cantidad_patos(2);
+    std::vector<uint8_t> cantidad_patos(1);
     bool cerrado;
     socket.recvall(cantidad_patos.data(), cantidad_patos.size(), &cerrado);
-    int cantidad = static_cast<int>(cantidad_patos[1]);
+    int cantidad = static_cast<int>(cantidad_patos[0]);
 
     for (int i = 0; i < cantidad; i++) {
         recibir_caja(cajas);
@@ -121,10 +120,10 @@ void ClienteProtocolo::recibir_arma(std::list<Arma>& armas) {
 
 std::list<Arma> ClienteProtocolo::recibir_armas() {
     std::list<Arma> armas;
-    std::vector<uint8_t> cantidad_armas(2);
+    std::vector<uint8_t> cantidad_armas(1);
     bool cerrado;
     socket.recvall(cantidad_armas.data(), cantidad_armas.size(), &cerrado);
-    int cantidad = static_cast<int>(cantidad_armas[1]);
+    int cantidad = static_cast<int>(cantidad_armas[0]);
 
     for (int i = 0; i < cantidad; i++) {
         recibir_arma(armas);
@@ -193,47 +192,45 @@ EstadoJuego ClienteProtocolo::recibir_estado_juego() {
     EstadoJuego estado_juego;
     bool cerrado = false;
 
-    uint8_t cant_ids_tomados = recibir_byte(cerrado);
-    std::list<uint16_t> lista_id;
-    for (uint8_t i = 0; i < cant_ids_tomados ; i++){
-        lista_id.emplace_front(recibir_dos_bytes(cerrado));
-    }
-    estado_juego.ids_tomados = lista_id;
-    estado_juego.id_partida = recibir_byte(cerrado);
-    estado_juego.mapa = recibir_mapa();
-    
-    estado_juego.patos = recibir_patos();
+    estado_juego.informacion_enviada = recibir_byte(cerrado);
 
-    estado_juego.balas = recibir_balas();
-    
-    //estado_juego.cajas = recibir_cajas();
-    
-    estado_juego.armas = recibir_armas();
-
-    uint8_t cantidad_partidas = recibir_byte(cerrado);
-    std::list<uint8_t> lista_partidas;
-    for (uint8_t i = 0; i < cantidad_partidas ; i++){
-        lista_partidas.emplace_front(recibir_byte(cerrado));
+    if (estado_juego.informacion_enviada == ENVIAR_MAPA){
+        estado_juego.partida_iniciada = recibir_byte(cerrado);
+        estado_juego.id_partida       = recibir_byte(cerrado);
+        estado_juego.mapa             = recibir_mapa();
+        estado_juego.patos            = recibir_patos();
+        estado_juego.cajas            = recibir_cajas(); 
+        estado_juego.armas            = recibir_armas();
+        return estado_juego;
     }
-    estado_juego.partidas = lista_partidas;
+
+    if (estado_juego.informacion_enviada == ENVIAR_ESTADO_JUEGO){
+        estado_juego.id_partida       = recibir_byte(cerrado);
+        estado_juego.patos            = recibir_patos();
+        estado_juego.cajas            = recibir_cajas();
+        estado_juego.armas            = recibir_armas();
+        estado_juego.balas            = recibir_balas();
+        return estado_juego;
+    }
+
+    if (estado_juego.informacion_enviada == ESTADO_LOBBY){
+        estado_juego.id_jugador       = recibir_dos_bytes(cerrado);
+        estado_juego.partida_iniciada = recibir_byte(cerrado);
+        estado_juego.id_partida       = recibir_byte(cerrado);
+        uint8_t size_partidas         = recibir_byte(cerrado);
+        std::list<uint8_t> partidas;
+
+        for (uint8_t i = 0; i < size_partidas; i++){
+            partidas.emplace_back(recibir_byte(cerrado));
+        }
+
+        estado_juego.partidas = partidas;
+        return estado_juego;
+    }
+
     return estado_juego;
 }
 
-/*std::string ClienteProtocolo::recibir_string() {
-    std::vector<uint8_t> mensajeSize(2);
-    bool cerrado;
-
-    socket.recvall(mensajeSize.data(), mensajeSize.size(), &cerrado);
-    int tam = static_cast<int>(mensajeSize[1]);
-    std::vector<uint8_t> datos_recibidos(tam);
-    socket.recvall(datos_recibidos.data(), datos_recibidos.size(), &cerrado);
-
-
-    uint8_t largo = datos_recibidos.size();
-
-    std::string mensajeDeserializado = std::string(datos_recibidos.begin(), datos_recibidos.begin() + largo);
-    return mensajeDeserializado;
-}*/
 
 std::string ClienteProtocolo::recibir_string() {
     bool cerrado = false;
@@ -356,7 +353,7 @@ Mapa ClienteProtocolo::recibir_mapa(){
     std::string fondo = recibir_string();
     mapa.set_fondo(fondo);
     //recibir_spawns(mapa);
-    recibir_cajas(mapa);
+    //recibir_cajas(mapa);
     recibir_tiles(mapa);
     recibir_equipamiento(mapa);
     return mapa;

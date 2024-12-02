@@ -15,12 +15,13 @@
 #include "server_evento.h"
 #include "server_proteger_clientes.h"
 #include "../common/common_tipo_colision.h"
+#include "queue_protegida.h"
 
 class GameLoop: public Thread {
 private:
     std::map<ServerClient*, Queue<EventoServer>*> mapa_clientes;
     ClientesProtegidos clientes;
-    Queue<EstadoJuego>& cola_estados_juego;
+    QueueProtegida& cola_estados_juego;
     bool* esta_cerrado;
     EstadoJuego ultimo_estado;
     std::vector<Tile> colisiones;
@@ -59,7 +60,7 @@ private:
     Caja agarrar_recompensa(Pato& pato);
 
 public:
-    GameLoop(Queue<EstadoJuego>& cola_estados_juego,
+    GameLoop(QueueProtegida& cola_estados_juego,
              bool* conexion, uint8_t id);
     void procesar_evento(EventoServer& evento, EstadoJuego& cola_estados_juego);
     int get_indice_por_id(uint8_t id);

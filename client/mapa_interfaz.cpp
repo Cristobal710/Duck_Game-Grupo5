@@ -2,7 +2,7 @@
 #define WIDTH_SCREEN 1280
 #define HEIGHT_SCREEN 720
 
-MapaInterfaz::MapaInterfaz(SDL2pp::Renderer& renderer)
+MapaInterfaz::MapaInterfaz(SDL2pp::Renderer& renderer, uint16_t id_jugador_principal)
     : renderer(renderer), 
     superficie(SDL2pp::Surface(SDL_CreateRGBSurface(0, 1280, 720, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000))),  // Initialize superficie properly
     fondo(superficie, "../resources/backgrounds/city.png"),
@@ -11,7 +11,7 @@ MapaInterfaz::MapaInterfaz(SDL2pp::Renderer& renderer)
     balas(), 
     cajas(),
     equipamientos(),
-    mapa_procesado(false)
+    mapa_procesado(false), id_pato(id_jugador_principal) 
 {}
 
 void MapaInterfaz::set_fondo(std::string fondo_path) {
@@ -107,7 +107,7 @@ float MapaInterfaz::calcular_distancia( PatoInterfaz& pato_princiapl,  PatoInter
 
 SDL2pp::Rect MapaInterfaz::obtener_rect_dibujar() { 
     SDL2pp::Rect rect_dibujar;
-    PatoInterfaz& pato_principal = patos.front(); 
+    PatoInterfaz& pato_principal = get_pato_con_id(id_pato);
     float zoom = 1.0f;
     float distancia_maxima = 1.0f;
 

@@ -15,10 +15,12 @@ private:
     Socket& socket;
     Queue<EstadoJuego>& estados_juego;
     bool esta_cerrado;
+    ServerProtocolo server_protocolo;
 
 public:
     ServerEnviar(Socket& skt, Queue<EstadoJuego>& estados_juego);
     void run() override;
+    void iniciar_partida(EstadoJuego& estado);
 };
 
 #endif

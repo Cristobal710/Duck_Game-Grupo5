@@ -49,6 +49,7 @@ public:
     bool empezo() const;
     int cantidad_jugadores() const;
     void actualizar_partidas(std::list<Partida>& partidas);
+    void partida_iniciada();
 };
 
 #endif //LOBBY_H
