@@ -107,7 +107,7 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
             break;
         case APUNTAR_ARRIBA:
             pato.apuntar_arriba();
-            pato.saltar();
+            // pato.saltar();
             break;
         case SALTAR:
             if (pato.estado.get_estado_salto() == BYTE_NULO) {
@@ -119,7 +119,7 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
             }
             break;
         case AGARRAR_RECOMPENSA:
-            pato.saltar();
+            // pato.saltar();
             if (pato.tiene_arma()) {
                 pato.soltar_arma();
                 break;
@@ -158,9 +158,9 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
             pato.levantarse_del_piso();
             break;
         case TOMAR_ARMA:
-            pato.saltar();
+            //pato.saltar();
             // llamar a un metodo que recorra el array de armas y devuelva la cercana al pato
-            // pato.tomar_arma();
+            //pato.tomar_arma();
             break;
         case DISPARAR:
             if (!pato.tiene_arma()) { 
@@ -529,7 +529,7 @@ void GameLoop::run() {
     float tiempo_ultimo_frame = SDL_GetTicks();
 
     LectorJson lector_mapa = LectorJson();
-    Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa3");
+    Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa1");
     ultimo_estado.mapa = mapa;
     ultimo_estado.id_partida = id_partida;
     inicializar_juego();

@@ -38,5 +38,7 @@ void ServerEnviar::iniciar_partida(EstadoJuego& estado) {
 
 void ServerEnviar::cambiar_queue(Queue<EstadoJuego>* nueva_queue) {
     estados_partida = nueva_queue;
+    std::cout << "cierro queue" <<std::endl;
     estados_juego.close();
+    std::cout << "queue cerrada" <<std::endl;
 }

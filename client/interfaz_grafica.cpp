@@ -137,7 +137,7 @@ void InterfazGrafica::manejar_eventos_por_jugador(ComandoGrafica& comando_client
         const std::unordered_map<SDL_Keycode, std::string>& key_map, int jugador_id, bool es_presionado) {
     auto it = key_map.find(evento.key.keysym.sym);
     if (it != key_map.end()) {
-        comando_cliente.tecla = es_presionado ? it->second : "!" + it->second;
+        comando_cliente.tecla = es_presionado ? it->second : "!" + it->second; 
         comando_cliente.jugador_id = jugador_id;
         comandos_cliente.push(comando_cliente);
     }

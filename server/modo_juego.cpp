@@ -27,9 +27,9 @@ void ModoJuego::run() {
         std::vector<EventoServer> eventos;
 
         EventoServer evento;
-        while(queue_cliente.try_pop(evento)){
+            while(queue_cliente.try_pop(evento)){
             eventos.push_back(evento);
-        }
+        } 
         for(EventoServer evento : eventos){
             procesar_evento_lobby(evento, iniciar_partida);
         }
@@ -42,7 +42,7 @@ void ModoJuego::run() {
     if (partida_nueva){
         
         LectorJson lector_mapa = LectorJson();
-        Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa3");
+        Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa1");
         EstadoJuego estado_inicial;
         
         estado_inicial.id_partida = id_partida;
@@ -154,6 +154,9 @@ void ModoJuego::inicializar_patos(EstadoJuego& estado) {
     std::vector<uint16_t> id_jugadores;
     for (ServerClient* client : clientes){
         id_jugadores.emplace_back(client->get_id());
+        if (client->juegan_dos()){
+            id_jugadores.emplace_back(client->get_id() + 1);
+        }
     }
     int contador = 0;
     std::map<std::string, std::vector<SDL_Point>> spawns = estado.mapa.getSpawns();
