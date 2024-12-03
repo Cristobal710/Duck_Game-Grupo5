@@ -190,6 +190,10 @@ void ServerProtocolo::enviar_estado_juego(EstadoJuego& estado) {
         return;
     }
     
+    if (estado.informacion_enviada == PARTIDA_TERMINADA){
+        enviar_byte(estado.partida_iniciada);
+        enviar_byte(estado.id_partida);
+    }
 }
 
 void ServerProtocolo::enviar_pato(Pato& pato) {

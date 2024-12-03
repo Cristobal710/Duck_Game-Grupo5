@@ -59,6 +59,7 @@
 #define SALTO " "
 #define DISPARO "f"
 #define AGARRAR_ARMA "g"
+#define TIRAR_ARMA "e"
 
 #define NO_DERECHA "!d"
 #define NO_IZQUIERDA "!a"
@@ -67,6 +68,7 @@
 #define NO_SALTO "! "
 #define NO_DISPARO "!f"
 #define NO_AGARRAR_ARMA "!g"
+#define NO_TIRAR_ARMA "!e"
 
 // PIXELES
 #define PIXEL_PATO 32
@@ -81,7 +83,7 @@
 #define ENVIAR_MAPA 0X01
 #define ENVIAR_ESTADO_JUEGO 0X02    
 #define ESTADO_LOBBY 0X03
-
+#define PARTIDA_TERMINADA 0x04
 
 
 

@@ -26,11 +26,15 @@ class InterfazGrafica {
     SDL2pp::Renderer renderer;
 
     void iniciar_audio(std::string audio_path);
+    
     void manejar_eventos_por_jugador(ComandoGrafica& comando_cliente, SDL_Event& evento, 
                         const std::unordered_map<SDL_Keycode, std::string>& key_map, int jugador_id, bool es_presionado);
     void manejar_eventos(std::set<SDL_Keycode>& keysHeld, int cant_jugadores, int id1, int id2);
-    void procesar_mapa(MapaInterfaz& mapa, EstadoJuego& ultimo_estado, bool& mapa_procesado);
-    void obtener_estado_juego(MapaInterfaz& mapa, bool& mapa_procesado, uint8_t& id_partida);
+    
+    void procesar_mapa(MapaInterfaz& mapa, EstadoJuego& ultimo_estado);
+    void obtener_estado_juego(MapaInterfaz& mapa, uint8_t& id_partida, bool& partida_terminada);
+    void estado_pato(MapaInterfaz& mapa, EstadoJuego& ultimo_estado);
+    void estado_objetos(MapaInterfaz& mapa, EstadoJuego& ultimo_estado);
 
     public:
     InterfazGrafica(Queue<ComandoGrafica>& cola_comandos, Queue<EstadoJuego>& cola_estado_juego);

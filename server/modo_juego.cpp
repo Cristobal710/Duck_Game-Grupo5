@@ -23,7 +23,6 @@ partidas_distintas(partidas_distintas), partida_nueva(false), clientes()
 void ModoJuego::run() {
     clientes.emplace_back(&cliente);
 
-    bool cerrado = false;
     float tiempo_ultimo_frame = SDL_GetTicks();
     bool iniciar_partida = false; 
 
@@ -54,51 +53,68 @@ void ModoJuego::run() {
     
     
     std::vector<Puntaje> puntaje_jugadores;
+    for (ServerClient* client : clientes){
+        Puntaje jugador(client->get_id());
+        puntaje_jugadores.emplace_back(std::move(jugador));
+        if (client->juegan_dos()){
+            Puntaje jugador2(client->get_id() + 1);
+            puntaje_jugadores.emplace_back(std::move(jugador2));
+        }
+    }
+
+    auto* jugadores = new std::map<uint16_t, Queue<EstadoJuego>*>();
+    for (ServerClient* client : clientes){
+        auto* queue = new Queue<EstadoJuego>();
+        jugadores->emplace(client->get_id(), queue);
+        client->cambiar_queue(jugadores->at(client->get_id()));
+    }
+
     if (partida_nueva){
-        for (ServerClient* client : clientes){
-            Puntaje jugador(client->get_id());
-            puntaje_jugadores.emplace_back(std::move(jugador));
-            if (client->juegan_dos()){
-                Puntaje jugador2(client->get_id() + 1);
-                puntaje_jugadores.emplace_back(std::move(jugador2));
+        
+        while (no_hay_ganador(puntaje_jugadores)) {
+            LectorJson lector_mapa = LectorJson();
+            std::string mapa_seleccionado = sortear_mapa();
+            Mapa mapa = lector_mapa.procesar_mapa(mapa_seleccionado);
+            EstadoJuego estado_inicial;
+            
+            estado_inicial.id_partida = id_partida;
+            estado_inicial.partida_iniciada = 0x01;
+            estado_inicial.mapa = mapa;
+            estado_inicial.informacion_enviada = ENVIAR_MAPA;
+            leer_configuracion(RUTA_CONFIGURACION);
+            inicializar_patos(estado_inicial);
+            inicializar_cajas(estado_inicial);
+            inicializar_armas(estado_inicial);
+            
+            bool ronda_finalizada = false;
+            auto* gameloop = new GameLoop(jugadores, &ronda_finalizada, id_partida, mapa_seleccionado, puntaje_jugadores);
+            for (ServerClient* client : clientes){
+                client->iniciar_partida(estado_inicial);
+                gameloop->agregar_cliente(*client, client->get_queue());
+            }
+
+            gameloop->start();
+            while (!ronda_finalizada){
+                drop_and_rest(tiempo_ultimo_frame);
+            }
+            //el gameloop siempre termina cuando termina la partida o se cierra la conexion, cualquiera de las 2
+            //alcanza, solo hay que liberarlo
+            gameloop->join();
+            delete gameloop;
+
+            EstadoJuego estado_final;
+            estado_final.id_partida = id_partida;
+            estado_final.informacion_enviada = PARTIDA_TERMINADA;
+            estado_final.partida_iniciada = 0x00;
+            for (ServerClient* client : clientes){
+                client->iniciar_partida(estado_final);
             }
         }
-
-
-        LectorJson lector_mapa = LectorJson();
-        std::string mapa_seleccionado = sortear_mapa();
-        Mapa mapa = lector_mapa.procesar_mapa(mapa_seleccionado);
-        EstadoJuego estado_inicial;
-        
-        estado_inicial.id_partida = id_partida;
-        estado_inicial.partida_iniciada = 0x01;
-        estado_inicial.mapa = mapa;
-        estado_inicial.informacion_enviada = ENVIAR_MAPA;
-        leer_configuracion(RUTA_CONFIGURACION);
-        inicializar_patos(estado_inicial);
-        inicializar_cajas(estado_inicial);
-        inicializar_armas(estado_inicial);
-
-        
-        auto* jugadores = new std::map<uint16_t, Queue<EstadoJuego>*>();
-        for (ServerClient* client : clientes){
-            auto* queue = new Queue<EstadoJuego>();
-            jugadores->emplace(client->get_id(), queue);
-            client->cambiar_queue(jugadores->at(client->get_id()));
-        }
-
-        auto* gameloop = new GameLoop(jugadores, &cerrado, id_partida, mapa_seleccionado, puntaje_jugadores);
-        for (ServerClient* client : clientes){
-            client->iniciar_partida(estado_inicial);
-            gameloop->agregar_cliente(*client, client->get_queue());
-        }
-        gameloop->start();
-
-        
-    }
-    while (not cerrado){
+    } else {
+        //joinee la partida de alguien, tengo que esperar simplemente
         drop_and_rest(tiempo_ultimo_frame);
     }
+
 }
 
 bool ModoJuego::tiene_partida() { return partida_nueva; }
@@ -301,3 +317,12 @@ for (const auto& armas : estado.mapa.getEquipamiento()) {
 void ModoJuego::nuevo_jugador(ServerClient* client){
     clientes.emplace_back(client);
 }
+
+bool ModoJuego::no_hay_ganador(std::vector<Puntaje>& puntaje_jugadores) {
+    for (Puntaje& jugador : puntaje_jugadores){
+        if (jugador.gano_la_partida()){
+            return false;
+        }
+    }
+    return true;
+} 

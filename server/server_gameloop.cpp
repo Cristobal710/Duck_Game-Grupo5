@@ -24,27 +24,8 @@ GameLoop::GameLoop(std::map<uint16_t, Queue<EstadoJuego>*>* mapa_jugadores,
         ultimo_estado = EstadoJuego();
         }
 
-
-// void GameLoop::cerrar_gameloop() {
-//     cola_eventos.close();
-//     clientes.cerrar_gameloop();
-//     _is_alive = false;
-// }
-
-// void GameLoop::eliminar_clientes_cerrados() {
-//     clientes.eliminar_clientes_cerrados();
-// }
-
 void GameLoop::agregar_cliente(ServerClient& cliente, Queue<EventoServer>& cola_cliente) {
     clientes.agregar_cliente(cliente, cola_cliente);
-    // if(cliente.get_id() == id_ultimo_jugador){
-    //     uint16_t id_nuevo = id_ultimo_jugador + 1;
-    //     mandar_id_cliente(id_nuevo);
-    //     id_ultimo_jugador = id_nuevo;
-    //     return;
-    // }
-    // mandar_id_cliente(cliente.get_id());
-    // id_ultimo_jugador = cliente.get_id();
 }
 
 void GameLoop::procesar_evento(EventoServer& evento, EstadoJuego& estado_juego) {
@@ -74,7 +55,6 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
             break;
         case APUNTAR_ARRIBA:
             pato.apuntar_arriba();
-            // pato.saltar();
             break;
         case SALTAR:
             if (pato.estado.get_estado_salto() == BYTE_NULO) {
@@ -86,8 +66,23 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
             }
             break;
         case AGARRAR_RECOMPENSA:
-            //pato.saltar();
             agarrar_recompensa(pato);
+            break;
+        case SOLTAR_ARMA:
+            if (pato.tiene_arma()) {
+                Arma arma_pato = pato.get_arma();
+                pato.soltar_arma();
+                for (Arma& arma : ultimo_estado.armas){
+                    if (arma.get_id() == arma_pato.get_id()){
+                        arma.set_se_agarro(false);
+                        arma.set_pos_x(pato.get_pos_x());
+                        arma.set_pos_y(pato.get_pos_y());
+                        arma.set_municion_disponible(arma_pato.get_municion_disponible());
+                        break;
+                    }
+                }
+                break;
+            }
             break;
         case DEJAR_MOVER_IZQUIERDA:
             pato.estado.set_dejar_de_moverse();
@@ -108,16 +103,12 @@ void GameLoop::ejecutar_accion(uint8_t accion, Pato& pato) {
                 pato.estado.set_dejar_de_aletear();
                 pato.estado.set_caer();
             }
-            // pato.estado.set_dejar_de_saltar();
+           
             break;
         case DEJAR_TIRAR_PISO:
             pato.levantarse_del_piso();
             break;
-        case TOMAR_ARMA:
-            //pato.saltar();
-            // llamar a un metodo que recorra el array de armas y devuelva la cercana al pato
-            //pato.tomar_arma();
-            break;
+        
         case DISPARAR:
             puede_disparar = pato.disparar();
             if (puede_disparar){
@@ -151,20 +142,6 @@ void GameLoop::agarrar_recompensa(Pato& pato){
                 return;
             }
         }
-    }
-    if (pato.tiene_arma()) {
-        Arma arma_pato = pato.get_arma();
-        pato.soltar_arma();
-        for (Arma& arma : ultimo_estado.armas){
-            if (arma.get_id() == arma_pato.get_id()){
-                arma.set_se_agarro(false);
-                arma.set_pos_x(pato.get_pos_x());
-                arma.set_pos_y(pato.get_pos_y());
-                arma.set_municion_disponible(arma_pato.get_municion_disponible());
-                return;
-            }
-        }
-        return;
     }
     for(Caja& caja : ultimo_estado.cajas){
         if(pato.colisiona_con_recompensa(caja.get_hitbox()) == Recompensas){
@@ -226,20 +203,24 @@ void GameLoop::aplicar_estados(){
                 }
             }
         }
+        // for (Tile& tile: colisiones) {
+        //     pato.ajustar_sobre_tile(tile.get_hitbox());
+        //     pato.ajustar_derecha_tile(tile.get_hitbox());
+        //     pato.ajustar_izquierda_tile(tile.get_hitbox());
+        // }
     }
 }
+
 
 void GameLoop::crear_bala(Pato& pato){  
     if (!pato.esta_apuntando_arriba()){
         if (pato.get_direccion() == DIRECCION_DERECHA) {
             Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y() + DISTANCIA_ARMA, pato.get_pos_x() + pato.get_arma().get_alcance(), pato.get_pos_y() + DISTANCIA_ARMA, pato.get_direccion(), pato.get_arma().get_tipo_arma(), pato.get_id());
-            // std::cout << "cree bala "<< static_cast<int>(bala.get_id()) <<" pos x bala: " << static_cast<int>(bala.get_pos_x()) << std::endl;
             ultimo_estado.balas.push_back(bala);
         } else {
             bool fuera_rango = pato.get_pos_x() < pato.get_arma().get_alcance();
             uint16_t pos_final_x = fuera_rango ? 0 : pato.get_pos_x() - pato.get_arma().get_alcance();
             Bala bala(ultimo_estado.balas.size() + 1, pato.get_pos_x(), pato.get_pos_y() + DISTANCIA_ARMA, pos_final_x, pato.get_pos_y() + DISTANCIA_ARMA, pato.get_direccion(), pato.get_arma().get_tipo_arma(), pato.get_id());
-            // std::cout << "cree bala "<< static_cast<int>(bala.get_id()) <<"pos x bala: " << static_cast<int>(bala.get_pos_x()) << std::endl;
             ultimo_estado.balas.push_back(bala);
         }
     } else {
@@ -248,66 +229,49 @@ void GameLoop::crear_bala(Pato& pato){
     }
 }
 
-// void GameLoop::enviar_estado_juego_si_cambio( EstadoJuego& estado_anterior) {
-//     for(Pato& pato :ultimo_estado.patos){
-//         if (pato.estado.get_estado_agachado() != estado_anterior.patos.front().estado.get_estado_agachado() || pato.estado.get_estado_movimiento() != estado_anterior.patos.front().estado.get_estado_movimiento() || pato.estado.get_estado_salto() != estado_anterior.patos.front().estado.get_estado_salto() || pato.estado.get_estado_disparo() != estado_anterior.patos.front().estado.get_estado_disparo() || pato.esta_apuntando_arriba() != estado_anterior.patos.front().esta_apuntando_arriba()) {
-//             cola_estados_juego.enviar_mensaje(ultimo_estado);
-//         }
-//         if (pato.get_pos_x() != estado_anterior.patos.front().get_pos_x() || pato.get_pos_y() != estado_anterior.patos.front().get_pos_y()) {            
-//             cola_estados_juego.enviar_mensaje(ultimo_estado);
-//         }
-//     }
-//     bool cambio = false;
-//     for (Bala& bala: ultimo_estado.balas) {
-//         if (bala.get_pos_x() != estado_anterior.balas.front().get_pos_x() || bala.get_pos_y() != estado_anterior.balas.front().get_pos_y()) {
-//             cambio = true;
-//         }
-//     }
-//     if (cambio) {
-//         cola_estados_juego.enviar_mensaje(ultimo_estado);
-//     }
-// }
-
 void GameLoop::avanzar_balas_direccion_izquierda(std::__cxx11::list<Bala>::iterator& it){
     if (it->get_direccion() == DIRECCION_IZQUIERDA) {
-        // std::cout << "pos x bala " << it->get_id() << " antes de avance: " << static_cast<int>(it->get_pos_x()) << std::endl;
         if (it->get_pos_x() < 5) {
             it->set_pos_x(0);
         } else {
             it->set_pos_x(it->get_pos_x() - 5);
         }
-        //it->set_pos_x(it->get_pos_x() - 5);
-        // std::cout << "pos x bala " << it->get_id() << " despues de avance: " << static_cast<int>(it->get_pos_x()) << std::endl;
+     
     }
 }
 
 void GameLoop::avanzar_balas_direccion_derecha(std::__cxx11::list<Bala>::iterator& it){
     if (it->get_direccion() == DIRECCION_DERECHA) {
-        // std::cout << "pos x bala " << it->get_id() << " antes de avance: " << static_cast<int>(it->get_pos_x()) << std::endl;
         it->set_pos_x(it->get_pos_x() + 5);
-        // std::cout << "pos x bala " << it->get_id() << " despues de avance: " << static_cast<int>(it->get_pos_x()) << std::endl;
     }
 }
 
 void GameLoop::avanzar_balas_direccion_arriba(std::__cxx11::list<Bala>::iterator& it){
     if (it->get_direccion() == DIRECCION_ARRIBA) {
         it->set_pos_y(it->get_pos_y() - 5);
-        // std::cout << "pos y bala avance :" << static_cast<int>(it->get_pos_y()) << std::endl;
     }
 }
 
 void GameLoop::eliminar_balas_fuera_de_alcance(std::__cxx11::list<Bala>::iterator& it){
     if ((it->get_pos_x() >= it->get_pos_x_final() && it->get_direccion() == DIRECCION_DERECHA)) {
-        // std::cout << "se elimina la bala que va a la derecha" << std::endl;
+      
         it = ultimo_estado.balas.erase(it);
     } else if ((it->get_pos_x() <= it->get_pos_x_final() && it->get_direccion() == DIRECCION_IZQUIERDA)) {
-        // std::cout << "se elimina la bala que va a la izquierda" << std::endl;
+        
         it = ultimo_estado.balas.erase(it);
     } else if (it->get_pos_y() <= it->get_pos_y_final() && it->get_direccion() == DIRECCION_ARRIBA) {
-        // std::cout << "se elimina la bala que va arriba" << std::endl;
+       
         it = ultimo_estado.balas.erase(it);
     } else {
         ++it;
+    }
+}
+
+void GameLoop:: verificar_limites_mapa(){
+    for(Pato& pato : ultimo_estado.patos){
+        if(pato.get_pos_x() >= 1280 || pato.get_pos_x() == 0 || pato.get_pos_y() == 0 || pato.get_pos_y() >= 720){
+            pato.morir();
+        }
     }
 }
 
@@ -333,7 +297,7 @@ void GameLoop::avanzar_balas(){
 void GameLoop::continuar_saltando_patos() {
     for (Pato& pato: ultimo_estado.patos) {
         if (pato.estado.get_estado_salto() == SALTAR) {
-            //std::cout << "entre al if de saltar y el contador es de " << static_cast<int>(pato.contador_salto) << std::endl;
+            
             pato.saltar();
         }
     }
@@ -370,13 +334,13 @@ void GameLoop::aplicar_gravedad() {
         if (pato.estado.get_estado_salto() == CAER) {
             for (int i = 0; i < pato.velocidad_caida; ++i) {
                 colision_detectada = false;
-                //std::cout << i << std::endl;
+               
                 pato.caer();
                 actualizar_hitbox_entidades();
                 for (Tile& tile : colisiones) {
-                    //std::cout << "colisionando con tile" << std::endl;
+                 
                     if (pato.colisiona_con_tile(tile.get_hitbox()) == Piso) {
-                        //std::cout << "ajustar tile" << std::endl;
+                        
                         pato.estado.set_dejar_de_caer();
                         pato.ajustar_sobre_tile(tile.get_hitbox());
                         colision_detectada = true;
@@ -397,6 +361,7 @@ void GameLoop::aplicar_logica(){
     continuar_saltando_patos();
     avanzar_balas();
     aplicar_gravedad();
+    verificar_limites_mapa();
 }
 
 void GameLoop::drop_and_rest(float& tiempo_ultimo_frame){
@@ -471,17 +436,9 @@ void GameLoop::inicializar_patos(){
     for(SDL_Point coord : posicion){
         pos_x = coord.x;
         pos_y = coord.y;
-        // for (Pato pato : ultimo_estado.patos){
-        //     if (pato.get_pos_x() != pos_x && pato.get_pos_y() != pos_y){
-                
-        //     }
-        // }
+     
         if (static_cast<int>(id_jugadores.size()) > contador){
             Pato pato(id_jugadores.at(contador), pos_x, pos_y, 0);
-            // pato.tomar_armadura();
-            // pato.equipar_armadura();
-            // pato.tomar_casco();
-            // pato.equipar_casco();
             ultimo_estado.patos.emplace_back(pato);
             contador++;
         } else {
@@ -592,7 +549,7 @@ void GameLoop::run() {
 
     tiempo_ultimo_frame = SDL_GetTicks();
         //eliminar_clientes_cerrados();
-        // ultimo_estado.mapa = Mapa();
+        
         while (!partida_terminada() && !(*esta_cerrado)) {
             EstadoJuego estado_anterior = ultimo_estado;
             std::vector<EventoServer> eventos = clientes.recibir_mensajes_clientes();
@@ -603,10 +560,10 @@ void GameLoop::run() {
                     queue->push(ultimo_estado);
                 }
             }
-            eliminar_patos_muertos();
             actualizar_hitbox_entidades();
             aplicar_logica();
             calcular_colisiones_balas();
+            eliminar_patos_muertos();
             ultimo_estado.informacion_enviada = ENVIAR_ESTADO_JUEGO;
             for (auto it = mapa_jugadores->begin(); it != mapa_jugadores->end(); ++it) {
                 Queue<EstadoJuego>* queue = it->second;
@@ -614,12 +571,14 @@ void GameLoop::run() {
             }
             drop_and_rest(tiempo_ultimo_frame);
         }
+        
     //cerrar_gameloop();
     for (Puntaje& puntaje : puntaje_jugadores){
         if (puntaje.tengo_id(ultimo_estado.patos.front().get_id())){
             puntaje.gana_una_ronda();
         }
     }
+    (*esta_cerrado) = true;
 }
 
 

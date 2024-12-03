@@ -24,12 +24,12 @@ private:
     std::vector<CajaInterfaz> cajas;
     std::vector<ArmaInterfaz> armas;
     std::vector<EquipamientoInterfaz> protecciones;
-    bool mapa_procesado;
     uint16_t id_pato;
 
     SDL_Color generar_color(int index);
     void obtener_tipo_bala(uint8_t tipo_arma, std::string& path_bala);
-
+    void obtener_tipo_arma(uint8_t tipo_arma, std::string& arma_path);
+    
     float calcular_distancia(PatoInterfaz& pato_princiapl, PatoInterfaz& otro_pato);
     SDL2pp::Rect obtener_rect_dibujar();
 
@@ -38,6 +38,7 @@ public:
     void dibujar(int it);
     
     void set_fondo(std::string fondo_path);
+
     void agregar_tile(std::string fondo_path, int x, int y);
     void agregar_spawn(uint16_t id_jugador, int x, int y);
     void agregar_caja(int x, int y);
@@ -45,17 +46,19 @@ public:
     void agregar_proteccion(int x, int y, TipoProteccion tipo);
     void agregar_bala(uint8_t tipo_arma, int x, int y, uint8_t direccion);
     void agregar_equipamiento(std::string& path, int x, int y);
+
     void caja_recogida(int x, int y);
     void equip_recogido(int x, int y);
-    PatoInterfaz& get_pato_con_id(uint16_t id);
-    void obtener_tipo_arma(uint8_t tipo_arma, std::string& arma_path);
+    void arma_recogida(uint16_t id);    
+    
     bool existe_arma(uint16_t id);
-    void procesado();
-    bool esta_procesado() {return mapa_procesado;};
     void actualizar_estado_arma(uint16_t id, int x, int y, bool se_agarro);
-    void arma_recogida(uint16_t id);
 
     int cant_patos();
+    PatoInterfaz& get_pato_con_id(uint16_t id);
+
+    void limpiar_mapa();
+    uint16_t get_id_pato_principal();
 };
 
 

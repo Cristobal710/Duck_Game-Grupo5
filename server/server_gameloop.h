@@ -72,6 +72,7 @@ private:
     void aplicar_estados();
     void calcular_colisiones_balas();
     void eliminar_patos_muertos();
+    void verificar_limites_mapa();
     bool validar_movimiento(Pato& pato, TipoColision tipo_colision);
     void eliminar_balas_si_colisionan(std::__cxx11::list<Bala>::iterator& it);
     void agarrar_recompensa(Pato& pato);

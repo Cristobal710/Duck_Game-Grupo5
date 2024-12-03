@@ -12,7 +12,7 @@ MapaInterfaz::MapaInterfaz(SDL2pp::Renderer& renderer, uint16_t id_jugador_princ
     cajas(),
     armas(),
     protecciones(),
-    mapa_procesado(false), id_pato(id_jugador_principal) 
+    id_pato(id_jugador_principal) 
 {}
 
 void MapaInterfaz::set_fondo(std::string fondo_path) {
@@ -130,10 +130,6 @@ PatoInterfaz& MapaInterfaz::get_pato_con_id(uint16_t id) {
     
     // If no matching object was found, throw an exception
     throw std::runtime_error("Pato with the given id not found.");
-}
-
-void MapaInterfaz::procesado() {
-    mapa_procesado = true;
 }
 
 int MapaInterfaz::cant_patos() { return patos.size(); }
@@ -280,3 +276,27 @@ void MapaInterfaz::arma_recogida(uint16_t id){
         }
     }
 }
+
+void MapaInterfaz::limpiar_mapa() {
+    if (!patos.empty()){
+        patos.clear();
+    }
+    if (!tiles.empty()){
+        tiles.clear();
+    }
+    if (!balas.empty()){
+        balas.clear();
+    }
+    if (!cajas.empty()){
+        cajas.clear();
+    }
+    if(!armas.empty()){
+        armas.clear();
+    }
+    if (!protecciones.empty()){
+        protecciones.clear();
+    }
+    renderer.Clear();
+}
+
+uint16_t MapaInterfaz::get_id_pato_principal() { return id_pato; }

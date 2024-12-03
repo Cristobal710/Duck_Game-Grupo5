@@ -216,3 +216,11 @@ void Pato::ajustar_sobre_tile(const SDL2pp::Rect& tile_hitbox) {
     pos_y = tile_hitbox.GetY() - hitbox.get_hitbox_rect().GetH(); 
 }
 
+void Pato::ajustar_derecha_tile(const SDL2pp::Rect& tile_hitbox) {
+    pos_x = tile_hitbox.GetX() - hitbox.get_hitbox_rect().GetW();
+}
+
+void Pato::ajustar_izquierda_tile(const SDL2pp::Rect& tile_hitbox) {
+    pos_x = tile_hitbox.GetX() + hitbox.get_hitbox_rect().GetW();
+}
+

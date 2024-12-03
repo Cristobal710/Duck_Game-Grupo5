@@ -18,11 +18,14 @@ void Accepter::run() {
             
             auto* modo_juego = new ModoJuego(*cliente, *enviados, *recibido2, partidas_distintas.size() + 1, partidas_distintas); 
             partidas_distintas.emplace_back(modo_juego);
-            modo_juego->start();
-
             
+            modo_juego->start();
             cliente->start();
         } catch (...) {
+            // for (ModoJuego* partida : partidas_distintas){
+            //     partida->join();
+            //     delete partida;
+            // }
             // gameloop.join();
             break;
         }

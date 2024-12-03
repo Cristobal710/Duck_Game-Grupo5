@@ -57,6 +57,8 @@ public:
     TipoColision colisiona_con_bala(Bala& bala);
     TipoColision colisiona_con_recompensa(HitBox hitbox_caja);
     void ajustar_sobre_tile(const SDL2pp::Rect& tile_hitbox);
+    void ajustar_derecha_tile(const SDL2pp::Rect& tile_hitbox);
+    void ajustar_izquierda_tile(const SDL2pp::Rect& tile_hitbox);
 };
 
 #endif
