@@ -143,22 +143,25 @@ void GameLoop::agarrar_recompensa(Pato& pato){
             }
         }
     }
-    for(Caja& caja : ultimo_estado.cajas){
-        if(pato.colisiona_con_recompensa(caja.get_hitbox()) == Recompensas){
-            if (!caja.get_esta_vacia()) {
-                Arma arma = caja.get_arma();
-                pato.tomar_arma(arma);
-                caja.set_esta_vacia(true);
-                return;
+
+    if(!pato.tiene_arma()){
+        for(Caja& caja : ultimo_estado.cajas){
+            if(pato.colisiona_con_recompensa(caja.get_hitbox()) == Recompensas){
+                if (!caja.get_esta_vacia()) {
+                    Arma arma = caja.get_arma();
+                    pato.tomar_arma(arma);
+                    caja.set_esta_vacia(true);
+                    return;
+                }
             }
         }
-    }
-    for(Arma& arma : ultimo_estado.armas){
-        if(pato.colisiona_con_recompensa(arma.get_hitbox()) == Recompensas){
-            if(!arma.get_se_agarro()){
-                arma.set_se_agarro(true);
-                pato.tomar_arma(arma);
-                return;
+        for(Arma& arma : ultimo_estado.armas){
+            if(pato.colisiona_con_recompensa(arma.get_hitbox()) == Recompensas){
+                if(!arma.get_se_agarro()){
+                    arma.set_se_agarro(true);
+                    pato.tomar_arma(arma);
+                    return;
+                }
             }
         }
     }
