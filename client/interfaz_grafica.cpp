@@ -28,8 +28,8 @@ void InterfazGrafica::iniciar_audio(std::string audio_path){
     Mix_QuerySpec(nullptr, nullptr, nullptr);;
     Mix_Music* music = Mix_LoadMUS(audio_path.c_str());
     Mix_PlayMusic(music, -1);
-    //int sdl_volume = static_cast<int>((5 / 10.0) * 128);
-    Mix_VolumeMusic(0);
+    int sdl_volume = static_cast<int>((5 / 10.0) * 128);
+    Mix_VolumeMusic(sdl_volume);
 }
 
 void InterfazGrafica::iniciar() {
