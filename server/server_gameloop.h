@@ -45,6 +45,7 @@ private:
     std::map<uint16_t, Queue<EstadoJuego>*>* mapa_jugadores;
     std::map<std::string, ArmaConfig> armamento_config;
     std::vector<ArmaConfig> armas_posibles;
+    std::string mapa_a_jugar;
     // void eliminar_clientes_cerrados();
     // void cerrar_gameloop();
     void inicializar_juego();
@@ -78,7 +79,7 @@ private:
 
 public:
     GameLoop(std::map<uint16_t, Queue<EstadoJuego>*>* mapa_jugadores,
-             bool* conexion, uint8_t id);
+             bool* conexion, uint8_t id, std::string mapa_seleccionado);
     void procesar_evento(EventoServer& evento, EstadoJuego& cola_estados_juego);
     int get_indice_por_id(uint8_t id);
     void agregar_cliente(ServerClient& cliente, Queue<EventoServer>& cola_cliente);
