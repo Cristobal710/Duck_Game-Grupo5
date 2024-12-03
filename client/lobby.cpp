@@ -15,7 +15,6 @@ Lobby::Lobby(SDL_Renderer* renderer):
     un_jugador_rect = {200, 250, 300, 70};
     dos_jugadores_rect = {200, 370, 300, 70};
 
-    id_partida_rect = {450, 200, 350, 100};
     iniciar_partida_rect = {450, 400, 350, 100};
 }
 
@@ -109,10 +108,6 @@ void Lobby::dibujar(std::list<uint8_t>& partidas) {
         
         SDL_Texture* fondo = IMG_LoadTexture(renderer, "../resources/lobby/background_lobby2.jpg");
         SDL_RenderCopy(renderer, fondo, NULL, NULL);
-        
-        std::string id_partida_texto = "ID Partida: ";
-        //id_partida_texto += std::to_string(partidas.back().obtener_id());
-        cargar_boton(id_partida_texto, id_partida_rect);
 
         std::string iniciar_partida_texto = "Start Game";
         cargar_boton(iniciar_partida_texto, iniciar_partida_rect);
@@ -121,20 +116,29 @@ void Lobby::dibujar(std::list<uint8_t>& partidas) {
         SDL_RenderCopy(renderer, fondo, NULL, NULL);
 
         for (uint8_t& id_partida : partidas) {
-                int id = static_cast<int>(id_partida);
-                SDL_Rect rect;
-                if(id > 0){
-                    SDL_Rect rect_anterior = rects_ids_partidas[id - 1];
-                    rect = {rect_anterior.x + 100, rect_anterior.y, 100, 100};
+            int id = static_cast<int>(id_partida);
+            SDL_Rect rect;
+            if(id > 0){
+                SDL_Rect rect_anterior = rects_ids_partidas[id - 1];
+                rect = {rect_anterior.x + 150, rect_anterior.y, 100, 100};
 
-                } else {
-                    rect = {200, 200, 100, 100};
-                }
-                rects_ids_partidas[id] = rect;
-                std::string id_texto = std::to_string(id);
-                cargar_boton(id_texto, rect);
+            } else {
+                rect = {200, 200, 100, 100};
             }
+            rects_ids_partidas[id] = rect;
+            std::string id_texto = std::to_string(id);
+            cargar_boton(id_texto, rect);
         }
+    } else if (estado == EstadoLobby::ESPERAR_INICIO_PARTIDA){
+        SDL_Texture* fondo = IMG_LoadTexture(renderer, "../resources/lobby/background_lobby2.jpg");
+        SDL_RenderCopy(renderer, fondo, NULL, NULL);
+
+        std::string texto = "Waiting for the game to start...";
+        SDL_Rect rect_texto = { 475, 350, 400, 100 };
+        SDL_Color color = { 0, 0, 0, 0 };
+        int tamanio = 36;
+        cargar_texto(texto, rect_texto, color, tamanio);
+    }
 
     SDL_RenderPresent(renderer);
 }
@@ -154,7 +158,6 @@ PedidoJugador Lobby::manejar_eventos() {
             SDL_GetMouseState(&x, &y);
 
             if(estado == EstadoLobby::MODO_JUEGO){
-                // check modo de juego
                 if (x >= partida_nueva_rect.x && x <= partida_nueva_rect.x + partida_nueva_rect.w &&
                     y >= partida_nueva_rect.y && y <= partida_nueva_rect.y + partida_nueva_rect.h) {
                     pedido.partida_nueva();
@@ -164,24 +167,18 @@ PedidoJugador Lobby::manejar_eventos() {
 
                 if (x >= partida_existente_rect.x && x <= partida_existente_rect.x + partida_existente_rect.w &&
                     y >= partida_existente_rect.y && y <= partida_existente_rect.y + partida_existente_rect.h) {
-                    //pedido.unirse_a_partida_con_id(1);
                     estado = EstadoLobby::UNIRSE_A_PARTIDA;
-                    //algo para decir que se unio a una partida existente
                 }
             } else if (estado == EstadoLobby::INICIAL){
-                // Check cantidad de jugadores
                 if (x >= un_jugador_rect.x && x <= un_jugador_rect.x + un_jugador_rect.w &&
                     y >= un_jugador_rect.y && y <= un_jugador_rect.y + un_jugador_rect.h) {
-                     // Single player selected
                     pedido.juega_uno_solo();
                     cant_jugadores = 1;
                     estado = EstadoLobby::MODO_JUEGO;
-                     //esta data deberia llegar del servidor
                 }
 
                 if (x >= dos_jugadores_rect.x && x <= dos_jugadores_rect.x + dos_jugadores_rect.w &&
                     y >= dos_jugadores_rect.y && y <= dos_jugadores_rect.y + dos_jugadores_rect.h) {
-                      // Multiplayer selected
                     pedido.juegan_dos_personas();
                     cant_jugadores = 2;
                     estado = EstadoLobby::MODO_JUEGO;
@@ -196,34 +193,12 @@ PedidoJugador Lobby::manejar_eventos() {
                     if (x >= rect.second.x && x <= rect.second.x + rect.second.w &&
                         y >= rect.second.y && y <= rect.second.y + rect.second.h) {
                         pedido.unirse_a_partida_con_id(rect.first);
+                        estado = EstadoLobby::ESPERAR_INICIO_PARTIDA;
                         return pedido;  
                     }
                 }
             }
         }
-
-        /*// Handle text input when in the UNIRSE_A_PARTIDA state
-        if (estado == EstadoLobby::UNIRSE_A_PARTIDA) {
-            std::string user_input;
-            if (event.type == SDL_KEYDOWN) {
-                // Handle backspace to delete the last character
-                if (event.key.keysym.sym == SDLK_BACKSPACE && !user_input.empty()) {
-                    user_input.pop_back();
-                }
-                // Handle the Enter key to confirm input and send it as a request
-                else if (event.key.keysym.sym == SDLK_RETURN && !user_input.empty()) {
-                    pedido.unirse_a_partida_con_id(std::stoi(user_input));
-                    std::cout << "Unido a la partida con ID: " << user_input << std::endl;
-                    user_input.clear();  // Clear the input after using it
-                    estado = EstadoLobby::FINALIZADO;
-                    return pedido;  // Send the request
-                }
-            }
-            // Handle text input events
-            else if (event.type == SDL_TEXTINPUT) {
-                user_input += event.text.text;  // Append new text to the input
-            }
-        }*/
     }
 
     return pedido;

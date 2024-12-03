@@ -17,6 +17,7 @@ enum EstadoLobby {
     MODO_JUEGO,
     INICIAR_PARTIDA,
     UNIRSE_A_PARTIDA,
+    ESPERAR_INICIO_PARTIDA,
     FINALIZADO
 };
 
