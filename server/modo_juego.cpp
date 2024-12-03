@@ -10,7 +10,15 @@ ModoJuego::ModoJuego(ServerClient& cliente, Queue<EventoServer>& cola_cliente, Q
 std::list<ModoJuego*>& partidas_distintas):
 cliente(cliente), queue_cliente(cola_cliente), broadcast(recibidos), ultimo_estado(), id_partida(id),
 partidas_distintas(partidas_distintas), partida_nueva(false), clientes() 
-{}
+{
+    mapas_disponibles = {
+        "../resources/maps/mapa-con-4-spawns-1",
+        "../resources/maps/mapa-con-4-spawns-2",
+        "../resources/maps/mapa-con-4-spawns-3",
+        "../resources/maps/mapa-con-4-spawns-4",
+        "../resources/maps/mapa-con-4-spawns-5"
+    };
+}
 
 void ModoJuego::run() {
     clientes.emplace_back(&cliente);
@@ -45,7 +53,8 @@ void ModoJuego::run() {
     if (partida_nueva){
         
         LectorJson lector_mapa = LectorJson();
-        Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa5");
+        std::string mapa_seleccionado = sortear_mapa();
+        Mapa mapa = lector_mapa.procesar_mapa(mapa_seleccionado);
         EstadoJuego estado_inicial;
         
         estado_inicial.id_partida = id_partida;
@@ -66,7 +75,7 @@ void ModoJuego::run() {
         }
 
 
-        auto* gameloop = new GameLoop(jugadores, &cerrado, id_partida);
+        auto* gameloop = new GameLoop(jugadores, &cerrado, id_partida, mapa_seleccionado);
         for (ServerClient* client : clientes){
             client->iniciar_partida(estado_inicial);
             gameloop->agregar_cliente(*client, client->get_queue());
@@ -147,6 +156,16 @@ void ModoJuego::buscar_partidas() {
             }
         }
     ultimo_estado.partidas = partidas;
+}
+
+std::string ModoJuego::sortear_mapa() {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(0, mapas_disponibles.size() - 1);
+
+    int indice_aleatorio = dis(gen);
+    std::cout << "mapa seleccionado: " << mapas_disponibles[indice_aleatorio] << std::endl;
+    return mapas_disponibles[indice_aleatorio];
 }
 
 void ModoJuego::leer_configuracion(const std::string& archivo_yaml){

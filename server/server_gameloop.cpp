@@ -15,10 +15,11 @@
 #define ANCHO_TILE 24
 
 GameLoop::GameLoop(std::map<uint16_t, Queue<EstadoJuego>*>* mapa_jugadores,
-        bool* conexion, uint8_t id):
+        bool* conexion, uint8_t id, std::string mapa_seleccionado):
         clientes(),
         esta_cerrado(conexion),
-        id_ultimo_jugador(0), id_partida(id), mapa_jugadores(mapa_jugadores)
+        id_ultimo_jugador(0), id_partida(id), mapa_jugadores(mapa_jugadores), 
+        mapa_a_jugar(mapa_seleccionado)
         {
         ultimo_estado = EstadoJuego();
         }
@@ -583,7 +584,7 @@ void GameLoop::run() {
     float tiempo_ultimo_frame = SDL_GetTicks();
 
     LectorJson lector_mapa = LectorJson();
-    Mapa mapa = lector_mapa.procesar_mapa("../resources/maps/mapa5");
+    Mapa mapa = lector_mapa.procesar_mapa(mapa_a_jugar);
     ultimo_estado.mapa = mapa;
     ultimo_estado.id_partida = id_partida;
     inicializar_juego();

@@ -24,6 +24,7 @@ class ModoJuego: public Thread {
     std::list<ServerClient*> clientes;
     std::map<std::string, ArmaConfig> armamento_config;
     std::vector<ArmaConfig> armas_posibles;
+    std::vector<std::string> mapas_disponibles;
 
 
     void procesar_evento_lobby(EventoServer& evento, bool& iniciar_partida);
@@ -36,6 +37,7 @@ class ModoJuego: public Thread {
     Arma elegir_arma_aleatoria(SDL_Point posicion_caja);
     Arma mapear_armas(ArmaConfig armamento, SDL_Point posicion_arma);
     void leer_configuracion(const std::string& archivo_yaml);
+    std::string sortear_mapa();
 
     public:
     ModoJuego(ServerClient& cliente, Queue<EventoServer>& cola_cliente, Queue<EstadoJuego>& recibidos, uint8_t id,
