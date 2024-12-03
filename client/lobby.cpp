@@ -113,7 +113,7 @@ void Lobby::dibujar(std::list<uint8_t>& partidas) {
         SDL_DestroyTexture(fondo);
         std::string texto = "Waiting for the game to start...";
         SDL_Rect rect_texto = { 475, 350, 400, 100 };
-        SDL_Color color = { 155, 255, 255, 255 };
+        SDL_Color color = { 255, 255, 255, 255 };
         int tamanio = 36;
         cargar_texto(texto, rect_texto, color, tamanio);
     }
@@ -271,7 +271,7 @@ void Lobby::mostrar_pato_identificatorio(uint16_t id1, uint16_t id2){
     SDL_Delay(5000);
 }
 
-void Lobby::mostrar_pantalla_ganador(int it) {
+void Lobby::mostrar_pantalla_ganador(int it, uint16_t id_ganador) {
     static std::vector<SDL_Texture*> texturas_ganador;
     static bool loaded = false;
     if (!loaded) {
@@ -295,11 +295,18 @@ void Lobby::mostrar_pantalla_ganador(int it) {
     SDL_Texture* fondo_texture = IMG_LoadTexture(renderer, "../resources/backgrounds/forest.png");
     SDL_RenderCopy(renderer, fondo_texture, NULL, NULL);
     SDL_DestroyTexture(fondo_texture);
-    std::string texto = "YOU WIN!";
+    
+    std::string texto = "THE WINNER IS";
     SDL_Rect rect_texto = { 520, 100, 200, 100 };
     SDL_Color color = { 240, 240, 0, 255 };
     int tamanio = 36;
     cargar_texto(texto, rect_texto, color, tamanio);
+    
+    SDL_Rect rect_ganador = { 600, 200, 50, 50 };
+    SDL_Color color_ganador = color_pato(id_ganador);
+    SDL_SetRenderDrawColor(renderer, color_ganador.r, color_ganador.g, color_ganador.b, color_ganador.a);
+    SDL_RenderFillRect(renderer, &rect_ganador);
+    
     SDL_Rect dest_rect = { 475, 150, 300, 400 };
     SDL_RenderCopy(renderer, texturas_ganador[it % 6], nullptr, &dest_rect);
     SDL_Delay(100);

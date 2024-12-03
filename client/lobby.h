@@ -55,7 +55,7 @@ public:
     void actualizar_partidas(std::list<Partida>& partidas);
     void partida_iniciada();
     void mostrar_pato_identificatorio(uint16_t id1, uint16_t id2);
-    void mostrar_pantalla_ganador(int it);
+    void mostrar_pantalla_ganador(int it, uint16_t id_ganador);
     void mostrar_pantalla_perdedor();
 };
 

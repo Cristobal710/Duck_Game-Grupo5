@@ -120,7 +120,7 @@ void InterfazGrafica::iniciar() {
         cerrar_programa(correr_programa);
         renderer.Clear();
         if (ultimo_estado.ganador_partida == id1 || ultimo_estado.ganador_partida == id2){
-            lobby.mostrar_pantalla_ganador(it);
+            lobby.mostrar_pantalla_ganador(it, ultimo_estado.ganador_partida);
         } else {
             lobby.mostrar_pantalla_perdedor();
         }
