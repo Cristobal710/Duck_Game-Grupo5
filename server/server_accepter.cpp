@@ -29,13 +29,10 @@ void Accepter::run() {
             cliente->start();
         } catch (...) {
             cerrar_servidor = true;
-            std::cout << "tengo que cerrar servidor" << std::endl;
             for (ModoJuego* partida : partidas_distintas){
-                std::cout << "joineo partida y la cierro" << std::endl;
                 partida->join();
                 delete partida;
             }
-            std::cout << "termine de cerrar modos de juego" << std::endl;
             for (Queue<EstadoJuego>* queue : queues_estado_juego){
                 delete queue;
             }

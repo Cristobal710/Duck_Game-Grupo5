@@ -37,13 +37,11 @@ void Lobby::cargar_boton(std::string& texto, SDL_Rect& boton_rect){
 
 void Lobby::cargar_texto(std::string& texto, SDL_Rect& boton_rect, SDL_Color& color_texto, int tamanio){
     TTF_Init();
-    TTF_Font* font = TTF_OpenFont("../resources/lobby/lobby_font.TTF", 24);
-    SDL_Color color_texto = {255, 165, 0, 255};
+    TTF_Font* font = TTF_OpenFont("../resources/lobby/lobby_font.TTF", tamanio);
+    color_texto = {255, 165, 0, 255};
     SDL_Surface* surface_texto = TTF_RenderText_Solid(font, texto.c_str(), color_texto);
     SDL_Texture* texture_texto = SDL_CreateTextureFromSurface(renderer, surface_texto);
 
-    // Convertir la superficie en una textura
-    SDL_Texture* texture_texto = SDL_CreateTextureFromSurface(renderer, surface_texto);
     if (texture_texto == NULL) {
         std::cout << "Error creating text texture: " << SDL_GetError() << std::endl;
         SDL_FreeSurface(surface_texto);

@@ -52,11 +52,8 @@ void ModoJuego::run() {
     if (cerrar_servidor){
         for (ServerClient* client : clientes){
             if (client->get_id() == cliente.get_id()){
-                std::cout << "cierro queue" << std::endl;
                 client->get_queue().close();
-                std::cout << "joineo al cliente" << std::endl;
                 client->join();
-                std::cout << "lo deleteo" << std::endl;
                 delete client;
             }
         }
@@ -130,11 +127,8 @@ void ModoJuego::run() {
     delete jugadores;
     for (ServerClient* client : clientes){
         if (client->get_id() == cliente.get_id()){
-            std::cout << "voy a cerrar al cliente" << std::endl;
             client->get_queue().close();
-            std::cout << "queue cerrada" << std::endl;
             client->join();
-            std::cout << "deleteo cliente" << std::endl;
             delete client;
             break;
         }

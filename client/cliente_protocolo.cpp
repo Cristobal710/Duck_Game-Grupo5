@@ -226,7 +226,6 @@ EstadoJuego ClienteProtocolo::recibir_estado_juego() {
     }
 
     if (estado_juego.informacion_enviada == PARTIDA_TERMINADA){
-        std::cout << "termino la partida" << std::endl;
         estado_juego.partida_iniciada = recibir_byte(cerrado);
         estado_juego.id_partida       = recibir_byte(cerrado);
     }
