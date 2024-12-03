@@ -24,10 +24,6 @@
         {
             "x": 1088,
             "y": 384
-        },
-        {
-            "x": 800,
-            "y": 32
         }
     ],
     "equipamiento": [
@@ -40,21 +36,6 @@
             "armadura": "../resources/armors/chestPlatePickup.png",
             "x": 230,
             "y": 416
-        },
-        {
-            "armadura": "../resources/armors/chestPlatePickup.png",
-            "x": 700,
-            "y": 32
-        },
-        {
-            "armadura": "../resources/armors/chestPlatePickup.png",
-            "x": 900,
-            "y": 32
-        },
-        {
-            "armadura": "../resources/armors/chestPlatePickup.png",
-            "x": 720,
-            "y": 96
         },
         {
             "armadura": "../resources/armors/chestPlatePickup.png",
@@ -85,11 +66,6 @@
             "casco": "../resources/armors/knightHelmet.png",
             "x": 992,
             "y": 416
-        },
-        {
-            "casco": "../resources/armors/knightHelmet.png",
-            "x": 672,
-            "y": 32
         },
         {
             "arma": "../resources/weapons/cowboyPistol.png",

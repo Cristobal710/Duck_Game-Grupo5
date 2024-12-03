@@ -14,7 +14,7 @@
  * */
 class Client : public Thread{
 public:
-    explicit Client(const char* hostname, const char* servname);
+    explicit Client(const char* hostname, const char* servname, std::atomic_bool& cerrar_programa);
     /*
      * Ejecuta el cliente que inicializa el protocolo y se conecta con el servidor
      * */
@@ -22,6 +22,7 @@ public:
 
 private:
     Socket socket;
+    std::atomic_bool& cerrar_programa;
 };
 
 #endif

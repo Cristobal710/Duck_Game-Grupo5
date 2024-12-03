@@ -14,15 +14,15 @@ class ServerEnviar: public Thread {
 private:
     Socket& socket;
     Queue<EstadoJuego>* estados_juego;
-    bool esta_cerrado;
     ServerProtocolo server_protocolo;
-    Queue<EstadoJuego>* estados_partida;
+    std::atomic_bool& esta_cerrado;
 
 public:
-    ServerEnviar(Socket& skt, Queue<EstadoJuego>* estados_juego);
+    ServerEnviar(Socket& skt, Queue<EstadoJuego>* estados_juego, std::atomic_bool& esta_cerrado);
     void run() override;
     void iniciar_partida(EstadoJuego& estado);
     void cambiar_queue(Queue<EstadoJuego>* nueva_queue);
+    void cerrar_queue();
 };
 
 #endif

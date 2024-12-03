@@ -7,9 +7,9 @@
 #define ANCHO_TILE 24
 
 ModoJuego::ModoJuego(ServerClient& cliente, Queue<EventoServer>& cola_cliente, Queue<EstadoJuego>& recibidos, uint8_t id,
-std::list<ModoJuego*>& partidas_distintas):
+std::list<ModoJuego*>& partidas_distintas, std::atomic_bool& cerrar_servidor):
 cliente(cliente), queue_cliente(cola_cliente), broadcast(recibidos), ultimo_estado(), id_partida(id),
-partidas_distintas(partidas_distintas), partida_nueva(false), clientes() 
+partidas_distintas(partidas_distintas), partida_nueva(false), clientes(), cerrar_servidor(cerrar_servidor) 
 {
     mapas_disponibles = {
         "../resources/maps/mapa-con-4-spawns-1",
@@ -33,7 +33,7 @@ void ModoJuego::run() {
 
     broadcast.enviar_mensaje(ultimo_estado);
     
-    while (!iniciar_partida){
+    while (!iniciar_partida && !cerrar_servidor){
         std::vector<EventoServer> eventos;
 
         EventoServer evento;
@@ -49,7 +49,19 @@ void ModoJuego::run() {
         drop_and_rest(tiempo_ultimo_frame);
     }
 
-
+    if (cerrar_servidor){
+        for (ServerClient* client : clientes){
+            if (client->get_id() == cliente.get_id()){
+                std::cout << "cierro queue" << std::endl;
+                client->get_queue().close();
+                std::cout << "joineo al cliente" << std::endl;
+                client->join();
+                std::cout << "lo deleteo" << std::endl;
+                delete client;
+            }
+        }
+        return;
+    }
     
     
     std::vector<Puntaje> puntaje_jugadores;
@@ -71,7 +83,7 @@ void ModoJuego::run() {
 
     if (partida_nueva){
         
-        while (no_hay_ganador(puntaje_jugadores)) {
+        while (no_hay_ganador(puntaje_jugadores) && !cerrar_servidor) {
             LectorJson lector_mapa = LectorJson();
             std::string mapa_seleccionado = sortear_mapa();
             Mapa mapa = lector_mapa.procesar_mapa(mapa_seleccionado);
@@ -94,9 +106,10 @@ void ModoJuego::run() {
             }
 
             gameloop->start();
-            while (!ronda_finalizada){
+            while (!ronda_finalizada && !cerrar_servidor){
                 drop_and_rest(tiempo_ultimo_frame);
             }
+
             //el gameloop siempre termina cuando termina la partida o se cierra la conexion, cualquiera de las 2
             //alcanza, solo hay que liberarlo
             gameloop->join();
@@ -114,7 +127,18 @@ void ModoJuego::run() {
         //joinee la partida de alguien, tengo que esperar simplemente
         drop_and_rest(tiempo_ultimo_frame);
     }
-
+    delete jugadores;
+    for (ServerClient* client : clientes){
+        if (client->get_id() == cliente.get_id()){
+            std::cout << "voy a cerrar al cliente" << std::endl;
+            client->get_queue().close();
+            std::cout << "queue cerrada" << std::endl;
+            client->join();
+            std::cout << "deleteo cliente" << std::endl;
+            delete client;
+            break;
+        }
+    }
 }
 
 bool ModoJuego::tiene_partida() { return partida_nueva; }
@@ -159,7 +183,6 @@ void ModoJuego::ejecutar_accion_lobby(PedidoJugador& pedido, uint16_t id_jugador
                 ultimo_estado.id_partida =  pedido.id_partida_a_unirse;
             }
         }
-    
         return;
     }
     if (pedido.un_jugador == LOBBY_REQUEST){

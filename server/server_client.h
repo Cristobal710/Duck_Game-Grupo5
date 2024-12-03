@@ -17,12 +17,13 @@ class ServerClient: public Thread {
 private:
     uint16_t id;
     Socket conexion_socket;
-    bool esta_cerrado;
+    std::atomic_bool esta_cerrado;
     Queue<EstadoJuego>& estados_juego;
     Queue<EventoServer>& eventos;
     bool dos_jugadores;
     ServerEnviar enviar;
     
+
     void cerrar(ServerEnviar& enviar);
 
 public:

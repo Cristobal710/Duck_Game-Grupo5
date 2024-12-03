@@ -25,7 +25,7 @@ class ModoJuego: public Thread {
     std::map<std::string, ArmaConfig> armamento_config;
     std::vector<ArmaConfig> armas_posibles;
     std::vector<std::string> mapas_disponibles;
-
+    std::atomic_bool& cerrar_servidor;
 
     void procesar_evento_lobby(EventoServer& evento, bool& iniciar_partida);
     void drop_and_rest(float& tiempo_ultimo_frame);
@@ -41,7 +41,7 @@ class ModoJuego: public Thread {
 
     public:
     ModoJuego(ServerClient& cliente, Queue<EventoServer>& cola_cliente, Queue<EstadoJuego>& recibidos, uint8_t id,
-    std::list<ModoJuego*>& partidas_distintas);
+    std::list<ModoJuego*>& partidas_distintas, std::atomic_bool& cerrar_servidor);
     void run() override;
     bool tiene_partida();
     uint8_t obtener_id_partida();

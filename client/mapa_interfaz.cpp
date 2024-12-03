@@ -4,7 +4,7 @@
 
 MapaInterfaz::MapaInterfaz(SDL2pp::Renderer& renderer, uint16_t id_jugador_principal)
     : renderer(renderer), 
-    superficie(SDL2pp::Surface(SDL_CreateRGBSurface(0, 1280, 720, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000))),  // Initialize superficie properly
+    superficie(SDL2pp::Surface(SDL_CreateRGBSurface(0, 1280, 720, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000))),
     fondo(superficie, "../resources/backgrounds/city.png"),
     tiles(),
     patos(), 
@@ -100,17 +100,17 @@ void MapaInterfaz::obtener_tipo_bala(uint8_t tipo_arma, std::string& path_bala){
     } else if (tipo_arma == LASER_RIFLE){
         path_bala = "../resources/weapons/rayos.png";
     } else if (tipo_arma == AK_47){
-        path_bala = "../resources/weapons/dart.png";
+        path_bala = "../resources/weapons/bala.png";
     } else if(tipo_arma == PISTOLA_DE_DUELOS){
-        path_bala = "../resources/weapons/dart.png";
+        path_bala = "../resources/weapons/bala.png";
     } else if (tipo_arma == PISTOLA_COWBOY){
-        path_bala = "../resources/weapons/dart.png";
+        path_bala = "../resources/weapons/bala.png";
     } else if (tipo_arma == MAGNUM){
-        path_bala = "../resources/weapons/dart.png";
+        path_bala = "../resources/weapons/bala.png";
     } else if (tipo_arma == ESCOPETA){
-        path_bala = "../resources/weapons/dart.png";
+        path_bala = "../resources/weapons/bala.png";
     } else if (tipo_arma == SNIPER){
-        path_bala = "../resources/weapons/dart.png";
+        path_bala = "../resources/weapons/bala.png";
     }
 }
 
@@ -127,15 +127,12 @@ PatoInterfaz& MapaInterfaz::get_pato_con_id(uint16_t id) {
             return  pato;
         }
     }
-    
-    // If no matching object was found, throw an exception
     throw std::runtime_error("Pato with the given id not found.");
 }
 
 int MapaInterfaz::cant_patos() { return patos.size(); }
 
 float MapaInterfaz::calcular_distancia( PatoInterfaz& pato_princiapl,  PatoInterfaz& otro_pato)  {
-    // Usamos el centro de los rectángulos para calcular la distancia
 
     float x1 = pato_princiapl.pos_x() + pato_princiapl.get_w() / 2;
     float y1 = pato_princiapl.pos_y() + pato_princiapl.get_h() / 2;
@@ -158,7 +155,7 @@ SDL2pp::Rect MapaInterfaz::obtener_rect_dibujar() {
         }
     }
 
-    zoom = 1.0f / (distancia_maxima / 500.0f);  
+    zoom = 1.0f / (distancia_maxima / 500.0f);   
     zoom = std::max(1.0f, std::min(zoom, 2.0f));  
 
     int render_width = static_cast<int>(WIDTH_SCREEN / zoom);
@@ -211,13 +208,17 @@ void MapaInterfaz::dibujar(int it){
         }
     }
     
-    for (BalaInterfaz& bala : balas){
-        bala.dibujar(it);
+    if(!balas.empty()){
+        for (BalaInterfaz& bala : balas){
+            if(!bala.ya_sono()){
+                bala.reproducir_sonido();
+            }            
+            bala.dibujar(it);
+        }        
     }
 
+
     balas.clear();
-    //armas.clear();
-    //cajas.clear();
 
     SDL2pp::Rect rect_dibujar = obtener_rect_dibujar();
     SDL2pp::Rect rect_superficie(0, 0, 1280, 720);

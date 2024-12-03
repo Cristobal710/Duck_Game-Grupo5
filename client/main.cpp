@@ -8,12 +8,17 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
-    Client cliente(argv[1] , argv[2]);
+    std::atomic_bool cerrar_programa = false;;
+
+    Client cliente(argv[1] , argv[2], cerrar_programa);
     cliente.start();
 
     std::string in;
-    while (std::cin >> in, (in != "q")) {}
+    while (!cerrar_programa) {
+        std::this_thread::sleep_for(std::chrono::seconds(2));
+    }
 
+    cliente.join();
     cliente.stop();
 
     return 0;

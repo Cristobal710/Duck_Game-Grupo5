@@ -36,31 +36,11 @@ void Lobby::cargar_boton(std::string& texto, SDL_Rect& boton_rect){
     
 
 void Lobby::cargar_texto(std::string& texto, SDL_Rect& boton_rect, SDL_Color& color_texto, int tamanio){
-    /*TTF_Init();
+    TTF_Init();
     TTF_Font* font = TTF_OpenFont("../resources/lobby/lobby_font.TTF", 24);
     SDL_Color color_texto = {255, 165, 0, 255};
     SDL_Surface* surface_texto = TTF_RenderText_Solid(font, texto.c_str(), color_texto);
-    SDL_Texture* texture_texto = SDL_CreateTextureFromSurface(renderer, surface_texto);*/
-    // Initialize SDL_ttf
-    if (TTF_Init() == -1) {
-        std::cout << "SDL_ttf could not initialize! TTF_Error: " << TTF_GetError() << std::endl;
-        return;
-    }
-
-    // Crear y renderizar el texto dentro del botón
-    TTF_Font* font = TTF_OpenFont("../resources/lobby/lobby_font.TTF", tamanio);  // Abrir fuente (ajusta el tamaño)
-    if (font == NULL) {
-        std::cout << "Error loading font: " << TTF_GetError() << std::endl;
-        return;
-    }
-
-    // Crear una superficie con el texto
-    SDL_Surface* surface_texto = TTF_RenderText_Solid(font, texto.c_str(), color_texto);  // Texto a mostrar
-    if (surface_texto == NULL) {
-        std::cout << "Error creating text surface: " << TTF_GetError() << std::endl;
-        TTF_CloseFont(font);
-        return;
-    }
+    SDL_Texture* texture_texto = SDL_CreateTextureFromSurface(renderer, surface_texto);
 
     // Convertir la superficie en una textura
     SDL_Texture* texture_texto = SDL_CreateTextureFromSurface(renderer, surface_texto);
@@ -108,13 +88,13 @@ void Lobby::dibujar(std::list<uint8_t>& partidas) {
         
         SDL_Texture* fondo = IMG_LoadTexture(renderer, "../resources/lobby/background_lobby2.jpg");
         SDL_RenderCopy(renderer, fondo, NULL, NULL);
-
+        SDL_DestroyTexture(fondo);
         std::string iniciar_partida_texto = "Start Game";
         cargar_boton(iniciar_partida_texto, iniciar_partida_rect);
     } else if (estado == EstadoLobby::UNIRSE_A_PARTIDA){
         SDL_Texture* fondo = IMG_LoadTexture(renderer, "../resources/lobby/background_lobby2.jpg");
         SDL_RenderCopy(renderer, fondo, NULL, NULL);
-
+        SDL_DestroyTexture(fondo);
         for (uint8_t& id_partida : partidas) {
             int id = static_cast<int>(id_partida);
             SDL_Rect rect;
@@ -132,7 +112,7 @@ void Lobby::dibujar(std::list<uint8_t>& partidas) {
     } else if (estado == EstadoLobby::ESPERAR_INICIO_PARTIDA){
         SDL_Texture* fondo = IMG_LoadTexture(renderer, "../resources/lobby/background_lobby2.jpg");
         SDL_RenderCopy(renderer, fondo, NULL, NULL);
-
+        SDL_DestroyTexture(fondo);
         std::string texto = "Waiting for the game to start...";
         SDL_Rect rect_texto = { 475, 350, 400, 100 };
         SDL_Color color = { 155, 255, 255, 255 };
@@ -226,7 +206,7 @@ void Lobby::partida_iniciada() {
 
 void Lobby::cargar_pantalla(std::vector<SDL_Texture*>& texturas_ganador, std::string path, 
             int cant_frames, int frame_width, int frame_height, int offset_x, int offset_y) {
-    // Load the surface for the winner screen
+   
     SDL_Surface* ganador_surface = IMG_Load(path.c_str());
     if (!ganador_surface) {
         SDL_Log("Failed to load image: %s", SDL_GetError());
@@ -244,9 +224,7 @@ void Lobby::cargar_pantalla(std::vector<SDL_Texture*>& texturas_ganador, std::st
 
         SDL_FreeSurface(frame_surface);
     }
-
     SDL_FreeSurface(ganador_surface);
-
 }
 
 SDL_Color Lobby::color_pato(int index) {
@@ -264,6 +242,7 @@ SDL_Color Lobby::color_pato(int index) {
 void Lobby::mostrar_pato_identificatorio(uint16_t id1, uint16_t id2){
     SDL_Texture* fondo = IMG_LoadTexture(renderer, "../resources/lobby/background_lobby2.jpg");
     SDL_RenderCopy(renderer, fondo, NULL, NULL);
+    SDL_DestroyTexture(fondo);
     SDL_Color color_texto = { 255, 255, 255, 255 };
     
     std::string texto1 = "Player 1 duck color is ";
@@ -313,6 +292,7 @@ void Lobby::mostrar_pantalla_ganador(int it) {
     SDL_RenderClear(renderer);
     SDL_Texture* fondo_texture = IMG_LoadTexture(renderer, "../resources/backgrounds/forest.png");
     SDL_RenderCopy(renderer, fondo_texture, NULL, NULL);
+    SDL_DestroyTexture(fondo_texture);
     std::string texto = "YOU WIN!";
     SDL_Rect rect_texto = { 520, 100, 200, 100 };
     SDL_Color color = { 240, 240, 0, 255 };
@@ -349,10 +329,12 @@ void Lobby::mostrar_pantalla_perdedor(){
     SDL_RenderClear(renderer);
     SDL_Texture* fondo_texture = IMG_LoadTexture(renderer, "../resources/backgrounds/forest.png");
     SDL_RenderCopy(renderer, fondo_texture, NULL, NULL);
+    SDL_DestroyTexture(fondo_texture);
     SDL_Texture* grave_texture = IMG_LoadTexture(renderer, "../resources/grave.png");
     SDL_Rect rect_grave = { 475, 250, 275, 275 };
     SDL_RenderCopy(renderer, grave_texture, NULL, &rect_grave);
-    std::string texto = "YOU LOSE :(";
+    SDL_DestroyTexture(grave_texture);
+    std::string texto = "YOU LOSE";
     SDL_Rect rect_texto = { 520, 100, 200, 100 };
     SDL_Color color = { 0, 0, 0, 255 };
     int tamanio = 36;

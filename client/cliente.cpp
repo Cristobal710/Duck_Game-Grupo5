@@ -11,7 +11,8 @@
 #define PICKUP "Pickup"
 #define READ "Read"
 
-Client::Client(const char* hostname, const char* servname): socket(hostname, servname) {}
+Client::Client(const char* hostname, const char* servname, std::atomic_bool& cerrar_programa): 
+socket(hostname, servname), cerrar_programa(cerrar_programa)  {}
 
 void Client::run() {
 
@@ -27,13 +28,13 @@ void Client::run() {
 
     InterfazGrafica interfaz = InterfazGrafica(cola_eventos, cola_estado_juego);
     interfaz.iniciar();
-    
-    
-    std::string in;
-    while (std::cin >> in, (in != "q")) {}
-
+    //si sali de la interfaz es porque se termino el juego, hay que cerrar todo
+    cola_eventos.close();
+    cola_estado_juego.close();
     enviarComandos.join();
     enviarComandos.stop();
     recibirComandos.join();
     recibirComandos.stop();
+
+    cerrar_programa = true;
 }

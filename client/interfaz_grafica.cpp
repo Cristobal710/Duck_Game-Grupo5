@@ -105,13 +105,24 @@ void InterfazGrafica::iniciar() {
     }
     
     //mostrar pantalla de ganador o perdedor 
-    while(true) {
+    while(correr_programa) {
+        SDL_Event evento;
+        while (SDL_PollEvent(&evento)) {
+            if (evento.type == SDL_QUIT) {
+                correr_programa = false;
+                break;
+
+            } else if (evento.type == SDL_KEYDOWN) {
+                if (evento.key.keysym.sym == SDLK_ESCAPE) {
+                    correr_programa = false;
+                }
+            }
+        }
         renderer.Clear();
         lobby.mostrar_pantalla_ganador(it);
         //lobby.mostrar_pantalla_perdedor();
         drop_rest(tiempo_ultimo_frame, it);
     }
-
     //Mix_FreeMusic(music);
     IMG_Quit();
     SDL_Quit();

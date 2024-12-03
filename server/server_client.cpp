@@ -5,7 +5,7 @@ ServerClient::ServerClient(uint16_t id, Socket skt, Queue<EstadoJuego>& recibido
         conexion_socket(std::move(skt)),
         esta_cerrado(false),
         estados_juego(recibidos),
-        eventos(enviados), dos_jugadores(false), enviar(conexion_socket, &estados_juego) {}
+        eventos(enviados), dos_jugadores(false), enviar(conexion_socket, &estados_juego, esta_cerrado) {}
 
 void ServerClient::cerrar(ServerEnviar& enviar) {
     esta_cerrado = true;
@@ -14,7 +14,7 @@ void ServerClient::cerrar(ServerEnviar& enviar) {
     try {
         conexion_socket.shutdown(2);
     } catch (...) {}
-
+    enviar.cerrar_queue();
     enviar.join();
 }
 

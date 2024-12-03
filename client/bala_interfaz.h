@@ -18,13 +18,14 @@ private:
     SDL2pp::Surface bala_surface;
     SDL2pp::Surface bala_surface_arriba;
     uint8_t direccion;
-
+    bool sonido_reproducido;
 
 public:
     BalaInterfaz(SDL2pp::Surface& superficie, const std::string& bala_path, int pos_x, int pos_y, uint8_t direccion);
     void dibujar(int it);
 
-    void set_posicion_bala(uint16_t pos_x_final, uint16_t pos_y_final);
+    void reproducir_sonido();
+    bool ya_sono();
 
 };
 
