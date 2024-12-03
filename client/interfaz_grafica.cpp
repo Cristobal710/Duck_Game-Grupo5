@@ -130,7 +130,7 @@ void InterfazGrafica::drop_rest(float& tiempo_ultimo_frame, int& it) {
         if (tiempo_perdido % DURACION_FRAME != 0 && (tiempo_perdido < 0) != (DURACION_FRAME < 0)) {
             it--;
         }
-        //std::cout << "pierdo frames" << std::endl;
+        
     }
     SDL_Delay(descansar);
     it += 1;
@@ -173,7 +173,6 @@ void InterfazGrafica::manejar_eventos(std::set<SDL_Keycode>& keysHeld, int cant_
 
         } else if (evento.type == SDL_KEYDOWN) {
             if (keysHeld.find(evento.key.keysym.sym) == keysHeld.end()) {
-                // Check for escape key
                 if (evento.key.keysym.sym == SDLK_ESCAPE) {
                     correr_programa = false;
                 }
@@ -182,16 +181,14 @@ void InterfazGrafica::manejar_eventos(std::set<SDL_Keycode>& keysHeld, int cant_
                     manejar_eventos_por_jugador(comando_cliente, evento, key_map_jugador_2, id2, true);
                 }
 
-                // Mark this key as held
                 keysHeld.insert(evento.key.keysym.sym);
-            }
+           }
         } else if (evento.type == SDL_KEYUP) {
             manejar_eventos_por_jugador(comando_cliente, evento, key_map_jugador_1, id1, false);
             if (cant_jugadores == 2) {
                 manejar_eventos_por_jugador(comando_cliente, evento, key_map_jugador_2, id2, false);
             }
 
-            // Remove the released key from the held keys set
             keysHeld.erase(evento.key.keysym.sym);
         }
     }

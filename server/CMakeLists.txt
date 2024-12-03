@@ -10,6 +10,7 @@ target_sources(taller_server
     server_lector_json.cpp
     modo_juego.cpp
     queue_protegida.cpp
+    puntaje.cpp
 
     ../common/common_liberror.cpp 
     ../common/common_resolver.cpp
@@ -31,7 +32,7 @@ target_sources(taller_server
     server_lector_json.h
     modo_juego.h
     queue_protegida.h
-
+    puntaje.h
     ../common/common_liberror.h
     ../common/common_queue.h
     ../common/common_resolver.h

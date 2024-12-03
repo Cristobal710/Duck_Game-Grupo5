@@ -13,7 +13,7 @@
 #define DEATH_RAY "Death ray"
 #define SHOTGUN "Shotgun"
 
-ServerEnviar::ServerEnviar(Socket& skt, Queue<EstadoJuego>& estados_juego):
+ServerEnviar::ServerEnviar(Socket& skt, Queue<EstadoJuego>* estados_juego):
         socket(skt), estados_juego(estados_juego), server_protocolo(socket) {}
 
 
@@ -21,13 +21,10 @@ void ServerEnviar::run() {
     
     while (!esta_cerrado) {
         try {
-            EstadoJuego nuevo_estado = estados_juego.pop();
-            server_protocolo.enviar_estado_juego(nuevo_estado);
-        } catch (ClosedQueue& e) {
-            EstadoJuego nuevo_estado = estados_partida->pop();
+            EstadoJuego nuevo_estado = estados_juego->pop();
             server_protocolo.enviar_estado_juego(nuevo_estado);
         } catch (...) {
-            break;
+            continue;
         }
     }
 }
@@ -37,8 +34,6 @@ void ServerEnviar::iniciar_partida(EstadoJuego& estado) {
 }
 
 void ServerEnviar::cambiar_queue(Queue<EstadoJuego>* nueva_queue) {
-    estados_partida = nueva_queue;
-    std::cout << "cierro queue" <<std::endl;
-    estados_juego.close();
-    std::cout << "queue cerrada" <<std::endl;
+    estados_juego->close();
+    estados_juego = nueva_queue;
 }

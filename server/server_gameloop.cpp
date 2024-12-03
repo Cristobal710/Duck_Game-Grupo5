@@ -15,11 +15,11 @@
 #define ANCHO_TILE 24
 
 GameLoop::GameLoop(std::map<uint16_t, Queue<EstadoJuego>*>* mapa_jugadores,
-        bool* conexion, uint8_t id, std::string mapa_seleccionado):
+        bool* conexion, uint8_t id, std::string mapa_seleccionado, std::vector<Puntaje>& puntaje_jugadores):
         clientes(),
         esta_cerrado(conexion),
         id_ultimo_jugador(0), id_partida(id), mapa_jugadores(mapa_jugadores), 
-        mapa_a_jugar(mapa_seleccionado)
+        mapa_a_jugar(mapa_seleccionado), puntaje_jugadores(puntaje_jugadores)
         {
         ultimo_estado = EstadoJuego();
         }
@@ -591,10 +591,9 @@ void GameLoop::run() {
     calcular_colisiones_tiles(mapa);
 
     tiempo_ultimo_frame = SDL_GetTicks();
-    while (!(*esta_cerrado)) {
         //eliminar_clientes_cerrados();
         // ultimo_estado.mapa = Mapa();
-        while (true) {
+        while (!partida_terminada() && !(*esta_cerrado)) {
             EstadoJuego estado_anterior = ultimo_estado;
             std::vector<EventoServer> eventos = clientes.recibir_mensajes_clientes();
             for(EventoServer evento : eventos){
@@ -615,15 +614,18 @@ void GameLoop::run() {
             }
             drop_and_rest(tiempo_ultimo_frame);
         }
-    }
     //cerrar_gameloop();
+    for (Puntaje& puntaje : puntaje_jugadores){
+        if (puntaje.tengo_id(ultimo_estado.patos.front().get_id())){
+            puntaje.gana_una_ronda();
+        }
+    }
 }
 
-// void GameLoop::mandar_id_cliente(uint16_t& id) {
-//     ultimo_estado.id_jugador = id;
-//     ultimo_estado.informacion_enviada = ENVIAR_ESTADO_JUEGO;
-//    for (auto it = mapa_jugadores.begin(); it != mapa_jugadores.end();) {
-//         auto* queue_actual = it->second;
-//         queue_actual->push(ultimo_estado);
-//     }
-// }
+
+bool GameLoop::partida_terminada(){
+    if (ultimo_estado.patos.size() > 1){
+        return false;
+    }
+    return true;
+}

@@ -50,8 +50,21 @@ void ModoJuego::run() {
         drop_and_rest(tiempo_ultimo_frame);
     }
 
+
+    
+    
+    std::vector<Puntaje> puntaje_jugadores;
     if (partida_nueva){
-        
+        for (ServerClient* client : clientes){
+            Puntaje jugador(client->get_id());
+            puntaje_jugadores.emplace_back(std::move(jugador));
+            if (client->juegan_dos()){
+                Puntaje jugador2(client->get_id() + 1);
+                puntaje_jugadores.emplace_back(std::move(jugador2));
+            }
+        }
+
+
         LectorJson lector_mapa = LectorJson();
         std::string mapa_seleccionado = sortear_mapa();
         Mapa mapa = lector_mapa.procesar_mapa(mapa_seleccionado);
@@ -66,7 +79,7 @@ void ModoJuego::run() {
         inicializar_cajas(estado_inicial);
         inicializar_armas(estado_inicial);
 
-        // QueueProtegida queue_nueva(broadcast.conseguir_cola());
+        
         auto* jugadores = new std::map<uint16_t, Queue<EstadoJuego>*>();
         for (ServerClient* client : clientes){
             auto* queue = new Queue<EstadoJuego>();
@@ -74,13 +87,14 @@ void ModoJuego::run() {
             client->cambiar_queue(jugadores->at(client->get_id()));
         }
 
-
-        auto* gameloop = new GameLoop(jugadores, &cerrado, id_partida, mapa_seleccionado);
+        auto* gameloop = new GameLoop(jugadores, &cerrado, id_partida, mapa_seleccionado, puntaje_jugadores);
         for (ServerClient* client : clientes){
             client->iniciar_partida(estado_inicial);
             gameloop->agregar_cliente(*client, client->get_queue());
         }
         gameloop->start();
+
+        
     }
     while (not cerrado){
         drop_and_rest(tiempo_ultimo_frame);

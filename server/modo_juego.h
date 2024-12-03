@@ -11,7 +11,7 @@
 #include "../common/common_arma.h"
 #include <random>
 #include "server_arma_config.h"
-
+#include "puntaje.h"
 class ModoJuego: public Thread {
     private:
     ServerClient& cliente;

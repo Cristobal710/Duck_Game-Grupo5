@@ -7,14 +7,12 @@
 #include <vector>
 #include <yaml-cpp/yaml.h>
 
-
 #include "../common/common_mapa.h"
 #include "server_lector_json.h"
 #include "../common/common_estado_juego.h"
 #include "../common/common_queue.h"
 #include "../common/common_thread.h" 
 #include "../common/common_tipo_proteccion.h"
-
 #include "../common/common_ak47.h"
 #include "../common/common_escopeta.h"
 #include "../common/common_laserrifle.h"
@@ -28,6 +26,7 @@
 #include "server_evento.h"
 #include "server_arma_config.h"
 #include "server_proteger_clientes.h"
+#include "puntaje.h"
 #include "../common/common_tipo_colision.h"
 #include "queue_protegida.h"
 
@@ -46,6 +45,9 @@ private:
     std::map<std::string, ArmaConfig> armamento_config;
     std::vector<ArmaConfig> armas_posibles;
     std::string mapa_a_jugar;
+    std::vector<Puntaje>& puntaje_jugadores;
+
+
     // void eliminar_clientes_cerrados();
     // void cerrar_gameloop();
     void inicializar_juego();
@@ -76,10 +78,11 @@ private:
     Arma elegir_arma_aleatoria(SDL_Point posicion_caja);
     void leer_configuracion(const std::string& archivo_yaml);
     Arma mapear_armas(ArmaConfig armamento, SDL_Point posicion_arma);
+    bool partida_terminada();
 
 public:
     GameLoop(std::map<uint16_t, Queue<EstadoJuego>*>* mapa_jugadores,
-             bool* conexion, uint8_t id, std::string mapa_seleccionado);
+             bool* conexion, uint8_t id, std::string mapa_seleccionado, std::vector<Puntaje>& puntaje_jugadores);
     void procesar_evento(EventoServer& evento, EstadoJuego& cola_estados_juego);
     int get_indice_por_id(uint8_t id);
     void agregar_cliente(ServerClient& cliente, Queue<EventoServer>& cola_cliente);
