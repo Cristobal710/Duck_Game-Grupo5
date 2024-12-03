@@ -94,7 +94,7 @@ void InterfazGrafica::iniciar() {
     tiempo_ultimo_frame = SDL_GetTicks();
     bool ronda_terminada = false;
     bool partida_terminada = false;
-    while (!partida_terminada) {
+    while (!partida_terminada && correr_programa) {
         renderer.Clear();
         manejar_eventos(keysHeld, cant_jugadores, static_cast<int>(id1), static_cast<int>(id2));
         obtener_estado_juego(mapa_a_jugar, id_partida, partida_terminada, ronda_terminada, ultimo_estado);
@@ -192,6 +192,7 @@ void InterfazGrafica::manejar_eventos(std::set<SDL_Keycode>& keysHeld, int cant_
             //if (keysHeld.find(evento.key.keysym.sym) == keysHeld.end()) {
                 if (evento.key.keysym.sym == SDLK_ESCAPE) {
                     correr_programa = false;
+                    return;
                 }
                 manejar_eventos_por_jugador(comando_cliente, evento, key_map_jugador_1, id1, true);
                 if (cant_jugadores == 2) {
