@@ -52,10 +52,7 @@ void InterfazGrafica::iniciar() {
     // std::cout << "ID PARTIDA ES: " << static_cast<int>(id_partida) << std::endl;
 
     Lobby lobby(renderer.Get());
-
-
-     MapaInterfaz mapa_a_jugar(renderer, id1);
-    //bool mapa_recibido = false;
+    MapaInterfaz mapa_a_jugar(renderer, id1);
     bool mapa_procesado = false;
 
     while (!lobby.empezo()) {
@@ -65,15 +62,11 @@ void InterfazGrafica::iniciar() {
         comando_cliente.tecla = NO_ABAJO; //algo arbitrario no relevante
         comandos_cliente.push(comando_cliente);
 
-
-        
-        
         while (estado_juego.try_pop(ultimo_estado)) {
             if (id_partida != ultimo_estado.id_partida){
                 id_partida = ultimo_estado.id_partida;
             }
             if (ultimo_estado.partida_iniciada == INICIAR_PARTIDA){
-                std::cout << "tengo que empezar la partida" << std::endl;
                 lobby.partida_iniciada();
                 procesar_mapa(mapa_a_jugar, ultimo_estado, mapa_procesado);
                 break;
@@ -88,6 +81,9 @@ void InterfazGrafica::iniciar() {
     if(cant_jugadores == 2){
         id2 = id1 + 1;
     }
+
+    //mostrar que pato es cada uno
+    lobby.mostrar_pato_identificatorio(id1, id2);
 
     std::string audio_fondo_path = "../resources/sounds/background_music.mp3";
     iniciar_audio(audio_fondo_path);
@@ -243,24 +239,6 @@ void InterfazGrafica::procesar_mapa(MapaInterfaz& mapa, EstadoJuego& ultimo_esta
                 mapa.agregar_equipamiento(equipamiento_path, punto.x, punto.y);
             }
         }
-
-        // procesar armas
-        // for (auto& arma : ultimo_estado.armas){
-        //     std::cout << "hay " << ultimo_estado.armas.size() << " armas" << std::endl;
-        //     uint16_t id = arma.get_id();
-        //     int pos_x = static_cast<int>(arma.get_pos_x());
-        //     int pos_y = static_cast<int>(arma.get_pos_y());
-        //     uint8_t tipo_arma = arma.get_tipo_arma();
-        //     mapa.agregar_arma(id, pos_x, pos_y, tipo_arma);
-        // }
-      
-        // // procesar equipamiento
-        // for (auto& proteccion : ultimo_estado.armaduras){
-        //     int pos_x = static_cast<int>(proteccion.get_pos_x());
-        //     int pos_y = static_cast<int>(proteccion.get_pos_y());
-        //     TipoProteccion tipo_proteccion = proteccion.get_tipo();
-        //     mapa.agregar_proteccion(pos_x, pos_y, tipo_proteccion);
-        // }
 
         mapa_procesado = true;
 }

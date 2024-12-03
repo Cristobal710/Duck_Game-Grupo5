@@ -25,6 +25,11 @@ void MapaInterfaz::agregar_tile(std::string tile_path, int x, int y){
 }
 
 SDL_Color MapaInterfaz::generar_color(int index) {
+    if(index == 1){
+        index = 30;
+    } else if (index == 2){
+        index = 35;
+    }
     uint8_t r = (index * 50) % 256;
     uint8_t g = ((index + 1) * 70) % 256;
     uint8_t b = ((index + 2) * 90) % 256;

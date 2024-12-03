@@ -135,7 +135,7 @@ void Lobby::dibujar(std::list<uint8_t>& partidas) {
 
         std::string texto = "Waiting for the game to start...";
         SDL_Rect rect_texto = { 475, 350, 400, 100 };
-        SDL_Color color = { 0, 0, 0, 0 };
+        SDL_Color color = { 155, 255, 255, 255 };
         int tamanio = 36;
         cargar_texto(texto, rect_texto, color, tamanio);
     }
@@ -247,6 +247,47 @@ void Lobby::cargar_pantalla(std::vector<SDL_Texture*>& texturas_ganador, std::st
 
     SDL_FreeSurface(ganador_surface);
 
+}
+
+SDL_Color Lobby::color_pato(int index) {
+    if(index == 1){
+        index = 30;
+    } else if (index == 2){
+        index = 35;
+    }
+    uint8_t r = (index * 50) % 256;
+    uint8_t g = ((index + 1) * 70) % 256;
+    uint8_t b = ((index + 2) * 90) % 256;
+    return {r, g, b, 255};
+}
+
+void Lobby::mostrar_pato_identificatorio(uint16_t id1, uint16_t id2){
+    SDL_Texture* fondo = IMG_LoadTexture(renderer, "../resources/lobby/background_lobby2.jpg");
+    SDL_RenderCopy(renderer, fondo, NULL, NULL);
+    SDL_Color color_texto = { 255, 255, 255, 255 };
+    
+    std::string texto1 = "Player 1 duck color is ";
+    SDL_Rect rect_texto1 = { 200, 200, 200, 100 };
+    cargar_texto(texto1, rect_texto1, color_texto, 24);
+
+    SDL_Rect rect_color1 = { 530, 215, 50, 50 };
+    SDL_Color color_pato1 = color_pato(id1);
+    SDL_SetRenderDrawColor(renderer, color_pato1.r, color_pato1.g, color_pato1.b, color_pato1.a);
+    SDL_RenderFillRect(renderer, &rect_color1);
+    
+    if(id2 != 0){
+        std::string texto2 = "Player 2 duck color is ";
+        SDL_Rect rect_texto2 = { 200, 300, 200, 100 };
+        cargar_texto(texto2, rect_texto2, color_texto, 24);
+
+        SDL_Rect rect_color2 = { 530, 315, 50, 50 };
+        SDL_Color color_pato2 = color_pato(id2);
+        SDL_SetRenderDrawColor(renderer, color_pato2.r, color_pato2.g, color_pato2.b, color_pato2.a);
+        SDL_RenderFillRect(renderer, &rect_color2);
+    }
+
+    SDL_RenderPresent(renderer);
+    SDL_Delay(5000);
 }
 
 void Lobby::mostrar_pantalla_ganador(int it) {

@@ -138,7 +138,6 @@ void ModoJuego::ejecutar_accion_lobby(PedidoJugador& pedido, uint16_t id_jugador
     }
     if (pedido.dos_jugadores == LOBBY_REQUEST){
         cliente.juegan_2_personas();
-        std::cout << "hay dos jugadores" << std::endl;
         return;
     }
     if(pedido.empezar == LOBBY_REQUEST){
@@ -164,7 +163,6 @@ std::string ModoJuego::sortear_mapa() {
     std::uniform_int_distribution<> dis(0, mapas_disponibles.size() - 1);
 
     int indice_aleatorio = dis(gen);
-    std::cout << "mapa seleccionado: " << mapas_disponibles[indice_aleatorio] << std::endl;
     return mapas_disponibles[indice_aleatorio];
 }
 

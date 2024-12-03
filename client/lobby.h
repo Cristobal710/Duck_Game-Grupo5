@@ -43,6 +43,7 @@ private:
     void cargar_texto(std::string& texto, SDL_Rect& boton_rect, SDL_Color& color, int tamanio);
     void cargar_pantalla(std::vector<SDL_Texture*>& texturas_ganador, std::string path, 
                     int cant_frames, int frame_width, int frame_height, int offset_x, int offset_y);
+    SDL_Color color_pato(int index);
     void cerrar();
 
 public:
@@ -53,6 +54,7 @@ public:
     int cantidad_jugadores() const;
     void actualizar_partidas(std::list<Partida>& partidas);
     void partida_iniciada();
+    void mostrar_pato_identificatorio(uint16_t id1, uint16_t id2);
     void mostrar_pantalla_ganador(int it);
     void mostrar_pantalla_perdedor();
 };
