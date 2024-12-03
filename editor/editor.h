@@ -86,6 +86,8 @@ class Editor {
 
     std::vector<std::string> mapas = {
         "../resources/maps/mapa3",
+        "../resources/maps/mapa5",
+        "../resources/maps/mapa4",
     };
     
 
