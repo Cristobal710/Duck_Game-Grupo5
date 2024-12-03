@@ -194,6 +194,11 @@ void ServerProtocolo::enviar_estado_juego(EstadoJuego& estado) {
         enviar_byte(estado.partida_iniciada);
         enviar_byte(estado.id_partida);
     }
+
+    if (estado.informacion_enviada == ENVIAR_RESULTADO_PARTIDA){
+       enviar_byte(estado.id_partida);
+       enviar_dos_bytes(estado.ganador_partida);
+    }
 }
 
 void ServerProtocolo::enviar_pato(Pato& pato) {

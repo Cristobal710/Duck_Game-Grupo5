@@ -54,6 +54,13 @@ void InterfazGrafica::iniciar() {
     while (!lobby.empezo()) {
         ComandoGrafica comando_cliente;
         comando_cliente.pedido = lobby.manejar_eventos();
+        if (comando_cliente.pedido.cerrar_sistema){
+            IMG_Quit();
+            SDL_Quit();
+            Mix_CloseAudio();
+            Mix_Quit();
+            return;
+        }
         comando_cliente.jugador_id = id1;
         comando_cliente.tecla = NO_ABAJO; //algo arbitrario no relevante
         comandos_cliente.push(comando_cliente);
@@ -85,42 +92,38 @@ void InterfazGrafica::iniciar() {
     std::set<SDL_Keycode> keysHeld;
     it = 0;
     tiempo_ultimo_frame = SDL_GetTicks();
+    bool ronda_terminada = false;
     bool partida_terminada = false;
-    while (correr_programa) {
+    while (!partida_terminada) {
         renderer.Clear();
         manejar_eventos(keysHeld, cant_jugadores, static_cast<int>(id1), static_cast<int>(id2));
-        obtener_estado_juego(mapa_a_jugar, id_partida, partida_terminada);
-        if (!partida_terminada){
+        obtener_estado_juego(mapa_a_jugar, id_partida, partida_terminada, ronda_terminada, ultimo_estado);
+        if (partida_terminada){
+            break;
+        }
+        if (!ronda_terminada){
             mapa_a_jugar.dibujar(it);
             renderer.Present();
         } else {
             mapa_a_jugar.limpiar_mapa();
             ultimo_estado = estado_juego.pop();
             procesar_mapa(mapa_a_jugar, ultimo_estado);
-            partida_terminada = false;
+            ronda_terminada = false;
         }
-            
         //ahora calculamos cuanto tardamos en hacer todo, si nos pasamos, drop & rest.
         drop_rest(tiempo_ultimo_frame, it);
     }
     
     //mostrar pantalla de ganador o perdedor 
     while(correr_programa) {
-        SDL_Event evento;
-        while (SDL_PollEvent(&evento)) {
-            if (evento.type == SDL_QUIT) {
-                correr_programa = false;
-                break;
-
-            } else if (evento.type == SDL_KEYDOWN) {
-                if (evento.key.keysym.sym == SDLK_ESCAPE) {
-                    correr_programa = false;
-                }
-            }
-        }
+        
+        cerrar_programa(correr_programa);
         renderer.Clear();
-        lobby.mostrar_pantalla_ganador(it);
-        //lobby.mostrar_pantalla_perdedor();
+        if (ultimo_estado.ganador_partida == id1 || ultimo_estado.ganador_partida == id2){
+            lobby.mostrar_pantalla_ganador(it);
+        } else {
+            lobby.mostrar_pantalla_perdedor();
+        }
         drop_rest(tiempo_ultimo_frame, it);
     }
     //Mix_FreeMusic(music);
@@ -252,16 +255,22 @@ void InterfazGrafica::procesar_mapa(MapaInterfaz& mapa, EstadoJuego& ultimo_esta
         }
 }
 
-void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa, uint8_t& id_partida, bool& partida_terminada) { 
-
+void InterfazGrafica::obtener_estado_juego(MapaInterfaz& mapa, uint8_t& id_partida, bool& partida_terminada,
+    bool& ronda_terminada, EstadoJuego& ultimo_estado) { 
+    id_partida = id_partida;
     EstadoJuego estado_nuevo;
     while (estado_juego.try_pop(estado_nuevo)) {
         if (estado_nuevo.informacion_enviada == PARTIDA_TERMINADA){
-            partida_terminada = true;
+            ronda_terminada = true;
             return;
         }
 
-        if (estado_nuevo.id_partida == id_partida){
+        if (estado_nuevo.informacion_enviada == ENVIAR_RESULTADO_PARTIDA){
+            partida_terminada = true;
+            ultimo_estado.ganador_partida = estado_nuevo.ganador_partida;
+        }     
+
+        if (estado_nuevo.informacion_enviada == ENVIAR_ESTADO_JUEGO){
             estado_pato(mapa, estado_nuevo);
             estado_objetos(mapa, estado_nuevo);
         } 
@@ -324,6 +333,21 @@ void InterfazGrafica::estado_objetos(MapaInterfaz& mapa, EstadoJuego& ultimo_est
     for (Proteccion armadura : ultimo_estado.armaduras){
         if (armadura.get_se_agarro()){
             mapa.equip_recogido(armadura.get_pos_x(), armadura.get_pos_y());
+        }
+    }
+}
+
+void InterfazGrafica::cerrar_programa(bool& correr_programa) {
+
+    SDL_Event evento;
+    while (SDL_PollEvent(&evento)) {
+        if (evento.type == SDL_QUIT) {
+            correr_programa = false;
+            break;
+        } else if (evento.type == SDL_KEYDOWN) {
+            if (evento.key.keysym.sym == SDLK_ESCAPE) {
+                correr_programa = false;
+            }
         }
     }
 }

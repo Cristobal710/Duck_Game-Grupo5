@@ -29,7 +29,7 @@ void ServerEnviar::run() {
     }
 }
 
-void ServerEnviar::iniciar_partida(EstadoJuego& estado) {
+void ServerEnviar::enviar_estado(EstadoJuego& estado) {
     server_protocolo.enviar_estado_juego(estado);
 }
 

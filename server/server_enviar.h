@@ -20,7 +20,7 @@ private:
 public:
     ServerEnviar(Socket& skt, Queue<EstadoJuego>* estados_juego, std::atomic_bool& esta_cerrado);
     void run() override;
-    void iniciar_partida(EstadoJuego& estado);
+    void enviar_estado(EstadoJuego& estado);
     void cambiar_queue(Queue<EstadoJuego>* nueva_queue);
     void cerrar_queue();
 };

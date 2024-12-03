@@ -33,7 +33,7 @@ public:
     void juegan_2_personas();
     bool juegan_dos();
     Queue<EventoServer>& get_queue();
-    void iniciar_partida(EstadoJuego& estado);
+    void enviar_estado(EstadoJuego& estado);
     void cambiar_queue(Queue<EstadoJuego>* nueva_queue);
 };
 

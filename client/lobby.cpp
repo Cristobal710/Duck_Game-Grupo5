@@ -124,13 +124,18 @@ void Lobby::dibujar(std::list<uint8_t>& partidas) {
 PedidoJugador Lobby::manejar_eventos() {
     SDL_Event event;
     PedidoJugador pedido;
-
+    pedido.cerrar_sistema = false;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
             cerrar();
+            pedido.cerrar_sistema = true;
             return pedido;
+        } else if (event.type == SDL_KEYDOWN) {
+                if (event.key.keysym.sym == SDLK_ESCAPE) {
+                    pedido.cerrar_sistema = true;
+                    return pedido;
+                }
         }
-
         if (event.type == SDL_MOUSEBUTTONDOWN) {
             int x, y;
             SDL_GetMouseState(&x, &y);
@@ -178,7 +183,6 @@ PedidoJugador Lobby::manejar_eventos() {
             }
         }
     }
-
     return pedido;
 }
 

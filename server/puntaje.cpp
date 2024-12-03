@@ -19,3 +19,5 @@ bool Puntaje::gano_la_partida() {
     }
     return false;
 }
+
+uint16_t Puntaje::get_id() { return id_jugador; }

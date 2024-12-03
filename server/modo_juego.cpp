@@ -98,7 +98,7 @@ void ModoJuego::run() {
             bool ronda_finalizada = false;
             auto* gameloop = new GameLoop(jugadores, &ronda_finalizada, id_partida, mapa_seleccionado, puntaje_jugadores);
             for (ServerClient* client : clientes){
-                client->iniciar_partida(estado_inicial);
+                client->enviar_estado(estado_inicial);
                 gameloop->agregar_cliente(*client, client->get_queue());
             }
 
@@ -111,19 +111,31 @@ void ModoJuego::run() {
             //alcanza, solo hay que liberarlo
             gameloop->join();
             delete gameloop;
-
-            EstadoJuego estado_final;
-            estado_final.id_partida = id_partida;
-            estado_final.informacion_enviada = PARTIDA_TERMINADA;
-            estado_final.partida_iniciada = 0x00;
-            for (ServerClient* client : clientes){
-                client->iniciar_partida(estado_final);
+            if (no_hay_ganador(puntaje_jugadores)){
+                EstadoJuego estado_final;
+                estado_final.id_partida = id_partida;
+                estado_final.informacion_enviada = PARTIDA_TERMINADA;
+                estado_final.partida_iniciada = 0x00;
+                for (ServerClient* client : clientes){
+                    client->enviar_estado(estado_final);
+                }
             }
         }
     } else {
         //joinee la partida de alguien, tengo que esperar simplemente
         drop_and_rest(tiempo_ultimo_frame);
     }
+    
+    //enviar ganador de la partida
+    EstadoJuego ultimo_estado;
+            
+    ultimo_estado.id_partida = id_partida;
+    ultimo_estado.informacion_enviada = ENVIAR_RESULTADO_PARTIDA;
+    ultimo_estado.ganador_partida = conseguir_ganador(puntaje_jugadores);
+    for (ServerClient* client : clientes){
+        client->enviar_estado(ultimo_estado);
+    }
+
     delete jugadores;
     for (ServerClient* client : clientes){
         if (client->get_id() == cliente.get_id()){
@@ -342,4 +354,13 @@ bool ModoJuego::no_hay_ganador(std::vector<Puntaje>& puntaje_jugadores) {
         }
     }
     return true;
-} 
+}
+uint16_t ModoJuego::conseguir_ganador(std::vector<Puntaje>& puntaje_jugadores) {
+    uint16_t ganador = 0;
+    for (Puntaje& jugador : puntaje_jugadores){
+        if (jugador.gano_la_partida()){
+            ganador = jugador.get_id();
+        }
+    }
+    return ganador;
+}

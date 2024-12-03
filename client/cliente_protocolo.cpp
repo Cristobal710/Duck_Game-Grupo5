@@ -228,6 +228,13 @@ EstadoJuego ClienteProtocolo::recibir_estado_juego() {
     if (estado_juego.informacion_enviada == PARTIDA_TERMINADA){
         estado_juego.partida_iniciada = recibir_byte(cerrado);
         estado_juego.id_partida       = recibir_byte(cerrado);
+        return estado_juego;
+    }
+
+    if (estado_juego.informacion_enviada == ENVIAR_RESULTADO_PARTIDA){
+        estado_juego.id_partida       = recibir_byte(cerrado);
+        estado_juego.ganador_partida  = recibir_dos_bytes(cerrado);
+        return estado_juego;
     }
     return estado_juego;
 }

@@ -48,6 +48,7 @@ class ModoJuego: public Thread {
     bool tiene_id(uint8_t un_id);
     void nuevo_jugador(ServerClient* client);
     bool no_hay_ganador(std::vector<Puntaje>& puntaje_jugadores);
+    uint16_t conseguir_ganador(std::vector<Puntaje>& puntaje_jugadores);
 };
 
 

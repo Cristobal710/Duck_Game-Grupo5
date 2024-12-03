@@ -51,8 +51,8 @@ Queue<EventoServer>& ServerClient::get_queue() {
     return eventos;
 }
 
-void ServerClient::iniciar_partida(EstadoJuego& estado) {
-    enviar.iniciar_partida(estado);
+void ServerClient::enviar_estado(EstadoJuego& estado) {
+    enviar.enviar_estado(estado);
 }
 
 void ServerClient::cambiar_queue(Queue<EstadoJuego>* nueva_queue) {

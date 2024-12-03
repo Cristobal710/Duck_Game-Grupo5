@@ -13,6 +13,7 @@ class Puntaje {
     void gana_una_ronda();
     int get_puntaje();
     bool gano_la_partida();
+    uint16_t get_id();
 };
 
 

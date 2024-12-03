@@ -32,10 +32,12 @@ class InterfazGrafica {
     void manejar_eventos(std::set<SDL_Keycode>& keysHeld, int cant_jugadores, int id1, int id2);
     
     void procesar_mapa(MapaInterfaz& mapa, EstadoJuego& ultimo_estado);
-    void obtener_estado_juego(MapaInterfaz& mapa, uint8_t& id_partida, bool& partida_terminada);
+    void obtener_estado_juego(MapaInterfaz& mapa, uint8_t& id_partida, bool& partida_terminada, 
+    bool& ronda_terminada, EstadoJuego& estado);
     void estado_pato(MapaInterfaz& mapa, EstadoJuego& ultimo_estado);
     void estado_objetos(MapaInterfaz& mapa, EstadoJuego& ultimo_estado);
-
+    void cerrar_programa(bool& correr_programa);
+    EstadoJuego conseguir_ganador();
     public:
     InterfazGrafica(Queue<ComandoGrafica>& cola_comandos, Queue<EstadoJuego>& cola_estado_juego);
     void iniciar();

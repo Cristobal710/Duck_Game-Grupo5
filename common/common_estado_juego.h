@@ -18,7 +18,6 @@ struct EstadoJuego {
     uint16_t id_jugador;
     uint8_t id_partida;
     std::list<uint8_t> partidas;
-    LobbyInfo lobby_data;
     Mapa mapa;
     std::list<Pato> patos;
     std::list<Caja> cajas;
@@ -26,6 +25,7 @@ struct EstadoJuego {
     std::list<Bala> balas;
     std::list<Granada> granadas;
     std::list<Proteccion> armaduras;
+    uint16_t ganador_partida;
 };
 
 #endif
