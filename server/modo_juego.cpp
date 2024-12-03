@@ -16,7 +16,11 @@ partidas_distintas(partidas_distintas), partida_nueva(false), clientes(), cerrar
         "../resources/maps/mapa-con-4-spawns-2",
         "../resources/maps/mapa-con-4-spawns-3",
         "../resources/maps/mapa-con-4-spawns-4",
-        "../resources/maps/mapa-con-4-spawns-5"
+        "../resources/maps/mapa-con-4-spawns-5",
+        "../resources/maps/mapa-con-4-spawns-6",
+        "../resources/maps/mapa-con-4-spawns-7",
+        "../resources/maps/mapa-con-4-spawns-8",
+
     };
 }
 
