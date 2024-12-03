@@ -97,6 +97,9 @@ void InterfazGrafica::iniciar() {
     while (!partida_terminada && correr_programa) {
         renderer.Clear();
         manejar_eventos(keysHeld, cant_jugadores, static_cast<int>(id1), static_cast<int>(id2));
+        if (!correr_programa){
+            break;
+        }
         obtener_estado_juego(mapa_a_jugar, id_partida, partida_terminada, ronda_terminada, ultimo_estado);
         if (partida_terminada){
             break;

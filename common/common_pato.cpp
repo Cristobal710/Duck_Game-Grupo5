@@ -224,3 +224,7 @@ void Pato::ajustar_izquierda_tile(const SDL2pp::Rect& tile_hitbox) {
     pos_x = tile_hitbox.GetX() + hitbox.get_hitbox_rect().GetW();
 }
 
+void Pato::posicion_pato_muerto(){
+    pos_x = 1280;
+    pos_y = 720;
+}

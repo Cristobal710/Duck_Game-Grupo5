@@ -274,6 +274,7 @@ void GameLoop:: verificar_limites_mapa(){
     for(Pato& pato : ultimo_estado.patos){
         if(pato.get_pos_x() >= 1280 || pato.get_pos_x() == 0 || pato.get_pos_y() == 0 || pato.get_pos_y() >= 720){
             pato.morir();
+            pato.posicion_pato_muerto();
         }
     }
 }

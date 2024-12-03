@@ -59,6 +59,7 @@ public:
     void ajustar_sobre_tile(const SDL2pp::Rect& tile_hitbox);
     void ajustar_derecha_tile(const SDL2pp::Rect& tile_hitbox);
     void ajustar_izquierda_tile(const SDL2pp::Rect& tile_hitbox);
+    void posicion_pato_muerto();
 };
 
 #endif
